@@ -4,10 +4,10 @@
   "description": "Internationalization library for SvelteKit",
   "main": "./lib/index.js",
   "module": "./lib/index.js",
-  "types": "./lib/types.d.ts",
+  "types": "./types/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf lib && tsc",
+    "build": "rm -rf lib types && tsc",
     "lint": "eslint --fix --ext .ts,.js --ignore-path .gitignore ."
   },
   "pre-commit": [
