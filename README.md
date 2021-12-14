@@ -114,7 +114,7 @@ export const { t, translation, translations, locale, locales, loading, loadConfi
 
 ## Config
 
-### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: string[]; }>__
+### `loaders`: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: string[]; }>__
 
 You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
 Each loader can include:

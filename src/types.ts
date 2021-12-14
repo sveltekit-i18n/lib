@@ -22,7 +22,7 @@ export type ConfigTranslations = Record<string, Record<string, any>>;
 export type Translations = Record<string, Record<string, string>>;
 
 export type Config = {
-  loaders?: LoaderModule[];
+  loaders: LoaderModule[];
   locale?: string;
   route?: string;
 };
