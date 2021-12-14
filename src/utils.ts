@@ -16,9 +16,7 @@ export const getTranslation: GetTranslation = async (loaders) => {
   try {
     const loadedModules = await Promise.all(loaders.map(async ({ key, loader }) => ({ [key]: await loader() })));
     const translation = loadedModules.reduce((acc, item) => ({ ...acc, ...item }), {});
-    
-    console.log(translation);
-    
+
     return toDotNotation(translation);
   } catch (error) {
     console.error(error);
