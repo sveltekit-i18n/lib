@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "removeComments": true,
+    "outDir": "lib",
+    "sourceMap": false,
+    "strict": true,
+    "target": "es2017",
+    "moduleResolution": "node",
+    "declaration": true,
+  },
+  "include": [
+    "./src",
+  ]
+}
