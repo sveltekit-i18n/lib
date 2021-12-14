@@ -114,27 +114,27 @@ export const { t, translation, translations, locale, locales, loading, loadConfi
 
 ## Config
 
-### __loaders__?: `Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: string[]; }>`
+### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: string[]; }>__
 
 You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
 Each loader can include:
 
-__locale__: `string` – locale (e.g. `en`, `de`) which is this loader for.
+`locale`: __string__ – locale (e.g. `en`, `de`) which is this loader for.
 
-__key__: `string` – represents the translation module. This key is used as a translation prefix so you can access your translation later using `$('key.yourTranslation')`. It must not include `.` (dot) character.
+`key`: __string__ – represents the translation module. This key is used as a translation prefix so you can access your translation later using `$('key.yourTranslation')`. It must not include `.` (dot) character.
 
-__loader__: `() => Promise<Record<any, any>>` – is a function returning a Promise with translation data. You can use it to load files locally, fetch it from your API etc...
+`loader`:__() => Promise<Record<any, any>>__ – is a function returning a Promise with translation data. You can use it to load files locally, fetch it from your API etc...
 
-__routes__: `string[]` – defines routes this loader should be triggered for. You can use Regular expressions (e.g. `["/.ome"]` will be triggered for `/home` and `/rome` route as well – but still only once)
+`routes`?: __string[]__ – can define routes this loader should be triggered for. You can use Regular expressions (e.g. `["/.ome"]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
 
 
-### __translations__?: `{ [locale: string]: { [translationKey: string]: string; } }`
+### `translations`?: __{ [locale: string]: { [translationKey: string]: string; } }__
 In case there is no need to load data, you can insert your translations directly to this object.
 
 
-### __locale__?: `string`
+### `locale`?: __string__
 You can define current locale using this parameter.
 
 
-### __route__?: `string`
+### `route`?: __string__
 Current route can be specified by this parameter (see `loaders.routes`).
