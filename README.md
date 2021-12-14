@@ -101,14 +101,14 @@ export const { t, translation, translations, locale, locales, loading, loadConfi
 
 ```svelte
 <script>
-  import {} from '$lib/translations';
+  import { t } from '$lib/translations';
 
   const pageName = 'This page is Home page!';
 </script>
 
 <div>
-  <h2>{$d('common.page', { pageName })}</h2>
-  <p>{$d('home.content')}</p>
+  <h2>{$t('common.page', { pageName })}</h2>
+  <p>{$t('home.content')}</p>
 </div>
 ```
 
