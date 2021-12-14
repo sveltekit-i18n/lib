@@ -17,11 +17,13 @@ export type GetTranslation = (loaders: LoaderModule[]) => Promise<DotNotationOut
 
 export type Translate = (translation: Record<any, any>, key: string, vars: Record<any, any>) => string;
 
+export type ConfigTranslations = Record<string, Record<string, any>>;
+
 export type Translations = Record<string, Record<string, string>>;
 
 export type Config = {
   loaders?: LoaderModule[];
-  translations?: Translations;
+  translations?: ConfigTranslations;
   locale?: string;
   route?: string;
 };

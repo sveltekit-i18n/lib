@@ -1,7 +1,7 @@
 import { derived, get, writable } from 'svelte/store';
 import { getTranslation, toDotNotation, translate, useDefault as d } from './utils';
 
-import type { Config, LoaderModule, Translations } from './types';
+import type { Config, ConfigTranslations, LoaderModule, Translations } from './types';
 import type { Readable, Writable } from 'svelte/store';
 
 export { Config };
@@ -42,6 +42,8 @@ export default class {
     this.config.set(config);
     const { loaders, translations, locale } = config;
 
+    if (translations) this.addTranslations(translations);
+
     this.locales.update(($locales) => {
       if (!$locales.length) {
         const loaderLocales = d<[]>(loaders, []).map(({ locale }) => `${locale}`.toLowerCase());
@@ -55,10 +57,11 @@ export default class {
 
       return $locale;
     });
-    await this.loadTranslations();
+    
+    if (loaders?.length) await this.loadTranslations();
   };
 
-  private addTranslations = (translations: Translations, keys: Record<string, string[]>) => {
+  private addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
     const translationKeys = Object.keys(d(translations));
 
     this.translations.update((currentTranslations) => translationKeys.reduce(
@@ -72,9 +75,12 @@ export default class {
       currentTranslations,
     ));
 
-    if (keys) translationKeys.forEach(($locale) => {
-      this.loadedKeys[$locale] = [...d(this.loadedKeys[$locale], []), ...d(keys[$locale], [])];
-    });
+    translationKeys.forEach(($locale) => {
+      let localeKeys = Object.keys(translations[$locale]).map((k) => `${k}`.split('.')[0]);
+      if (keys) localeKeys = keys[$locale];
+
+      this.loadedKeys[$locale] = [...d(this.loadedKeys[$locale], []), ...d(localeKeys, [])];
+    }); 
   };
 
   private loadTranslations = async () => {
