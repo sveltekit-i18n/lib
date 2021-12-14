@@ -127,11 +127,6 @@ Each loader can include:
 
 `routes`?: __string[]__ – can define routes this loader should be triggered for. You can use Regular expressions (e.g. `["/.ome"]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
 
-
-### `translations`?: __{ [locale: string]: { [translationKey: string]: string; } }__
-In case there is no need to load data, you can insert your translations directly to this object.
-
-
 ### `locale`?: __string__
 You can define current locale using this parameter.
 

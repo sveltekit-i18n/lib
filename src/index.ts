@@ -40,14 +40,12 @@ export default class {
     if (!config) throw new Error('No config!');
 
     this.config.set(config);
-    const { loaders, translations, locale } = config;
-
-    if (translations) this.addTranslations(translations);
+    const { loaders, locale } = config;
 
     this.locales.update(($locales) => {
       if (!$locales.length) {
         const loaderLocales = d<[]>(loaders, []).map(({ locale }) => `${locale}`.toLowerCase());
-        return ([...new Set([...Object.keys(d(translations)), ...loaderLocales])]);
+        return ([...new Set(loaderLocales)]);
       }
       return $locales;
     });
