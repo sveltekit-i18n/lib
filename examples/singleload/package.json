@@ -1,0 +1,25 @@
+{
+  "name": "sveltekit-i18n-singleload",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "package": "svelte-kit package",
+    "preview": "svelte-kit preview",
+    "lint": "eslint --ignore-path .gitignore ."
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/kit": "next",
+    "eslint": "^8.4.1",
+    "eslint-plugin-svelte3": "^3.2.1",
+    "svelte": "^3.44.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "@fontsource/fira-mono": "^4.5.0",
+    "@lukeed/uuid": "^2.0.0",
+    "cookie": "^0.4.1",
+    "sveltekit-i18n": "^1.0.0-beta.4"
+  }
+}
