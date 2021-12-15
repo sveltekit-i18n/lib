@@ -3,7 +3,7 @@
 # sveltekit-i18n
 `sveltekit-i18n` is a tiny, dependency-less library built for [Svelte](https://github.com/sveltejs/svelte) and [SvelteKit](https://github.com/sveltejs/kit).
 
-___NOTE: This project is currently in beta as long as tests are missing. Also API may vary in time until 1.0.0 is released...___
+___NOTE: This project is currently in beta as long as tests are missing. Also API may vary until 1.0.0 is released...___
 
 ## Key features
 
@@ -77,7 +77,7 @@ export const config = ({
   ],
 });
 
-export const { t, translation, translations, locale, locales, loading, loadTranslations } = new i18n(config);
+export const { t, locale, locales, loading, loadTranslations } = new i18n(config);
 ```
 
 ...include your translations in `__layout.svelte`...
@@ -115,7 +115,7 @@ export const { t, translation, translations, locale, locales, loading, loadTrans
 
 ## Config
 
-### `loaders`: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: string[]; }>__
+### `loaders`: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: Array<string | RegExp>; }>__
 
 You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
 Each loader can include:
@@ -128,5 +128,5 @@ Each loader can include:
 
 `routes`?: __Array<string | RegExp>__ – can define routes this loader should be triggered for. You can use Regular expressions too. For example `[/\/.ome/]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
 
-### `locale`?: __string__
-If you set this parameter, translations will be initialized directly with this locale.
+### `initialLocale`?: __string__
+If you set this parameter, translations will be initialized immediately using this locale.

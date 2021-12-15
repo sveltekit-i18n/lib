@@ -16,17 +16,27 @@ export default class {
 
   private currentRoute: Writable<string> = writable('');
 
-  config: Writable<Config> = writable();
+  private config: Writable<Config> = writable();
 
-  loading: Writable<boolean> = writable(false);
+  private isLoading: Writable<boolean> = writable(false);
+  
+  loading: Readable<boolean> = { subscribe: this.isLoading.subscribe };
 
-  locales: Writable<string[]> = writable([]);
+  private derivedLocales: Writable<string[]> = writable([]);
 
-  locale: Writable<string> = writable();
+  locales: Readable<string[]> = { subscribe: this.derivedLocales.subscribe };
 
-  translations: Writable<Translations> = writable({});
+  locale: Writable<string> = writable('');
 
-  translation: Readable<Record<string, string>> = derived([this.translations, this.locale, this.loading], ([$translations, $locale, $loading]) => {
+  private translations: Writable<Translations> = writable({});
+
+  initialized: Readable<boolean> = derived(this.translations, ($translations) => {
+    if (!get(this.initialized)) return !!Object.keys($translations).length;
+
+    return true;
+  }, false);
+
+  private translation: Readable<Record<string, string>> = derived([this.translations, this.locale, this.isLoading], ([$translations, $locale, $loading]) => {
     const translation = $translations[$locale];
     if (translation && Object.keys(translation).length && !$loading) return translation;
 
@@ -37,8 +47,8 @@ export default class {
     this.translation, ($translation) => (key: string, vars: Record<any, any>) => translate($translation, key, vars),
   );
 
-  getLocale = (inputLocale?: string): string => {
-    const $locales = get(this.locales);
+  private getLocale = (inputLocale?: string): string => {
+    const $locales = get(this.derivedLocales);
     const localeFromLoaders = $locales.find(
       (l) => `${l}`.toLowerCase() === `${inputLocale}`.toLowerCase(),
     ) || '';
@@ -50,9 +60,9 @@ export default class {
     if (!config) throw new Error('No config!');
 
     this.config.set(config);
-    const { loaders, locale } = config;
+    const { loaders, initialLocale = '' } = config;
 
-    this.locales.update(($locales) => {
+    this.derivedLocales.update(($locales) => {
       if (!$locales.length) {
         const loaderLocales = d<[]>(loaders, []).map(({ locale }) => `${locale}`.toLowerCase());
         return ([...new Set(loaderLocales)]);
@@ -61,12 +71,12 @@ export default class {
     });
 
     this.locale.update(($locale) => {
-      if (!$locale) return this.getLocale(locale);
+      if (!$locale) return this.getLocale(initialLocale);
 
       return $locale;
     });
 
-    await this.loadTranslations(locale || '');
+    await this.loadTranslations(initialLocale);
   };
 
   addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
@@ -116,12 +126,12 @@ export default class {
       .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute(route)));
     
     if (filteredLoaders.length) {
-      this.loading.set(true);
+      this.isLoading.set(true);
 
       const translation = await getTranslation(filteredLoaders);
       this.addTranslations({ [$locale]: translation }, { [$locale]: filteredLoaders.map(({ key }) => key) });
 
-      this.loading.set(false);
+      this.isLoading.set(false);
     }
   };
 }

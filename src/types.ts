@@ -25,7 +25,7 @@ export type Translations = Record<string, Record<string, string>>;
 
 export type Config = {
   loaders: LoaderModule[];
-  locale?: string;
+  initialLocale?: string;
 };
 
 export type GetConfig = (...params: any) => Config;

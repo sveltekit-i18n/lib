@@ -40,7 +40,9 @@ export const testRoute = (route: string) => (input: Route) => {
   try {
     if (typeof input === 'string') return input === route;
     if (typeof input === 'object') return input.test(route);
-  } catch (error) { /*  */}
+  } catch (error) { 
+    throw new Error('Invalid route config!');
+  }
 
   return false;
 };
