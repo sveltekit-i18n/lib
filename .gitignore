@@ -1,6 +1,8 @@
 /.svelte-kit
 /package
 /build
+/lib
+/types
 
 .env
 
@@ -10,10 +12,8 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 # Node artifact files
-package-lock.json
+/package-lock.json
 node_modules/
-lib/
-types/
 
 # Compiled Java class files
 *.class

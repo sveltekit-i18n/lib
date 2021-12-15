@@ -3,7 +3,7 @@
 # sveltekit-i18n
 `sveltekit-i18n` is a tiny, dependency-less library built for [Svelte](https://github.com/sveltejs/svelte) and [SvelteKit](https://github.com/sveltejs/kit).
 
-_This project is currently in beta as long as tests are missing, but in case you are ok with that, you are ready to go.)_
+___NOTE: This project is currently in beta as long as tests are missing. Also API may vary until 1.0.0 is released...___
 
 ## Key features
 
@@ -16,9 +16,9 @@ _This project is currently in beta as long as tests are missing, but in case you
 ✅ No dependencies
 
 ## TODO
-- [ ] documentation
-- [ ] examples
-- [ ] tests
+- documentation
+- examples
+- tests
 
 ## Usage
 
@@ -77,20 +77,20 @@ export const config = ({
   ],
 });
 
-export const { t, translation, translations, locale, locales, loading, loadConfig } = new i18n();
+export const { t, locale, locales, loading, loadTranslations } = new i18n(config);
 ```
 
 ...include your translations in `__layout.svelte`...
 
 ```svelte
 <script context="module">
-  import { config, loadConfig } from '$lib/translations';
+  import { loadTranslations } from '$lib/translations';
 
   export const load = async ({ page }) => {
-    const { path as route } = page;
+    const { path } = page;
 
     const locale = 'en'; // get from cookie or user session...
-    await loadConfig({...config, locale, route });
+    await loadTranslations(locale, path);
 
     return {};
   }
@@ -107,6 +107,7 @@ export const { t, translation, translations, locale, locales, loading, loadConfi
 </script>
 
 <div>
+  <!-- you can use {{placeholders}} in your definitions -->
   <h2>{$t('common.page', { pageName })}</h2>
   <p>{$t('home.content')}</p>
 </div>
@@ -114,7 +115,7 @@ export const { t, translation, translations, locale, locales, loading, loadConfi
 
 ## Config
 
-### `loaders`: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: string[]; }>__
+### `loaders`: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: Array<string | RegExp>; }>__
 
 You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
 Each loader can include:
@@ -125,11 +126,7 @@ Each loader can include:
 
 `loader`:__() => Promise<Record<any, any>>__ – is a function returning a Promise with translation data. You can use it to load files locally, fetch it from your API etc...
 
-`routes`?: __string[]__ – can define routes this loader should be triggered for. You can use Regular expressions (e.g. `["/.ome"]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
+`routes`?: __Array<string | RegExp>__ – can define routes this loader should be triggered for. You can use Regular expressions too. For example `[/\/.ome/]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
 
-### `locale`?: __string__
-You can define current locale using this parameter.
-
-
-### `route`?: __string__
-Current route can be specified by this parameter (see `loaders.routes`).
+### `initLocale`?: __string__
+If you set this parameter, translations will be initialized immediately using this locale.

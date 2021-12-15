@@ -1,4 +1,4 @@
-import type { ToDotNotation, GetTranslation, Translate } from './types';
+import type { ToDotNotation, GetTranslation, Translate, Route } from './types';
 
 export const useDefault = <T = any>(value: any, def:any = {}): T => value || def;
 
@@ -34,4 +34,15 @@ export const translate: Translate = (translation, key, vars = {}) => {
   });
 
   return text;
+};
+
+export const testRoute = (route: string) => (input: Route) => {
+  try {
+    if (typeof input === 'string') return input === route;
+    if (typeof input === 'object') return input.test(route);
+  } catch (error) { 
+    throw new Error('Invalid route config!');
+  }
+
+  return false;
 };
