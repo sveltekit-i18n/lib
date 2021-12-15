@@ -60,7 +60,7 @@ export default class {
     if (!config) throw new Error('No config!');
 
     this.config.set(config);
-    const { loaders, initialLocale = '' } = config;
+    const { loaders, initLocale = '' } = config;
 
     this.derivedLocales.update(($locales) => {
       if (!$locales.length) {
@@ -71,12 +71,12 @@ export default class {
     });
 
     this.locale.update(($locale) => {
-      if (!$locale) return this.getLocale(initialLocale);
+      if (!$locale) return this.getLocale(initLocale);
 
       return $locale;
     });
 
-    await this.loadTranslations(initialLocale);
+    await this.loadTranslations(initLocale);
   };
 
   addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {

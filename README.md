@@ -128,5 +128,5 @@ Each loader can include:
 
 `routes`?: __Array<string | RegExp>__ – can define routes this loader should be triggered for. You can use Regular expressions too. For example `[/\/.ome/]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
 
-### `initialLocale`?: __string__
+### `initLocale`?: __string__
 If you set this parameter, translations will be initialized immediately using this locale.
