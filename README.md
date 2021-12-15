@@ -16,9 +16,9 @@ ___NOTE: This project is currently in beta as long as tests are missing. Also AP
 ✅ No dependencies
 
 ## TODO
-- [ ] documentation
-- [ ] examples
-- [ ] tests
+- documentation
+- examples
+- tests
 
 ## Usage
 
