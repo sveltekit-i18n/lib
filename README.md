@@ -125,7 +125,7 @@ Each loader can include:
 
 `loader`:__() => Promise<Record<any, any>>__ – is a function returning a Promise with translation data. You can use it to load files locally, fetch it from your API etc...
 
-`routes`?: __string[]__ – can define routes this loader should be triggered for. You can use Regular expressions (e.g. `["/.ome"]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
+`routes`?: __Array<string | RegExp>__ – can define routes this loader should be triggered for. You can use Regular expressions too. For example `[/\/.ome/]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
 
 ### `locale`?: __string__
 You can define current locale using this parameter.
