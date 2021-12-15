@@ -87,10 +87,10 @@ export const { t, translation, translations, locale, locales, loading, loadTrans
   import { loadTranslations } from '$lib/translations';
 
   export const load = async ({ page }) => {
-    const { path as route } = page;
+    const { path } = page;
 
     const locale = 'en'; // get from cookie or user session...
-    await loadTranslations(locale, route);
+    await loadTranslations(locale, path);
 
     return {};
   }
@@ -129,8 +129,4 @@ Each loader can include:
 `routes`?: __Array<string | RegExp>__ – can define routes this loader should be triggered for. You can use Regular expressions too. For example `[/\/.ome/]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
 
 ### `locale`?: __string__
-You can define current locale using this parameter.
-
-
-### `route`?: __string__
-Current route can be specified by this parameter (see `loaders.routes`).
+If you use this parameter, translations will be initialized directly with this locale.
