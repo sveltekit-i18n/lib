@@ -1,20 +1,21 @@
 import { derived, get, writable } from 'svelte/store';
-import { getTranslation, toDotNotation, translate, useDefault as d } from './utils';
+import { getTranslation, testRoute, toDotNotation, translate, useDefault as d } from './utils';
 
-import type { Config, ConfigTranslations, LoaderModule, Translations } from './types';
+import type { Config, ConfigTranslations, LoaderModule, Route, Translations } from './types';
 import type { Readable, Writable } from 'svelte/store';
 
 export { Config };
 
 export default class {
-  constructor(config?: Config) {
-    if (config) this.loadConfig(config);
-    
+  constructor(config: Config) {
+    this.loadConfig(config);
     this.locale.subscribe(this.loadTranslations);
   }
-  
+
   private loadedKeys: Record<string, string[]> = {};
-  
+
+  private currentRoute: Writable<string> = writable('');
+
   config: Writable<Config> = writable();
 
   loading: Writable<boolean> = writable(false);
@@ -36,6 +37,15 @@ export default class {
     this.translation, ($translation) => (key: string, vars: Record<any, any>) => translate($translation, key, vars),
   );
 
+  getLocale = (inputLocale?: string): string => {
+    const $locales = get(this.locales);
+    const localeFromLoaders = $locales.find(
+      (l) => `${l}`.toLowerCase() === `${inputLocale}`.toLowerCase(),
+    ) || '';
+
+    return `${localeFromLoaders}`.toLowerCase();
+  };
+
   loadConfig = async (config: Config) => {
     if (!config) throw new Error('No config!');
 
@@ -51,18 +61,18 @@ export default class {
     });
 
     this.locale.update(($locale) => {
-      if (!$locale) return `${locale || get(this.locales)[0] || ''}`.toLowerCase();
+      if (!$locale) return this.getLocale(locale);
 
       return $locale;
     });
-    
-    if (loaders?.length) await this.loadTranslations();
+
+    await this.loadTranslations(locale || '');
   };
 
-  private addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
-    const translationKeys = Object.keys(d(translations));
+  addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
+    const translationLocales = Object.keys(d(translations));
 
-    this.translations.update((currentTranslations) => translationKeys.reduce(
+    this.translations.update((currentTranslations) => translationLocales.reduce(
       (acc, locale) => ({
         ...acc,
         [locale]: {
@@ -73,7 +83,7 @@ export default class {
       currentTranslations,
     ));
 
-    translationKeys.forEach(($locale) => {
+    translationLocales.forEach(($locale) => {
       let localeKeys = Object.keys(translations[$locale]).map((k) => `${k}`.split('.')[0]);
       if (keys) localeKeys = keys[$locale];
 
@@ -81,27 +91,36 @@ export default class {
     }); 
   };
 
-  private loadTranslations = async () => {
-    const $locale = get(this.locale);
+  loadTranslations = async (locale: string, route = get(this.currentRoute)) => {
     const $config = get(this.config);
+    const loaderLocale = this.getLocale(locale);
 
-    if (!$config || !$locale) return;
+    if (!$config || !loaderLocale || !route) return;
+
+    let $locale = get(this.locale);
+
+    if (!$locale) {
+      this.locale.set(loaderLocale);
+      $locale = loaderLocale;
+    }
+    
+    this.currentRoute.set(route);
 
     const currentTranslations = get(this.translations);
     const currentTranslation = currentTranslations[$locale];
 
-    const { loaders, route } = d<Config>($config);
+    const { loaders } = d<Config>($config);
     const filteredLoaders = d<LoaderModule[]>(loaders, [])
       .filter(({ locale }) => `${locale}`.toLowerCase() === `${$locale}`.toLowerCase())
       .filter(({ key }) => !currentTranslation || !d(this.loadedKeys[$locale], []).includes(key))
-      // TODO: escape user regex
-      .filter(({ routes }) => !routes || !route || d<any[]>(routes, []).some((r) => new RegExp(`^${r}$`, 'i').test(route))); 
+      .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute(route)));
     
     if (filteredLoaders.length) {
       this.loading.set(true);
 
       const translation = await getTranslation(filteredLoaders);
       this.addTranslations({ [$locale]: translation }, { [$locale]: filteredLoaders.map(({ key }) => key) });
+
       this.loading.set(false);
     }
   };

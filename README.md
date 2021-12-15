@@ -3,7 +3,7 @@
 # sveltekit-i18n
 `sveltekit-i18n` is a tiny, dependency-less library built for [Svelte](https://github.com/sveltejs/svelte) and [SvelteKit](https://github.com/sveltejs/kit).
 
-_This project is currently in beta as long as tests are missing, but in case you are ok with that, you are ready to go.)_
+___NOTE: This project is currently in beta as long as tests are missing. Also API may vary in time until 1.0.0 is released...___
 
 ## Key features
 
@@ -77,20 +77,20 @@ export const config = ({
   ],
 });
 
-export const { t, translation, translations, locale, locales, loading, loadConfig } = new i18n();
+export const { t, translation, translations, locale, locales, loading, loadTranslations } = new i18n(config);
 ```
 
 ...include your translations in `__layout.svelte`...
 
 ```svelte
 <script context="module">
-  import { config, loadConfig } from '$lib/translations';
+  import { loadTranslations } from '$lib/translations';
 
   export const load = async ({ page }) => {
     const { path as route } = page;
 
     const locale = 'en'; // get from cookie or user session...
-    await loadConfig({...config, locale, route });
+    await loadTranslations(locale, route);
 
     return {};
   }

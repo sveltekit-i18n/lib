@@ -1,9 +1,11 @@
 export type Loader = () => Promise<Record<any, any>>;
 
+export type Route = string | RegExp;
+
 export type LoaderModule = {
   key: string;
   locale: string;
-  routes?: string[];
+  routes?: Route[];
   loader: Loader;
 };
 
@@ -24,7 +26,6 @@ export type Translations = Record<string, Record<string, string>>;
 export type Config = {
   loaders: LoaderModule[];
   locale?: string;
-  route?: string;
 };
 
 export type GetConfig = (...params: any) => Config;
