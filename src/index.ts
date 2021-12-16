@@ -7,8 +7,9 @@ import type { Readable, Writable } from 'svelte/store';
 export { Config };
 
 export default class {
-  constructor(config: Config) {
-    this.loadConfig(config);
+  constructor(config?: Config) {
+    if (config) this.loadConfig(config);
+
     this.locale.subscribe(this.loadTranslations);
   }
 
@@ -16,19 +17,24 @@ export default class {
 
   private currentRoute: Writable<string> = writable('');
 
-  private config: Writable<Config> = writable();
+  private config: Writable<Config> = writable({});
 
   private isLoading: Writable<boolean> = writable(false);
 
   loading: Readable<boolean> = { subscribe: this.isLoading.subscribe };
 
-  private derivedLocales: Writable<string[]> = writable([]);
+  private translations: Writable<Translations> = writable({});
 
-  locales: Readable<string[]> = { subscribe: this.derivedLocales.subscribe };
+  locales: Readable<string[]> = derived([this.config, this.translations], ([$config, $translations]) => {
+    const { loaders = [] } = $config;
+
+    const loaderLocales = loaders.map(({ locale }) => locale);
+    const translationLocales = Object.keys($translations).map((l) => `${l}`.toLowerCase());
+
+    return ([...new Set([...loaderLocales, ...translationLocales])]);
+  }, []);
 
   locale: Writable<string> = writable('');
-
-  private translations: Writable<Translations> = writable({});
 
   initialized: Readable<boolean> = derived(this.translations, ($translations) => {
     if (!get(this.initialized)) return !!Object.keys($translations).length;
@@ -48,7 +54,7 @@ export default class {
   );
 
   private getLocale = (inputLocale?: string): string => {
-    const $locales = get(this.derivedLocales);
+    const $locales = get(this.locales);
     const localeFromLoaders = $locales.find(
       (l) => `${l}`.toLowerCase() === `${inputLocale}`.toLowerCase(),
     ) || '';
@@ -60,21 +66,7 @@ export default class {
     if (!config) throw new Error('No config!');
 
     this.config.set(config);
-    const { loaders, initLocale = '' } = config;
-
-    this.derivedLocales.update(($locales) => {
-      if (!$locales.length) {
-        const loaderLocales = d<[]>(loaders, []).map(({ locale }) => `${locale}`.toLowerCase());
-        return ([...new Set(loaderLocales)]);
-      }
-      return $locales;
-    });
-
-    this.locale.update(($locale) => {
-      if (!$locale) return this.getLocale(initLocale);
-
-      return $locale;
-    });
+    const { initLocale = '' } = config;
 
     await this.loadTranslations(initLocale);
   };
@@ -98,6 +90,16 @@ export default class {
       if (keys) localeKeys = keys[$locale];
 
       this.loadedKeys[$locale] = [...d(this.loadedKeys[$locale], []), ...d(localeKeys, [])];
+    });
+
+    this.locale.update(($locale) => {
+      if (!$locale) {
+        const { initLocale } = get(this.config);
+
+        return this.getLocale(initLocale);
+      }
+
+      return $locale;
     });
   };
 
