@@ -23,9 +23,11 @@ export default class {
 
   loading: Readable<boolean> = { subscribe: this.isLoading.subscribe };
 
-  private translations: Writable<Translations> = writable({});
+  private privateTranslations: Writable<Translations> = writable({});
 
-  locales: Readable<string[]> = derived([this.config, this.translations], ([$config, $translations]) => {
+  translations: Readable<Translations> = { subscribe: this.privateTranslations.subscribe };
+
+  locales: Readable<string[]> = derived([this.config, this.privateTranslations], ([$config, $translations]) => {
     const { loaders = [] } = $config;
 
     const loaderLocales = loaders.map(({ locale }) => locale);
@@ -36,13 +38,13 @@ export default class {
 
   locale: Writable<string> = writable('');
 
-  initialized: Readable<boolean> = derived(this.translations, ($translations) => {
+  initialized: Readable<boolean> = derived(this.privateTranslations, ($translations) => {
     if (!get(this.initialized)) return !!Object.keys($translations).length;
 
     return true;
   }, false);
 
-  private translation: Readable<Record<string, string>> = derived([this.translations, this.locale, this.isLoading], ([$translations, $locale, $loading]) => {
+  private translation: Readable<Record<string, string>> = derived([this.privateTranslations, this.locale, this.isLoading], ([$translations, $locale, $loading]) => {
     const translation = $translations[$locale];
     if (translation && Object.keys(translation).length && !$loading) return translation;
 
@@ -74,7 +76,7 @@ export default class {
   addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
     const translationLocales = Object.keys(d(translations));
 
-    this.translations.update(($translations) => translationLocales.reduce(
+    this.privateTranslations.update(($translations) => translationLocales.reduce(
       (acc, locale) => ({
         ...acc,
         [locale]: {
@@ -118,7 +120,7 @@ export default class {
 
     if (route) this.currentRoute.set(route);
 
-    const $translations = get(this.translations);
+    const $translations = get(this.privateTranslations);
     const translationForLocale = $translations[$locale];
 
     const { loaders } = d<Config>($config);
