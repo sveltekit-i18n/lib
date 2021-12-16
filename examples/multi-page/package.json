@@ -1,5 +1,5 @@
 {
-  "name": "singleload",
+  "name": "multi-page",
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
