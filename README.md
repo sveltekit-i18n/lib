@@ -17,7 +17,6 @@ ___NOTE: This project is currently in beta as long as tests are missing. Also AP
 
 ## TODO
 - documentation
-- examples
 - tests
 
 ## Usage
@@ -112,6 +111,9 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
   <p>{$t('home.content')}</p>
 </div>
 ```
+
+## Examples
+You can view examples [here](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples).
 
 ## Config
 
