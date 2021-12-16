@@ -51,8 +51,12 @@ export default class {
     return get(this.translation);
   }, {});
 
-  t: Readable<(key: any, vars?: any) => string> = derived(
-    this.translation, ($translation) => (key: string, vars: Record<any, any>) => translate($translation, key, vars),
+  t: Readable<(key: string, vars?: Record<any, any>) => string> = derived(
+    this.translation, ($translation) => (key: string, vars?: Record<any, any>) => translate($translation, key, vars),
+  );
+
+  l: Readable<(locale: string, key: string, vars?: Record<any, any>) => string> = derived(
+    this.translations, ($translations) => (locale: string, key: string, vars?: Record<any, any>) => translate($translations[locale], key, vars),
   );
 
   private getLocale = (inputLocale?: string): string => {
