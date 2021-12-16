@@ -14,7 +14,9 @@
     "no-console": 0,
     "@typescript-eslint/naming-convention": 0,
     "@typescript-eslint/no-redeclare": 0,
-    "@typescript-eslint/no-shadow": 0
+    "@typescript-eslint/no-shadow": 0,
+    "no-trailing-spaces": "error",
+    "no-multiple-empty-lines": "error"
   },
   "settings": {}
 }
