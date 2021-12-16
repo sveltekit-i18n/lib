@@ -1,6 +1,5 @@
 # API Docs
 
-## Content
 [Config](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#config)\
 [Properties and methods](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#instance-methods-and-properties)\
 [Translations](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#translations)
