@@ -2,7 +2,7 @@ import i18n from 'sveltekit-i18n';
 import lang from './lang.json';
 
 export const config = ({
-  initLocale: 'en',
+  // initLocale: 'en', // you can directly init translations for locale here, or later using `$locale` store (see `__layout.svelte`)
   loaders: [
     {
       locale: 'en',

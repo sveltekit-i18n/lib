@@ -1,5 +1,14 @@
-<script>
+<script context="module">
   import { t, locales, locale } from '$lib/translations'; 
+
+  export const load = async () => {
+
+    const initialLocale ='en'; // get from cookie / url / fetch from server...
+    locale.set(initialLocale);
+
+    return {};
+  }
+
 </script>
 
 <slot />
