@@ -17,7 +17,6 @@ ___NOTE: This project is currently in beta as long as tests are missing. Also AP
 
 ## TODO
 - documentation
-- examples
 - tests
 
 ## Usage
@@ -113,9 +112,12 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 </div>
 ```
 
+## Examples
+You can view examples [here](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples).
+
 ## Config
 
-### `loaders`: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: Array<string | RegExp>; }>__
+### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: Array<string | RegExp>; }>__
 
 You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
 Each loader can include:

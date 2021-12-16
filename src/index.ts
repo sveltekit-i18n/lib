@@ -7,8 +7,9 @@ import type { Readable, Writable } from 'svelte/store';
 export { Config };
 
 export default class {
-  constructor(config: Config) {
-    this.loadConfig(config);
+  constructor(config?: Config) {
+    if (config) this.loadConfig(config);
+
     this.locale.subscribe(this.loadTranslations);
   }
 
@@ -16,39 +17,50 @@ export default class {
 
   private currentRoute: Writable<string> = writable('');
 
-  private config: Writable<Config> = writable();
+  private config: Writable<Config> = writable({});
 
   private isLoading: Writable<boolean> = writable(false);
-  
+
   loading: Readable<boolean> = { subscribe: this.isLoading.subscribe };
 
-  private derivedLocales: Writable<string[]> = writable([]);
+  private privateTranslations: Writable<Translations> = writable({});
 
-  locales: Readable<string[]> = { subscribe: this.derivedLocales.subscribe };
+  translations: Readable<Translations> = { subscribe: this.privateTranslations.subscribe };
+
+  locales: Readable<string[]> = derived([this.config, this.privateTranslations], ([$config, $translations]) => {
+    const { loaders = [] } = $config;
+
+    const loaderLocales = loaders.map(({ locale }) => locale);
+    const translationLocales = Object.keys($translations).map((l) => `${l}`.toLowerCase());
+
+    return ([...new Set([...loaderLocales, ...translationLocales])]);
+  }, []);
 
   locale: Writable<string> = writable('');
 
-  private translations: Writable<Translations> = writable({});
-
-  initialized: Readable<boolean> = derived(this.translations, ($translations) => {
+  initialized: Readable<boolean> = derived(this.privateTranslations, ($translations) => {
     if (!get(this.initialized)) return !!Object.keys($translations).length;
 
     return true;
   }, false);
 
-  private translation: Readable<Record<string, string>> = derived([this.translations, this.locale, this.isLoading], ([$translations, $locale, $loading]) => {
+  private translation: Readable<Record<string, string>> = derived([this.privateTranslations, this.locale, this.isLoading], ([$translations, $locale, $loading]) => {
     const translation = $translations[$locale];
     if (translation && Object.keys(translation).length && !$loading) return translation;
 
     return get(this.translation);
   }, {});
 
-  t: Readable<(key: any, vars?: any) => string> = derived(
-    this.translation, ($translation) => (key: string, vars: Record<any, any>) => translate($translation, key, vars),
+  t: Readable<(key: string, vars?: Record<any, any>) => string> = derived(
+    this.translation, ($translation) => (key: string, vars?: Record<any, any>) => translate($translation, key, vars),
+  );
+
+  l: Readable<(locale: string, key: string, vars?: Record<any, any>) => string> = derived(
+    this.translations, ($translations) => (locale: string, key: string, vars?: Record<any, any>) => translate($translations[locale], key, vars),
   );
 
   private getLocale = (inputLocale?: string): string => {
-    const $locales = get(this.derivedLocales);
+    const $locales = get(this.locales);
     const localeFromLoaders = $locales.find(
       (l) => `${l}`.toLowerCase() === `${inputLocale}`.toLowerCase(),
     ) || '';
@@ -60,21 +72,7 @@ export default class {
     if (!config) throw new Error('No config!');
 
     this.config.set(config);
-    const { loaders, initLocale = '' } = config;
-
-    this.derivedLocales.update(($locales) => {
-      if (!$locales.length) {
-        const loaderLocales = d<[]>(loaders, []).map(({ locale }) => `${locale}`.toLowerCase());
-        return ([...new Set(loaderLocales)]);
-      }
-      return $locales;
-    });
-
-    this.locale.update(($locale) => {
-      if (!$locale) return this.getLocale(initLocale);
-
-      return $locale;
-    });
+    const { initLocale = '' } = config;
 
     await this.loadTranslations(initLocale);
   };
@@ -82,7 +80,7 @@ export default class {
   addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
     const translationLocales = Object.keys(d(translations));
 
-    this.translations.update((currentTranslations) => translationLocales.reduce(
+    this.privateTranslations.update(($translations) => translationLocales.reduce(
       (acc, locale) => ({
         ...acc,
         [locale]: {
@@ -90,7 +88,7 @@ export default class {
           ...toDotNotation(translations[locale]),
         },
       }),
-      currentTranslations,
+      $translations,
     ));
 
     translationLocales.forEach(($locale) => {
@@ -98,14 +96,24 @@ export default class {
       if (keys) localeKeys = keys[$locale];
 
       this.loadedKeys[$locale] = [...d(this.loadedKeys[$locale], []), ...d(localeKeys, [])];
-    }); 
+    });
+
+    this.locale.update(($locale) => {
+      if (!$locale) {
+        const { initLocale } = get(this.config);
+
+        return this.getLocale(initLocale);
+      }
+
+      return $locale;
+    });
   };
 
   loadTranslations = async (locale: string, route = get(this.currentRoute)) => {
     const $config = get(this.config);
     const loaderLocale = this.getLocale(locale);
 
-    if (!$config || !loaderLocale || !route) return;
+    if (!$config || !loaderLocale) return;
 
     let $locale = get(this.locale);
 
@@ -113,18 +121,18 @@ export default class {
       this.locale.set(loaderLocale);
       $locale = loaderLocale;
     }
-    
-    this.currentRoute.set(route);
 
-    const currentTranslations = get(this.translations);
-    const currentTranslation = currentTranslations[$locale];
+    if (route) this.currentRoute.set(route);
+
+    const $translations = get(this.privateTranslations);
+    const translationForLocale = $translations[$locale];
 
     const { loaders } = d<Config>($config);
     const filteredLoaders = d<LoaderModule[]>(loaders, [])
       .filter(({ locale }) => `${locale}`.toLowerCase() === `${$locale}`.toLowerCase())
-      .filter(({ key }) => !currentTranslation || !d(this.loadedKeys[$locale], []).includes(key))
+      .filter(({ key }) => !translationForLocale || !d(this.loadedKeys[$locale], []).includes(key))
       .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute(route)));
-    
+
     if (filteredLoaders.length) {
       this.isLoading.set(true);
 
