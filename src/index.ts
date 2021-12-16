@@ -19,7 +19,7 @@ export default class {
   private config: Writable<Config> = writable();
 
   private isLoading: Writable<boolean> = writable(false);
-  
+
   loading: Readable<boolean> = { subscribe: this.isLoading.subscribe };
 
   private derivedLocales: Writable<string[]> = writable([]);
@@ -104,30 +104,30 @@ export default class {
   loadTranslations = async (locale: string, route = get(this.currentRoute)) => {
     const $config = get(this.config);
     const loaderLocale = this.getLocale(locale);
-    
+
     if (!$config || !loaderLocale) return;
-    
+
     let $locale = get(this.locale);
-    
+
     if (!$locale) {
       this.locale.set(loaderLocale);
       $locale = loaderLocale;
     }
-    
+
     if (route) this.currentRoute.set(route);
-    
+
     const $translations = get(this.translations);
     const translationForLocale = $translations[$locale];
-    
+
     const { loaders } = d<Config>($config);
     const filteredLoaders = d<LoaderModule[]>(loaders, [])
       .filter(({ locale }) => `${locale}`.toLowerCase() === `${$locale}`.toLowerCase())
       .filter(({ key }) => !translationForLocale || !d(this.loadedKeys[$locale], []).includes(key))
       .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute(route)));
-    
+
     if (filteredLoaders.length) {
       this.isLoading.set(true);
-      
+
       const translation = await getTranslation(filteredLoaders);
       this.addTranslations({ [$locale]: translation }, { [$locale]: filteredLoaders.map(({ key }) => key) });
 
