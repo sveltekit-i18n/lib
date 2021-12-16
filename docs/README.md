@@ -1,5 +1,11 @@
 # API Docs
 
+## Content
+[Config](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#config)\
+[Properties and methods](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#instance-methods-and-properties)\
+[Translations](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#translations)
+
+
 ## Config
 
 ### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: Array<string | RegExp>; }>__
