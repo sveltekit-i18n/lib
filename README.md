@@ -137,27 +137,37 @@ If you set this parameter, translations will be initialized immediately using th
 
 Each `sveltekit-i18n` instance includes these properties and methods:
 
-`loading`: __Readable\<boolean>__ – this readable store indicates wheter translations are loading or not.
+### `loading`: __Readable\<boolean>__ 
+This readable store indicates wheter translations are loading or not.
 
-`initialized`: __Readable\<boolean>__ – this readable store returns `true` after first translation successfully initialized.
+### `initialized`: __Readable\<boolean>__
+This readable store returns `true` after first translation successfully initialized.
 
-`locale`: __Writable\<string>__ – you can obtain and set current locale using this writable store.
+### `locale`: __Writable\<string>__
+You can obtain and set current locale using this writable store.
 
-`locales`: __Readable<string[]>__ – readable store, containing all instance locales.
+### `locales`: __Readable<string[]>__
+Readable store, containing all instance locales.
 
-`translations`: __Readable\<Translations>__ – readable store, containing all loaded translations.
+### `translations`: __Readable\<Translations>__
+Readable store, containing all loaded translations.
 
-`t`: __Readable<(key: string, vars?: Record<any, any>) => string>__ – this readable store returns a function you can use to obtain your translations for given translation key and interpolation variables.
+### `t`: __Readable<(key: string, vars?: Record<any, any>) => string>__
+This readable store returns a function you can use to obtain your translations for given translation key and interpolation variables.
 
-`l`: __Readable<(locale: string, key: string, vars?: Record<any, any>) => string>__ – this readable store returns a function you can use to obtain your translations for given locale, translation key and interpolation variables.
+### `l`: __Readable<(locale: string, key: string, vars?: Record<any, any>) => string>__
+This readable store returns a function you can use to obtain your translations for given locale, translation key and interpolation variables.
 
-`loadConfig`: __(config: Config) => Promise\<void>__ – you can load a new `config` using this method.
+### `loadConfig`: __(config: Config) => Promise\<void>__
+You can load a new `config` using this method.
 
-`loadTranslations`: __(locale: string, route?: string) => Promise\<void>__ – this method loads translation for given `locale` and `route`.
+### `loadTranslations`: __(locale: string, route?: string) => Promise\<void>__
+This method loads translation for given `locale` and `route`.
 
-`addTranslations`: __(translations: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__ – this method allows you to add your translations directly. 
+### `addTranslations`: __(translations: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__
+This method allows you to add your translations directly. 
 
-- `translations` parameter should contain an object, containing translations objects for locales you want to add.
+`translations` – this parameter should contain an object, containing translations objects for locales you want to add.
 
 For example: 
 ```jsonc
@@ -171,7 +181,7 @@ For example:
 ```
 
 or with dot notation:
-```jsonc
+```json
 {
   "en": {
     "common.text": "Enghlish text"
@@ -182,12 +192,27 @@ or with dot notation:
 }
 ```
 
-- `keys` parameter should contain corresponding keys from your `loaders` config, so the translation is not loaded duplicitly in future. If `keys` are not provided, translation keys are taken automatically from the `translations` parameter as the first key (or value before the first dot in dot notation) under every locale.
+`keys` – this parameter should contain corresponding keys from your `loaders` config, so the translation is not loaded duplicitly in future. If `keys` are not provided, translation keys are taken automatically from the `translations` parameter as the first key (or value before the first dot in dot notation) under every locale.
 
 For example, for the previous case it would be:
-```jsonc
+```json
 {
   "en": ["common"],
   "es": ["common"]
 }
+```
+
+
+## Translations
+Your translations should be formatted as standard objects or dot-notated objects containing strings as translation values. You can use `{{placeholders}}` for interpolation.
+
+Example:
+```jsonc
+// en/common.json
+  {
+    "lang": "English",
+    "module": {
+      "title": "Title with {{placeholder}}."
+    }
+  }
 ```
