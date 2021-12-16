@@ -16,7 +16,6 @@ ___NOTE: This project is currently in beta as long as tests are missing. Also AP
 ✅ No dependencies
 
 ## TODO
-- documentation
 - tests
 
 ## Usage
@@ -132,3 +131,63 @@ Each loader can include:
 
 ### `initLocale`?: __string__
 If you set this parameter, translations will be initialized immediately using this locale.
+
+
+## Instance methods and properties
+
+Each `sveltekit-i18n` instance includes these properties and methods:
+
+`loading`: __Readable\<boolean>__ – this readable store indicates wheter translations are loading or not.
+
+`initialized`: __Readable\<boolean>__ – this readable store returns `true` after first translation successfully initialized.
+
+`locale`: __Writable\<string>__ – you can obtain and set current locale using this writable store.
+
+`locales`: __Readable<string[]>__ – readable store, containing all instance locales.
+
+`translations`: __Readable\<Translations>__ – readable store, containing all loaded translations.
+
+`t`: __Readable<(key: string, vars?: Record<any, any>) => string>__ – this readable store returns a function you can use to obtain your translations for given translation key and interpolation variables.
+
+`l`: __Readable<(locale: string, key: string, vars?: Record<any, any>) => string>__ – this readable store returns a function you can use to obtain your translations for given locale, translation key and interpolation variables.
+
+`loadConfig`: __(config: Config) => Promise\<void>__ – you can load a new `config` using this method.
+
+`loadTranslations`: __(locale: string, route?: string) => Promise\<void>__ – this method loads translation for given `locale` and `route`.
+
+`addTranslations`: __(translations: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__ – this method allows you to add your translations directly. 
+
+- `translations` parameter should contain an object, containing translations objects for locales you want to add.
+
+For example: 
+```jsonc
+{
+  "en": {
+    "common": {
+      "title": "text"
+    }
+  }
+}
+```
+
+or with dot notation:
+```jsonc
+{
+  "en": {
+    "common.text": "Enghlish text"
+  },
+  "es": {
+    "common.text": "Spanish text"
+  }
+}
+```
+
+- `keys` parameter should contain corresponding keys from your `loaders` config, so the translation is not loaded duplicitly in future. If `keys` are not provided, translation keys are taken automatically from the `translations` parameter as the first key (or value before the first dot in dot notation) under every locale.
+
+For example, for the previous case it would be:
+```jsonc
+{
+  "en": ["common"],
+  "es": ["common"]
+}
+```
