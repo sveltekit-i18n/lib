@@ -2,6 +2,7 @@
   "name": "sveltekit-i18n",
   "version": "1.0.0-beta.12",
   "description": "Internationalization library for SvelteKit",
+  "type": "module",
   "main": "./lib/index.js",
   "types": "./types/index.d.ts",
   "exports": {
