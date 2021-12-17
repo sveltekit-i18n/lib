@@ -1,4 +1,4 @@
-# Multi-page app
-In this app, translations are loaded dynamically according to user navigation and `$locale` change.
+# Component-scoped app
+In this app includes multiple instances of `sveltekit-i18n`.
 
-This concept is great for most of web pages.
+This approach is good for more complex apps.
