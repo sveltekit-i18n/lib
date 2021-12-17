@@ -17,7 +17,7 @@ These examples demonstrates how integrate `sveltekit-i18n` into your app. Curren
 
 ## How to
 
-- Clone or download example you want to use
+- clone or download example you want to use
 - run `npm i sveltekit-i18n@latest` to fetch this dependecy from NPM
 - run `npm i` to install all other dependencies
 - run `npm run dev -- --open`
