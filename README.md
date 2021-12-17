@@ -16,7 +16,6 @@ ___NOTE: This project is currently in beta as long as tests are missing. Also AP
 ✅ No dependencies
 
 ## TODO
-- documentation
 - tests
 
 ## Usage
@@ -112,23 +111,6 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 </div>
 ```
 
-## Examples
-You can view examples [here](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples).
-
-## Config
-
-### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>>; routes?: Array<string | RegExp>; }>__
-
-You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
-Each loader can include:
-
-`locale`: __string__ – locale (e.g. `en`, `de`) which is this loader for.
-
-`key`: __string__ – represents the translation module. This key is used as a translation prefix so it should be module-unique. You can access your translation later using `$t('key.yourTranslation')`. It shouldn't include `.` (dot) character.
-
-`loader`:__() => Promise<Record<any, any>>__ – is a function returning a Promise with translation data. You can use it to load files locally, fetch it from your API etc...
-
-`routes`?: __Array<string | RegExp>__ – can define routes this loader should be triggered for. You can use Regular expressions too. For example `[/\/.ome/]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
-
-### `initLocale`?: __string__
-If you set this parameter, translations will be initialized immediately using this locale.
+## More info
+[Docs](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/docs/README.md)\
+[Examples](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples)
