@@ -7,11 +7,11 @@ ___NOTE: This project is currently in beta as long as tests are missing. Also AP
 
 ## Key features
 
-✅ Simple API\
 ✅ SvelteKit ready\
 ✅ SSR support\
 ✅ Custom data sources – no matter if you are using local files or remote API to get your translations\
-✅ Module-based – your translations are loaded only in time they are really needed (and only once!)\
+✅ Module-based – your translations are loaded only for visited pages (and only once!)\
+✅ Component-scoped translations – you can create multiple instances with custom definitions\
 ✅ TS support\
 ✅ No dependencies
 
