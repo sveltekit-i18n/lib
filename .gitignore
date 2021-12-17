@@ -12,7 +12,6 @@
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 # Node artifact files
-/package-lock.json
 node_modules/
 
 # Compiled Java class files
