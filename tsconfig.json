@@ -10,7 +10,8 @@
     "target": "es2017",
     "moduleResolution": "node",
     "declaration": true,
-    "declarationDir": "./types"
+    "declarationDir": "./precompiled",
+    "emitDeclarationOnly": true
   },
   "include": [
     "./src",

@@ -1,4 +1,5 @@
 import ts from '@rollup/plugin-typescript';
+import dts from 'rollup-plugin-dts';
 import { terser } from 'rollup-plugin-terser';
 import autoExternal from 'rollup-plugin-auto-external';
 
@@ -17,5 +18,10 @@ export default [
       { file: pkg.main, format: 'es' },
     ],
     plugins: [autoExternal(), ts(), !ROLLUP_WATCH && terser({ mangle: { reserved: ['get', 'derived', 'writable'] } })],
+  },
+  {
+    input: './precompiled/index.d.ts',
+    output: [{ file: 'types/index.d.ts', format: 'es' }],
+    plugins: [dts()],
   },
 ];

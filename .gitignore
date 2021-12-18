@@ -3,6 +3,7 @@
 /build
 /lib
 /types
+/precompiled
 
 .env
 
