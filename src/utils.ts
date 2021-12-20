@@ -34,7 +34,7 @@ export const testRoute = (route: string) => (input: Route) => {
   return false;
 };
 
-const hasPlaceholders = (text:string = '') => /{{[^{}]+}}/.test(`${text}`);
+const hasPlaceholders = (text:string = '') => /{{(?:.(?<!{{|}}))+}}/.test(`${text}`);
 
 const placeholders = (text: string, vars: Record<any, any> = {}) => {
   const getRegex = (value: string) => new RegExp(`{{\\s*${value}\\s*;?\\s*}}`, 'gi');
@@ -81,7 +81,7 @@ const unescape = (text:string) => text.replace(/\\;/g, ';');
 const modifiers = (text: string, vars: Record<any, any> = {}) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
   const key = `${placeholder.match(/(?<={{\s*)[^{}\s]+?(?=\s*[;:])/)}`;
   const value = vars[key];
-  const defaultValue = `${placeholder.match(/(?<=;\s*default\s*:\s+?)(?:.(?<!{{|}}))+?(?=\s*(?:;|}}))/i) || ''}`;
+  const defaultValue = `${placeholder.match(/(?<=;\s*default\s*:\s*\b)(?:.(?<!{{|}}))+?(?=\s*(?:;(?<!\\;)|}}))/i) || ''}`;
 
   if (value === undefined) return defaultValue;
 
@@ -90,11 +90,11 @@ const modifiers = (text: string, vars: Record<any, any> = {}) => text.replace(/{
 
   const modifier = MODIFIERS[modifierKey as ModifierKey];
   const options: ModifierOption[] = useDefault<any[]>(
-    placeholder.match(/(?<={{.+?;\s*\b)(?:.(?<!\s*default\s*:\s*))+?(?=\s*(?:;(?<!\\;)|}}$))/gi), [],
+    placeholder.match(/(?<={{.+?;(?<!\\;)\s*\b)(?:.(?<!\s*default\s*:\s*))+?(?=\s*(?:;(?<!\\;)|}}$))/gi), [],
   ).reduce(
     (acc, option) => {
       const optionKey = unescape(`${option.match(/.+?(?=\s*:\s*)/)}`);
-      const optionValue = unescape(`${option.match(/(?<=.+\s*:\s*)[^\s].+/)}`);
+      const optionValue = unescape(`${option.match(/(?<=.+\s*:\s*\b).+/)}`);
 
       if (optionKey && optionValue) return ([ ...acc, { key: optionKey, value: optionValue }]);
 
