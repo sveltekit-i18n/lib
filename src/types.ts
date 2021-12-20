@@ -29,3 +29,9 @@ export type Config = {
 };
 
 export type GetConfig = (...params: any) => Config;
+
+export type ModifierKey = 'lt' | 'lte' | 'eq' | 'gte' | 'gt';
+
+export type ModifierOption =  Record<'key' | 'value', string>;
+
+export type Modifier = (value: string, options:ModifierOption[], defaultValue?: string) => string;
