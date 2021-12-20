@@ -36,14 +36,6 @@ export const testRoute = (route: string) => (input: Route) => {
 
 const hasPlaceholders = (text:string = '') => /{{(?:.(?<!{{|}}))+}}/.test(`${text}`);
 
-const placeholders = (text: string, vars: Record<any, any> = {}) => {
-  const getRegex = (value: string) => new RegExp(`{{\\s*${value}\\s*;?\\s*}}`, 'gi');
-
-  return Object.keys(vars).reduce((acc, k) => {
-    return acc.replace(getRegex(k), vars[k]);
-  }, text).replace(getRegex('\\w+'), '');
-};
-
 const eq: Modifier = (value, options = [], defaultValue = '') => useDefault(options.find(
   ({ key }) => `${key}`.toLowerCase() === `${value}`.toLowerCase(),
 )).value || defaultValue;
@@ -76,16 +68,19 @@ const MODIFIERS = {
   gt,
 };
 
-const unescape = (text:string) => text.replace(/\\;/g, ';');
+const unescape = (text:string) => text.replace(/\\(?=;|{)/g, '');
 
-const modifiers = (text: string, vars: Record<any, any> = {}) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
-  const key = `${placeholder.match(/(?<={{\s*)[^{}\s]+?(?=\s*[;:])/)}`;
+const placeholders = (text: string, vars: Record<any, any> = {}) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
+  const key = `${placeholder.match(/(?<={{\s*\b)[^{}]+?(?=\s*(?:[;:](?<!\\;)|}}$))/)}`;
   const value = vars[key];
   const defaultValue = `${placeholder.match(/(?<=;\s*default\s*:\s*\b)(?:.(?<!{{|}}))+?(?=\s*(?:;(?<!\\;)|}}))/i) || ''}`;
 
   if (value === undefined) return defaultValue;
 
   let modifierKey = `${placeholder.match(/(?<={{\s*\w+\s*:\s*)\w+(?=\s*;)/)}`.toLowerCase();
+
+  const hasModifier = !!+modifierKey;
+
   modifierKey = Object.keys(MODIFIERS).includes(modifierKey) ? modifierKey : 'eq';
 
   const modifier = MODIFIERS[modifierKey as ModifierKey];
@@ -102,15 +97,15 @@ const modifiers = (text: string, vars: Record<any, any> = {}) => text.replace(/{
     }, [],
   );
 
+  if (!hasModifier && !options.length) return `${value || defaultValue}`;
+
   return modifier(value, options, defaultValue);
 
 });
 
 export const interpolate = (text: string, vars: Record<any, any> = {}):string => {
   if (hasPlaceholders(text)) {
-    let output = text;
-    output = placeholders(text, vars);
-    output = modifiers(output, vars);
+    const output = placeholders(text, vars);
 
     return interpolate(output, vars);
   } else {
