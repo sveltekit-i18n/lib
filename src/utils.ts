@@ -68,7 +68,7 @@ const MODIFIERS = {
   gt,
 };
 
-const unescape = (text:string) => text.replace(/\\(?=;|{)/g, '');
+const unescape = (text:string) => text.replace(/\\(?=;|{|})/g, '');
 
 const placeholders = (text: string, vars: Record<any, any> = {}) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
   const key = `${placeholder.match(/(?<={{\s*\b)[^{}]+?(?=\s*(?:[;:](?<!\\;)|}}$))/)}`;
@@ -88,8 +88,8 @@ const placeholders = (text: string, vars: Record<any, any> = {}) => text.replace
     placeholder.match(/(?<={{.+?;(?<!\\;)\s*\b)(?:.(?<!\s*default\s*:\s*))+?(?=\s*(?:;(?<!\\;)|}}$))/gi), [],
   ).reduce(
     (acc, option) => {
-      const optionKey = unescape(`${option.match(/.+?(?=\s*:\s*)/)}`);
-      const optionValue = unescape(`${option.match(/(?<=.+\s*:\s*\b).+/)}`);
+      const optionKey = `${option.match(/.+?(?=\s*:\s*)/)}`;
+      const optionValue = `${option.match(/(?<=.+\s*:\s*\b).+/)}`;
 
       if (optionKey && optionValue) return ([ ...acc, { key: optionKey, value: optionValue }]);
 
@@ -109,7 +109,7 @@ export const interpolate = (text: string, vars: Record<any, any> = {}):string =>
 
     return interpolate(output, vars);
   } else {
-    return text;
+    return unescape(`${text}`);
   }
 };
 
