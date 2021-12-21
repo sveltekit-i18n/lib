@@ -123,7 +123,8 @@ Example:
   "module": {
     "placeholder": "Title with {{placeholder}}.",
     "placeholder_with_default_value": "{{placeholder; default:Default value;}}.",
-    "modifier": "You have {{number}} new {{number:eq; 1:message; default:messages;}}!"
+    "modifier": "{{gender; female:She; male: He;}} has a dog.",
+    "combined": "You have {{number:gt; 0:{{number}} new {{number; 1:message; default:messages;}}! default:no messages.;}}"
   }
 } 
 ```
@@ -147,7 +148,7 @@ You can also use `default` value. This value is used in case there is no appropr
 ```
 
 ### Modifiers
-Modifiers don't represent the payload value directly, but they can use it for further calculation. Currently, these modifiers are in place:
+Modifiers don't represent the payload value directly, but they can use it for further calculations. Currently, these modifiers are in place:
 
 `lt` – input value is lower than the value in your definition.\
 `lte` – input value is lower than or equal to the value in your definition.\
@@ -155,7 +156,16 @@ Modifiers don't represent the payload value directly, but they can use it for fu
 `gte` – input value is greater than or equal to the value in your definition.\
 `gt` – input value is greater than the value in your definition.
 
-If you need more, you can include your own modifiers in [Config](#config)!
+Each modifier returns a string value calculated from these input parameters:
+
+1) input value from payload (placeholder value)
+2) parsed interpolation options from the definition
+3) default value
+
+When placeholder value is not matched and you don't specify the `default` value, modifier returns an empty string.
+
+You can include your own modifiers in the [Config](#custommodifiers-recordstring-value-string-options-arraykey-string-value-string-defaultvalue-string--string)!
+
 
 Modifier definition looks like this:
 ```hbs
@@ -168,8 +178,6 @@ In case you don't specify the modifier, but interpolation options are set, `eq` 
 <!-- this modifier definition uses `eq` modifier by default -->
 {{placeholder; placeholder_value:Interpolation value;}}
 ```
-
-In case the placeholder value is not matched and you don't specify the `default` value, modifier returns an empty string.
 
 You are allowed to use nested `placeholders` and `modifiers` within your modifier definition. 
 
