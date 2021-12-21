@@ -1,8 +1,8 @@
 # API Docs
 
-[Config](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#config)\
-[Properties and methods](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#instance-methods-and-properties)\
-[Translations](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#translations)
+[Config](#config)\
+[Properties and methods](#instance-methods-and-properties)\
+[Translations](#translations)
 
 
 ## Config
@@ -22,6 +22,24 @@ Each loader can include:
 
 ### `initLocale`?: __string__
 If you set this parameter, translations will be initialized immediately using this locale.
+
+### `customModifiers`?: __Record<string, (value: string, options: Array<{key: string; value: string}>, defaultValue?: string) => string>__
+You can use this parameter to include your own set of modifiers.
+
+For example custom modifier `eqAbs`...
+```typescript
+{
+  eqAbs: (value, options, defaultValue) => options.find(({ key }) => Math.abs(key) === Math.abs(value))?.value || defaultValue
+}
+
+```
+
+...you can use later in your definitions like this:
+
+```hbs
+{{placeholder:eqAbs; key1:value1; key2:value2; default:defaultValue;}}
+```
+Read more about [Modifiers](#modifiers).
 
 
 ## Instance methods and properties
@@ -95,16 +113,73 @@ For example, for the previous case it would be:
 
 
 ## Translations
-Your translations should be formatted as standard objects or dot-notated objects containing strings as translation values. You can use `{{placeholders}}` for interpolation.
+
+Your translations should be formatted as standard objects or dot-notated objects containing strings as translation values. You can use `placehoders` and `modifiers` for interpolation.
 
 Example:
 ```jsonc
-// en/common.json
-
 {
-  "lang": "English",
+  "prop": "Some value",
   "module": {
-    "title": "Title with {{placeholder}}."
+    "placeholder": "Title with {{placeholder}}.",
+    "placeholder_with_default_value": "{{placeholder; default:Default value;}}.",
+    "modifier": "{{gender; female:She; male: He;}} has a dog.",
+    "combined": "You have {{number:gt; 0:{{number}} new {{number; 1:message; default:messages;}}! default:no messages.;}}"
   }
 } 
 ```
+
+### Placeholders
+
+Placeholders work as a connection between static translations and dynamic content. They are usually replaced by dynamic values, which are same for all language mutations.
+
+Placeholder notation looks like this:
+```hbs
+{{placeholder}}
+
+<!-- or: -->
+{{placeholder;}}
+```
+
+You can also use `default` value. This value is used in case there is no appropriate value in translation payload. 
+
+```hbs
+{{placeholder; default:This is default value;}}
+```
+
+### Modifiers
+Modifiers don't represent the payload value directly, but they can use it for further calculations. Currently, these modifiers are in place:
+
+`lt` – input value is lower than the value in your definition.\
+`lte` – input value is lower than or equal to the value in your definition.\
+`eq` – input value is equal to the value in your definition (string comparison, case insensitive).\
+`gte` – input value is greater than or equal to the value in your definition.\
+`gt` – input value is greater than the value in your definition.
+
+Each modifier returns a string value calculated from these input parameters:
+
+1) input value from payload (placeholder value)
+2) parsed interpolation options from the definition
+3) default value
+
+When placeholder value is not matched and you don't specify the `default` value, modifier returns an empty string.
+
+You can include your own modifiers in the [Config](#custommodifiers-recordstring-value-string-options-arraykey-string-value-string-defaultvalue-string--string)!
+
+
+Modifier definition looks like this:
+```hbs
+{{placeholder:modifier; placeholderVal1:Interpolation value 1; placeholderVal2:Interpolation value 2; ... ; default:Default value;}}
+```
+
+In case you don't specify the modifier, but interpolation options are set, `eq` modifier is used by default:
+
+```hbs
+<!-- this modifier definition uses `eq` modifier by default -->
+{{placeholder; placeholder_value:Interpolation value;}}
+```
+
+You are allowed to use nested `placeholders` and `modifiers` within your modifier definition. 
+
+
+__NOTE: `;`, `:`, `{` and `}` characters are used as placeholder identifiers and separators, so you shouldn't use them within your definition keys and values. You should use their escaped form insead (`\\;`, `\\:`, `\\{` or `\\}`).__

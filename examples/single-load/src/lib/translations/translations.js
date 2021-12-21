@@ -4,8 +4,7 @@ export default ({
   en: {
     lang,
     menu: {
-      home: 'Home',
-      about: 'About',
+      notification: 'You have {{count:gt; 0:{{count}} new {{count; 1:message; default:messages}}!; default:no messages...}}'
     },
     content: {
       title: 'Welcome to SvelteKit',
@@ -16,8 +15,7 @@ export default ({
   cs: {
     lang,
     menu: {
-      home: 'Domů',
-      about: 'O nás'
+      notification: '{{count:gt; 0:Máte {{count}} {{count:gte; 1:novou zprávu; 2:nové zprávy; 5:nových zpráv}}!; default:Nemáte žádné zprávy...}}'
     },
     content: {
       title: 'Vítejte ve SvelteKit',

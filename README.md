@@ -106,7 +106,7 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 </script>
 
 <div>
-  <!-- you can use {{placeholders}} in your definitions -->
+  <!-- you can use `placeholders` and `modifiers` in your definitions (see docs) -->
   <h2>{$t('common.page', { pageName })}</h2>
   <p>{$t('home.content')}</p>
 </div>
