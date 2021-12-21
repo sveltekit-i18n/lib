@@ -1,8 +1,8 @@
 # API Docs
 
-[Config](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#config)\
-[Properties and methods](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#instance-methods-and-properties)\
-[Translations](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#translations)
+[Config](#config)\
+[Properties and methods](#instance-methods-and-properties)\
+[Translations](#translations)
 
 
 ## Config
@@ -39,7 +39,7 @@ For example custom modifier `eqAbs`...
 ```hbs
 {{placeholder:eqAbs; key1:value1; key2:value2; default:defaultValue;}}
 ```
-Read more about [Modifiers](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#modifiers).
+Read more about [Modifiers](#modifiers).
 
 
 ## Instance methods and properties
@@ -155,7 +155,7 @@ Modifiers don't represent the payload value directly, but they can use it for fu
 `gte` – input value is greater than or equal to the value in your definition.\
 `gt` – input value is greater than the value in your definition.
 
-If you need more, you can include your own modifiers in [config](https://github.com/jarda-svoboda/sveltekit-i18n/blob/master/docs/README.md#config)!
+If you need more, you can include your own modifiers in [Config](#config)!
 
 Modifier definition looks like this:
 ```hbs
