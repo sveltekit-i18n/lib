@@ -124,7 +124,7 @@ Example:
     "placeholder": "Title with {{placeholder}}.",
     "placeholder_with_default_value": "{{placeholder; default:Default value;}}.",
     "modifier": "{{gender; female:She; male:He;}} has a dog.",
-    "combined": "You have {{number:gt; 0:{{number}} new {{number; 1:message; default:messages;}}! default:no messages.;}}"
+    "combined": "You have {{number:gt; 0:{{number}} new {{number; 1:message; default:messages;}}!; default:no messages.;}}"
   }
 } 
 ```
