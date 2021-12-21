@@ -1,4 +1,4 @@
-import type { ToDotNotation, GetTranslation, Translate, Route, ModifierKey, Modifier, ModifierOption } from './types';
+import type { ToDotNotation, GetTranslation, Translate, Route, Modifier, ModifierOption, DefaultModifiers, CustomModifiers } from './types';
 
 export const useDefault = <T = any>(value: any, def:any = {}): T => value || def;
 
@@ -60,7 +60,7 @@ const lte: Modifier = (value, options = [], defaultValue = '') => eq(value, opti
 
 const gte: Modifier = (value, options = [], defaultValue = '') => eq(value, options) || gt(value, options, defaultValue);
 
-const MODIFIERS = {
+const defaultModifiers: DefaultModifiers = {
   lt,
   lte,
   eq,
@@ -70,7 +70,7 @@ const MODIFIERS = {
 
 const unesc = (text:string) => text.replace(/\\(?=;|{|})/g, '');
 
-const placeholders = (text: string, vars: Record<any, any> = {}) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
+const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
   const key = unesc(`${placeholder.match(/(?<={{\s*\b)[^{}]+?(?=\s*(?:[;:](?<!\\;)|}}$))/)}`);
   const value = vars[key];
   const defaultValue = `${placeholder.match(/(?<=;\s*default\s*:\s*\b)(?:.(?<!{{|}}))+?(?=\s*(?:;(?<!\\;)|}}))/i) || ''}`;
@@ -81,9 +81,11 @@ const placeholders = (text: string, vars: Record<any, any> = {}) => text.replace
 
   const hasModifier = !!+modifierKey;
 
-  modifierKey = Object.keys(MODIFIERS).includes(modifierKey) ? modifierKey : 'eq';
+  const modifiers: CustomModifiers = { ...defaultModifiers, ...useDefault(customModifiers) };
 
-  const modifier = MODIFIERS[modifierKey as ModifierKey];
+  modifierKey = Object.keys(modifiers).includes(modifierKey) ? modifierKey : 'eq';
+
+  const modifier = modifiers[modifierKey];
   const options: ModifierOption[] = useDefault<any[]>(
     placeholder.match(/(?<={{.+?;(?<!\\;)\s*\b)(?:.(?<!\s*default\s*:\s*))+?(?=\s*(?:;(?<!\\;)|}}$))/gi), [],
   ).reduce(
@@ -103,19 +105,19 @@ const placeholders = (text: string, vars: Record<any, any> = {}) => text.replace
 
 });
 
-export const interpolate = (text: string, vars: Record<any, any> = {}):string => {
+export const interpolate = (text: string, vars: Record<any, any> = {}, customModifiers?: CustomModifiers):string => {
   if (hasPlaceholders(text)) {
-    const output = placeholders(text, vars);
+    const output = placeholders(text, vars, customModifiers);
 
-    return interpolate(output, vars);
+    return interpolate(output, vars, customModifiers);
   } else {
     return unesc(`${text}`);
   }
 };
 
-export const translate: Translate = (translation, key, vars = {}) => {
+export const translate: Translate = (translation, key, vars = {}, customModifiers = {}) => {
   if (!key) throw new Error('no key provided to $t()');
   const text = `${useDefault(useDefault(translation)[key], key)}`;
 
-  return interpolate(text, vars);
+  return interpolate(text, vars, customModifiers);
 };

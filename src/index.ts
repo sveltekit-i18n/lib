@@ -1,7 +1,7 @@
 import { derived, get, writable } from 'svelte/store';
 import { getTranslation, testRoute, toDotNotation, translate, useDefault as d } from './utils';
 
-import type { Config, ConfigTranslations, LoaderModule, Route, Translations } from './types';
+import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, Route, Translations } from './types';
 import type { Readable, Writable } from 'svelte/store';
 
 export { Config };
@@ -52,11 +52,11 @@ export default class {
   }, {});
 
   t: Readable<(key: string, vars?: Record<any, any>) => string> = derived(
-    this.translation, ($translation) => (key: string, vars?: Record<any, any>) => translate($translation, key, vars),
+    [this.translation, this.config], ([$translation, { customModifiers }]) => (key: string, vars?: Record<any, any>) => translate($translation, key, vars, d<CustomModifiers>(customModifiers)),
   );
 
   l: Readable<(locale: string, key: string, vars?: Record<any, any>) => string> = derived(
-    this.translations, ($translations) => (locale: string, key: string, vars?: Record<any, any>) => translate($translations[locale], key, vars),
+    [this.translations, this.config], ([$translations, { customModifiers }]) => (locale: string, key: string, vars?: Record<any, any>) => translate($translations[locale], key, vars, d<CustomModifiers>(customModifiers)),
   );
 
   private getLocale = (inputLocale?: string): string => {
