@@ -17,7 +17,6 @@ ___NOTE: This project is currently in beta as long as tests are missing. Also AP
 
 ## TODO
 - tests
-- interpolation improvements
 
 ## Usage
 
