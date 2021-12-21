@@ -1,5 +1,6 @@
 .github
 src
+tests
 examples
 docs
 precompiled
