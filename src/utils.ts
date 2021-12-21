@@ -71,13 +71,13 @@ const defaultModifiers: DefaultModifiers = {
 const unesc = (text:string) => text.replace(/\\(?=;|{|})/g, '');
 
 const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
-  const key = unesc(`${placeholder.match(/(?<={{\s*\b)[^{}]+?(?=\s*(?:[;:](?<!\\;)|}}$))/)}`);
+  const key = unesc(`${placeholder.match(/(?<={{\s*)(?!\s)[^{}]+?(?=\s*(?:[;:](?<!\\;)|}}$))/)}`);
   const value = vars[key];
-  const defaultValue = `${placeholder.match(/(?<=;\s*default\s*:\s*\b)(?:.(?<!{{|}}))+?(?=\s*(?:;(?<!\\;)|}}))/i) || ''}`;
+  const defaultValue = `${placeholder.match(/(?<=;\s*default\s*:\s*)(?!\s)(?:.(?<!{{|}}))+?(?=\s*(?:;(?<!\\;)|}}))/i) || ''}`;
 
   if (value === undefined) return defaultValue;
 
-  let modifierKey = `${placeholder.match(/(?<={{\s*\w+\s*:\s*)\w+(?=\s*;)/)}`.toLowerCase();
+  let modifierKey = `${placeholder.match(/(?<={{\s*\w+\s*:\s*)\w+(?=\s*;)/)}`;
 
   const hasModifier = !!+modifierKey;
 
@@ -87,11 +87,11 @@ const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers
 
   const modifier = modifiers[modifierKey];
   const options: ModifierOption[] = useDefault<any[]>(
-    placeholder.match(/(?<={{.+?;(?<!\\;)\s*\b)(?:.(?<!\s*default\s*:\s*))+?(?=\s*(?:;(?<!\\;)|}}$))/gi), [],
+    placeholder.match(/(?<={{.+?;(?<!\\;)\s*)(?:(?!\s).(?<!\s*default\s*:\s*))+?(?=\s*(?:;(?<!\\;)|}}$))/gi), [],
   ).reduce(
     (acc, option) => {
       const optionKey = unesc(`${option.match(/.+?(?=\s*:\s*)/)}`);
-      const optionValue = `${option.match(/(?<=.+\s*:\s*\b).+/)}`;
+      const optionValue = `${option.match(/(?<=.+\s*:\s*)(?!\s).+/)}`;
 
       if (optionKey && optionValue) return ([ ...acc, { key: optionKey, value: optionValue }]);
 
@@ -99,7 +99,7 @@ const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers
     }, [],
   );
 
-  if (!hasModifier && !options.length) return `${value || defaultValue}`;
+  if (!hasModifier && !options.length) return `${value}`;
 
   return modifier(value, options, defaultValue);
 
