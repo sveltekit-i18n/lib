@@ -34,7 +34,7 @@ For example custom modifier `eqAbs`...
 
 ```
 
-...you can use later in your definitions like this:
+...can be used in the definitions like this:
 
 ```hbs
 {{placeholder:eqAbs; key1:value1; key2:value2; default:defaultValue;}}
