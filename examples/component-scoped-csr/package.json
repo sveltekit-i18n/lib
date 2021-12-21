@@ -14,6 +14,6 @@
   },
   "type": "module",
   "dependencies": {
-    "sveltekit-i18n": "../../"
+    "sveltekit-i18n": "file:../../"
   }
 }
