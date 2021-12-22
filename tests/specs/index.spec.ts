@@ -80,5 +80,23 @@ describe('i18n instance', () => {
 });
 
 describe('interpolation', () => {
+  it('custom modifier works', async () => {
+    const { t, loadConfig } = new i18n();
 
+    await loadConfig(CONFIG);
+    const $t = get(t);
+
+    expect($t('common.custom_modifier', { data: 'TEST_STRING' })).toBe('TEST_STRING');
+  });
+  it('date implementation works', async () => {
+    const { t, loadConfig, locale } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $t = get(t);
+
+    expect($t('common.date_modifier', { value: '660385200000' })).toBe('Dec 5, 1990, 9:20 AM');
+    locale.set('cs');
+    expect($t('common.date_modifier', { value: '660385200000' })).toBe('5. 12. 1990 9:20');
+
+  });
 });
