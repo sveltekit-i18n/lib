@@ -156,7 +156,7 @@ Modifiers don't represent the payload value directly, but they can use it for fu
 `gte` – input value is greater than or equal to the value in your definition.\
 `gt` – input value is greater than the value in your definition.
 
-Each modifier returns a string value calculated from these input parameters:
+Each modifier returns a string value based on these input parameters:
 
 1) input value from payload (placeholder value)
 2) parsed interpolation options from the definition
