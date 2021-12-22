@@ -14,8 +14,8 @@
     "build:lib": "rm -rf lib types && rollup -c",
     "build:precompile": "rm -rf precompiled types && tsc",
     "build": "npm run build:precompile && npm run build:lib && rm -rf precompiled",
-    "version:beta": "npm version prerelease --preid beta",
-    "prepublishOnly": "npm run version:beta && npm run build",
+    "version:rc": "npm version prerelease --preid rc",
+    "prepublishOnly": "npm run version:rc && npm run build",
     "lint": "eslint --fix --ext .ts,.js --ignore-path .gitignore ."
   },
   "files": [
