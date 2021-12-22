@@ -23,13 +23,13 @@ Each loader can include:
 ### `initLocale`?: __string__
 If you set this parameter, translations will be initialized immediately using this locale.
 
-### `customModifiers`?: __Record<string, (value: string, options: Array<{key: string; value: string}>, defaultValue?: string) => string>__
+### `customModifiers`?: __Record<string, (value: string, options: Array<{key: string; value: string}>, defaultValue?: string, locale?: string) => string>__
 You can use this parameter to include your own set of modifiers.
 
 For example custom modifier `eqAbs`...
 ```typescript
 {
-  eqAbs: (value, options, defaultValue) => options.find(({ key }) => Math.abs(key) === Math.abs(value))?.value || defaultValue
+  eqAbs: (value, options, defaultValue, locale) => options.find(({ key }) => Math.abs(key) === Math.abs(value))?.value || defaultValue
 }
 
 ```
@@ -161,6 +161,7 @@ Each modifier returns a string value based on these input parameters:
 1) input value from payload (placeholder value)
 2) parsed interpolation options from the definition
 3) default value
+4) current locale
 
 When placeholder value is not matched and you don't specify the `default` value, modifier returns an empty string.
 
