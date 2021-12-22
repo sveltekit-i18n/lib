@@ -1,0 +1,5 @@
+{
+  "no_placeholder": "NO_PLACEHOLDER",
+  "placeholder": "VALUES: {{value}}, {{value;}}, {{ value }}, {{ value; }}",
+  "modifier_test": "VALUES: {{value; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}"
+}

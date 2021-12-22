@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "rollup -c -w",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest",
     "build:lib": "rm -rf lib types && rollup -c",
     "build:precompile": "rm -rf precompiled types && tsc",
     "build": "npm run build:precompile && npm run build:lib && rm -rf precompiled",
@@ -46,16 +46,19 @@
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.3.0",
+    "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
     "eslint": "^8.4.1",
     "eslint-config-airbnb-typescript": "^16.1.0",
     "eslint-plugin-import": "^2.25.3",
+    "jest": "^27.4.5",
     "rollup": "^2.61.1",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-dts": "^4.0.1",
     "rollup-plugin-terser": "^7.0.2",
     "svelte": "^3.44.3",
+    "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
   }
 }
