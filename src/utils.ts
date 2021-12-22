@@ -77,13 +77,13 @@ const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers
 
   if (value === undefined) return defaultValue;
 
-  let modifierKey = `${placeholder.match(/(?<={{\s*(?:.(?<!;(?<!\\;)))+\s*:(?<!\\:)\s*)(?!\s|;).+?(?=\s*;(?<!\\;))/)}`;
+  let modifierKey = placeholder.match(/(?<={{\s*(?:.(?<!;(?<!\\;)))+\s*:(?<!\\:)\s*)(?!\s|;).+?(?=\s*;(?<!\\;))/);
 
-  const hasModifier = !!+modifierKey;
+  const hasModifier = !!modifierKey;
 
   const modifiers: CustomModifiers = { ...defaultModifiers, ...useDefault(customModifiers) };
 
-  modifierKey = Object.keys(modifiers).includes(modifierKey) ? modifierKey : 'eq';
+  modifierKey = Object.keys(modifiers).includes(`${modifierKey}`) ? modifierKey : 'eq';
 
   const modifier = modifiers[modifierKey];
   const options: ModifierOption[] = useDefault<any[]>(
