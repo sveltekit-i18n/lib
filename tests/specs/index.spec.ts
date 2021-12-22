@@ -94,9 +94,9 @@ describe('interpolation', () => {
     await loadConfig(CONFIG);
     const $t = get(t);
 
-    expect($t('common.date_modifier', { value: '660385200000' })).toBe('Dec 5, 1990, 9:20 AM');
+    expect($t('common.date_modifier', { value: '660385200000' })).toBe('Dec 5, 1990, 8:20 AM');
     locale.set('cs');
-    expect($t('common.date_modifier', { value: '660385200000' })).toBe('5. 12. 1990 9:20');
+    expect($t('common.date_modifier', { value: '660385200000' })).toBe('5. 12. 1990 8:20');
 
   });
 });
