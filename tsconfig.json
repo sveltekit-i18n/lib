@@ -11,9 +11,7 @@
     "moduleResolution": "node",
     "declaration": true,
     "declarationDir": "./precompiled",
-    "emitDeclarationOnly": true
-  },
-  "include": [
-    "./src",
-  ]
+    "emitDeclarationOnly": true,
+    "resolveJsonModule": true,
+  }
 }
