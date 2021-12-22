@@ -56,7 +56,7 @@ export default class {
   );
 
   l: Readable<(locale: string, key: string, vars?: Record<any, any>) => string> = derived(
-    [this.translations, this.config], ([$translations, { customModifiers }]) => (locale: string, key: string, vars?: Record<any, any>) => translate($translations[locale], key, vars, d<CustomModifiers>(customModifiers)),
+    [this.translations, this.config], ([$translations, { customModifiers }]) => (locale: string, key: string, vars?: Record<any, any>) => translate($translations[locale], key, vars, d<CustomModifiers>(customModifiers), get(this.locale)),
   );
 
   private getLocale = (inputLocale?: string): string => {

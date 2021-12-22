@@ -70,16 +70,16 @@ const defaultModifiers: DefaultModifiers = {
 
 const unesc = (text:string) => text.replace(/\\(?=;|{|})/g, '');
 
-const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
+const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}, locale?: string) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
   const key = unesc(`${placeholder.match(/(?<={{\s*)(?!\s|;)(?:.(?<!{{|}}))+?(?=\s*(?:[;:](?<!\\[;:])|}}$))/)}`);
   const value = vars[key];
   const defaultValue = `${placeholder.match(/(?<={{.*;(?<!\\;)\s*default\s*:\s*)(?!\s|;).+?(?=\s*(?:;(?<!\\;)|}}$))/i) || ''}`;
 
   if (value === undefined) return defaultValue;
 
-  let modifierKey = `${placeholder.match(/(?<={{\s*(?:.(?<!;(?<!\\;)))+\s*:(?<!\\:)\s*)(?!\s|;).+?(?=\s*;(?<!\\;))/)}`;
+  let modifierKey = `${placeholder.match(/(?<={{\s*(?:.(?<!;(?<!\\;)))+\s*:(?<!\\:)\s*)(?!\s|;).+?(?=\s*;(?<!\\;))/) || ''}`;
 
-  const hasModifier = !!+modifierKey;
+  const hasModifier = !!modifierKey;
 
   const modifiers: CustomModifiers = { ...defaultModifiers, ...useDefault(customModifiers) };
 
@@ -101,23 +101,23 @@ const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers
 
   if (!hasModifier && !options.length) return `${value}`;
 
-  return modifier(value, options, defaultValue);
+  return modifier(value, options, defaultValue, locale);
 
 });
 
-export const interpolate = (text: string, vars: Record<any, any> = {}, customModifiers?: CustomModifiers):string => {
+export const interpolate = (text: string, vars: Record<any, any> = {}, customModifiers?: CustomModifiers, locale?: string):string => {
   if (hasPlaceholders(text)) {
-    const output = placeholders(text, vars, customModifiers);
+    const output = placeholders(text, vars, customModifiers, locale);
 
-    return interpolate(output, vars, customModifiers);
+    return interpolate(output, vars, customModifiers, locale);
   } else {
     return unesc(`${text}`);
   }
 };
 
-export const translate: Translate = (translation, key, vars = {}, customModifiers = {}) => {
+export const translate: Translate = (translation, key, vars = {}, customModifiers = {}, locale = '') => {
   if (!key) throw new Error('no key provided to $t()');
   const text = `${useDefault(useDefault(translation)[key], key)}`;
 
-  return interpolate(text, vars, customModifiers);
+  return interpolate(text, vars, customModifiers, locale);
 };
