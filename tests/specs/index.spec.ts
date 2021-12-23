@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 import i18n from '../../src/index';
 import { CONFIG, TRANSLATIONS } from '../data';
+import { filterTranslationKeys } from '../utils';
 
 const { initLocale = '', loaders, customModifiers } = CONFIG;
 
@@ -70,16 +71,68 @@ describe('i18n instance', () => {
     const $translations = get(translations);
     const $locales = get(locales);
 
+    const keys = (loaders || []).filter(({ routes }) => !routes).map(({ key }) => key);
+
     $locales.forEach((locale) => {
       expect($translations[locale]).toEqual(
-        (locale === initLocale) ? expect.objectContaining(TRANSLATIONS[locale]) : expect.not.objectContaining(TRANSLATIONS[locale]),
+        (locale === initLocale) ? expect.objectContaining(filterTranslationKeys(TRANSLATIONS[locale], keys)) : expect.not.objectContaining(TRANSLATIONS[locale]),
       );
     });
   });
-  // `loadTranslations` method works without route
-  // `loadTranslations` method works for route
-  // `addTranslations` method works
-  // `addTranslations` prevents duplicit `loading`
+  it('includes translations only for loaders without routes', async () => {
+    const { translations, loadConfig } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $translations = get(translations);
+
+    const keys = (loaders || []).filter(({ routes }) => !!routes).map(({ key }) => key);
+
+    expect($translations[initLocale]).toEqual(
+      expect.not.objectContaining(filterTranslationKeys(TRANSLATIONS[initLocale], keys)),
+    );
+  });
+  it('`loadTranslations` method works without route', async () => {
+    const { initialized, loadConfig, loadTranslations } = new i18n();
+
+    await loadConfig({ loaders, customModifiers });
+    expect(get(initialized)).toBe(false);
+
+    await loadTranslations(initLocale);
+    expect(get(initialized)).toBe(true);
+  });
+  it('`loadTranslations` method works for given routes only', async () => {
+    const { loadTranslations, translations } = new i18n({ loaders, customModifiers });
+    const url = '/path#hash?a=b&c=d';
+    const keys = (loaders || []).filter(({ routes }) => routes?.includes(url)).map(({ key }) => key);
+
+    await loadTranslations(initLocale, '/');
+    expect(get(translations)[initLocale]).toEqual(
+      expect.not.objectContaining(filterTranslationKeys(TRANSLATIONS[initLocale], keys)),
+    );
+
+    await loadTranslations(initLocale, url);
+    expect(get(translations)[initLocale]).toEqual(
+      expect.objectContaining(TRANSLATIONS[initLocale]),
+    );
+  });
+  it('`addTranslations` method works', async () => {
+    const { addTranslations, translations } = new i18n();
+
+    addTranslations(TRANSLATIONS);
+    const $translations = get(translations);
+
+    expect($translations).toEqual(
+      expect.objectContaining(TRANSLATIONS),
+    );
+  });
+  it('`addTranslations` prevents duplicit `loading`', async () => {
+    const { addTranslations, loadTranslations, loading } = new i18n({ loaders, customModifiers });
+
+    addTranslations(TRANSLATIONS);
+    loadTranslations(initLocale);
+
+    expect(get(loading)).toBe(false);
+  });
 });
 
 describe('translation', () => {
