@@ -82,7 +82,23 @@ describe('i18n instance', () => {
   // `addTranslations` prevents duplicit `loading`
 });
 
-describe('interpolation', () => {
+describe('translation', () => {
+  it('returns a key string if not defined', async () => {
+    const { t, loadConfig } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $t = get(t);
+
+    expect($t('common.undefined')).toBe('common.undefined');
+  });
+  it('key returns proper value', async () => {
+    const { t, loadConfig } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $t = get(t);
+
+    expect($t('common.no_placeholder')).toBe('NO_PLACEHOLDER');
+  });
   it('placeholders work', async () => {
     const { t, loadConfig } = new i18n();
 
@@ -194,5 +210,25 @@ describe('interpolation', () => {
     expect($t('common.modifier_escaped', { 'va:lue': 'option:1' })).toBe('VA;{{LUE}}:1');
     expect($t('common.modifier_escaped', { 'va:lue': 'option:2' })).toBe('VA;{{LUE}}:2');
     expect($t('common.modifier_escaped')).toBe('DEFAULT {{VALUE}};');
+  });
+  it('with user-defined locale works', async () => {
+    const { t, l, loadConfig } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $l = get(l);
+    const $t = get(t);
+
+    const tests: Array<[string, any]> = [
+      ['common.undefined', undefined],
+      ['common.no_placeholder', undefined],
+      ['common.placeholder', { value: 'TEST_VALUE' }],
+      ['common.modifier_gte', { value: 10 }],
+      ['common.modifier_custom', { data: 'TEST_STRING' }],
+      ['common.modifier_escaped', { 'va:lue': 'option:2' }],
+    ];
+
+    tests.forEach((options) => {
+      expect($l(initLocale, ...options)).toBe($t(...options));
+    });
   });
 });
