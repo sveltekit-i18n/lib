@@ -68,7 +68,7 @@ const defaultModifiers: DefaultModifiers = {
   gt,
 };
 
-const unesc = (text:string) => text.replace(/\\(?=;|{|})/g, '');
+const unesc = (text:string) => text.replace(/\\(?=:|;|{|})/g, '');
 
 const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}, locale?: string) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
   const key = unesc(`${placeholder.match(/(?<={{\s*)(?!\s|;)(?:.(?<!{{|}}))+?(?=\s*(?:[;:](?<!\\[;:])|}}$))/)}`);

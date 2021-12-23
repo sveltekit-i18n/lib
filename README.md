@@ -3,8 +3,6 @@
 # sveltekit-i18n
 `sveltekit-i18n` is a tiny, dependency-less library built for [Svelte](https://github.com/sveltejs/svelte) and [SvelteKit](https://github.com/sveltejs/kit).
 
-___NOTE: This project is currently in RC! 1.0.0 will be released as soon as tests are completed...___
-
 ## Key features
 
 ✅ SvelteKit ready\
@@ -14,9 +12,6 @@ ___NOTE: This project is currently in RC! 1.0.0 will be released as soon as test
 ✅ Component-scoped translations – you can create multiple instances with custom definitions\
 ✅ TS support\
 ✅ No dependencies
-
-## TODO
-- tests
 
 ## Usage
 
