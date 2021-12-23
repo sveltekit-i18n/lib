@@ -13,5 +13,8 @@
     "declarationDir": "./precompiled",
     "emitDeclarationOnly": true,
     "resolveJsonModule": true,
-  }
+  },
+  "include": [
+    "./src"
+  ]
 }
