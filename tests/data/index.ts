@@ -19,10 +19,9 @@ export const CONFIG:Config = {
   ],
   customModifiers: {
     test: (value) => value,
-    date: (value, options, defaultValue = '', locale = '') => {
-      console.log(locale, value, options, defaultValue);
-      return locale && new Intl.DateTimeFormat(locale, { dateStyle: findOption(options, 'dateStyle', 'medium'), timeStyle: findOption(options, 'timeStyle', 'short') }).format(+value || +defaultValue);
-    },
+    date: (value, options, defaultValue = '', locale = '') => (
+      locale && new Intl.DateTimeFormat(locale, { dateStyle: findOption(options, 'dateStyle', 'medium'), timeStyle: findOption(options, 'timeStyle', 'short') }).format(+value || +defaultValue)
+    ),
   },
 };
 

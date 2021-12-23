@@ -1,7 +1,14 @@
 {
   "no_placeholder": "NO_PLACEHOLDER",
   "placeholder": "VALUES: {{value}}, {{value;}}, {{ value }}, {{ value; }}",
-  "modifier_test": "VALUES: {{value; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}",
-  "custom_modifier": "{{data:test;}}",
-  "date_modifier": "{{value:date;}}"
+  "placeholder_default": "VALUES: {{value; default: DEFAULT_VALUE}}, {{value; default: DEFAULT_VALUE;}}, {{ value; default: DEFAULT_VALUE }}, {{ value; default: DEFAULT_VALUE; }}",
+  "placeholder_escaped": "{{pl\\:ace\\;holder}}",
+  "modifier_eq": "VALUES: {{value; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}, {{value:eq; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value : eq ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}",
+  "modifier_lt": "{{value:lt; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
+  "modifier_lte": "{{value:lte; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
+  "modifier_gt": "{{value:gt; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
+  "modifier_gte": "{{value:gte; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
+  "modifier_custom": "{{data:test;}}",
+  "modifier_date": "{{value:date;}}",
+  "modifier_escaped": "{{va\\:lue; option\\:1:VA\\;\\{\\{LUE\\}\\}\\:1; option\\:2:VA\\;\\{\\{LUE\\}\\}\\:2; default:DEFAULT \\{\\{VALUE\\}\\}\\;}}"
 }
