@@ -10,7 +10,7 @@
 ✅ Custom data sources – no matter if you are using local files or remote API to get your translations\
 ✅ Module-based – your translations are loaded for visited pages only (and only once!)\
 ✅ Component-scoped translations – you can create multiple instances with custom definitions\
-✅ Custom modifiers – you can modify the input data the way you need\
+✅ Custom modifiers – you can modify the input data the way you really need\
 ✅ TS support\
 ✅ No dependencies
 
