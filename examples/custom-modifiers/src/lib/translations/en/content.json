@@ -1,0 +1,5 @@
+{
+  "title": "Custom Modifiers",
+  "modifier_date": "Local date format: {{value:date;}}",
+  "modifier_ago": "Relative: {{value:ago;}}"
+}
