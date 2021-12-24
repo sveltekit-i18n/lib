@@ -6,6 +6,8 @@
   const time = (10 * 60 * 1000);
 </script>
 
-<h1>{$t('content.title')}</h1>
-<p>{@html $t('content.modifier_date', { value: Date.now() - time})}</p>
-<p>{@html $t('content.modifier_ago', { value: Date.now() - time})}</p>
+<h1>{$t('content.title_built-in')}</h1>
+<p>{$t('content.modifier_date', { value: Date.now() - time})}</p>
+<p>{$t('content.modifier_ago', { value: Date.now() - time})}</p>
+<h1>{$t('content.title_custom')}</h1>
+<p>{$t('content.modifier_currency', { value: 100})}</p>

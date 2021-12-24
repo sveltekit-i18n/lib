@@ -3,5 +3,5 @@
   "title_custom": "Custom Modifiers",
   "modifier_date": "Local date format: {{value:date;}}",
   "modifier_ago": "Relative: {{value:ago;}}",
-  "modifier_currency": "Currency: {{value:currency; currency:USD;}}"
+  "modifier_currency": "Currency: {{value:currency; currency:USD; ratio: 1;}}"
 }
