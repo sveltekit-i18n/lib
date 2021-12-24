@@ -1,7 +1,4 @@
 import { Config } from '../../src';
-import { ModifierOption } from '../../src/types';
-
-const findOption = (options: ModifierOption[], key: string, defaultValue?: string) => options.find((option) => option.key === key)?.value || defaultValue as any;
 
 export const CONFIG:Config = {
   initLocale: 'en',
@@ -31,9 +28,6 @@ export const CONFIG:Config = {
   ],
   customModifiers: {
     test: (value) => value,
-    date: (value, options, defaultValue = '', locale = '') => (
-      locale && new Intl.DateTimeFormat(locale, { dateStyle: findOption(options, 'dateStyle', 'medium'), timeStyle: findOption(options, 'timeStyle', 'short') }).format(+value || +defaultValue)
-    ),
   },
 };
 

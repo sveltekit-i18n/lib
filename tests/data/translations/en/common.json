@@ -10,5 +10,6 @@
   "modifier_gte": "{{value:gte; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
   "modifier_custom": "{{data:test;}}",
   "modifier_date": "{{value:date;}}",
+  "modifier_ago": "{{value:ago;}}",
   "modifier_escaped": "{{va\\:lue; option\\:1:VA\\;\\{\\{LUE\\}\\}\\:1; option\\:2:VA\\;\\{\\{LUE\\}\\}\\:2; default:DEFAULT \\{\\{VALUE\\}\\}\\;}}"
 }
