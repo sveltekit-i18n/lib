@@ -234,15 +234,7 @@ describe('translation', () => {
     expect($t('common.modifier_gte', { value: 15 })).toBe('VALUE2');
     expect($t('common.modifier_gte')).toBe('DEFAULT VALUE');
   });
-  it('custom modifier works', async () => {
-    const { t, loadConfig } = new i18n();
-
-    await loadConfig(CONFIG);
-    const $t = get(t);
-
-    expect($t('common.modifier_custom', { data: 'TEST_STRING' })).toBe('TEST_STRING');
-  });
-  it('date modifier implementation works', async () => {
+  it('`date` modifier works', async () => {
     const { t, loadConfig, locale, locales } = new i18n();
 
     await loadConfig(CONFIG);
@@ -250,9 +242,29 @@ describe('translation', () => {
     const value = Date.now();
     const altLocale = get(locales).find((l) => l !== initLocale) || '';
 
-    expect($t('common.modifier_date', { value })).toBe(customModifiers?.date(value, [], '', initLocale));
+    expect($t('common.modifier_date', { value })).toBe(new Intl.DateTimeFormat(initLocale, { dateStyle: 'medium', timeStyle: 'short' }).format(value));
     locale.set(altLocale);
-    expect($t('common.modifier_date', { value })).toBe(customModifiers?.date(value, [], '', altLocale));
+    expect($t('common.modifier_date', { value })).toBe(new Intl.DateTimeFormat(altLocale, { dateStyle: 'medium', timeStyle: 'short' }).format(value));
+  });
+  it('`ago` modifier works', async () => {
+    const { t, loadConfig, locale, locales } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $t = get(t);
+    const value = Date.now() - 1000 * 60 * 30;
+    const altLocale = get(locales).find((l) => l !== initLocale) || '';
+
+    expect($t('common.modifier_ago', { value })).toBe(new Intl.RelativeTimeFormat(initLocale).format(-30, 'minute'));
+    locale.set(altLocale);
+    expect($t('common.modifier_ago', { value })).toBe(new Intl.RelativeTimeFormat(altLocale).format(-30, 'minute'));
+  });
+  it('custom modifier works', async () => {
+    const { t, loadConfig } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $t = get(t);
+
+    expect($t('common.modifier_custom', { data: 'TEST_STRING' })).toBe('TEST_STRING');
   });
   it('modifiers containing escaped values work', async () => {
     const { t, loadConfig } = new i18n();

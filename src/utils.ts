@@ -1,6 +1,9 @@
-import type { ToDotNotation, GetTranslation, Translate, Route, Modifier, ModifierOption, DefaultModifiers, CustomModifiers } from './types';
+import * as defaultModifiers from './modifiers';
+import type { ToDotNotation, GetTranslation, Translate, Route, ModifierOption, CustomModifiers } from './types';
 
 export const useDefault = <T = any>(value: any, def:any = {}): T => value || def;
+
+export const findOption = <T = string>(options: ModifierOption[], key: string, defaultValue: string): T => ((options.find((option) => option.key === key))?.value || defaultValue) as any;
 
 export const toDotNotation: ToDotNotation = (input, parentKey) => Object.keys(useDefault(input)).reduce((acc, key) => {
   const value = input[key];
@@ -35,38 +38,6 @@ export const testRoute = (route: string) => (input: Route) => {
 };
 
 const hasPlaceholders = (text:string = '') => /{{(?:.(?<!{{|}}))+}}/.test(`${text}`);
-
-const eq: Modifier = (value, options = [], defaultValue = '') => useDefault(options.find(
-  ({ key }) => `${key}`.toLowerCase() === `${value}`.toLowerCase(),
-)).value || defaultValue;
-
-const lt: Modifier = (value, options = [], defaultValue = '') => {
-  const sortedOptions = options.sort((a, b) => +a.key - +b.key);
-
-  return useDefault<ModifierOption>(sortedOptions.find(
-    ({ key }) => +value < +key,
-  )).value || defaultValue;
-};
-
-const gt: Modifier = (value, options = [], defaultValue = '') => {
-  const sortedOptions = options.sort((a, b) => +b.key - +a.key);
-
-  return useDefault<ModifierOption>(sortedOptions.find(
-    ({ key }) => +value > +key,
-  )).value || defaultValue;
-};
-
-const lte: Modifier = (value, options = [], defaultValue = '') => eq(value, options) || lt(value, options, defaultValue);
-
-const gte: Modifier = (value, options = [], defaultValue = '') => eq(value, options) || gt(value, options, defaultValue);
-
-const defaultModifiers: DefaultModifiers = {
-  lt,
-  lte,
-  eq,
-  gte,
-  gt,
-};
 
 const unesc = (text:string) => text.replace(/\\(?=:|;|{|})/g, '');
 

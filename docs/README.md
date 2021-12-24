@@ -155,6 +155,8 @@ Modifiers don't represent the payload value directly, but they can use it for fu
 `eq` – input value is equal to the value in your definition (string comparison, case insensitive).\
 `gte` – input value is greater than or equal to the value in your definition.\
 `gt` – input value is greater than the value in your definition.
+`date` – input value is converted to locale date string.
+`ago` – input value is converted to locale relative date string.
 
 Each modifier returns a string value based on these input parameters:
 
@@ -165,7 +167,7 @@ Each modifier returns a string value based on these input parameters:
 
 When placeholder value is not matched and you don't specify the `default` value, modifier returns an empty string.
 
-You can include your own modifiers in the [Config](#custommodifiers-recordstring-value-string-options-arraykey-string-value-string-defaultvalue-string--string)!
+You can include your own modifiers in the [Config](#custommodifiers-recordstring-value-string-options-arraykey-string-value-string-defaultvalue-string--string)! See [Examples](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples).
 
 
 Modifier definition looks like this:
