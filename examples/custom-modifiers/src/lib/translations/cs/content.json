@@ -1,5 +1,7 @@
 {
-  "title": "Vlastní modifikátory",
+  "title_built-in": "Vestavěné modifikátory",
+  "title_custom": "Vlastní modifikátory",
   "modifier_date": "Lokální formát data: {{value:date;}}",
-  "modifier_ago": "Relativní: {{value:ago;}}"
+  "modifier_ago": "Relativní: {{value:ago;}}",
+  "modifier_currency": "Měna: {{value:currency; currency:CZK;}}"
 }

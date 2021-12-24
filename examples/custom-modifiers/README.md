@@ -1,4 +1,2 @@
-# One-page app
-In this app, all translations for given locale (`config.initLocale`) are loaded during initialization. Other mutations are loaded on `$locale` change.
-
-This concept is great for one-page apps.
+# Custom modifiers
+In this app, demonstrates custom modifier integration (`config.customModifiers`).

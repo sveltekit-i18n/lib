@@ -1,6 +1,6 @@
 import i18n from 'sveltekit-i18n';
 import lang from './lang.json';
-import { date, ago } from './modifiers';
+import { currency } from './modifiers';
 
 export const config = ({
   initLocale: 'en',
@@ -37,8 +37,7 @@ export const config = ({
     },
   ],
   customModifiers: {
-    date,
-    ago,
+    currency,
   },
 });
 

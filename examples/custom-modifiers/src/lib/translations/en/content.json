@@ -1,5 +1,7 @@
 {
-  "title": "Custom Modifiers",
+  "title_built-in": "Built-in Modifiers",
+  "title_custom": "Custom Modifiers",
   "modifier_date": "Local date format: {{value:date;}}",
-  "modifier_ago": "Relative: {{value:ago;}}"
+  "modifier_ago": "Relative: {{value:ago;}}",
+  "modifier_currency": "Currency: {{value:currency; currency:USD;}}"
 }
