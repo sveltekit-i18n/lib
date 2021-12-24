@@ -1,6 +1,6 @@
 # Examples
 
-These examples demonstrates how integrate `sveltekit-i18n` into your app. Currently these setups are present:
+These examples demonstrate how to integrate `sveltekit-i18n` into your app. Currently, these setups are present:
 
 `single-load`
 - loads all translations for all language mutations during `i18n` initialization
