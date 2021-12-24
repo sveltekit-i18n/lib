@@ -1,6 +1,6 @@
 {
   "name": "sveltekit-i18n",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Internationalization library for SvelteKit",
   "type": "module",
   "main": "./lib/index.js",
@@ -15,7 +15,7 @@
     "build:precompile": "rm -rf precompiled types && tsc",
     "build": "npm run build:precompile && npm run build:lib && rm -rf precompiled",
     "version:patch": "npm version patch",
-    "prepublishOnly": "npm run version:patch && npm run build",
+    "prepublishOnly": "npm run build",
     "lint": "eslint --fix --ext .ts,.js --ignore-path .gitignore ."
   },
   "files": [
