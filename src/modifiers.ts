@@ -53,7 +53,7 @@ const findIndex = (currentKey: string) => agoMap.indexOf(agoMap.find((item) => i
 
 const autoFormat = (millis: number): [number, Intl.RelativeTimeFormatUnit] => agoMap.reduce(([value, currentKey], { key, multiplier }, index) => {
   if (!currentKey || index === findIndex(currentKey) + 1) {
-    const output = value / multiplier;
+    const output = Math.round(value / multiplier);
 
     if (!currentKey || Math.abs(output) >= 1) return [output, key];
   }
