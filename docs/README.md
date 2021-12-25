@@ -154,9 +154,9 @@ Modifiers don't represent the payload value directly, but they can use it for fu
 `lte` – input value is lower than or equal to the value in your definition.\
 `eq` – input value is equal to the value in your definition (string comparison, case insensitive).\
 `gte` – input value is greater than or equal to the value in your definition.\
-`gt` – input value is greater than the value in your definition.
-`number` – input value is converted to locale formatted number string.
-`date` – input value is converted to locale date string.
+`gt` – input value is greater than the value in your definition.\
+`number` – input value is converted to locale formatted number string.\
+`date` – input value is converted to locale date string.\
 `ago` – input value is converted to locale relative date string.
 
 Each modifier returns a string value based on these input parameters:
