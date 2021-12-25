@@ -1,5 +1,6 @@
 import { derived, get, writable } from 'svelte/store';
-import { getTranslation, testRoute, toDotNotation, translate, useDefault as d } from './utils';
+import { getTranslation, testRoute, toDotNotation, translate } from './utils';
+import { useDefault as d } from './utils/common';
 
 import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, Route, Translations } from './types';
 import type { Readable, Writable } from 'svelte/store';

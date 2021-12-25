@@ -1,9 +1,7 @@
-import * as defaultModifiers from './modifiers';
-import type { ToDotNotation, GetTranslation, Translate, Route, ModifierOption, CustomModifiers } from './types';
+import * as defaultModifiers from '../modifiers';
+import { useDefault } from './common';
 
-export const useDefault = <T = any>(value: any, def:any = {}): T => value || def;
-
-export const findOption = <T = string>(options: ModifierOption[], key: string, defaultValue?: string): T => ((options.find((option) => option.key === key))?.value || defaultValue) as any;
+import type { ToDotNotation, GetTranslation, Translate, Route, ModifierOption, CustomModifiers } from '../types';
 
 export const toDotNotation: ToDotNotation = (input, parentKey) => Object.keys(useDefault(input)).reduce((acc, key) => {
   const value = input[key];
@@ -37,18 +35,18 @@ export const testRoute = (route: string) => (input: Route) => {
   return false;
 };
 
-const hasPlaceholders = (text:string = '') => /{{(?:.(?<!{{|}}))+}}/.test(`${text}`);
+const hasPlaceholders = (text:string = '') => /{{(?:(?!{{|}}).)+}}/.test(`${text}`);
 
 const unesc = (text:string) => text.replace(/\\(?=:|;|{|})/g, '');
 
-const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}, locale?: string) => text.replace(/{{\s*(?:.(?<!{{|}}))+\s*}}/g, (placeholder: string) => {
-  const key = unesc(`${placeholder.match(/(?<={{\s*)(?!\s|;)(?:.(?<!{{|}}))+?(?=\s*(?:[;:](?<!\\[;:])|}}$))/)}`);
+const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}, locale?: string) => text.replace(/{{\s*(?:(?!{{|}}).)+\s*}}/g, (placeholder: string) => {
+  const key = unesc(`${placeholder.match(/(?!{|\s).+?(?!\\[:;]).(?=\s*(?:[:;]|}}$))/)}`);
   const value = vars[key];
-  const defaultValue = `${placeholder.match(/(?<={{.*;(?<!\\;)\s*default\s*:\s*)(?!\s|;).+?(?=\s*(?:;(?<!\\;)|}}$))/i) || ''}`;
+  const [,defaultValue = ''] = useDefault(placeholder.match(/.+?(?!\\;).;\s*default\s*:\s*([^\s:;].+?(?!\\[:;]).)(?=\s*(?:[:;]|}}$))/i), []);
 
   if (value === undefined) return defaultValue;
 
-  let modifierKey = `${placeholder.match(/(?<={{\s*(?:.(?<!;(?<!\\;)))+\s*:(?<!\\:)\s*)(?!\s|;).+?(?=\s*;(?<!\\;))/) || ''}`;
+  let [,modifierKey = ''] = useDefault(placeholder.match(/{{\s*(?:[^;]|(?:\\;))+\s*(?:(?!\\:).[:])\s*(?!\s)((?:\\;|[^;])+?)(?=\s*(?:[;]|}}$))/i), []);
 
   const hasModifier = !!modifierKey;
 
@@ -58,13 +56,16 @@ const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers
 
   const modifier = modifiers[modifierKey];
   const options: ModifierOption[] = useDefault<any[]>(
-    placeholder.match(/(?<={{.+?;(?<!\\;)\s*)(?!\s)(?:.(?<!\s*default\s*:\s*))+?(?=\s*(?:;(?<!\\;)|}}$))/gi), [],
+    placeholder.match(/[^\s:;{](?:[^;]|\\[;])+[^\s:;}]/gi), [],
   ).reduce(
-    (acc, option) => {
-      const optionKey = unesc(`${option.match(/.+?(?=\s*:(?<!\\:)\s*)/)}`);
-      const optionValue = `${option.match(/(?<=.+\s*:(?<!\\:)\s*)(?!\s).+/)}`;
+    (acc, option, i) => {
+      // NOTE: First item is placeholder and modifier
+      if (i > 0) {
+        const optionKey = unesc(`${option.match(/(?:(?:\\:)|[^:])+/)}`.trim());
+        const optionValue = `${option.match(/(?:(?:\\:)|[^:])+$/)}`.trim();
 
-      if (optionKey && optionValue) return ([ ...acc, { key: optionKey, value: optionValue }]);
+        if (optionKey && optionKey !== 'default' && optionValue) return ([ ...acc, { key: optionKey, value: optionValue }]);
+      }
 
       return acc;
     }, [],
