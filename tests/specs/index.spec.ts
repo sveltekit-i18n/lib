@@ -234,29 +234,47 @@ describe('translation', () => {
     expect($t('common.modifier_gte', { value: 15 })).toBe('VALUE2');
     expect($t('common.modifier_gte')).toBe('DEFAULT VALUE');
   });
-  it('`date` modifier works', async () => {
-    const { t, loadConfig, locale, locales } = new i18n();
+  it('`number` modifier works', async () => {
+    const { t, locales, locale, loadConfig, loadTranslations } = new i18n();
 
     await loadConfig(CONFIG);
-    const $t = get(t);
+    const value = 123456.789;
+    const altLocale = get(locales).find((l) => l !== initLocale) || '';
+
+    expect(get(t)('common.modifier_number', { value })).toBe(new Intl.NumberFormat(initLocale, { maximumFractionDigits: 2 }).format(value));
+
+    locale.set(altLocale);
+    await loadTranslations(altLocale);
+
+    expect(get(t)('common.modifier_number', { value })).toBe(new Intl.NumberFormat(altLocale, { maximumFractionDigits: 2 }).format(value));
+  });
+  it('`date` modifier works', async () => {
+    const { t, loadConfig, loadTranslations, locale, locales } = new i18n();
+
+    await loadConfig(CONFIG);
     const value = Date.now();
     const altLocale = get(locales).find((l) => l !== initLocale) || '';
 
-    expect($t('common.modifier_date', { value })).toBe(new Intl.DateTimeFormat(initLocale, { dateStyle: 'medium', timeStyle: 'short' }).format(value));
+    expect(get(t)('common.modifier_date', { value })).toBe(new Intl.DateTimeFormat(initLocale, { dateStyle: 'medium', timeStyle: 'short' }).format(value));
+
     locale.set(altLocale);
-    expect($t('common.modifier_date', { value })).toBe(new Intl.DateTimeFormat(altLocale, { dateStyle: 'medium', timeStyle: 'short' }).format(value));
+    await loadTranslations(altLocale);
+
+    expect(get(t)('common.modifier_date', { value })).toBe(new Intl.DateTimeFormat(altLocale, { dateStyle: 'medium', timeStyle: 'short' }).format(value));
   });
   it('`ago` modifier works', async () => {
-    const { t, loadConfig, locale, locales } = new i18n();
+    const { t, loadConfig, loadTranslations, locale, locales } = new i18n();
 
     await loadConfig(CONFIG);
-    const $t = get(t);
     const value = Date.now() - 1000 * 60 * 30;
     const altLocale = get(locales).find((l) => l !== initLocale) || '';
 
-    expect($t('common.modifier_ago', { value })).toBe(new Intl.RelativeTimeFormat(initLocale).format(-30, 'minute'));
+    expect(get(t)('common.modifier_ago', { value })).toBe(new Intl.RelativeTimeFormat(initLocale).format(-30, 'minute'));
+
     locale.set(altLocale);
-    expect($t('common.modifier_ago', { value })).toBe(new Intl.RelativeTimeFormat(altLocale).format(-30, 'minute'));
+    await loadTranslations(altLocale);
+
+    expect(get(t)('common.modifier_ago', { value })).toBe(new Intl.RelativeTimeFormat(altLocale).format(-30, 'minute'));
   });
   it('custom modifier works', async () => {
     const { t, loadConfig } = new i18n();

@@ -25,6 +25,12 @@ export const lte: Modifier = (value, options = [], defaultValue = '') => eq(valu
 
 export const gte: Modifier = (value, options = [], defaultValue = '') => eq(value, options) || gt(value, options, defaultValue);
 
+export const number:Modifier = (value, options = [], defaultValue = '', locale = '') => (
+  locale && new Intl.NumberFormat(locale, {
+    maximumFractionDigits: findOption(options, 'decimals', findOption(options, 'maxDecimals', '2')),
+    minimumFractionDigits: findOption(options, 'minDecimals'),
+  }).format(+value || +defaultValue)
+);
 
 export const date:Modifier = (value, options = [], defaultValue = '', locale = '') => (
   locale && new Intl.DateTimeFormat(locale, {

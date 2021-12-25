@@ -8,8 +8,9 @@
   "modifier_lte": "{{value:lte; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
   "modifier_gt": "{{value:gt; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
   "modifier_gte": "{{value:gte; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
-  "modifier_custom": "{{data:test;}}",
+  "modifier_number": "{{value:number;}}",
   "modifier_date": "{{value:date;}}",
   "modifier_ago": "{{value:ago;}}",
+  "modifier_custom": "{{data:test;}}",
   "modifier_escaped": "{{va\\:lue; option\\:1:VA\\;\\{\\{LUE\\}\\}\\:1; option\\:2:VA\\;\\{\\{LUE\\}\\}\\:2; default:DEFAULT \\{\\{VALUE\\}\\}\\;}}"
 }
