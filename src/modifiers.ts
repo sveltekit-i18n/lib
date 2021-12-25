@@ -1,4 +1,4 @@
-import { useDefault, findOption } from './utils';
+import { useDefault, findOption } from './utils/common';
 import type { Modifier, ModifierOption } from './types';
 
 export const eq: Modifier = (value, options = [], defaultValue = '') => useDefault(options.find(
