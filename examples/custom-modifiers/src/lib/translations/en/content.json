@@ -1,0 +1,17 @@
+{
+  "title_built-in": "Built-in Modifiers",
+  "title_custom": "Custom Modifiers",
+  "modifier_eq_string": "{{value; male:He; female:She; default:No one}} has a dog.",
+  "modifier_ne_string": "The dog is not {{value:ne; male:his; female:her;}}.",
+  "modifier_eq": "Value {{value; 10:is; default:is not;}} equal to ten",
+  "modifier_ne": "Value {{value:ne; 10:is not; default:is;}} equal to ten",
+  "modifier_lt": "Value {{value:lt; 10:is; default:is not;}} lower than ten",
+  "modifier_lte": "Value {{value:lte; 10:is; default:is not;}} lower than or equal to ten",
+  "modifier_gt": "Value {{value:gt; 10:is; default:is not;}} bigger than ten",
+  "modifier_gte": "Value {{value:gte; 10:is; default:is not;}} bigger than or equal to ten",
+  "modifier_number": "You have {{count:gt; 0:{{count:number;}} new {{count; 1:message; default:messages}}!; default:no messages...}}",
+  "modifier_date": "Local date format: {{value:date;}}",
+  "modifier_ago": "Relative: {{value:ago;}}",
+  "modifier_test": "Test modifier: {{value:test; default:no input}}",
+  "modifier_currency": "Currency: {{value:currency; currency:USD; ratio: 1;}}"
+}
