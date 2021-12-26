@@ -8,7 +8,16 @@
     "sourceType": "module"
   },
   "plugins": [
-    "import"
+    "import",
+    "svelte3"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.svelte"
+      ],
+      "processor": "svelte3/svelte3"
+    }
   ],
   "rules": {
     "no-console": 0,
