@@ -110,11 +110,11 @@ export default class {
     });
   };
 
-  loadTranslations = async (locale: string, route = get(this.currentRoute)) => {
+  getTranslationProps = async (locale: string, route = get(this.currentRoute)): Promise<[ConfigTranslations, Record<string, string[]>] | []> => {
     const $config = get(this.config);
     const loaderLocale = this.getLocale(locale);
 
-    if (!$config || !loaderLocale) return;
+    if (!$config || !loaderLocale) return [];
 
     let $locale = get(this.locale);
 
@@ -130,17 +130,26 @@ export default class {
 
     const { loaders } = d<Config>($config);
     const filteredLoaders = d<LoaderModule[]>(loaders, [])
-      .filter(({ locale }) => `${locale}`.toLowerCase() === `${$locale}`.toLowerCase())
       .filter(({ key }) => !translationForLocale || !d(this.loadedKeys[$locale], []).includes(key))
+      .filter(({ locale }) => `${locale}`.toLowerCase() === `${$locale}`.toLowerCase())
       .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute(route)));
 
     if (filteredLoaders.length) {
       this.isLoading.set(true);
 
       const translation = await getTranslation(filteredLoaders);
-      this.addTranslations({ [$locale]: translation }, { [$locale]: filteredLoaders.map(({ key }) => key) });
 
       this.isLoading.set(false);
+
+      return [{ [$locale]: translation }, { [$locale]: filteredLoaders.map(({ key }) => key) }];
     }
+
+    return [];
+  };
+
+  loadTranslations = async (locale: string, route = get(this.currentRoute)) => {
+    const props = await this.getTranslationProps(locale, route);
+
+    if (props.length) this.addTranslations(...props);
   };
 }

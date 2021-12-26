@@ -70,11 +70,11 @@ This readable store returns a function you can use to obtain your translations f
 ### `loadConfig`: __(config: Config) => Promise\<void>__
 You can load a new `config` using this method.
 
-### `loadTranslations`: __(locale: string, route?: string) => Promise\<void>__
-This method loads translation for given `locale` and `route`.
+### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<Record<string, Record<string, any>>, Record<string, string[]>>>__
+This method returns `translations` and `keys` for given `locale` and `route`. This output can be stored in `translations` readable using `addTransitions` method.
 
 ### `addTranslations`: __(translations: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__
-This method allows you to add your translations directly. 
+This method allows you to store loaded translations in `translations` readable.
 
 `translations` – this parameter should contain an object, containing translations objects for locales you want to add.
 
@@ -110,6 +110,9 @@ For example, for the previous case it would be:
   "es": ["common"]
 }
 ```
+
+### `loadTranslations`: __(locale: string, route?: string) => Promise\<void>__
+This method encapsulates `getTranslationProps` and `addTranslations` methods. It loads translation for given `locale` and `route` and automatically stores it in `translations` readable.
 
 
 ## Translations
