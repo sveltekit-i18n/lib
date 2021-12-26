@@ -194,6 +194,17 @@ describe('translation', () => {
     expect($t('common.modifier_eq', { value: 'option2' })).toBe('VALUES: VALUE2, VALUE2, VALUE2, VALUE2');
     expect($t('common.modifier_eq')).toBe('VALUES: DEFAULT VALUE, DEFAULT VALUE, DEFAULT VALUE, DEFAULT VALUE');
   });
+  it('`ne` modifier works', async () => {
+    const { t, loadConfig } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $t = get(t);
+
+    expect($t('common.modifier_ne', { value: 10 })).toBe('DEFAULT VALUE');
+    expect($t('common.modifier_ne', { value: 5 })).toBe('VALUE2');
+    expect($t('common.modifier_ne', { value: 15 })).toBe('VALUE2');
+    expect($t('common.modifier_ne')).toBe('VALUE2');
+  });
   it('`lt` modifier works', async () => {
     const { t, loadConfig } = new i18n();
 

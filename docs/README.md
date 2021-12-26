@@ -150,11 +150,12 @@ You can also use `default` value. This value is used in case there is no appropr
 ### Modifiers
 Modifiers don't represent the payload value directly, but they can use it for further calculations. Currently, these modifiers are in place:
 
+`eq` – input value is equal to the value in your definition (string comparison, case insensitive).\
+`ne` – input value is not equal to the value in your definition (string comparison, case insensitive).\
 `lt` – input value is lower than the value in your definition.\
 `lte` – input value is lower than or equal to the value in your definition.\
-`eq` – input value is equal to the value in your definition (string comparison, case insensitive).\
-`gte` – input value is greater than or equal to the value in your definition.\
 `gt` – input value is greater than the value in your definition.\
+`gte` – input value is greater than or equal to the value in your definition.\
 `number` – input value is converted to locale formatted number string.\
 `date` – input value is converted to locale date string.\
 `ago` – input value is converted to locale relative date string.

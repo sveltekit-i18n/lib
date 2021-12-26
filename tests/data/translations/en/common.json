@@ -4,6 +4,7 @@
   "placeholder_default": "VALUES: {{value; default: DEFAULT_VALUE}}, {{value; default: DEFAULT_VALUE;}}, {{ value; default: DEFAULT_VALUE }}, {{ value; default: DEFAULT_VALUE; }}",
   "placeholder_escaped": "{{pl\\:ace\\;holder}}",
   "modifier_eq": "VALUES: {{value; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}, {{value:eq; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value : eq ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}",
+  "modifier_ne": "{{value:ne; 10:VALUE2; default:DEFAULT VALUE;}}",
   "modifier_lt": "{{value:lt; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
   "modifier_lte": "{{value:lte; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
   "modifier_gt": "{{value:gt; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",

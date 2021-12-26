@@ -44,9 +44,9 @@ const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers
   const value = vars[key];
   const [,defaultValue = ''] = useDefault(placeholder.match(/.+?(?!\\;).;\s*default\s*:\s*([^\s:;].+?(?!\\[:;]).)(?=\s*(?:[:;]|}}$))/i), []);
 
-  if (value === undefined) return defaultValue;
-
   let [,modifierKey = ''] = useDefault(placeholder.match(/{{\s*(?:[^;]|(?:\\;))+\s*(?:(?!\\:).[:])\s*(?!\s)((?:\\;|[^;])+?)(?=\s*(?:[;]|}}$))/i), []);
+
+  if (value === undefined && modifierKey !== 'ne') return defaultValue;
 
   const hasModifier = !!modifierKey;
 
