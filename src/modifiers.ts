@@ -5,6 +5,10 @@ export const eq: Modifier = (value, options = [], defaultValue = '') => useDefau
   ({ key }) => `${key}`.toLowerCase() === `${value}`.toLowerCase(),
 )).value || defaultValue;
 
+export const ne: Modifier = (value, options = [], defaultValue = '') => useDefault(options.find(
+  ({ key }) => `${key}`.toLowerCase() !== `${value}`.toLowerCase(),
+)).value || defaultValue;
+
 export const lt: Modifier = (value, options = [], defaultValue = '') => {
   const sortedOptions = options.sort((a, b) => +a.key - +b.key);
 
@@ -21,9 +25,9 @@ export const gt: Modifier = (value, options = [], defaultValue = '') => {
   )).value || defaultValue;
 };
 
-export const lte: Modifier = (value, options = [], defaultValue = '') => eq(value, options) || lt(value, options, defaultValue);
+export const lte: Modifier = (value, options = [], defaultValue = '') => eq(value, options, lt(value, options, defaultValue));
 
-export const gte: Modifier = (value, options = [], defaultValue = '') => eq(value, options) || gt(value, options, defaultValue);
+export const gte: Modifier = (value, options = [], defaultValue = '') => eq(value, options, gt(value, options, defaultValue));
 
 export const number:Modifier = (value, options = [], defaultValue = '', locale = '') => (
   locale && new Intl.NumberFormat(locale, {
