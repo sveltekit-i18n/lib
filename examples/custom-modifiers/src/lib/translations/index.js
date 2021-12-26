@@ -1,6 +1,6 @@
 import i18n from 'sveltekit-i18n';
 import lang from './lang.json';
-import { currency } from './modifiers';
+import * as customModifiers from './modifiers';
 
 export const config = ({
   initLocale: 'en',
@@ -9,11 +9,6 @@ export const config = ({
       locale: 'en',
       key: 'lang',
       loader: () => lang,
-    },
-    {
-      locale: 'en',
-      key: 'menu',
-      loader: async () => (await import('./en/menu.json')).default,
     },
     {
       locale: 'en',
@@ -27,18 +22,11 @@ export const config = ({
     },
     {
       locale: 'cs',
-      key: 'menu',
-      loader: async () => (await import('./cs/menu.json')).default,
-    },
-    {
-      locale: 'cs',
       key: 'content',
       loader: async () => (await import('./cs/content.json')).default,
     },
   ],
-  customModifiers: {
-    currency,
-  },
+  customModifiers,
 });
 
 export const { t, locales, locale } = new i18n(config);
