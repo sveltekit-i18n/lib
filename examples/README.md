@@ -19,6 +19,9 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - app translations are loaded the same way as for `multi-page` (SSR)
 - component's translations are loaded on component mount (CSR only - Svelte does not provide server side `load` method for components, so translation loaders are triggered asynchronously within `onMount` function)
 
+`custom-modifiers`
+- this app, demonstrates custom modifiers integration (`config.customModifiers`) and includes an overview of built-in modifiers.
+
 
 ## How to
 
