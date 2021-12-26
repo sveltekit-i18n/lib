@@ -52,6 +52,7 @@
     "eslint-config-airbnb-typescript": "^16.1.0",
     "eslint-plugin-import": "^2.25.3",
     "jest": "^27.4.5",
+    "pre-commit": "^1.2.2",
     "rollup": "^2.61.1",
     "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-dts": "^4.0.1",
