@@ -1,17 +1,15 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { get } from 'svelte/store';
-import { loadTranslations, translations } from '../lib/translations';
+import { getTranslationProps } from '../lib/translations';
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ body }) {
   const { initialLocale, path } = body;
 
-  await loadTranslations(initialLocale, path);
-  const $translations = get(translations);
+  const translationProps = await getTranslationProps(initialLocale, path);
 
   return {
     body: {
-      translations: $translations,
+      translationProps,
     },
   };
 }

@@ -50,4 +50,4 @@ export const config = ({
   ],
 });
 
-export const { t, locales, locale, loadTranslations, translations, addTranslations, initialized } = new i18n(config);
+export const { t, locales, locale, loadTranslations, translations, addTranslations, initialized, getTranslationProps } = new i18n(config);

@@ -5,10 +5,10 @@
   
   export const load = async ({ page, fetch }) => {
     const { path } = page;
-    const initialLocale = 'en'; // get from cookie or user session...
+    const initialLocale = get(locale) || 'en'; // get from cookie or user session...
 
     // fetch method prevents duplicit (SSR / CSR) load
-    const { translations } = await fetch('/loadTranslations', {
+    const { translationProps } = await fetch('/loadTranslations', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -16,11 +16,9 @@
       body: JSON.stringify({initialLocale, path}),
     }).then((x) => x.json());
 
-    if (browser) {
-      addTranslations(translations);
-      // `loadTranslations` method just sets proper locale and path in case translations are already loaded:
-      await loadTranslations(initialLocale, path);
-    }
+    addTranslations(...translationProps);
+    // `loadTranslations` method just sets proper locale and path in case translations are already loaded:
+    await loadTranslations(initialLocale, path);
 
     return {};
   }
