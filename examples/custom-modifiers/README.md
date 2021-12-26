@@ -1,2 +1,2 @@
 # Custom modifiers
-In this app, demonstrates custom modifier integration (`config.customModifiers`).
+This app, demonstrates custom modifiers integration (`config.customModifiers`) and includes an overview of built-in modifiers.
