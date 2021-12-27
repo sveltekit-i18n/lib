@@ -9,11 +9,10 @@
     "import": "./lib/index.js"
   },
   "scripts": {
-    "dev": "node --experimental-json-modules rollup.watch",
+    "dev": "rollup -c -w",
     "test": "jest",
-    "build:lib": "rm -rf lib types && rollup -c",
-    "build:precompile": "rm -rf precompiled types && tsc",
-    "build": "npm run build:precompile && npm run build:lib && rm -rf precompiled",
+    "cleanup": "rm -rf lib types",
+    "build": "npm run cleanup && rollup -c",
     "prepublishOnly": "npm run build",
     "lint": "eslint --fix --ext .ts,.js --ignore-path .gitignore ."
   },

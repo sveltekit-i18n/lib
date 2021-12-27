@@ -9,9 +9,7 @@
     "strict": true,
     "target": "es2017",
     "moduleResolution": "node",
-    "declaration": true,
-    "declarationDir": "./precompiled",
-    "emitDeclarationOnly": true,
+    "noEmit": true,
     "resolveJsonModule": true,
   },
   "include": [
