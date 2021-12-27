@@ -1,7 +1,7 @@
 <script context="module">
   import { browser } from '$app/env';
   import { get, writable } from 'svelte/store';
-  import { t, locale, locales, addTranslations, loadTranslations } from '$lib/translations';
+  import { t, loading, locale, locales, addTranslations, loadTranslations, translations } from '$lib/translations';
 
   export const load = async ({ page, fetch }) => {
     const { path } = page;
@@ -26,6 +26,23 @@
 
 <script>
   const count = writable(2);
+
+
+  const handleLocaleChange = async ({currentTarget}) => {
+    const {value} = currentTarget;
+    $locale = value;
+    await loading.toPromise();
+
+    await fetch('/addTranslations', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        translations: $translations
+      }),
+    });
+  };
 </script>
 
 <a href="/">{$t('menu.home')}</a>
@@ -41,7 +58,7 @@
 <br />
 <br />
 <br />
-<select bind:value="{$locale}">
+<select on:change="{handleLocaleChange}">
   {#each $locales as locale}
     <option value="{locale}">{$t(`lang.${locale}`)}</option>
   {/each}

@@ -50,6 +50,6 @@ export const config = ({
   ],
 });
 
-export const { t, loading, locales, locale, loadTranslations, translations, addTranslations, getTranslationProps } = new i18n(config);
+export const { t, loading, locales, locale, translations, loadTranslations, addTranslations, getTranslationProps } = new i18n(config);
 
 loading.subscribe(($loading) => $loading && console.log('LOADING...'));
