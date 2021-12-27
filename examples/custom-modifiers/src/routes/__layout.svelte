@@ -1,5 +1,11 @@
-<script>
-  import { t, locales, locale } from '$lib/translations'; 
+<script context="module">
+  import { t, locales, locale, loadConfig, config } from '$lib/translations';
+
+  export const load = async ({ page }) => {
+    await loadConfig(config);
+
+    return {};
+  }
 </script>
 
 <slot />

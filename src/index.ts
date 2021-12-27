@@ -11,13 +11,12 @@ export default class {
   constructor(config?: Config) {
     if (config) this.loadConfig(config);
 
-    this.locale.subscribe(this.translationLoader);
-    this.currentRoute.subscribe(this.translationLoader);
+    this.loaderTrigger.subscribe(this.translationLoader);
   }
 
   private loadedKeys: Record<string, string[]> = {};
 
-  private currentRoute: Writable<string> = writable('');
+  private currentRoute: Writable<string> = writable();
 
   private config: Writable<Config> = writable({});
 
@@ -40,7 +39,11 @@ export default class {
     return ([...new Set([...loaderLocales, ...translationLocales])]);
   }, []);
 
-  locale: Writable<string> = writable('');
+  locale: Writable<string> = writable();
+
+  private loaderTrigger = derived([this.locale, this.currentRoute], ([$locale, $currentRoute], set) => {
+    if ($locale !== undefined && $currentRoute !== undefined) set([$locale, $currentRoute]);
+  }, [] as string[]);
 
   initialized: Readable<boolean> = derived(this.privateTranslations, ($translations) => {
     if (!get(this.initialized)) return !!Object.keys($translations).length;
@@ -165,9 +168,11 @@ export default class {
     await this.loading.toPromise();
   };
 
-  loadTranslations = async (locale: string, route = get(this.currentRoute)) => {
+  loadTranslations = async (locale: string, route = get(this.currentRoute) || '') => {
     if (!locale) return;
-    await this.initLocale(locale);
-    await this.setRoute(route);
+    this.setRoute(route);
+    this.initLocale(locale);
+
+    await this.loading.toPromise();
   };
 }

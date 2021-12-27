@@ -1,10 +1,10 @@
 <script context="module">
-  import { t, locales, locale } from '$lib/translations'; 
+  import { t, locales, locale, loadTranslations } from '$lib/translations'; 
 
   export const load = async () => {
 
     const initialLocale ='en'; // get from cookie / url / fetch from server...
-    locale.set(initialLocale);
+    await loadTranslations(initialLocale);
 
     return {};
   }

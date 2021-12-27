@@ -2,8 +2,8 @@ import i18n from 'sveltekit-i18n';
 import translations from './translations';
 
 export const config = ({
-  initLocale: 'en', // or you can set it later changing `$locale` value (see `__layout.svelte`)
+  initLocale: 'en',
 });
 
-export const { t, l, locales, locale, addTranslations } = new i18n(config);
+export const { t, l, locales, locale, addTranslations, loadConfig } = new i18n();
 addTranslations(translations);
