@@ -170,7 +170,9 @@ export default class {
 
   loadTranslations = async (locale: string, route = get(this.currentRoute) || '') => {
     if (!locale) return;
-    await this.initLocale(locale);
-    await this.setRoute(route);
+    this.setRoute(route);
+    this.initLocale(locale);
+
+    await this.loading.toPromise();
   };
 }
