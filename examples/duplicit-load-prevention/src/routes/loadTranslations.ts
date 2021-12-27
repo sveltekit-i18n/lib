@@ -5,7 +5,9 @@ export async function post({ body }) {
   const { initialLocale, path } = body;
 
   const translationProps = await getTranslationProps(initialLocale, path);
-  addTranslations(...translationProps); // add translations on server
+
+  // add translations on server-side
+  addTranslations(...translationProps);
 
   return {
     body: {
