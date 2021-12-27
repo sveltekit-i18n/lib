@@ -20,7 +20,7 @@ export default [
     plugins: [autoExternal(), ts(), !ROLLUP_WATCH && terser({ mangle: { reserved: ['get', 'derived', 'writable'] } })],
   },
   {
-    input: './precompiled/index.d.ts',
+    input: './src/index.ts',
     output: [{ file: 'types/index.d.ts', format: 'es' }],
     plugins: [dts()],
   },
