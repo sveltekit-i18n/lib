@@ -14,13 +14,17 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - this is the most frequent use-case – application with multiple routes
 - translations are loaded not only according to locale, but given routes as well
 
+`duplicit-load-prevention`
+- this app is based on `multi-page` solution, but uses SvelteKit's `fetch` method to prevent duplicit (server and client) translation load on app enter
+- it's useful, when you are fetching your translations from remote API, or using other data-expensive solution
+
 `component-scoped`
 - this is the most complex approach, which allows you to scope your translations to components, so they can have their own lexicons
 - app translations are loaded the same way as for `multi-page` (SSR)
 - component's translations are loaded on component mount (CSR only - Svelte does not provide server side `load` method for components, so translation loaders are triggered asynchronously within `onMount` function)
 
 `custom-modifiers`
-- this app, demonstrates custom modifiers integration (`config.customModifiers`) and includes an overview of built-in modifiers.
+- this app demonstrates custom modifiers integration (`config.customModifiers`) and includes an overview of built-in modifiers
 
 
 ## How to
