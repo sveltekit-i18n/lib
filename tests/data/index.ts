@@ -1,4 +1,5 @@
 import { Config } from '../../src';
+export { default as TRANSLATIONS } from './translations';
 
 export const CONFIG:Config = {
   initLocale: 'en',
@@ -28,16 +29,5 @@ export const CONFIG:Config = {
   ],
   customModifiers: {
     test: (value) => value,
-  },
-};
-
-export const TRANSLATIONS: Record<string, any> = {
-  'en': {
-    'common.no_placeholder': 'NO_PLACEHOLDER',
-    'route1.key': 'value',
-    'route2.key': 'value',
-  },
-  'cs': {
-    'common.no_placeholder': 'NO_PLACEHOLDER',
   },
 };

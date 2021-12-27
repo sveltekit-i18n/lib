@@ -46,8 +46,8 @@ Read more about [Modifiers](#modifiers).
 
 Each `sveltekit-i18n` instance includes these properties and methods:
 
-### `loading`: __Readable\<boolean>__ 
-This readable store indicates wheter translations are loading or not.
+### `loading`: __Readable\<boolean> & { toPromise: () => Promise<void[]> }__ 
+This readable store indicates wheter translations are loading or not. It can be converted to promise using `.toPromise()` method.
 
 ### `initialized`: __Readable\<boolean>__
 This readable store returns `true` after first translation successfully initialized.
@@ -69,6 +69,15 @@ This readable store returns a function you can use to obtain your translations f
 
 ### `loadConfig`: __(config: Config) => Promise\<void>__
 You can load a new `config` using this method.
+
+### `initLocale`: __(locale: string) => void__
+This method sets the locale in case it's not already set. It doesn't set it in case the locale does not exist in `loaders` config.
+
+### `setRoute`: __(route: string) => void__
+Sets a new route value, if given value does not equal to current value.
+
+### `initLocalRoute`:  __(locale: string, route: string) => void__
+Glues `initLocale` and `setRoute` together.
 
 ### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<Record<string, Record<string, any>>, Record<string, string[]>>>__
 This method returns `translations` and `keys` for given `locale` and `route`. This output can be stored in `translations` readable using `addTransitions` method.
@@ -112,7 +121,7 @@ For example, for the previous case it would be:
 ```
 
 ### `loadTranslations`: __(locale: string, route?: string) => Promise\<void>__
-This method encapsulates `getTranslationProps` and `addTranslations` methods. It loads translation for given `locale` and `route` and automatically stores it in `translations` readable.
+This method encapsulates `initLocalRoute`, `getTranslationProps` and `addTranslations` methods. It sets current route config, loads appropriate translations and automatically stores it in `translations` readable.
 
 
 ## Translations
