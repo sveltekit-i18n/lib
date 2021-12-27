@@ -22,7 +22,7 @@ describe('i18n instance', () => {
     toHaveProperty('loadTranslations');
     toHaveProperty('addTranslations');
   });
-  it('`setRoute` method does not trigger loading if no locale set', async () => {
+  it('`setRoute` method does not trigger loading if locale is not set', async () => {
     const { initialized, setRoute, loading, locale } = new i18n({ loaders });
 
     setRoute('/');
@@ -30,13 +30,33 @@ describe('i18n instance', () => {
     const $loading = get(loading);
     const $locale = get(locale);
 
-    expect($locale).toBe('');
+    expect($locale).toBe(undefined);
     expect($initialized).toBe(false);
     expect($loading).toBe(false);
   });
-  it('`initLocale` method triggers loading', async () => {
+  it('`setRoute` method does trigger loading if locale is set', async () => {
+    const { initialized, setRoute, initLocale: setLocale, loading } = new i18n({ loaders });
+
+    await setLocale(initLocale);
+    setRoute('/');
+    const $loading = get(loading);
+    expect($loading).toBe(true);
+
+    const $initialized = get(initialized);
+    expect($initialized).toBe(false);
+  });
+  it('`initLocale` method does not trigger loading when route is not set', async () => {
     const { initLocale: setLocale, loading } = new i18n({ loaders });
 
+    setLocale(initLocale);
+
+    const $loading = get(loading);
+    expect($loading).toBe(false);
+  });
+  it('`initLocale` method triggers loading when route is set', async () => {
+    const { initLocale: setLocale, setRoute, loading } = new i18n({ loaders });
+
+    await setRoute('');
     setLocale(initLocale);
 
     const $loading = get(loading);
@@ -51,11 +71,25 @@ describe('i18n instance', () => {
     const $locale = get(locale);
 
     expect($loading).toBe(false);
-    expect($locale).toBe('');
+    expect($locale).toBe(undefined);
   });
-  it('setting `locale` initializes `translations`', async () => {
+  it('setting `locale` does not initialize `translations` if route is not set', async () => {
     const { loading, locale, initialized } = new i18n({ loaders });
 
+    locale.set(initLocale);
+
+    const $loading = get(loading);
+    expect($loading).toBe(false);
+
+    await loading.toPromise();
+
+    const $initialized = get(initialized);
+    expect($initialized).toBe(false);
+
+  });
+  it('setting `locale` initializes `translations` if route is set', async () => {
+    const { loading, locale, setRoute, initialized } = new i18n({ loaders });
+    await setRoute('');
     locale.set(initLocale);
 
     const $loading = get(loading);
@@ -115,15 +149,21 @@ describe('i18n instance', () => {
 
     expect($initialized).toBe(false);
   });
-  it('`loading` works correctly', () => {
+  it('`loading` works correctly', async () => {
     const { loading, loadConfig } = new i18n();
 
-    expect(get(loading)).toBe(false);
+    const testArray = [false, true, false];
+    const outputArray: boolean[] = [];
 
-    loadConfig(CONFIG).then(() => expect(get(loading)).toBe(false));
+    loading.subscribe(($loading) => {
+      outputArray.push($loading);
+    });
 
-    expect(get(loading)).toBe(true);
+    await loadConfig(CONFIG).then(() => expect(get(loading)).toBe(false));
 
+    testArray.forEach((value, index) => {
+      expect(value).toBe(testArray[index]);
+    });
   });
   it('includes `locales` after config load', async () => {
     const { locales, loadConfig } = new i18n();
