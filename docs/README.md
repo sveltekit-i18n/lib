@@ -77,7 +77,7 @@ This method sets the locale in case it's not already set. It doesn't set it in c
 Sets a new route value, if given value is not equal to current value.
 
 ### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<Record<string, Record<string, any>>, Record<string, string[]>>>__
-This method returns `translations` and `keys` for given `locale` and `route`. This output can be stored in `translations` readable using `addTransitions` method.
+According to input props (`locale` and `route`), this method triggers `loaders`, which haven't been already triggered, and returns appropriate `translations` and `keys`. This output can be used later as input parameters of `addTranslations` method.
 
 ### `addTranslations`: __(translations: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__
 This method allows you to store loaded translations in `translations` readable.
