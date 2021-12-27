@@ -22,6 +22,83 @@ describe('i18n instance', () => {
     toHaveProperty('loadTranslations');
     toHaveProperty('addTranslations');
   });
+  it('`setRoute` method does not trigger loading if no locale set', async () => {
+    const { initialized, setRoute, loading, locale } = new i18n({ loaders });
+
+    setRoute('/');
+    const $initialized = get(initialized);
+    const $loading = get(loading);
+    const $locale = get(locale);
+
+    expect($locale).toBe('');
+    expect($initialized).toBe(false);
+    expect($loading).toBe(false);
+  });
+  it('`initLocale` method triggers loading', async () => {
+    const { initLocale: setLocale, loading } = new i18n({ loaders });
+
+    setLocale(initLocale);
+
+    const $loading = get(loading);
+    expect($loading).toBe(true);
+  });
+  it('`initLocale` does not set `unknown` locale', async () => {
+    const { initLocale: setLocale, loading, locale } = new i18n({ loaders });
+
+    setLocale('unknown');
+
+    const $loading = get(loading);
+    const $locale = get(locale);
+
+    expect($loading).toBe(false);
+    expect($locale).toBe('');
+  });
+  it('setting `locale` initializes `translations`', async () => {
+    const { loading, locale, initialized } = new i18n({ loaders });
+
+    locale.set(initLocale);
+
+    const $loading = get(loading);
+    expect($loading).toBe(true);
+
+    await loading.toPromise();
+
+    const $initialized = get(initialized);
+    expect($initialized).toBe(true);
+
+  });
+  it('`getTranslationProps` method works', async () => {
+    const { initialized, getTranslationProps } = new i18n({ loaders });
+
+    const [translations = {}] = await getTranslationProps(initLocale);
+    const $initialized = get(initialized);
+
+    const keys = (loaders || []).filter(({ routes }) => !routes).map(({ key }) => key);
+
+    expect(translations[initLocale]).toEqual(
+      expect.objectContaining(filterTranslationKeys(TRANSLATIONS[initLocale], keys)),
+    );
+
+    expect($initialized).toBe(false);
+  });
+  it('`addTranslations` method works', async () => {
+    const { addTranslations, translations } = new i18n();
+
+    addTranslations(TRANSLATIONS);
+    const $translations = get(translations);
+
+    expect($translations).toEqual(
+      expect.objectContaining(TRANSLATIONS),
+    );
+  });
+  it('`addTranslations` prevents duplicit `loading`', async () => {
+    const { addTranslations, loadTranslations, loading } = new i18n({ loaders, customModifiers });
+
+    addTranslations(TRANSLATIONS);
+    loadTranslations(initLocale);
+
+    expect(get(loading)).toBe(false);
+  });
   it('initializes properly with `initLocale`', async () => {
     const { initialized, loadConfig } = new i18n();
 
@@ -38,7 +115,7 @@ describe('i18n instance', () => {
 
     expect($initialized).toBe(false);
   });
-  it('loading works correctly', () => {
+  it('`loading` works correctly', () => {
     const { loading, loadConfig } = new i18n();
 
     expect(get(loading)).toBe(false);
@@ -48,7 +125,7 @@ describe('i18n instance', () => {
     expect(get(loading)).toBe(true);
 
   });
-  it('includes locales after config load', async () => {
+  it('includes `locales` after config load', async () => {
     const { locales, loadConfig } = new i18n();
 
     await loadConfig(CONFIG);
@@ -56,7 +133,7 @@ describe('i18n instance', () => {
 
     expect($locales).toContain(initLocale);
   });
-  it('includes current locale value', async () => {
+  it('includes current `locale` value', async () => {
     const { locale, loadConfig } = new i18n();
 
     await loadConfig(CONFIG);
@@ -64,7 +141,7 @@ describe('i18n instance', () => {
 
     expect($locale).toBe(initLocale);
   });
-  it('includes translations for `initLocale` only after config load', async () => {
+  it('includes `translations` for `initLocale` only after config load', async () => {
     const { translations, locales, loadConfig } = new i18n();
 
     await loadConfig(CONFIG);
@@ -79,7 +156,7 @@ describe('i18n instance', () => {
       );
     });
   });
-  it('includes translations only for loaders without routes', async () => {
+  it('includes `translations` only for loaders without routes', async () => {
     const { translations, loadConfig } = new i18n();
 
     await loadConfig(CONFIG);
@@ -114,24 +191,6 @@ describe('i18n instance', () => {
     expect(get(translations)[initLocale]).toEqual(
       expect.objectContaining(TRANSLATIONS[initLocale]),
     );
-  });
-  it('`addTranslations` method works', async () => {
-    const { addTranslations, translations } = new i18n();
-
-    addTranslations(TRANSLATIONS);
-    const $translations = get(translations);
-
-    expect($translations).toEqual(
-      expect.objectContaining(TRANSLATIONS),
-    );
-  });
-  it('`addTranslations` prevents duplicit `loading`', async () => {
-    const { addTranslations, loadTranslations, loading } = new i18n({ loaders, customModifiers });
-
-    addTranslations(TRANSLATIONS);
-    loadTranslations(initLocale);
-
-    expect(get(loading)).toBe(false);
   });
 });
 

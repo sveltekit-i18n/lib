@@ -11,7 +11,8 @@ export default class {
   constructor(config?: Config) {
     if (config) this.loadConfig(config);
 
-    this.locale.subscribe(this.loadTranslations);
+    this.locale.subscribe(this.translationLoader);
+    this.currentRoute.subscribe(this.translationLoader);
   }
 
   private loadedKeys: Record<string, string[]> = {};
@@ -22,7 +23,9 @@ export default class {
 
   private isLoading: Writable<boolean> = writable(false);
 
-  loading: Readable<boolean> = { subscribe: this.isLoading.subscribe };
+  private promises: Promise<void>[] = [];
+
+  loading: Readable<boolean> & { toPromise: () => Promise<void[]> } = { subscribe: this.isLoading.subscribe, toPromise: () => Promise.all(this.promises) };
 
   private privateTranslations: Writable<Translations> = writable({});
 
@@ -69,6 +72,27 @@ export default class {
     return `${localeFromLoaders}`.toLowerCase();
   };
 
+  initLocale = async (locale?:string) => {
+    if (!locale) return;
+
+    const loaderLocale = this.getLocale(locale);
+
+    if (!loaderLocale) return;
+
+    let $locale = get(this.locale);
+
+    if (!$locale) {
+      this.locale.set(loaderLocale);
+    }
+
+    await this.loading.toPromise();
+  };
+
+  setRoute = async (route: string) => {
+    if (route !== get(this.currentRoute)) this.currentRoute.set(route);
+    await this.loading.toPromise();
+  };
+
   loadConfig = async (config: Config) => {
     if (!config) throw new Error('No config!');
 
@@ -79,6 +103,8 @@ export default class {
   };
 
   addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
+    if (!translations) return;
+
     const translationLocales = Object.keys(d(translations));
 
     this.privateTranslations.update(($translations) => translationLocales.reduce(
@@ -96,51 +122,52 @@ export default class {
       let localeKeys = Object.keys(translations[$locale]).map((k) => `${k}`.split('.')[0]);
       if (keys) localeKeys = keys[$locale];
 
-      this.loadedKeys[$locale] = [...d(this.loadedKeys[$locale], []), ...d(localeKeys, [])];
-    });
-
-    this.locale.update(($locale) => {
-      if (!$locale) {
-        const { initLocale } = get(this.config);
-
-        return this.getLocale(initLocale);
-      }
-
-      return $locale;
+      this.loadedKeys[$locale] = Array.from(new Set([
+        ...d(this.loadedKeys[$locale], []),
+        ...d(localeKeys, []),
+      ]));
     });
   };
 
-  loadTranslations = async (locale: string, route = get(this.currentRoute)) => {
+  getTranslationProps = async ($locale = get(this.locale), $route = get(this.currentRoute)): Promise<[ConfigTranslations, Record<string, string[]>] | []> => {
     const $config = get(this.config);
-    const loaderLocale = this.getLocale(locale);
 
-    if (!$config || !loaderLocale) return;
-
-    let $locale = get(this.locale);
-
-    if (!$locale) {
-      this.locale.set(loaderLocale);
-      $locale = loaderLocale;
-    }
-
-    if (route) this.currentRoute.set(route);
+    if (!$config || !$locale) return [];
 
     const $translations = get(this.privateTranslations);
     const translationForLocale = $translations[$locale];
 
     const { loaders } = d<Config>($config);
     const filteredLoaders = d<LoaderModule[]>(loaders, [])
-      .filter(({ locale }) => `${locale}`.toLowerCase() === `${$locale}`.toLowerCase())
       .filter(({ key }) => !translationForLocale || !d(this.loadedKeys[$locale], []).includes(key))
-      .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute(route)));
+      .filter(({ locale }) => `${locale}`.toLowerCase() === `${$locale}`.toLowerCase())
+      .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute($route)));
 
     if (filteredLoaders.length) {
       this.isLoading.set(true);
 
       const translation = await getTranslation(filteredLoaders);
-      this.addTranslations({ [$locale]: translation }, { [$locale]: filteredLoaders.map(({ key }) => key) });
 
       this.isLoading.set(false);
+
+      return [{ [$locale]: translation }, { [$locale]: filteredLoaders.map(({ key }) => key) }];
     }
+    return [];
+  };
+
+  private translationLoader = async () => {
+    this.promises.push(new Promise(async (res) => {
+      const props = await this.getTranslationProps();
+      if (props.length) this.addTranslations(...props);
+      res();
+    }));
+
+    await this.loading.toPromise();
+  };
+
+  loadTranslations = async (locale: string, route = get(this.currentRoute)) => {
+    if (!locale) return;
+    await this.initLocale(locale);
+    await this.setRoute(route);
   };
 }
