@@ -72,7 +72,7 @@ export default class {
     return `${localeFromLoaders}`.toLowerCase();
   };
 
-  initLocale = async (locale:string) => {
+  initLocale = async (locale?:string) => {
     if (!locale) return;
 
     const loaderLocale = this.getLocale(locale);
@@ -103,6 +103,8 @@ export default class {
   };
 
   addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
+    if (!translations) return;
+
     const translationLocales = Object.keys(d(translations));
 
     this.privateTranslations.update(($translations) => translationLocales.reduce(
@@ -120,17 +122,10 @@ export default class {
       let localeKeys = Object.keys(translations[$locale]).map((k) => `${k}`.split('.')[0]);
       if (keys) localeKeys = keys[$locale];
 
-      this.loadedKeys[$locale] = [...d(this.loadedKeys[$locale], []), ...d(localeKeys, [])];
-    });
-
-    this.locale.update(($locale) => {
-      if (!$locale) {
-        const { initLocale } = get(this.config);
-
-        return this.getLocale(initLocale);
-      }
-
-      return $locale;
+      this.loadedKeys[$locale] = Array.from(new Set([
+        ...d(this.loadedKeys[$locale], []),
+        ...d(localeKeys, []),
+      ]));
     });
   };
 
