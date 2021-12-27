@@ -9,7 +9,7 @@
     "import": "./lib/index.js"
   },
   "scripts": {
-    "dev": "rollup -c -w",
+    "dev": "node --experimental-json-modules rollup.watch",
     "test": "jest",
     "build:lib": "rm -rf lib types && rollup -c",
     "build:precompile": "rm -rf precompiled types && tsc",
