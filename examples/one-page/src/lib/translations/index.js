@@ -2,7 +2,6 @@ import i18n from 'sveltekit-i18n';
 import lang from './lang.json';
 
 export const config = ({
-  // initLocale: 'en', // you can directly init translations for locale here, or later using `$locale` store (see `__layout.svelte`)
   loaders: [
     {
       locale: 'en',
@@ -37,4 +36,6 @@ export const config = ({
   ],
 });
 
-export const { t, locales, locale } = new i18n(config);
+export const { t, loading, locales, locale, loadTranslations } = new i18n(config);
+
+loading.subscribe(($loading) => $loading && console.log('Loading translations...'));

@@ -29,4 +29,6 @@ export const config = ({
   customModifiers,
 });
 
-export const { t, locales, locale } = new i18n(config);
+export const { t, loading, locales, locale, loadConfig } = new i18n();
+
+loading.subscribe(($loading) => $loading && console.log('Loading translations...'));
