@@ -1,8 +1,8 @@
 <script context="module">
   import { browser } from '$app/env';
   import { get, writable } from 'svelte/store';
-  import { t, locale, locales, addTranslations, loadTranslations, initialized } from '$lib/translations';
-  
+  import { t, locale, locales, addTranslations, loadTranslations } from '$lib/translations';
+
   export const load = async ({ page, fetch }) => {
     const { path } = page;
     const initialLocale = get(locale) || 'en'; // get from cookie or user session...
@@ -16,8 +16,8 @@
       body: JSON.stringify({initialLocale, path}),
     }).then((x) => x.json());
 
-    addTranslations(...translationProps);
-    // `loadTranslations` method just sets proper locale and path in case translations are already loaded:
+    if (browser) addTranslations(...translationProps); // add translations in client
+    // `loadTranslations` method just sets proper locale and path in case translations are already added:
     await loadTranslations(initialLocale, path);
 
     return {};
