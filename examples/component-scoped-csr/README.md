@@ -2,6 +2,6 @@
 This app includes multiple instances of `sveltekit-i18n`.
 
 - app translations are loaded using SSR
-- component's translations are loaded on component mount (CSR only - Svelte does not provide server side load method for components, so translation loaders are triggered asynchronously within onMount function)
+- component's translations are loaded in component promise (CSR - SvelteKit does not provide server side load method for components, so translation loaders are triggered on client side only)
 
 This approach is good for more complex apps.

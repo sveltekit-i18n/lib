@@ -16,23 +16,13 @@
   * 
   * */
 
-  let initLoading = true;
-
   // if (savedData) {
   //   addTranslations(savedData.savedTranslations);
-  //   $locale = savedData.savedLocale;
-  //   initLoading = false;
+  //   initLocale = savedData.savedLocale;
   // }
-  
-  const loading = writable(initLoading);
 
-  onMount(async () => {
-    if (initLoading) {
-      await loadTranslations(initLocale);
-      $loading = false;
-    }
-  });
-  
+    const promise = loadTranslations(initLocale);
+
   // onDestroy(() => {
   //   const savedData = {
   //     savedTranslations: $translations,
@@ -42,12 +32,12 @@
   // });
 </script>
 
-
 <div>
   {JSON.stringify($translations)}
-  {#if $loading}
+  {#await promise}
     Loading...
-  {:else}
+  {:then}
+  {console.log('PROMISE')}
     <p>{$t('common.info')}</p>
     
     <select bind:value="{$locale}">
@@ -55,7 +45,7 @@
       <option value="{locale}">{$t(`lang.${locale}`)}</option>
       {/each}
     </select>
-  {/if}
+  {/await}
 </div>
 
 <style>
