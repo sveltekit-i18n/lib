@@ -74,7 +74,7 @@ export const config = ({
 export const { t, locale, locales, loading, loadTranslations } = new i18n(config);
 ```
 
-...include your translations in `__layout.svelte`...
+...load your translations in `__layout.svelte`...
 
 ```svelte
 <script context="module">
@@ -91,7 +91,7 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 </script>
 ```
 
-...and use your placeholders within pages and components.
+...and include your translations within pages and components.
 
 ```svelte
 <script>
