@@ -32,7 +32,7 @@ export const config = ({
     {
       locale: 'en',
       key: 'home',
-      routes: ['/'],
+      routes: ['/'], // you can use regexes as well!
       loader: async () => (
         await import('./en/home.json')
       ).default,
