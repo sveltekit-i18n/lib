@@ -1,10 +1,9 @@
 import { addTranslations, getTranslationProps } from '../lib/translations';
 
-/** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ body }) {
-  const { initialLocale, path } = body;
+  const { initialLocale, pathname } = body;
 
-  const translationProps = await getTranslationProps(initialLocale, path);
+  const translationProps = await getTranslationProps(initialLocale, pathname);
 
   // add translations on server-side
   addTranslations(...translationProps);

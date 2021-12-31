@@ -1,44 +1,45 @@
 <script context="module">
   import { browser } from '$app/env';
+  import { page } from '$app/stores';
   import { get, writable } from 'svelte/store';
   import { t, loading, locale, locales, addTranslations, getTranslationProps, loadTranslations } from '$lib/translations';
 
-  export const load = async ({ page, fetch }) => {
-    const { path } = page;
+  export const load = async ({ url, fetch }) => {
+    const { pathname } = url;
     const initialLocale = get(locale) || 'en'; // get the default from cookie or user session...
 
     // SvelteKit's fetch method prevents duplicit (SSR / CSR) load
-    const { translationProps } = await fetch('/loadTranslations', {
+    const { translationProps } = await (await fetch('/loadTranslations', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({initialLocale, path}),
-    }).then((x) => x.json());
+      body: JSON.stringify({initialLocale, pathname}),
+    })).json();
+
+    console.log('LOAD', translationProps);
 
     // add translations on client-side
     if (browser) addTranslations(...translationProps); 
 
-    // `loadTranslations` method just sets proper locale and path in case translations are already added
-    await loadTranslations(initialLocale, path);
+    // `loadTranslations` method just sets proper locale and pathname in case translations are already added
+    await loadTranslations(initialLocale, pathname);
 
     return {};
   }
 </script>
 
 <script>
-  import { page } from '$app/stores';
-
   const handleLocaleChange = async ({currentTarget}) => {
     /**
      * We want to send client-side loaded (on locale change) translations to the server,
      * to prevent server-side load when user navigates out of this page and then back again.
     */
     const {value} = currentTarget;
-    const {path} = $page;
+    const {url} = $page;
     
     // get `translationProps` for newly added translations
-    const translationProps = await getTranslationProps(value, path)
+    const translationProps = await getTranslationProps(value, url.pathname)
 
     // add `translationProps` to client
     addTranslations(...translationProps);

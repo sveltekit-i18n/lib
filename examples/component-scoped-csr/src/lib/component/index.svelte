@@ -37,7 +37,6 @@
   {#await promise}
     Loading...
   {:then}
-  {console.log('PROMISE')}
     <p>{$t('common.info')}</p>
     
     <select bind:value="{$locale}">
