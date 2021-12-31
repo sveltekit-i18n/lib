@@ -79,7 +79,7 @@ Sets a new route value, if given value is not equal to current value.
 ### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<Record<string, Record<string, any>>, Record<string, string[]>>>__
 According to input props (`locale` and `route`), this method triggers `loaders`, which haven't been already triggered, and returns appropriate `translations` and `keys`. This output can be used later as input parameters of `addTranslations` method.
 
-### `addTranslations`: __(translations: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__
+### `addTranslations`: __(translations?: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__
 This method allows you to store loaded translations in `translations` readable.
 
 `translations` – this parameter should contain an object, containing translations objects for locales you want to add.
