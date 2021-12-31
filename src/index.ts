@@ -105,7 +105,7 @@ export default class {
     await this.loadTranslations(initLocale);
   };
 
-  addTranslations = (translations: ConfigTranslations, keys?: Record<string, string[]>) => {
+  addTranslations = (translations?: ConfigTranslations, keys?: Record<string, string[]>) => {
     if (!translations) return;
 
     const translationLocales = Object.keys(d(translations));

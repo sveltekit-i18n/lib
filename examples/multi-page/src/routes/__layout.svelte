@@ -1,11 +1,11 @@
 <script context="module">
   import { t, locale, locales, loadTranslations } from '$lib/translations';
   
-  export const load = async ({ page }) => {
-    const { path } = page;
+  export const load = async ({ url }) => {
+    const { pathname } = url;
     
     const locale = 'en'; // get from cookie or user session...
-    await loadTranslations(locale, path);
+    await loadTranslations(locale, pathname);
     
     return {};
   }
