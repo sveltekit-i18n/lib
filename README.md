@@ -80,11 +80,11 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 <script context="module">
   import { loadTranslations } from '$lib/translations';
 
-  export const load = async ({ page }) => {
-    const { path } = page;
+  export const load = async ({ url }) => {
+    const { pathname } = url;
 
     const locale = 'en'; // get from cookie or user session...
-    await loadTranslations(locale, path);
+    await loadTranslations(locale, pathname);
 
     return {};
   }
