@@ -2,7 +2,7 @@ import { derived, get, writable } from 'svelte/store';
 import { getTranslation, testRoute, toDotNotation, translate } from './utils';
 import { useDefault as d } from './utils/common';
 
-import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, Route, Translations } from './types';
+import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, LocalTranslationFunction, Route, TranslationFunction, Translations, TranslationStore } from './types';
 import type { Readable, Writable } from 'svelte/store';
 
 export { Config };
@@ -58,13 +58,32 @@ export default class {
     return get(this.translation);
   }, {});
 
-  t: Readable<(key: string, vars?: Record<any, any>) => string> = derived(
-    [this.translation, this.config], ([$translation, { customModifiers }]) => (key: string, vars?: Record<any, any>) => translate($translation, key, vars, d<CustomModifiers>(customModifiers), get(this.locale)),
-  );
+  t: TranslationStore<TranslationFunction> = {
+    ...derived(
+      [this.translation, this.config],
+      ([$translation, { customModifiers }]): TranslationFunction => (key, vars) => translate(
+        $translation,
+        key,
+        vars,
+        d<CustomModifiers>(customModifiers),
+        get(this.locale)),
+    ),
+    get: (...props) => get(this.t)(...props),
+  };
 
-  l: Readable<(locale: string, key: string, vars?: Record<any, any>) => string> = derived(
-    [this.translations, this.config], ([$translations, { customModifiers }]) => (locale: string, key: string, vars?: Record<any, any>) => translate($translations[locale], key, vars, d<CustomModifiers>(customModifiers), get(this.locale)),
-  );
+  l: TranslationStore<LocalTranslationFunction> = {
+    ...derived(
+      [this.translations, this.config],
+      ([$translations, { customModifiers }]): LocalTranslationFunction => (locale, key, vars) => translate(
+        $translations[locale],
+        key,
+        vars,
+        d<CustomModifiers>(customModifiers),
+        get(this.locale),
+      ),
+    ),
+    get: (...props) => get(this.l)(...props),
+  };
 
   private getLocale = (inputLocale?: string): string => {
     const $locales = get(this.locales);

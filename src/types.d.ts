@@ -1,3 +1,5 @@
+import { Readable } from 'svelte/store';
+
 export type Loader = () => Promise<Record<any, any>>;
 
 export type Route = string | RegExp;
@@ -18,6 +20,12 @@ export type ToDotNotation = (input: DotNotationInput, parentKey?: string) => Dot
 export type GetTranslation = (loaders: LoaderModule[]) => Promise<DotNotationOutput>;
 
 export type Translate = (translation: Record<any, any>, key: string, vars?: Record<any, any>, customModifiers?: CustomModifiers, locale?: string) => string;
+
+export type TranslationFunction = (key: string, vars?: Record<any, any>) => string;
+
+export type LocalTranslationFunction = (locale: string, key: string, vars?: Record<any, any>) => string;
+
+export type TranslationStore<T> = Readable<T> & { get: T };
 
 export type ConfigTranslations = Record<string, Record<string, any>>;
 
