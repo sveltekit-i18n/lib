@@ -1,9 +1,8 @@
 /.svelte-kit
 /package
-/build
+**/build
 /lib
 /types
-/examples/**/package-lock.json
 
 .env
 

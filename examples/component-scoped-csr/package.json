@@ -8,8 +8,8 @@
     "preview": "svelte-kit preview"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "1.0.0-next.24",
-    "@sveltejs/kit": "1.0.0-next.211",
+    "@sveltejs/adapter-static": "^1.0.0-next.24",
+    "@sveltejs/kit": "^1.0.0-next.216",
     "svelte": "^3.44.3"
   },
   "type": "module",
