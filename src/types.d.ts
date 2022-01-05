@@ -1,5 +1,7 @@
 import { Readable } from 'svelte/store';
 
+export type Loading = Readable<boolean> & { toPromise: () => Promise<void[]> };
+
 export type Loader = () => Promise<Record<any, any>> | Record<any, any>;
 
 export type Route = string | RegExp;

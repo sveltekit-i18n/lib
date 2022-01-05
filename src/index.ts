@@ -2,7 +2,7 @@ import { derived, get, writable } from 'svelte/store';
 import { getTranslation, testRoute, toDotNotation, translate } from './utils';
 import { useDefault as d } from './utils/common';
 
-import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, LocalTranslationFunction, Route, TranslationFunction, Translations, TranslationStore } from './types';
+import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, Loading, LocalTranslationFunction, Route, TranslationFunction, Translations, TranslationStore } from './types';
 import type { Readable, Writable } from 'svelte/store';
 
 export { Config };
@@ -24,7 +24,7 @@ export default class {
 
   private promises: Promise<void>[] = [];
 
-  loading: Readable<boolean> & { toPromise: () => Promise<void[]> } = { subscribe: this.isLoading.subscribe, toPromise: () => Promise.all(this.promises) };
+  loading: Loading = { subscribe: this.isLoading.subscribe, toPromise: () => Promise.all(this.promises) };
 
   private privateTranslations: Writable<Translations> = writable({});
 
