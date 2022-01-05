@@ -17,8 +17,6 @@
       body: JSON.stringify({initialLocale, pathname}),
     })).json();
 
-    console.log('LOAD', translationProps);
-
     // add translations on client-side
     if (browser) addTranslations(...translationProps); 
 
