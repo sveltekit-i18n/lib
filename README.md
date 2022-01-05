@@ -109,4 +109,5 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 
 ## More info
 [Docs](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/docs/README.md)\
-[Examples](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples)
+[Examples](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples)\
+[Changelog](https://github.com/jarda-svoboda/sveltekit-i18n/releases)
