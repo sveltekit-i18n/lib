@@ -1,6 +1,6 @@
 {
   "name": "sveltekit-i18n",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Internationalization library for SvelteKit",
   "type": "module",
   "main": "./lib/index.js",
