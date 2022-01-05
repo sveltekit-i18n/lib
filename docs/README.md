@@ -58,8 +58,8 @@ You can obtain and set current locale using this writable store.
 ### `locales`: __Readable<string[]>__
 Readable store, containing all instance locales.
 
-### `translations`: __Readable\<Translations>__
-Readable store, containing all loaded translations.
+### `translations`: __Readable\<{ [locale: string]: { [key: string]: string; } }>__
+Readable store, containing all loaded translations in dot-notation format.
 
 ### `t`: __Readable<(key: string, vars?: Record<any, any>) => string> & { get: (key: string, vars?: Record<any, any>) => string }__
 This readable store returns a function you can use to obtain your translations for given translation key and interpolation variables (you can use it like `$t('my.key', { variable: 'value' })` in Svelte files). You can also use `t.get` method to get the translation (e.g. `t.get('my.key', { variable: 'value' })`), which is handy in `.js` (or `.ts`) files.
