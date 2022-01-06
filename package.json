@@ -6,7 +6,8 @@
   "main": "./lib/index.js",
   "types": "./types/index.d.ts",
   "exports": {
-    "import": "./lib/index.js"
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "dev": "rollup -c -w",
