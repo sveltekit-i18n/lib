@@ -28,10 +28,13 @@
     "url": "git+ssh://git@github.com/jarda-svoboda/sveltekit-i18n.git"
   },
   "keywords": [
-    "i18n",
-    "internationalization",
     "svelte",
-    "sveltekit"
+    "sveltekit",
+    "i18n",
+    "l10n",
+    "internationalization",
+    "localization",
+    "translation"
   ],
   "author": "Jarda Svoboda",
   "license": "ISC",
