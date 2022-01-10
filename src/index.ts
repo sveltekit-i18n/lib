@@ -33,7 +33,7 @@ export default class {
   locales: Readable<string[]> = derived([this.config, this.privateTranslations], ([$config, $translations]) => {
     const { loaders = [] } = $config;
 
-    const loaderLocales = loaders.map(({ locale }) => locale);
+    const loaderLocales = loaders.map(({ locale }) => `${locale}`.toLowerCase());
     const translationLocales = Object.keys($translations).map((l) => `${l}`.toLowerCase());
 
     return ([...new Set([...loaderLocales, ...translationLocales])]);
