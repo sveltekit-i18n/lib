@@ -39,7 +39,15 @@ export default class {
     return ([...new Set([...loaderLocales, ...translationLocales])]);
   }, []);
 
-  locale: Writable<string> = writable();
+  private internalLocale: Writable<string> = writable();
+
+  locale: Writable<string> = {
+    ...this.internalLocale,
+    ...derived(this.internalLocale, ($locale, set) => {
+      const value = $locale && `${$locale}`.toLowerCase();
+      if (value !== get(this.locale)) set(value);
+    }),
+  };
 
   private loaderTrigger = derived([this.locale, this.currentRoute], ([$locale, $currentRoute], set) => {
     if ($locale !== undefined && $currentRoute !== undefined) set([$locale, $currentRoute]);
