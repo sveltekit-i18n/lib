@@ -23,6 +23,11 @@ Each loader can include:
 ### `initLocale`?: __string__
 If you set this parameter, translations will be initialized immediately using this locale.
 
+### `fallbackLocale`?: __string__
+If you set this parameter, translations are automatically loaded not for current `$locale` only, but for this locale as well. In case there is no translation for current `$locale`, fallback locale translation is used.
+
+NOTE: It's not recommended to use this parameter if you don't really need it. It may affect your data load.
+
 ### `customModifiers`?: __Record<string, (value: string, options: Array<{key: string; value: string}>, defaultValue?: string, locale?: string) => string>__
 You can use this parameter to include your own set of modifiers.
 
