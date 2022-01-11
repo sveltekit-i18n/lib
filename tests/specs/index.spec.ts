@@ -101,6 +101,22 @@ describe('i18n instance', () => {
     expect($initialized).toBe(true);
 
   });
+  it('`locale` can be set case-insensitive', async () => {
+    const { loading, locale, setRoute, initialized } = new i18n({ loaders });
+    await setRoute('');
+    locale.set(initLocale.toUpperCase());
+
+    const $loading = get(loading);
+    expect($loading).toBe(true);
+
+    await loading.toPromise();
+
+    const $initialized = get(initialized);
+    expect($initialized).toBe(true);
+
+    const $locale = get(locale);
+    expect($locale).toBe(initLocale.toLocaleLowerCase());
+  });
   it('`getTranslationProps` method works', async () => {
     const { initialized, getTranslationProps } = new i18n({ loaders });
 
@@ -193,6 +209,22 @@ describe('i18n instance', () => {
     $locales.forEach((locale) => {
       expect($translations[locale]).toEqual(
         (locale === initLocale) ? expect.objectContaining(filterTranslationKeys(TRANSLATIONS[locale], keys)) : expect.not.objectContaining(TRANSLATIONS[locale]),
+      );
+    });
+  });
+  it('includes both `translations` when using `fallbackLocale`', async () => {
+    const { translations, locales, loadConfig } = new i18n();
+    const fallbackLocale = CONFIG.loaders?.find(({ locale }) => locale !== CONFIG.initLocale)?.locale;
+
+    await loadConfig({ ...CONFIG, fallbackLocale });
+    const $translations = get(translations);
+    const $locales = get(locales);
+
+    const keys = (loaders || []).filter(({ routes }) => !routes).map(({ key }) => key);
+
+    $locales.forEach((locale) => {
+      expect($translations[locale]).toEqual(
+        expect.objectContaining(filterTranslationKeys(TRANSLATIONS[locale], keys)),
       );
     });
   });

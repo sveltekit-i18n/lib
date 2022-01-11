@@ -1,7 +1,7 @@
 import * as defaultModifiers from '../modifiers';
 import { useDefault } from './common';
 
-import type { ToDotNotation, GetTranslation, Translate, Route, ModifierOption, CustomModifiers } from '../types';
+import type { ToDotNotation, GetTranslation, Translate, Route, ModifierOption, CustomModifiers, LoaderModule } from '../types';
 
 export const toDotNotation: ToDotNotation = (input, parentKey) => Object.keys(useDefault(input)).reduce((acc, key) => {
   const value = input[key];
@@ -14,10 +14,15 @@ export const toDotNotation: ToDotNotation = (input, parentKey) => Object.keys(us
 
 export const getTranslation: GetTranslation = async (loaders) => {
   try {
-    const loadedModules = await Promise.all(loaders.map(async ({ key, loader }) => ({ [key]: await loader() })));
-    const translation = loadedModules.reduce((acc, item) => ({ ...acc, ...item }), {});
+    const data = await Promise.all(loaders.map(({ loader, ...rest }) => new Promise<LoaderModule & { data: any }>(async (res) => {
+      const data = await loader();
+      res({ loader, ...rest, data });
+    })));
 
-    return toDotNotation(translation);
+    return data.reduce<Record<string, any>>((acc, { key, data, locale }) => ({
+      ...acc,
+      [locale]: toDotNotation({ ...useDefault<Record<any, any>>(acc[locale]), [key]: data }),
+    }), {});
   } catch (error) {
     console.error(error);
     throw new Error('Failed to load translation. Verify the loader function.');
@@ -87,9 +92,18 @@ export const interpolate = (text: string, vars: Record<any, any> = {}, customMod
   }
 };
 
-export const translate: Translate = (translation, key, vars = {}, customModifiers = {}, locale = '') => {
+export const translate: Translate = ({ translation, translations = {}, key, vars = {}, customModifiers = {}, locale, fallbackLocale }) => {
   if (!key) throw new Error('no key provided to $t()');
-  const text = `${useDefault(useDefault(translation)[key], key)}`;
+
+  let text = useDefault(translation)[key];
+
+  if (fallbackLocale && text === undefined) {
+    text = useDefault(translations[fallbackLocale])[key];
+  }
+
+  if (text === undefined) {
+    text = `${key}`;
+  }
 
   return interpolate(text, vars, customModifiers, locale);
 };

@@ -26,6 +26,8 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 `custom-modifiers`
 - this app demonstrates custom modifiers integration (`config.customModifiers`) and includes an overview of built-in modifiers
 
+`fallback-locale`
+- this app demonstrates `config.fallbackLocale`
 
 ## How to
 
