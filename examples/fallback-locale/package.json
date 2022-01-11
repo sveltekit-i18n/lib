@@ -1,0 +1,19 @@
+{
+  "name": "fallback-locale",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "package": "svelte-kit package",
+    "preview": "svelte-kit preview"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^1.0.0-next.24",
+    "@sveltejs/kit": "^1.0.0-next.216",
+    "svelte": "^3.44.3"
+  },
+  "type": "module",
+  "dependencies": {
+    "sveltekit-i18n": "file:../../"
+  }
+}
