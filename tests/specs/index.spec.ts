@@ -214,7 +214,7 @@ describe('i18n instance', () => {
   });
   it('includes both `translations` when using `fallbackLocale`', async () => {
     const { translations, locales, loadConfig } = new i18n();
-    const fallbackLocale = CONFIG.loaders?.find(({ locale }) => locale !== CONFIG.initLocale)?.locale;
+    const fallbackLocale = CONFIG.loaders?.find(({ locale }) => locale.toLowerCase() !== CONFIG.initLocale?.toLowerCase())?.locale;
 
     await loadConfig({ ...CONFIG, fallbackLocale });
     const $translations = get(translations);

@@ -6,18 +6,18 @@ export const CONFIG:Config = {
   loaders: [
     {
       key: 'common',
-      locale: 'en',
+      locale: 'EN',
       loader: async () => (import('../data/translations/en/common.json')),
     },
     {
       key: 'route1',
-      locale: 'en',
+      locale: 'EN',
       routes: [/./],
       loader: async () => (import('../data/translations/en/route.json')),
     },
     {
       key: 'route2',
-      locale: 'en',
+      locale: 'EN',
       routes: ['/path#hash?a=b&c=d'],
       loader: async () => (import('../data/translations/en/route.json')),
     },
