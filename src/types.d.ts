@@ -19,9 +19,17 @@ export type DotNotationOutput = Record<string, any>;
 
 export type ToDotNotation = (input: DotNotationInput, parentKey?: string) => DotNotationOutput;
 
-export type GetTranslation = (loaders: LoaderModule[]) => Promise<DotNotationOutput>;
+export type GetTranslation = (loaders: LoaderModule[]) => Promise<Record<string, DotNotationOutput>>;
 
-export type Translate = (translation: Record<any, any>, key: string, vars?: Record<any, any>, customModifiers?: CustomModifiers, locale?: string) => string;
+export type Translate = (props: {
+  translation: DotNotationOutput;
+  translations: Record<string, DotNotationOutput>;
+  key: string;
+  vars?: Record<any, any>;
+  customModifiers?: CustomModifiers;
+  locale?: string;
+  fallbackLocale?: string;
+}) => string;
 
 export type TranslationFunction = (key: string, vars?: Record<any, any>) => string;
 
@@ -36,6 +44,7 @@ export type Translations = Record<string, Record<string, string>>;
 export type Config = {
   loaders?: LoaderModule[];
   initLocale?: string;
+  fallbackLocale?: string;
   customModifiers?: CustomModifiers;
 };
 

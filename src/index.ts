@@ -11,7 +11,7 @@ export default class {
   constructor(config?: Config) {
     if (config) this.loadConfig(config);
 
-    this.loaderTrigger.subscribe(this.translationLoader);
+    this.loaderTrigger.subscribe(() => this.translationLoader());
   }
 
   private loadedKeys: Record<string, string[]> = {};
@@ -59,22 +59,23 @@ export default class {
     return true;
   }, false);
 
-  private translation: Readable<Record<string, string>> = derived([this.privateTranslations, this.locale, this.isLoading], ([$translations, $locale, $loading]) => {
+  private translation: Readable<Record<string, string>> = derived([this.privateTranslations, this.locale, this.isLoading], ([$translations, $locale, $loading], set) => {
     const translation = $translations[$locale];
-    if (translation && Object.keys(translation).length && !$loading) return translation;
-
-    return get(this.translation);
+    if (translation && Object.keys(translation).length && !$loading) set(translation);
   }, {});
 
   t: TranslationStore<TranslationFunction> = {
     ...derived(
       [this.translation, this.config],
-      ([$translation, { customModifiers }]): TranslationFunction => (key, vars) => translate(
-        $translation,
+      ([$translation, { customModifiers, fallbackLocale }]): TranslationFunction => (key, vars) => translate({
+        translation: $translation,
+        translations: get(this.translations),
         key,
         vars,
-        d<CustomModifiers>(customModifiers),
-        get(this.locale)),
+        customModifiers: d<CustomModifiers>(customModifiers),
+        locale: get(this.locale),
+        fallbackLocale,
+      }),
     ),
     get: (...props) => get(this.t)(...props),
   };
@@ -82,13 +83,15 @@ export default class {
   l: TranslationStore<LocalTranslationFunction> = {
     ...derived(
       [this.translations, this.config],
-      ([$translations, { customModifiers }]): LocalTranslationFunction => (locale, key, vars) => translate(
-        $translations[locale],
+      ([$translations, { customModifiers, fallbackLocale }]): LocalTranslationFunction => (locale, key, vars) => translate({
+        translation: $translations[locale],
+        translations: $translations,
         key,
         vars,
-        d<CustomModifiers>(customModifiers),
-        get(this.locale),
-      ),
+        customModifiers: d<CustomModifiers>(customModifiers),
+        locale: get(this.locale),
+        fallbackLocale,
+      }),
     ),
     get: (...props) => get(this.l)(...props),
   };
@@ -165,29 +168,46 @@ export default class {
     if (!$config || !$locale) return [];
 
     const $translations = get(this.privateTranslations);
-    const translationForLocale = $translations[$locale];
 
-    const { loaders } = d<Config>($config);
+    const { loaders, fallbackLocale = '' } = d<Config>($config);
+
+    const lowerLocale = `${$locale}`.toLowerCase();
+    const lowerFallbackLocale = fallbackLocale && `${fallbackLocale}`.toLowerCase();
+
+    const translationForLocale = $translations[lowerLocale];
+    const translationForFallbackLocale = $translations[lowerFallbackLocale];
+
     const filteredLoaders = d<LoaderModule[]>(loaders, [])
-      .filter(({ key }) => !translationForLocale || !d(this.loadedKeys[$locale], []).includes(key))
-      .filter(({ locale }) => `${locale}`.toLowerCase() === `${$locale}`.toLowerCase())
-      .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute($route)));
+      .map(({ locale, ...rest }) => ({ ...rest, locale: `${locale}`.toLowerCase() }))
+      .filter(({ routes }) => !routes || d<Route[]>(routes, []).some(testRoute($route)))
+      .filter(({ key, locale }) => locale === lowerLocale && (
+        !translationForLocale || !d(this.loadedKeys[lowerLocale], []).includes(key)
+      ) || (
+        fallbackLocale && locale === lowerFallbackLocale && (
+          !translationForFallbackLocale ||
+            !d(this.loadedKeys[lowerFallbackLocale], []).includes(key)
+        )),
+      );
 
     if (filteredLoaders.length) {
       this.isLoading.set(true);
 
-      const translation = await getTranslation(filteredLoaders);
+      const translations = await getTranslation(filteredLoaders);
 
       this.isLoading.set(false);
 
-      return [{ [$locale]: translation }, { [$locale]: filteredLoaders.map(({ key }) => key) }];
+      const keys = filteredLoaders.reduce<Record<string, any>>(
+        (acc, { key, locale }) => ({ ...acc, [locale]: [...(acc[locale] || []), key] }), {},
+      );
+
+      return [translations, keys];
     }
     return [];
   };
 
-  private translationLoader = async () => {
+  private translationLoader = async (locale?: string) => {
     this.promises.push(new Promise(async (res) => {
-      const props = await this.getTranslationProps();
+      const props = await this.getTranslationProps(locale);
       if (props.length) this.addTranslations(...props);
       res();
     }));

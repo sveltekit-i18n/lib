@@ -14,10 +14,15 @@ export const toDotNotation: ToDotNotation = (input, parentKey) => Object.keys(us
 
 export const getTranslation: GetTranslation = async (loaders) => {
   try {
-    const loadedModules = await Promise.all(loaders.map(async ({ key, loader }) => ({ [key]: await loader() })));
-    const translation = loadedModules.reduce((acc, item) => ({ ...acc, ...item }), {});
+    const translations = loaders.reduce<Record<string, any>>(async (promise, { key, loader, locale }) => {
+      const acc = await promise;
+      const data = await loader();
+      const output = { ...useDefault<Record<any, any>>(acc[locale]), [key]: data };
 
-    return toDotNotation(translation);
+      return ({ ...acc, [locale]: toDotNotation(output) });
+    }, {});
+
+    return translations;
   } catch (error) {
     console.error(error);
     throw new Error('Failed to load translation. Verify the loader function.');
@@ -87,9 +92,18 @@ export const interpolate = (text: string, vars: Record<any, any> = {}, customMod
   }
 };
 
-export const translate: Translate = (translation, key, vars = {}, customModifiers = {}, locale = '') => {
+export const translate: Translate = ({ translation, translations = {}, key, vars = {}, customModifiers = {}, locale, fallbackLocale }) => {
   if (!key) throw new Error('no key provided to $t()');
-  const text = `${useDefault(useDefault(translation)[key], key)}`;
+
+  let text = useDefault(translation)[key];
+
+  if (fallbackLocale && text === undefined) {
+    text = useDefault(translations[fallbackLocale])[key];
+  }
+
+  if (text === undefined) {
+    text = `${key}`;
+  }
 
   return interpolate(text, vars, customModifiers, locale);
 };
