@@ -24,7 +24,7 @@ Each loader can include:
 If you set this parameter, translations will be initialized immediately using this locale.
 
 ### `fallbackLocale`?: __string__
-If you set this parameter, translations are automatically loaded not for current `$locale` only, but for this locale as well. In case there is no translation for current `$locale`, fallback locale translation is used.
+If you set this parameter, translations are automatically loaded not for current `$locale` only, but for this locale as well. In case there is no translation for current `$locale`, fallback locale translation is used instead of translation key placeholder.
 
 NOTE: It's not recommended to use this parameter if you don't really need it. It may affect your data load.
 
