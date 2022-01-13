@@ -3,8 +3,8 @@ import lang from './lang.json';
 
 export const config = ({
   translations: {
-    cs: { lang },
     en: { lang },
+    cs: { lang },
   },
   loaders: [
     {

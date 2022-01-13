@@ -5,8 +5,8 @@ import * as customModifiers from './modifiers';
 export const config = ({
   initLocale: 'en',
   translations: {
-    cs: { lang },
     en: { lang },
+    cs: { lang },
   },
   loaders: [
     {

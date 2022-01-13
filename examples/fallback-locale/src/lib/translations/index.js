@@ -4,8 +4,8 @@ import lang from './lang.json';
 export const config = ({
   fallbackLocale: 'en',
   translations: {
-    cs: { lang },
     en: { lang },
+    cs: { lang },
   },
   loaders: [
     {
