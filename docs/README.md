@@ -57,13 +57,13 @@ This readable store indicates wheter translations are loading or not. It can be 
 ### `initialized`: __Readable\<boolean>__
 This readable store returns `true` after first translation successfully initialized.
 
-### `locale`: __Writable\<string>__
+### `locale`: __Writable\<string> & { get: () => string }__
 You can obtain and set current locale using this writable store.
 
 ### `locales`: __Readable<string[]>__
 Readable store, containing all instance locales.
 
-### `translations`: __Readable\<{ [locale: string]: { [key: string]: string; } }>__
+### `translations`: __Readable\<{ [locale: string]: { [key: string]: string; } }> & { get: () => string }__
 Readable store, containing all loaded translations in dot-notation format.
 
 ### `t`: __Readable<(key: string, vars?: Record<any, any>) => string> & { get: (key: string, vars?: Record<any, any>) => string }__

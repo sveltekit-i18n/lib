@@ -35,7 +35,7 @@ export type TranslationFunction = (key: string, vars?: Record<any, any>) => stri
 
 export type LocalTranslationFunction = (locale: string, key: string, vars?: Record<any, any>) => string;
 
-export type TranslationStore<T> = Readable<T> & { get: T };
+export type ExtendedStore<T, Get = T, Store = Readable<T>> = Store & { get: Get };
 
 export type ConfigTranslations = Record<string, Record<string, any>>;
 

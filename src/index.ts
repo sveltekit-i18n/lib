@@ -2,7 +2,7 @@ import { derived, get, writable } from 'svelte/store';
 import { getTranslation, testRoute, toDotNotation, translate } from './utils';
 import { useDefault as d } from './utils/common';
 
-import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, LoadingStore, LocalTranslationFunction, Route, TranslationFunction, Translations, TranslationStore } from './types';
+import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, LoadingStore, LocalTranslationFunction, Route, TranslationFunction, Translations, ExtendedStore } from './types';
 import type { Readable, Writable } from 'svelte/store';
 
 export { Config };
@@ -28,7 +28,7 @@ export default class {
 
   private privateTranslations: Writable<Translations> = writable({});
 
-  translations: Readable<Translations> = { subscribe: this.privateTranslations.subscribe };
+  translations: ExtendedStore<Translations, () => Translations> = { subscribe: this.privateTranslations.subscribe, get: () => get(this.translations) };
 
   locales: Readable<string[]> = derived([this.config, this.privateTranslations], ([$config, $translations]) => {
     const { loaders = [] } = $config;
@@ -41,7 +41,7 @@ export default class {
 
   private internalLocale: Writable<string> = writable();
 
-  locale: Writable<string> = {
+  locale: ExtendedStore<string, () => string, Writable<string>> = {
     ...this.internalLocale,
     ...derived(this.internalLocale, ($locale, set) => {
       const value = $locale && `${$locale}`.toLowerCase();
@@ -49,6 +49,7 @@ export default class {
 
       if (loaderLocale && loaderLocale !== get(this.locale)) set(loaderLocale);
     }),
+    get: () => get(this.locale),
   };
 
   private loaderTrigger = derived([this.locale, this.currentRoute], ([$locale, $currentRoute], set) => {
@@ -66,7 +67,7 @@ export default class {
     if (translation && Object.keys(translation).length && !$loading) set(translation);
   }, {});
 
-  t: TranslationStore<TranslationFunction> = {
+  t: ExtendedStore<TranslationFunction> = {
     ...derived(
       [this.translation, this.config],
       ([$translation, { customModifiers, fallbackLocale }]): TranslationFunction => (key, vars) => translate({
@@ -82,7 +83,7 @@ export default class {
     get: (...props) => get(this.t)(...props),
   };
 
-  l: TranslationStore<LocalTranslationFunction> = {
+  l: ExtendedStore<LocalTranslationFunction> = {
     ...derived(
       [this.translations, this.config],
       ([$translations, { customModifiers, fallbackLocale }]): LocalTranslationFunction => (locale, key, vars) => translate({
