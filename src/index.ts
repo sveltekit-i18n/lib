@@ -45,7 +45,9 @@ export default class {
     ...this.internalLocale,
     ...derived(this.internalLocale, ($locale, set) => {
       const value = $locale && `${$locale}`.toLowerCase();
-      if (value !== get(this.locale)) set(value);
+      const loaderLocale = this.getLocale(value);
+
+      if (loaderLocale && loaderLocale !== get(this.locale)) set(loaderLocale);
     }),
   };
 
@@ -105,18 +107,9 @@ export default class {
     return `${localeFromLoaders}`.toLowerCase();
   };
 
-  initLocale = async (locale?:string) => {
+  setLocale = async (locale?:string) => {
     if (!locale) return;
-
-    const loaderLocale = this.getLocale(locale);
-
-    if (!loaderLocale) return;
-
-    let $locale = get(this.locale);
-
-    if (!$locale) {
-      this.locale.set(loaderLocale);
-    }
+    this.locale.set(locale);
 
     await this.loading.toPromise();
   };
@@ -218,7 +211,7 @@ export default class {
   loadTranslations = async (locale: string, route = get(this.currentRoute) || '') => {
     if (!locale) return;
     this.setRoute(route);
-    this.initLocale(locale);
+    this.setLocale(locale);
 
     await this.loading.toPromise();
   };
