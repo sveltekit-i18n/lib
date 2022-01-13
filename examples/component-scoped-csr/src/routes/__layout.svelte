@@ -4,8 +4,11 @@
   export const load = async ({ url }) => {
     const { pathname } = url;
 
-    const locale = 'en'; // get from cookie or user session...
-    await loadTranslations(locale, pathname);
+     const defaultLocale = 'en'; // get from cookie / user session etc...
+
+    const initLocale = locale.get() || defaultLocale; 
+
+    await loadTranslations(initLocale, pathname);
 
     return {};
   }
