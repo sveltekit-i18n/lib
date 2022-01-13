@@ -98,13 +98,28 @@ export default class {
     get: (...props) => get(this.l)(...props),
   };
 
-  private getLocale = (inputLocale?: string): string => {
+  private getLocale = (locale?: string): string => {
+    if (!locale) return '';
+
+    const inputLocale = `${locale}`.toLowerCase();
+
+    let outputLocale = '';
+
     const $locales = get(this.locales);
-    const localeFromLoaders = $locales.find(
-      (l) => `${l}`.toLowerCase() === `${inputLocale}`.toLowerCase(),
+
+    outputLocale = $locales.find(
+      (l) => `${l}`.toLowerCase() === inputLocale,
     ) || '';
 
-    return `${localeFromLoaders}`.toLowerCase();
+    if (!outputLocale) {
+      const $translations = get(this.translations);
+
+      outputLocale = Object.keys($translations).find(
+        (l) => `${l}`.toLowerCase() === inputLocale,
+      ) || '';
+    }
+
+    return `${outputLocale}`.toLowerCase();
   };
 
   setLocale = async (locale?:string) => {
