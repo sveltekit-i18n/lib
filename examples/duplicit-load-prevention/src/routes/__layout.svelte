@@ -6,7 +6,10 @@
 
   export const load = async ({ url, fetch }) => {
     const { pathname } = url;
-    const initialLocale = get(locale) || 'en'; // get the default from cookie or user session...
+
+    const defaultLocale = 'en'; // get from cookie, user session, ...
+
+    const initLocale = locale.get() || defaultLocale;
 
     // SvelteKit's fetch method prevents duplicit (SSR / CSR) load
     const { translationProps } = await (await fetch('/loadTranslations', {
@@ -14,14 +17,14 @@
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({initialLocale, pathname}),
+      body: JSON.stringify({initLocale, pathname}),
     })).json();
 
     // add translations on client-side
     if (browser) addTranslations(...translationProps); 
 
     // `loadTranslations` method just sets proper locale and pathname in case translations are already added
-    await loadTranslations(initialLocale, pathname);
+    await loadTranslations(initLocale, pathname);
 
     return {};
   }
