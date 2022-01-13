@@ -48,9 +48,9 @@ export default class {
     ...this.internalLocale,
     ...derived(this.internalLocale, ($locale, set) => {
       const value = $locale && `${$locale}`.toLowerCase();
-      const loaderLocale = this.getLocale(value);
+      const outputLocale = this.getLocale(value);
 
-      if (loaderLocale && loaderLocale !== get(this.locale)) set(loaderLocale);
+      if (outputLocale && outputLocale !== this.locale.get()) set(outputLocale);
     }),
     get: () => get(this.locale),
   };
@@ -75,11 +75,11 @@ export default class {
       [this.translation, this.config],
       ([$translation, { customModifiers, fallbackLocale }]): TranslationFunction => (key, vars) => translate({
         translation: $translation,
-        translations: get(this.translations),
+        translations: this.translations.get(),
         key,
         vars,
         customModifiers: d<CustomModifiers>(customModifiers),
-        locale: get(this.locale),
+        locale: this.locale.get(),
         fallbackLocale,
       }),
     ),
@@ -95,7 +95,7 @@ export default class {
         key,
         vars,
         customModifiers: d<CustomModifiers>(customModifiers),
-        locale: get(this.locale),
+        locale: this.locale.get(),
         fallbackLocale,
       }),
     ),
@@ -162,12 +162,12 @@ export default class {
     });
   };
 
-  getTranslationProps = async ($locale = get(this.locale), $route = get(this.currentRoute)): Promise<[ConfigTranslations, Record<string, string[]>] | []> => {
+  getTranslationProps = async ($locale = this.locale.get(), $route = get(this.currentRoute)): Promise<[ConfigTranslations, Record<string, string[]>] | []> => {
     const $config = get(this.config);
 
     if (!$config || !$locale) return [];
 
-    const $translations = get(this.privateTranslations);
+    const $translations = this.translations.get();
 
     const { loaders, fallbackLocale = '' } = d<Config>($config);
 
