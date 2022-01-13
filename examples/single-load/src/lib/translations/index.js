@@ -1,9 +1,9 @@
 import i18n from 'sveltekit-i18n';
 import translations from './translations';
 
-export const config = ({
+const config = {
   initLocale: 'en',
-});
+  translations,
+};
 
-export const { t, l, locales, locale, addTranslations, loadConfig } = new i18n();
-addTranslations(translations);
+export const { t, l, locales, locale } = new i18n(config);
