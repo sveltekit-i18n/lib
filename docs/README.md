@@ -75,10 +75,10 @@ This readable store returns a function you can use to obtain your (previously lo
 ### `loadConfig`: __(config: Config) => Promise\<void>__
 You can load a new `config` using this method.
 
-### `initLocale`: __(locale: string) => void__
-This method sets the locale in case it's not already set. It doesn't set it in case the locale does not exist in `loaders` config.
+### `setLocale`: __(locale: string) => Promise<void>__
+This method sets a locale safely. It prevents uppercase characters and doesn't set it in case the locale does not exist in `loaders` config or `translations` store.
 
-### `setRoute`: __(route: string) => void__
+### `setRoute`: __(route: string) => Promise<void>__
 Sets a new route value, if given value is not equal to current value.
 
 ### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<Record<string, Record<string, any>>, Record<string, string[]>>>__
@@ -123,7 +123,7 @@ For example, for the previous case it would be:
 ```
 
 ### `loadTranslations`: __(locale: string, route?: string) => Promise\<void>__
-This method encapsulates `initLocale` and `setRoute` methods. According on changes, `getTranslationProps` and `addTranslations` methods are called and new translations are stored in `translations` readable.
+This method encapsulates `setLocale` and `setRoute` methods. According on changes, `getTranslationProps` and `addTranslations` methods are called and new translations are stored in `translations` readable.
 
 
 ## Translations
