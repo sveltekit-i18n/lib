@@ -35,7 +35,7 @@ describe('i18n instance', () => {
     expect($loading).toBe(false);
   });
   it('`setRoute` method does trigger loading if locale is set', async () => {
-    const { initialized, setRoute, initLocale: setLocale, loading } = new i18n({ loaders });
+    const { initialized, setRoute, setLocale, loading } = new i18n({ loaders });
 
     await setLocale(initLocale);
     setRoute('/');
@@ -45,16 +45,16 @@ describe('i18n instance', () => {
     const $initialized = get(initialized);
     expect($initialized).toBe(false);
   });
-  it('`initLocale` method does not trigger loading when route is not set', async () => {
-    const { initLocale: setLocale, loading } = new i18n({ loaders });
+  it('`setLocale` method does not trigger loading when route is not set', async () => {
+    const { setLocale, loading } = new i18n({ loaders });
 
     setLocale(initLocale);
 
     const $loading = get(loading);
     expect($loading).toBe(false);
   });
-  it('`initLocale` method triggers loading when route is set', async () => {
-    const { initLocale: setLocale, setRoute, loading } = new i18n({ loaders });
+  it('`setLocale` method triggers loading when route is set', async () => {
+    const { setLocale, setRoute, loading } = new i18n({ loaders });
 
     await setRoute('');
     setLocale(initLocale);
@@ -62,8 +62,8 @@ describe('i18n instance', () => {
     const $loading = get(loading);
     expect($loading).toBe(true);
   });
-  it('`initLocale` does not set `unknown` locale', async () => {
-    const { initLocale: setLocale, loading, locale } = new i18n({ loaders });
+  it('`setLocale` does not set `unknown` locale', async () => {
+    const { setLocale, loading, locale } = new i18n({ loaders });
 
     setLocale('unknown');
 
