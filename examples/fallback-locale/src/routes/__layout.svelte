@@ -4,7 +4,7 @@
   export const load = async ({ url }) => {
     const { pathname } = url;
 
-    const defaultLocale = 'cs'; // get from cookie or user session...
+    const defaultLocale = 'cs'; // get from cookie, user session, ...
 
     const initLocale = locale.get() || defaultLocale;
 
