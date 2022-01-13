@@ -20,6 +20,10 @@ Each loader can include:
 
 `routes`?: __Array<string | RegExp>__ – can define routes this loader should be triggered for. You can use Regular expressions too. For example `[/\/.ome/]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
 
+
+### `translations`?: __{ [locale: string]: Record<string, any> }__
+This parameter defines translations, which should be in place before `loads` will trigger. Usually it's useful for shared (locale unspecific) translations (e.g. language names).
+
 ### `initLocale`?: __string__
 If you set this parameter, translations will be initialized immediately using this locale.
 
@@ -28,7 +32,7 @@ If you set this parameter, translations are automatically loaded not for current
 
 NOTE: It's not recommended to use this parameter if you don't really need it. It may affect your data load.
 
-### `customModifiers`?: __Record<string, (value: string, options: Array<{key: string; value: string}>, defaultValue?: string, locale?: string) => string>__
+### `customModifiers`?: __Record<string, (value: string, options: Array<{ key: string; value: string; }>, defaultValue?: string, locale?: string) => string>__
 You can use this parameter to include your own set of modifiers.
 
 For example custom modifier `eqAbs`...
@@ -81,10 +85,10 @@ This method sets a locale safely. It prevents uppercase characters and doesn't s
 ### `setRoute`: __(route: string) => Promise<void>__
 Sets a new route value, if given value is not equal to current value.
 
-### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<Record<string, Record<string, any>>, Record<string, string[]>>>__
+### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<{ [locale: string]: Record<string, string> }, Record<string, string[]>>>__
 According to input props (`locale` and `route`), this method triggers `loaders`, which haven't been already triggered, and returns appropriate `translations` and `keys`. This output can be used later as input parameters of `addTranslations` method.
 
-### `addTranslations`: __(translations?: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__
+### `addTranslations`: __(translations?: { [locale: string]: Record<string, any> }, keys?: Record<string, string[]> | undefined) => void__
 This method allows you to store loaded translations in `translations` readable.
 
 `translations` – this parameter should contain an object, containing translations objects for locales you want to add.

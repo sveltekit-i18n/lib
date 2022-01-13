@@ -130,8 +130,8 @@ export default class {
     if (!config) throw new Error('No config!');
 
     this.config.set(config);
-    const { initLocale = '' } = config;
-
+    const { initLocale = '', translations } = config;
+    if (translations) this.addTranslations(translations);
     await this.loadTranslations(initLocale);
   };
 

@@ -37,12 +37,13 @@ export type LocalTranslationFunction = (locale: string, key: string, vars?: Reco
 
 export type ExtendedStore<T, Get = () => T, Store = Readable<T>> = Store & { get: Get };
 
-export type ConfigTranslations = Record<string, Record<string, any>>;
+export type ConfigTranslations = { [locale: string]: Record<string, any> };
 
-export type Translations = Record<string, Record<string, string>>;
+export type Translations = { [locale: string]: Record<string, string> };
 
 export type Config = {
   loaders?: LoaderModule[];
+  translations?: ConfigTranslations;
   initLocale?: string;
   fallbackLocale?: string;
   customModifiers?: CustomModifiers;
