@@ -28,16 +28,19 @@ export default class {
 
   private privateTranslations: Writable<Translations> = writable({});
 
-  translations: ExtendedStore<Translations, () => Translations> = { subscribe: this.privateTranslations.subscribe, get: () => get(this.translations) };
+  translations: ExtendedStore<Translations> = { subscribe: this.privateTranslations.subscribe, get: () => get(this.translations) };
 
-  locales: Readable<string[]> = derived([this.config, this.privateTranslations], ([$config, $translations]) => {
-    const { loaders = [] } = $config;
+  locales: ExtendedStore<string[]> = {
+    ...derived([this.config, this.privateTranslations], ([$config, $translations]) => {
+      const { loaders = [] } = $config;
 
-    const loaderLocales = loaders.map(({ locale }) => `${locale}`.toLowerCase());
-    const translationLocales = Object.keys($translations).map((l) => `${l}`.toLowerCase());
+      const loaderLocales = loaders.map(({ locale }) => `${locale}`.toLowerCase());
+      const translationLocales = Object.keys($translations).map((l) => `${l}`.toLowerCase());
 
-    return ([...new Set([...loaderLocales, ...translationLocales])]);
-  }, []);
+      return ([...new Set([...loaderLocales, ...translationLocales])]);
+    }, []),
+    get: () => get(this.locales),
+  };
 
   private internalLocale: Writable<string> = writable();
 
@@ -67,7 +70,7 @@ export default class {
     if (translation && Object.keys(translation).length && !$loading) set(translation);
   }, {});
 
-  t: ExtendedStore<TranslationFunction> = {
+  t: ExtendedStore<TranslationFunction, TranslationFunction> = {
     ...derived(
       [this.translation, this.config],
       ([$translation, { customModifiers, fallbackLocale }]): TranslationFunction => (key, vars) => translate({
@@ -83,7 +86,7 @@ export default class {
     get: (...props) => get(this.t)(...props),
   };
 
-  l: ExtendedStore<LocalTranslationFunction> = {
+  l: ExtendedStore<LocalTranslationFunction, LocalTranslationFunction> = {
     ...derived(
       [this.translations, this.config],
       ([$translations, { customModifiers, fallbackLocale }]): LocalTranslationFunction => (locale, key, vars) => translate({
@@ -99,26 +102,14 @@ export default class {
     get: (...props) => get(this.l)(...props),
   };
 
-  private getLocale = (locale?: string): string => {
-    if (!locale) return '';
+  private getLocale = (inputLocale?: string): string => {
+    if (!inputLocale) return '';
 
-    const inputLocale = `${locale}`.toLowerCase();
+    const $locales = this.locales.get();
 
-    let outputLocale = '';
-
-    const $locales = get(this.locales);
-
-    outputLocale = $locales.find(
-      (l) => `${l}`.toLowerCase() === inputLocale,
+    const outputLocale = $locales.find(
+      (l) => `${l}`.toLowerCase() === `${inputLocale}`.toLowerCase(),
     ) || '';
-
-    if (!outputLocale) {
-      const $translations = get(this.translations);
-
-      outputLocale = Object.keys($translations).find(
-        (l) => `${l}`.toLowerCase() === inputLocale,
-      ) || '';
-    }
 
     return `${outputLocale}`.toLowerCase();
   };
