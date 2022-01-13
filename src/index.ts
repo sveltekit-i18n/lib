@@ -59,11 +59,9 @@ export default class {
     if ($locale !== undefined && $currentRoute !== undefined) set([$locale, $currentRoute]);
   }, [] as string[]);
 
-  initialized: Readable<boolean> = derived(this.privateTranslations, ($translations) => {
-    if (!get(this.initialized)) return !!Object.keys($translations).length;
-
-    return true;
-  }, false);
+  initialized: Readable<boolean> = derived([this.locale, this.currentRoute, this.privateTranslations], ([$locale, $currentRoute, $translations], set) => {
+    if (!get(this.initialized)) set($locale !== undefined && $currentRoute !== undefined && !!Object.keys($translations).length);
+  });
 
   private translation: Readable<Record<string, string>> = derived([this.privateTranslations, this.locale, this.isLoading], ([$translations, $locale, $loading], set) => {
     const translation = $translations[$locale];
@@ -116,6 +114,7 @@ export default class {
 
   setLocale = async (locale?:string) => {
     if (!locale) return;
+
     this.locale.set(locale);
 
     await this.loading.toPromise();
@@ -217,6 +216,7 @@ export default class {
 
   loadTranslations = async (locale: string, route = get(this.currentRoute) || '') => {
     if (!locale) return;
+
     this.setRoute(route);
     this.setLocale(locale);
 
