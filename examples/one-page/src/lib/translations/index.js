@@ -2,12 +2,11 @@ import i18n from 'sveltekit-i18n';
 import lang from './lang.json';
 
 export const config = ({
+  translations: {
+    cs: { lang },
+    en: { lang },
+  },
   loaders: [
-    {
-      locale: 'en',
-      key: 'lang',
-      loader: () => lang,
-    },
     {
       locale: 'en',
       key: 'menu',
@@ -17,11 +16,6 @@ export const config = ({
       locale: 'en',
       key: 'content',
       loader: async () => (await import('./en/content.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'lang',
-      loader: () => lang,
     },
     {
       locale: 'cs',
