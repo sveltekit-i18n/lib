@@ -4,21 +4,15 @@ import * as customModifiers from './modifiers';
 
 export const config = ({
   initLocale: 'en',
+  translations: {
+    cs: { lang },
+    en: { lang },
+  },
   loaders: [
-    {
-      locale: 'en',
-      key: 'lang',
-      loader: () => lang,
-    },
     {
       locale: 'en',
       key: 'content',
       loader: async () => (await import('./en/content.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'lang',
-      loader: () => lang,
     },
     {
       locale: 'cs',
