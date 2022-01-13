@@ -3,10 +3,13 @@
   
   export const load = async ({ url }) => {
     const { pathname } = url;
-    
-    const locale = 'cs'; // get from cookie or user session...
-    await loadTranslations(locale, pathname);
-    
+
+    const defaultLocale = 'cs'; // get from cookie or user session...
+
+    const initLocale = locale.get() || defaultLocale;
+
+    await loadTranslations(initLocale, pathname);
+
     return {};
   }
 </script>
