@@ -9,14 +9,15 @@ export const handle = async ({ request, resolve }) => {
 
   // If this request is a route request
   if (routeRegex.test(pathname)) {
-    // Try to get locale from `pathname`.
+    // Get defined locales
     const supportedLocales = locales.get();
+
+    // Try to get locale from `pathname`.
     let locale = supportedLocales.find((l) => l === `${pathname.match(/[^/]+?(?=\/|$)/)}`.toLowerCase());
 
     // If route locale is not supported
     if (!locale) {
       // Get user preferred locale
-      // NOTE: You can remove this line if you are generating static pages for non-locale routes (see `svelte.config.js`)
       locale = `${`${request.headers['accept-language']}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();
 
       // Set default locale if user preferred locale does not match
@@ -24,21 +25,6 @@ export const handle = async ({ request, resolve }) => {
 
       // 301 redirect is better for SEO
       return ({ status: 301, headers: { location: `/${locale}${pathname}` } });
-
-      // Or you can directly resolve desired locale route if you don't care about SEO
-      /* const response = await resolve({
-        ...request,
-        url: {
-          ...request.url,
-          pathname: `/${locale}${pathname}`
-        }
-      }); */
-
-      // Add html `lang` attribute
-      /* return {
-        ...response,
-        body: `${response.body}`.replace(/<html.*>/, `<html lang="${locale}">`),
-      } */
     }
 
     // Add html `lang` attribute
