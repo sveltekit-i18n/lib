@@ -1,5 +1,7 @@
-# Locale-loader app
+# Locale-loader-static
+This app is built for pages using `@sveltejs/adapter-static`. It includes two pages and three language mutations (`en`, `de`, `cs`). Error pages are included as well.
 
-- `svelte.config.js`
-- `hooks.js`
-- `.htaccess`
+## Setup
+
+### `./src/hooks.js`
+Takes care about redirects to appropriate language mutation.

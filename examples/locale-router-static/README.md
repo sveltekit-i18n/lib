@@ -1,5 +1,5 @@
 # Locale-loader-static
-This app is built for pages using `@sveltejs/adapter-static`. It includes
+This app is built for pages using `@sveltejs/adapter-static`. It includes two pages and three language mutations (`en`, `de`, `cs`). Error pages are included as well.
 
 ## Setup
 
@@ -7,7 +7,7 @@ This app is built for pages using `@sveltejs/adapter-static`. It includes
 This config contains `prerender` parameter to build your site's language mutations together with desired error pages.
 
 ### `./src/hooks.js`
-Takes care about redirects in dev mode and during the build process.
+Takes care about redirects to appropriate language mutation in dev mode and during the build process.
 
 ### `./src/routes/[lang]/[...error]/index.svelte`
 This file handles errors. In dev mode, throws error (so you are redirected to `./src/routes/__error.svelte` with appropriate error code), while during the build process, includes the error page itself to render.
@@ -41,7 +41,7 @@ build/
 
 ## Publish
 
-Assuming you are about to publish your static site to Apache web server. In this case you will need to setup redirections from the root path. The easiest way is add `.htaccess` (or `index.php`) file to your `static` directory before build, so it's included in your `build` folder later.
+Assuming you are about to publish your static site to Apache web server. In this case you will need to setup redirections from the root path. The easiest way is add `.htaccess` (or `index.php`) file to your `static` directory before build, so it's included in the root of your `build` folder later.
 
 Your `.htaccess` could look like this:
 ```ini
