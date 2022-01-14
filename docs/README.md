@@ -7,8 +7,10 @@
 
 ## Config
 
-### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>> | Record<any, any>; routes?: Array<string | RegExp>; }>__
+### `translations`?: __{ [locale: string]: Record<string, any> }__
+This parameter defines translations, which should be in place before `loads` will trigger. It's useful for synchronous translations (e.g. locally defined language names).
 
+### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>> }>__
 You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
 Each loader can include:
 
@@ -28,7 +30,7 @@ If you set this parameter, translations are automatically loaded not for current
 
 NOTE: It's not recommended to use this parameter if you don't really need it. It may affect your data load.
 
-### `customModifiers`?: __Record<string, (value: string, options: Array<{key: string; value: string}>, defaultValue?: string, locale?: string) => string>__
+### `customModifiers`?: __Record<string, (value: string, options: Array<{ key: string; value: string; }>, defaultValue?: string, locale?: string) => string>__
 You can use this parameter to include your own set of modifiers.
 
 For example custom modifier `eqAbs`...
@@ -51,40 +53,40 @@ Read more about [Modifiers](#modifiers).
 
 Each `sveltekit-i18n` instance includes these properties and methods:
 
-### `loading`: __Readable\<boolean> & { toPromise: () => Promise<void[]> }__ 
+### `loading`: __Readable\<boolean> & { toPromise: () => Promise<void[]>; get: () => boolean; }__ 
 This readable store indicates wheter translations are loading or not. It can be converted to promise using `.toPromise()` method.
 
 ### `initialized`: __Readable\<boolean>__
 This readable store returns `true` after first translation successfully initialized.
 
-### `locale`: __Writable\<string>__
+### `locale`: __Writable\<string> & { get: () => string }__
 You can obtain and set current locale using this writable store.
 
 ### `locales`: __Readable<string[]>__
 Readable store, containing all instance locales.
 
-### `translations`: __Readable\<{ [locale: string]: { [key: string]: string; } }>__
+### `translations`: __Readable\<{ [locale: string]: { [key: string]: string; } }> & { get: () => string; }__
 Readable store, containing all loaded translations in dot-notation format.
 
-### `t`: __Readable<(key: string, vars?: Record<any, any>) => string> & { get: (key: string, vars?: Record<any, any>) => string }__
+### `t`: __Readable<(key: string, vars?: Record<any, any>) => string> & { get: (key: string; vars?: Record<any, any>) => string; }__
 This readable store returns a function you can use to obtain your (previously loaded) translations for given translation key and interpolation variables (you can use it like `$t('my.key', { variable: 'value' })` in Svelte files). You can also use `t.get` method to get the translation (e.g. `t.get('my.key', { variable: 'value' })`), which is handy in `.js` (or `.ts`) files.
 
-### `l`: __Readable<(locale: string, key: string, vars?: Record<any, any>) => string> & { get: (locale: string, key: string, vars?: Record<any, any>) => string }__
+### `l`: __Readable<(locale: string, key: string, vars?: Record<any, any>) => string> & { get: (locale: string, key: string, vars?: Record<any, any>) => string; }__
 This readable store returns a function you can use to obtain your (previously loaded) translations for given locale, translation key and interpolation variables (you can use it like `$l('en', 'my.key', { variable: 'value' })` in Svelte files). You can also use `l.get` method to get the translation (e.g. `l.get('en', 'my.key', { variable: 'value' })`), which is handy in `.js` (or `.ts`) files.
 
 ### `loadConfig`: __(config: Config) => Promise\<void>__
 You can load a new `config` using this method.
 
-### `initLocale`: __(locale: string) => void__
-This method sets the locale in case it's not already set. It doesn't set it in case the locale does not exist in `loaders` config.
+### `setLocale`: __(locale: string) => Promise<void>__
+This method sets a locale safely. It prevents uppercase characters and doesn't set it in case the locale does not exist in `loaders` config or `translations` store.
 
-### `setRoute`: __(route: string) => void__
+### `setRoute`: __(route: string) => Promise<void>__
 Sets a new route value, if given value is not equal to current value.
 
-### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<Record<string, Record<string, any>>, Record<string, string[]>>>__
+### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<{ [locale: string]: Record<string, string>; }, Record<string, string[]>>>__
 According to input props (`locale` and `route`), this method triggers `loaders`, which haven't been already triggered, and returns appropriate `translations` and `keys`. This output can be used later as input parameters of `addTranslations` method.
 
-### `addTranslations`: __(translations?: Record<string, Record<string, any>>, keys?: Record<string, string[]> | undefined) => void__
+### `addTranslations`: __(translations?: { [locale: string]: Record<string, any>; }, keys?: Record<string, string[]> | undefined) => void__
 This method allows you to store loaded translations in `translations` readable.
 
 `translations` – this parameter should contain an object, containing translations objects for locales you want to add.
@@ -123,7 +125,7 @@ For example, for the previous case it would be:
 ```
 
 ### `loadTranslations`: __(locale: string, route?: string) => Promise\<void>__
-This method encapsulates `initLocale` and `setRoute` methods. According on changes, `getTranslationProps` and `addTranslations` methods are called and new translations are stored in `translations` readable.
+This method encapsulates `setLocale` and `setRoute` methods. According on changes, `getTranslationProps` and `addTranslations` methods are called and new translations are stored in `translations` readable.
 
 
 ## Translations

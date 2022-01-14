@@ -28,14 +28,14 @@ describe('i18n instance', () => {
     setRoute('/');
     const $initialized = get(initialized);
     const $loading = get(loading);
-    const $locale = get(locale);
+    const $locale = locale.get();
 
     expect($locale).toBe(undefined);
     expect($initialized).toBe(false);
     expect($loading).toBe(false);
   });
   it('`setRoute` method does trigger loading if locale is set', async () => {
-    const { initialized, setRoute, initLocale: setLocale, loading } = new i18n({ loaders });
+    const { initialized, setRoute, setLocale, loading } = new i18n({ loaders });
 
     await setLocale(initLocale);
     setRoute('/');
@@ -45,16 +45,16 @@ describe('i18n instance', () => {
     const $initialized = get(initialized);
     expect($initialized).toBe(false);
   });
-  it('`initLocale` method does not trigger loading when route is not set', async () => {
-    const { initLocale: setLocale, loading } = new i18n({ loaders });
+  it('`setLocale` method does not trigger loading when route is not set', async () => {
+    const { setLocale, loading } = new i18n({ loaders });
 
     setLocale(initLocale);
 
     const $loading = get(loading);
     expect($loading).toBe(false);
   });
-  it('`initLocale` method triggers loading when route is set', async () => {
-    const { initLocale: setLocale, setRoute, loading } = new i18n({ loaders });
+  it('`setLocale` method triggers loading when route is set', async () => {
+    const { setLocale, setRoute, loading } = new i18n({ loaders });
 
     await setRoute('');
     setLocale(initLocale);
@@ -62,13 +62,13 @@ describe('i18n instance', () => {
     const $loading = get(loading);
     expect($loading).toBe(true);
   });
-  it('`initLocale` does not set `unknown` locale', async () => {
-    const { initLocale: setLocale, loading, locale } = new i18n({ loaders });
+  it('`setLocale` does not set `unknown` locale', async () => {
+    const { setLocale, loading, locale } = new i18n({ loaders });
 
     setLocale('unknown');
 
     const $loading = get(loading);
-    const $locale = get(locale);
+    const $locale = locale.get();
 
     expect($loading).toBe(false);
     expect($locale).toBe(undefined);
@@ -114,7 +114,7 @@ describe('i18n instance', () => {
     const $initialized = get(initialized);
     expect($initialized).toBe(true);
 
-    const $locale = get(locale);
+    const $locale = locale.get();
     expect($locale).toBe(initLocale.toLocaleLowerCase());
   });
   it('`getTranslationProps` method works', async () => {
@@ -135,7 +135,7 @@ describe('i18n instance', () => {
     const { addTranslations, translations } = new i18n();
 
     addTranslations(TRANSLATIONS);
-    const $translations = get(translations);
+    const $translations = translations.get();
 
     expect($translations).toEqual(
       expect.objectContaining(TRANSLATIONS),
@@ -185,7 +185,7 @@ describe('i18n instance', () => {
     const { locales, loadConfig } = new i18n();
 
     await loadConfig(CONFIG);
-    const $locales = get(locales);
+    const $locales = locales.get();
 
     expect($locales).toContain(initLocale);
   });
@@ -193,7 +193,7 @@ describe('i18n instance', () => {
     const { locale, loadConfig } = new i18n();
 
     await loadConfig(CONFIG);
-    const $locale = get(locale);
+    const $locale = locale.get();
 
     expect($locale).toBe(initLocale);
   });
@@ -201,8 +201,8 @@ describe('i18n instance', () => {
     const { translations, locales, loadConfig } = new i18n();
 
     await loadConfig(CONFIG);
-    const $translations = get(translations);
-    const $locales = get(locales);
+    const $translations = translations.get();
+    const $locales = locales.get();
 
     const keys = (loaders || []).filter(({ routes }) => !routes).map(({ key }) => key);
 
@@ -217,8 +217,8 @@ describe('i18n instance', () => {
     const fallbackLocale = CONFIG.loaders?.find(({ locale }) => locale.toLowerCase() !== CONFIG.initLocale?.toLowerCase())?.locale;
 
     await loadConfig({ ...CONFIG, fallbackLocale });
-    const $translations = get(translations);
-    const $locales = get(locales);
+    const $translations = translations.get();
+    const $locales = locales.get();
 
     const keys = (loaders || []).filter(({ routes }) => !routes).map(({ key }) => key);
 
@@ -232,7 +232,7 @@ describe('i18n instance', () => {
     const { translations, loadConfig } = new i18n();
 
     await loadConfig(CONFIG);
-    const $translations = get(translations);
+    const $translations = translations.get();
 
     const keys = (loaders || []).filter(({ routes }) => !!routes).map(({ key }) => key);
 
@@ -381,7 +381,7 @@ describe('translation', () => {
 
     await loadConfig(CONFIG);
     const value = 123456.789;
-    const altLocale = get(locales).find((l) => l !== initLocale) || '';
+    const altLocale = locales.get().find((l) => l !== initLocale) || '';
 
     expect(t.get('common.modifier_number', { value })).toBe(new Intl.NumberFormat(initLocale, { maximumFractionDigits: 2 }).format(value));
 
@@ -395,7 +395,7 @@ describe('translation', () => {
 
     await loadConfig(CONFIG);
     const value = Date.now();
-    const altLocale = get(locales).find((l) => l !== initLocale) || '';
+    const altLocale = locales.get().find((l) => l !== initLocale) || '';
 
     expect(t.get('common.modifier_date', { value })).toBe(new Intl.DateTimeFormat(initLocale, { dateStyle: 'medium', timeStyle: 'short' }).format(value));
 
@@ -409,7 +409,7 @@ describe('translation', () => {
 
     await loadConfig(CONFIG);
     const value = Date.now() - 1000 * 60 * 30;
-    const altLocale = get(locales).find((l) => l !== initLocale) || '';
+    const altLocale = locales.get().find((l) => l !== initLocale) || '';
 
     expect(t.get('common.modifier_ago', { value })).toBe(new Intl.RelativeTimeFormat(initLocale).format(-30, 'minute'));
 

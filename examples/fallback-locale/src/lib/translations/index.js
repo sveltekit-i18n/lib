@@ -3,12 +3,11 @@ import lang from './lang.json';
 
 export const config = ({
   fallbackLocale: 'en',
+  translations: {
+    en: { lang },
+    cs: { lang },
+  },
   loaders: [
-    {
-      locale: 'en',
-      key: 'lang',
-      loader: () => lang,
-    },
     {
       locale: 'en',
       key: 'menu',
@@ -25,11 +24,6 @@ export const config = ({
       key: 'home',
       routes: ['/'],
       loader: async () => (await import('./en/home.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'lang',
-      loader: () => lang,
     },
     {
       locale: 'cs',

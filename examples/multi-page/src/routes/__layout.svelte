@@ -3,10 +3,13 @@
   
   export const load = async ({ url }) => {
     const { pathname } = url;
-    
-    const locale = 'en'; // get from cookie or user session...
-    await loadTranslations(locale, pathname);
-    
+
+    const defaultLocale = 'en'; // get from cookie / user session etc...
+
+    const initLocale = locale.get() || defaultLocale; 
+
+    await loadTranslations(initLocale, pathname);
+
     return {};
   }
 </script>
@@ -31,7 +34,7 @@
 <br />
 <br />
 <select bind:value="{$locale}">
-  {#each $locales as locale}
-    <option value="{locale}">{$t(`lang.${locale}`)}</option>
+  {#each $locales as value}
+    <option value="{value}">{$t(`lang.${value}`)}</option>
   {/each}
 </select>

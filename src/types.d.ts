@@ -1,8 +1,8 @@
 import { Readable } from 'svelte/store';
 
-export type LoadingStore = Readable<boolean> & { toPromise: () => Promise<void[]> };
+export type LoadingStore = Readable<boolean> & { toPromise: () => Promise<void[]>, get: () => boolean };
 
-export type Loader = () => Promise<Record<any, any>> | Record<any, any>;
+export type Loader = () => Promise<Record<any, any>>;
 
 export type Route = string | RegExp;
 
@@ -35,14 +35,15 @@ export type TranslationFunction = (key: string, vars?: Record<any, any>) => stri
 
 export type LocalTranslationFunction = (locale: string, key: string, vars?: Record<any, any>) => string;
 
-export type TranslationStore<T> = Readable<T> & { get: T };
+export type ExtendedStore<T, Get = () => T, Store = Readable<T>> = Store & { get: Get };
 
-export type ConfigTranslations = Record<string, Record<string, any>>;
+export type ConfigTranslations = { [locale: string]: Record<string, any> };
 
-export type Translations = Record<string, Record<string, string>>;
+export type Translations = { [locale: string]: Record<string, string> };
 
 export type Config = {
   loaders?: LoaderModule[];
+  translations?: ConfigTranslations;
   initLocale?: string;
   fallbackLocale?: string;
   customModifiers?: CustomModifiers;

@@ -1,13 +1,5 @@
-<script context="module">
-  import { t, locales, locale, loadConfig, config } from '$lib/translations'; 
-  
-  export const load = async () => {
-    await loadConfig(config);
-    return {};
-  }
-</script>
-
 <script>
+  import { t, locales, locale } from '$lib/translations'; 
   import { writable } from 'svelte/store';
 
   const count = writable(2);
@@ -24,7 +16,7 @@
 <br />
 <br />
 <select bind:value="{$locale}">
-  {#each $locales as locale}
-    <option value="{locale}">{$t(`lang.${locale}`)}</option>
+  {#each $locales as value}
+    <option value="{value}">{$t(`lang.${value}`)}</option>
   {/each}
 </select>

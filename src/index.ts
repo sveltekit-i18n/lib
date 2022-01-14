@@ -2,7 +2,7 @@ import { derived, get, writable } from 'svelte/store';
 import { getTranslation, testRoute, toDotNotation, translate } from './utils';
 import { useDefault as d } from './utils/common';
 
-import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, LoadingStore, LocalTranslationFunction, Route, TranslationFunction, Translations, TranslationStore } from './types';
+import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, LoadingStore, LocalTranslationFunction, Route, TranslationFunction, Translations, ExtendedStore } from './types';
 import type { Readable, Writable } from 'svelte/store';
 
 export { Config };
@@ -24,63 +24,68 @@ export default class {
 
   private promises: Promise<void>[] = [];
 
-  loading: LoadingStore = { subscribe: this.isLoading.subscribe, toPromise: () => Promise.all(this.promises) };
+  loading: LoadingStore = { subscribe: this.isLoading.subscribe, toPromise: () => Promise.all(this.promises), get: () => get(this.isLoading) };
 
   private privateTranslations: Writable<Translations> = writable({});
 
-  translations: Readable<Translations> = { subscribe: this.privateTranslations.subscribe };
+  translations: ExtendedStore<Translations> = { subscribe: this.privateTranslations.subscribe, get: () => get(this.translations) };
 
-  locales: Readable<string[]> = derived([this.config, this.privateTranslations], ([$config, $translations]) => {
-    const { loaders = [] } = $config;
+  locales: ExtendedStore<string[]> = {
+    ...derived([this.config, this.privateTranslations], ([$config, $translations]) => {
+      const { loaders = [] } = $config;
 
-    const loaderLocales = loaders.map(({ locale }) => `${locale}`.toLowerCase());
-    const translationLocales = Object.keys($translations).map((l) => `${l}`.toLowerCase());
+      const loaderLocales = loaders.map(({ locale }) => `${locale}`.toLowerCase());
+      const translationLocales = Object.keys($translations).map((l) => `${l}`.toLowerCase());
 
-    return ([...new Set([...loaderLocales, ...translationLocales])]);
-  }, []);
+      return ([...new Set([...loaderLocales, ...translationLocales])]);
+    }, []),
+    get: () => get(this.locales),
+  };
 
   private internalLocale: Writable<string> = writable();
 
-  locale: Writable<string> = {
-    ...this.internalLocale,
+  locale: ExtendedStore<string, () => string, Writable<string>> = {
+    set: this.internalLocale.set,
+    update: this.internalLocale.update,
     ...derived(this.internalLocale, ($locale, set) => {
-      const value = $locale && `${$locale}`.toLowerCase();
-      if (value !== get(this.locale)) set(value);
+      const inputLocale = $locale && `${$locale}`.toLowerCase();
+      const outputLocale = this.getLocale(inputLocale);
+
+      if (outputLocale && outputLocale !== this.locale.get()) set(outputLocale);
     }),
+    get: () => get(this.locale),
   };
 
-  private loaderTrigger = derived([this.locale, this.currentRoute], ([$locale, $currentRoute], set) => {
-    if ($locale !== undefined && $currentRoute !== undefined) set([$locale, $currentRoute]);
+  private loaderTrigger = derived([this.internalLocale, this.currentRoute], ([$internalLocale, $currentRoute], set) => {
+    if ($internalLocale !== undefined && $currentRoute !== undefined) set([$internalLocale, $currentRoute]);
   }, [] as string[]);
 
-  initialized: Readable<boolean> = derived(this.privateTranslations, ($translations) => {
-    if (!get(this.initialized)) return !!Object.keys($translations).length;
-
-    return true;
-  }, false);
+  initialized: Readable<boolean> = derived([this.locale, this.currentRoute, this.privateTranslations], ([$locale, $currentRoute, $translations], set) => {
+    if (!get(this.initialized)) set($locale !== undefined && $currentRoute !== undefined && !!Object.keys($translations).length);
+  });
 
   private translation: Readable<Record<string, string>> = derived([this.privateTranslations, this.locale, this.isLoading], ([$translations, $locale, $loading], set) => {
     const translation = $translations[$locale];
     if (translation && Object.keys(translation).length && !$loading) set(translation);
   }, {});
 
-  t: TranslationStore<TranslationFunction> = {
+  t: ExtendedStore<TranslationFunction, TranslationFunction> = {
     ...derived(
       [this.translation, this.config],
       ([$translation, { customModifiers, fallbackLocale }]): TranslationFunction => (key, vars) => translate({
         translation: $translation,
-        translations: get(this.translations),
+        translations: this.translations.get(),
         key,
         vars,
         customModifiers: d<CustomModifiers>(customModifiers),
-        locale: get(this.locale),
+        locale: this.locale.get(),
         fallbackLocale,
       }),
     ),
     get: (...props) => get(this.t)(...props),
   };
 
-  l: TranslationStore<LocalTranslationFunction> = {
+  l: ExtendedStore<LocalTranslationFunction, LocalTranslationFunction> = {
     ...derived(
       [this.translations, this.config],
       ([$translations, { customModifiers, fallbackLocale }]): LocalTranslationFunction => (locale, key, vars) => translate({
@@ -89,7 +94,7 @@ export default class {
         key,
         vars,
         customModifiers: d<CustomModifiers>(customModifiers),
-        locale: get(this.locale),
+        locale: this.locale.get(),
         fallbackLocale,
       }),
     ),
@@ -97,26 +102,21 @@ export default class {
   };
 
   private getLocale = (inputLocale?: string): string => {
-    const $locales = get(this.locales);
-    const localeFromLoaders = $locales.find(
+    if (!inputLocale) return '';
+
+    const $locales = this.locales.get();
+
+    const outputLocale = $locales.find(
       (l) => `${l}`.toLowerCase() === `${inputLocale}`.toLowerCase(),
     ) || '';
 
-    return `${localeFromLoaders}`.toLowerCase();
+    return `${outputLocale}`.toLowerCase();
   };
 
-  initLocale = async (locale?:string) => {
+  setLocale = async (locale?:string) => {
     if (!locale) return;
 
-    const loaderLocale = this.getLocale(locale);
-
-    if (!loaderLocale) return;
-
-    let $locale = get(this.locale);
-
-    if (!$locale) {
-      this.locale.set(loaderLocale);
-    }
+    this.internalLocale.set(locale);
 
     await this.loading.toPromise();
   };
@@ -130,8 +130,8 @@ export default class {
     if (!config) throw new Error('No config!');
 
     this.config.set(config);
-    const { initLocale = '' } = config;
-
+    const { initLocale = '', translations } = config;
+    if (translations) this.addTranslations(translations);
     await this.loadTranslations(initLocale);
   };
 
@@ -162,12 +162,12 @@ export default class {
     });
   };
 
-  getTranslationProps = async ($locale = get(this.locale), $route = get(this.currentRoute)): Promise<[ConfigTranslations, Record<string, string[]>] | []> => {
+  getTranslationProps = async ($locale = this.locale.get(), $route = get(this.currentRoute)): Promise<[ConfigTranslations, Record<string, string[]>] | []> => {
     const $config = get(this.config);
 
     if (!$config || !$locale) return [];
 
-    const $translations = get(this.privateTranslations);
+    const $translations = this.translations.get();
 
     const { loaders, fallbackLocale = '' } = d<Config>($config);
 
@@ -217,8 +217,9 @@ export default class {
 
   loadTranslations = async (locale: string, route = get(this.currentRoute) || '') => {
     if (!locale) return;
+
     this.setRoute(route);
-    this.initLocale(locale);
+    this.setLocale(locale);
 
     await this.loading.toPromise();
   };
