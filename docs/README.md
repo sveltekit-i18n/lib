@@ -7,8 +7,10 @@
 
 ## Config
 
-### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>> | Record<any, any>; routes?: Array<string | RegExp>; }>__
+### `translations`?: __{ [locale: string]: Record<string, any> }__
+This parameter defines translations, which should be in place before `loads` will trigger. It's useful for synchronous translations (e.g. locally defined language names).
 
+### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>> }>__
 You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
 Each loader can include:
 
@@ -19,10 +21,6 @@ Each loader can include:
 `loader`:__() => Promise<Record<any, any>> | Record<any, any>__ – is a function returning a `Promise` with translation data, or translation data itself. You can use it to load files locally, fetch it from your API etc...
 
 `routes`?: __Array<string | RegExp>__ – can define routes this loader should be triggered for. You can use Regular expressions too. For example `[/\/.ome/]` will be triggered for `/home` and `/rome` route as well (but still only once). Leave this `undefined` in case you want to load this module with any route (useful for common translations).
-
-
-### `translations`?: __{ [locale: string]: Record<string, any> }__
-This parameter defines translations, which should be in place before `loads` will trigger. Usually it's useful for shared (locale unspecific) translations (e.g. language names).
 
 ### `initLocale`?: __string__
 If you set this parameter, translations will be initialized immediately using this locale.
