@@ -1,0 +1,81 @@
+################################################################################
+# YOU CAN DELETE THIS FILE IF YOU DO NOT USE `Apache` SERVER TO SERVE YOUR APP #
+################################################################################
+
+RewriteEngine On
+RewriteBase /
+# DirectorySlash Off
+
+# Prevent dot directories (hidden directories like .git) to be exposed to the public
+# Except for the .well-known directory used by LetsEncrypt a.o
+# RewriteRule "/\.|^\.(?!well-known/)" - [F]
+
+# Rewrite www.example.com -> example.com -- used with SEO Strict URLs plugin
+# RewriteCond %{HTTP_HOST} .
+# RewriteCond %{HTTP_HOST} ^www.(.*)$ [NC]
+# RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+
+# Rewrite secure requests properly to prevent SSL cert warnings, e.g. prevent 
+# https://www.example.com when your cert only allows https://secure.example.com
+# RewriteCond %{SERVER_PORT} !^443
+# RewriteRule (.*) https://%{SERVER_NAME}/$1 [R=301,L]
+
+# Remove trailing slashes
+# NOTE: Use with `DirectorySlash Off`.
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteRule ^(.*[^/])$ /$1/ [L]
+
+# Server files if exist
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*)$ - [L]
+
+##############################################
+# Skip redirection if locale already present #
+##############################################
+RewriteRule ^cs(\/.*)?$ - [L]
+RewriteRule ^de(\/.*)?$ - [L]
+RewriteRule ^en(\/.*)?$ - [L]
+
+#########################################################################################################################
+# Set custom locales if fits                                                                                            #
+#                                                                                                                       #
+# NOTE: You could use `[L]` if you don't care about SEO – this will cause dynamic language on non-locale routes         #
+# (When `R=301` is not set, `https://youpage.com/non-locale-route` will render dynamically, with user-preferred locale) #
+#########################################################################################################################
+RewriteCond %{HTTP:Accept-Language} ^cs [NC]
+RewriteRule ^ /cs%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{HTTP:Accept-Language} ^de [NC]
+RewriteRule ^ /de%{REQUEST_URI} [R=301,L]
+
+#########################################################################################################################
+# Set default locale if no custom locale fits                                                                           #
+#                                                                                                                       #
+# NOTE: You could use `[L]` if you don't care about SEO – this will cause dynamic language on non-locale routes         #
+# (When `R=301` is not set, `https://youpage.com/non-locale-route` will render dynamically, with user-preferred locale) #
+#########################################################################################################################
+RewriteRule ^ /en%{REQUEST_URI} [R=301,L]
+
+######################################
+# Set error pages for custom locales #
+######################################
+<If "%{REQUEST_URI} =~ /^\x2Fcs(\x2F.*)?$/">
+  ErrorDocument 404 /cs/404/index.html
+  ErrorDocument 403 /cs/error.php
+  ErrorDocument 500 /cs/error.php
+</If>
+<ElseIf "%{REQUEST_URI} =~ /^\x2Fde(\x2F.*)?$/">
+  ErrorDocument 404 /de/404/index.html
+  ErrorDocument 403 /de/error.php
+  ErrorDocument 500 /de/error.php
+</ElseIf>
+
+##################################
+# Set default locale error pages #
+##################################
+<Else>
+  ErrorDocument 404 /en/404/index.html
+  ErrorDocument 403 /en/error.php
+  ErrorDocument 500 /en/error.php
+</Else>

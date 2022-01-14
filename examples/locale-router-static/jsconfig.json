@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
+		"resolveJsonModule": true,
+		"moduleResolution": "Node",
+		"module": "ESNext",
+		"baseUrl": ".",
+		"paths": {
+			"$lib": [
+				"src/lib"
+			],
+			"$lib/*": [
+				"src/lib/*"
+			]
+		}
+	},
+	"include": [
+		"src/**/*.d.ts",
+		"src/**/*.js",
+		"src/**/*.svelte"
+	]
+}

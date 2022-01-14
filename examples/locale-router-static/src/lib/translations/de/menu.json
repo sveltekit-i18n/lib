@@ -1,0 +1,5 @@
+{
+  "home": "Startseite",
+  "about": "Über uns",
+  "notification": "Sie haben {{count:gt; 0:{{count}} neue {{count; 1:Nachricht; default:Nachrichten}}!; default:keine Nachrichten...}}"
+}
