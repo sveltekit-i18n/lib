@@ -55,7 +55,7 @@ Read more about [Modifiers](#modifiers).
 
 Each `sveltekit-i18n` instance includes these properties and methods:
 
-### `loading`: __Readable\<boolean> & { toPromise: () => Promise<void[]> }__ 
+### `loading`: __Readable\<boolean> & { toPromise: () => Promise<void[]>; get: () => boolean; }__ 
 This readable store indicates wheter translations are loading or not. It can be converted to promise using `.toPromise()` method.
 
 ### `initialized`: __Readable\<boolean>__
@@ -67,13 +67,13 @@ You can obtain and set current locale using this writable store.
 ### `locales`: __Readable<string[]>__
 Readable store, containing all instance locales.
 
-### `translations`: __Readable\<{ [locale: string]: { [key: string]: string; } }> & { get: () => string }__
+### `translations`: __Readable\<{ [locale: string]: { [key: string]: string; } }> & { get: () => string; }__
 Readable store, containing all loaded translations in dot-notation format.
 
-### `t`: __Readable<(key: string, vars?: Record<any, any>) => string> & { get: (key: string, vars?: Record<any, any>) => string }__
+### `t`: __Readable<(key: string, vars?: Record<any, any>) => string> & { get: (key: string; vars?: Record<any, any>) => string; }__
 This readable store returns a function you can use to obtain your (previously loaded) translations for given translation key and interpolation variables (you can use it like `$t('my.key', { variable: 'value' })` in Svelte files). You can also use `t.get` method to get the translation (e.g. `t.get('my.key', { variable: 'value' })`), which is handy in `.js` (or `.ts`) files.
 
-### `l`: __Readable<(locale: string, key: string, vars?: Record<any, any>) => string> & { get: (locale: string, key: string, vars?: Record<any, any>) => string }__
+### `l`: __Readable<(locale: string, key: string, vars?: Record<any, any>) => string> & { get: (locale: string, key: string, vars?: Record<any, any>) => string; }__
 This readable store returns a function you can use to obtain your (previously loaded) translations for given locale, translation key and interpolation variables (you can use it like `$l('en', 'my.key', { variable: 'value' })` in Svelte files). You can also use `l.get` method to get the translation (e.g. `l.get('en', 'my.key', { variable: 'value' })`), which is handy in `.js` (or `.ts`) files.
 
 ### `loadConfig`: __(config: Config) => Promise\<void>__
@@ -85,10 +85,10 @@ This method sets a locale safely. It prevents uppercase characters and doesn't s
 ### `setRoute`: __(route: string) => Promise<void>__
 Sets a new route value, if given value is not equal to current value.
 
-### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<{ [locale: string]: Record<string, string> }, Record<string, string[]>>>__
+### `getTranslationProps`: __(locale: string, route?: string) => Promise\<Array<{ [locale: string]: Record<string, string>; }, Record<string, string[]>>>__
 According to input props (`locale` and `route`), this method triggers `loaders`, which haven't been already triggered, and returns appropriate `translations` and `keys`. This output can be used later as input parameters of `addTranslations` method.
 
-### `addTranslations`: __(translations?: { [locale: string]: Record<string, any> }, keys?: Record<string, string[]> | undefined) => void__
+### `addTranslations`: __(translations?: { [locale: string]: Record<string, any>; }, keys?: Record<string, string[]> | undefined) => void__
 This method allows you to store loaded translations in `translations` readable.
 
 `translations` – this parameter should contain an object, containing translations objects for locales you want to add.
