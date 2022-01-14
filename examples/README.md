@@ -29,6 +29,16 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 `fallback-locale`
 - this app demonstrates `config.fallbackLocale`
 
+`locale-router-static`
+- this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
+- this approach is great if you care about SEO
+- optimized for `@sveltejs/adapter-static`
+
+`locale-router`
+- this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
+- this approach is great if you care about SEO
+- optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
+
 ## How to
 
 - clone or download example you want to use
