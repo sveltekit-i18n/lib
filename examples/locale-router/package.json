@@ -1,0 +1,19 @@
+{
+  "name": "locale-router",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "svelte-kit dev",
+    "build": "svelte-kit build",
+    "package": "svelte-kit package",
+    "preview": "svelte-kit preview"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-node": "next",
+    "@sveltejs/kit": "next",
+    "svelte": "^3.44.3"
+  },
+  "dependencies": {
+    "sveltekit-i18n": "file:../../"
+  }
+}
