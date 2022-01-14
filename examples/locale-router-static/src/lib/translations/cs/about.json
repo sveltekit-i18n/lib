@@ -1,0 +1,4 @@
+{
+  "title": "O této aplikaci",
+  "text": "<p>Toto je <a href=\"https://kit.svelte.dev\">SvelteKit</a> aplikace. Můžete si vytvořit svou vlastní vložením následujícího příkazu do příkazové řádky:</p><pre>npm init svelte@next</pre> <p> Tato stránka je čistě statické HTML, bez nutnosti klientské interakce. Díky tomu není potřeba načítat žádný JavaScript. Zkuste zobrazit drojový kód stránky, nebo otevřete vývojářské nástroje a znovu načtěte stránku.</p>"
+}
