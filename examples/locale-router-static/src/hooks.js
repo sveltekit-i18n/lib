@@ -1,18 +1,20 @@
 // eslint-disable-next-line import/extensions
-import { defaultLocale, supportedLocales } from '$lib/translations';
+import { defaultLocale, locales } from '$lib/translations';
 
 const routeRegex = new RegExp(/^\/[^.]*([?#].*)?$/);
 
+/** @type {import('@sveltejs/kit').Handle} */
 export const handle = async ({ request, resolve }) => {
   const { pathname } = request.url;
 
   // If this request is a route request
   if (routeRegex.test(pathname)) {
     // Try to get locale from `pathname`.
-    let locale = `${pathname.match(/[^/]+?(?=\/|$)/)}`.toLowerCase();
+    const supportedLocales = locales.get();
+    let locale = supportedLocales.find((l) => l === `${pathname.match(/[^/]+?(?=\/|$)/)}`.toLowerCase());
 
     // If route locale is not supported
-    if (!supportedLocales.includes(locale)) {
+    if (!locale) {
       // Get user preferred locale
       // NOTE: You can remove this line if you are generating static pages for non-locale routes (see `svelte.config.js`)
       locale = `${`${request.headers['accept-language']}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();

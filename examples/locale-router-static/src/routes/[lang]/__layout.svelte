@@ -1,30 +1,15 @@
-<script context="module">
-  import { t, loadTranslations, locales, locale } from '$lib/translations';
-
-  export const load = async ({ url, params }) => {
-    const { pathname } = url;
-    const { lang } = params;
-
-    const route = pathname.replace(new RegExp(`^/${lang}`), '');
-
-    await loadTranslations(lang, route);
-
-    return { stuff: { route } };
-  }
-</script>
-
-
 <script>
+  import { t, locales, locale } from '$lib/translations';
   import { page } from '$app/stores'
   import { goto } from '$app/navigation';
   import { writable } from 'svelte/store';
 
   const count = writable(2);
 
-$: ({ route } = $page.stuff);
+  $: ({ route } = $page.stuff);
 </script>
 
-<a href="/{$locale}/">{$t('menu.home')}</a>
+<a href="/{$locale}">{$t('menu.home')}</a>
 <a href="/{$locale}/about">{$t('menu.about')}</a>
 <br/>
 <br/>
@@ -37,8 +22,8 @@ $: ({ route } = $page.stuff);
 <br />
 <br />
 <br />
-<select on:change="{(e) => goto(e.target.value)}">
-  {#each $locales as l}
-    <option value="/{l}{route}" selected="{l === $locale}">{$t(`lang.${l}`)}</option>
+<select on:change="{({ target }) => goto(target.value)}">
+  {#each $locales as lc}
+    <option value="/{lc}{route}" selected="{lc === $locale}">{$t(`lang.${lc}`)}</option>
   {/each}
 </select>

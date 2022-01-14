@@ -1,6 +1,7 @@
 import i18n from 'sveltekit-i18n';
 import lang from './lang';
 
+/** @type {import('sveltekit-i18n').Config} */
 const config = {
   translations: {
     en: { lang },
@@ -31,6 +32,12 @@ const config = {
       loader: async () => (await import('./de/menu.json')).default,
     },
     {
+      locale: 'en',
+      key: 'error',
+      routes: ['error'],
+      loader: async () => (await import('./en/error.json')).default,
+    },
+    {
       locale: 'de',
       key: 'home',
       routes: ['', '/'],
@@ -48,6 +55,12 @@ const config = {
       loader: async () => (await import('./cs/menu.json')).default,
     },
     {
+      locale: 'de',
+      key: 'error',
+      routes: ['error'],
+      loader: async () => (await import('./de/error.json')).default,
+    },
+    {
       locale: 'cs',
       key: 'home',
       routes: ['', '/'],
@@ -59,13 +72,25 @@ const config = {
       routes: ['/about'],
       loader: async () => (await import('./cs/about.json')).default,
     },
+    {
+      locale: 'cs',
+      key: 'error',
+      routes: ['error'],
+      loader: async () => (await import('./cs/error.json')).default,
+    },
   ],
 };
 
-export const supportedLocales = Object.keys(lang);
+export const defaultLocale = 'en';
 
-export const defaultLocale = supportedLocales[0];
+export const { t, locale, locales, loading, loadTranslations, translations } = new i18n(config);
 
-export const { t, locale, locales, loading, loadTranslations } = new i18n(config);
+// Translations logs
+loading.subscribe(async ($loading) => {
+  if ($loading) {
+    console.log('Loading translations...');
 
-loading.subscribe(($loading) => $loading && console.log('Loading translations...'));
+    await loading.toPromise();
+    console.log('Updated translations', translations.get());
+  }
+});
