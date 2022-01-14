@@ -14,7 +14,7 @@
 <br />
 <br />
 <select bind:value="{$locale}">
-  {#each $locales as locale}
-    <option value="{locale}">{$t(`lang.${locale}`)}</option>
+  {#each $locales as value}
+    <option value="{value}">{$t(`lang.${value}`)}</option>
   {/each}
 </select>

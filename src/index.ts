@@ -24,7 +24,7 @@ export default class {
 
   private promises: Promise<void>[] = [];
 
-  loading: LoadingStore = { subscribe: this.isLoading.subscribe, toPromise: () => Promise.all(this.promises) };
+  loading: LoadingStore = { subscribe: this.isLoading.subscribe, toPromise: () => Promise.all(this.promises), get: () => get(this.isLoading) };
 
   private privateTranslations: Writable<Translations> = writable({});
 
@@ -45,18 +45,19 @@ export default class {
   private internalLocale: Writable<string> = writable();
 
   locale: ExtendedStore<string, () => string, Writable<string>> = {
-    ...this.internalLocale,
+    set: this.internalLocale.set,
+    update: this.internalLocale.update,
     ...derived(this.internalLocale, ($locale, set) => {
-      const value = $locale && `${$locale}`.toLowerCase();
-      const outputLocale = this.getLocale(value);
+      const inputLocale = $locale && `${$locale}`.toLowerCase();
+      const outputLocale = this.getLocale(inputLocale);
 
       if (outputLocale && outputLocale !== this.locale.get()) set(outputLocale);
     }),
     get: () => get(this.locale),
   };
 
-  private loaderTrigger = derived([this.locale, this.currentRoute], ([$locale, $currentRoute], set) => {
-    if ($locale !== undefined && $currentRoute !== undefined) set([$locale, $currentRoute]);
+  private loaderTrigger = derived([this.internalLocale, this.currentRoute], ([$internalLocale, $currentRoute], set) => {
+    if ($internalLocale !== undefined && $currentRoute !== undefined) set([$internalLocale, $currentRoute]);
   }, [] as string[]);
 
   initialized: Readable<boolean> = derived([this.locale, this.currentRoute, this.privateTranslations], ([$locale, $currentRoute, $translations], set) => {
@@ -115,7 +116,7 @@ export default class {
   setLocale = async (locale?:string) => {
     if (!locale) return;
 
-    this.locale.set(locale);
+    this.internalLocale.set(locale);
 
     await this.loading.toPromise();
   };

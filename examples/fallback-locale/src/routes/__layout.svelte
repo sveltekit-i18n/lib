@@ -34,7 +34,7 @@
 <br />
 <br />
 <select bind:value="{$locale}">
-  {#each $locales as locale}
-    <option value="{locale}">{$t(`lang.${locale.toLowerCase()}`)}</option>
+  {#each $locales as value}
+    <option value="{value}">{$t(`lang.${value.toLowerCase()}`)}</option>
   {/each}
 </select>

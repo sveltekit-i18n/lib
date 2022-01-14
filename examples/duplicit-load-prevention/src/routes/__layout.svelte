@@ -79,7 +79,7 @@
 <br />
 <br />
 <select on:change="{handleLocaleChange}">
-  {#each $locales as locale}
-    <option value="{locale}">{$t(`lang.${locale}`)}</option>
+  {#each $locales as l}
+    <option value="{l}">{$t(`lang.${l}`)}</option>
   {/each}
 </select>
