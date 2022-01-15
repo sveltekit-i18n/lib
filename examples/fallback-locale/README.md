@@ -1,2 +1,2 @@
 # Fallback locale
-This app demonstrates `config.fallbackLocale` parameter.
+This app shows how to use `config.fallbackLocale` parameter.
