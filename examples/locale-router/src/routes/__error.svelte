@@ -1,6 +1,6 @@
 <script context="module">
-  import { loadTranslations } from '$lib/translations';
-  
+  import { t, locale, loadTranslations } from '$lib/translations';
+
   /** @type {import('@sveltejs/kit').Load} */
   export const load = async ({ stuff, props }) => {
 
@@ -12,7 +12,6 @@
 
 
 <script>
-  import { t, locale } from '$lib/translations';
   import { page } from '$app/stores';
 
   export let status = $page.status;

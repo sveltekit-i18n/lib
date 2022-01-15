@@ -1,8 +1,8 @@
 <script context="module">
-  import { t, loadTranslations, locales, locale } from '$lib/translations';
+  import { loadTranslations } from '$lib/translations';
   
   /** @type {import('@sveltejs/kit').Load} */
-  export const load = async ({ url, params }) => {
+  export const load = async ({ url }) => {
     const { pathname } = url;
 
     const lang = `${pathname.match(/\w+?(?=\/|$)/) || ''}`;

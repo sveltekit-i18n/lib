@@ -1,10 +1,10 @@
 <script context="module">
   import { dev } from '$app/env';
-  import { t, locale, loadTranslations } from '$lib/translations';
+  import { loadTranslations } from '$lib/translations';
   import Error from '../../__error.svelte';
 
   /** @type {import('@sveltejs/kit').Load} */
-  export const load = async ({ params, stuff }) => {
+  export const load = async ({ params }) => {
     const { error, lang } = params;
 
     let status = parseInt(error);
