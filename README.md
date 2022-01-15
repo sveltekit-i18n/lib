@@ -83,9 +83,9 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
   export const load = async ({ url }) => {
     const { pathname } = url;
 
-    const defaultLocale = 'en'; // get from cookie or user session...
+    const defaultLocale = 'en'; // get from cookie, user session, ...
     
-    const initLocale = locale.get() || defaultLocale;
+    const initLocale = locale.get() || defaultLocale; // set default if no locale already set
 
     await loadTranslations(initLocale, pathname);
 
