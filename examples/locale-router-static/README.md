@@ -69,7 +69,7 @@ Your `.htaccess` could look like this:
   # RewriteCond %{REQUEST_FILENAME} !-f
   # RewriteRule ^(.*[^/])$ /$1/ [L]
 
-  # Server files if exist
+  # Serve files if exist
   RewriteCond %{REQUEST_FILENAME} -f
   RewriteRule ^(.*)$ - [L]
 
