@@ -78,13 +78,16 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 
 ```svelte
 <script context="module">
-  import { loadTranslations } from '$lib/translations';
+  import { locale, loadTranslations } from '$lib/translations';
 
   export const load = async ({ url }) => {
     const { pathname } = url;
 
-    const locale = 'en'; // get from cookie or user session...
-    await loadTranslations(locale, pathname);
+    const defaultLocale = 'en'; // get from cookie or user session...
+    
+    const initLocale = locale.get() || defaultLocale;
+
+    await loadTranslations(initLocale, pathname);
 
     return {};
   }
