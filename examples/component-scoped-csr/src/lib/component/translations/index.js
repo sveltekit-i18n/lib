@@ -1,7 +1,8 @@
 import i18n from 'sveltekit-i18n';
 import lang from './lang.json';
 
-export const config = ({
+/** @type {import('sveltekit-i18n').Config} */
+export const config = {
   loaders: [
     {
       locale: 'en',
@@ -34,6 +35,6 @@ export const config = ({
       loader: async () => (await import('./de/common.json')).default,
     },
   ],
-});
+};
 
 export default () => new i18n(config);

@@ -2,7 +2,8 @@ import i18n from 'sveltekit-i18n';
 import lang from './lang.json';
 import * as customModifiers from './modifiers';
 
-export const config = ({
+/** @type {import('sveltekit-i18n').Config} */
+export const config = {
   initLocale: 'en',
   translations: {
     en: { lang },
@@ -21,7 +22,7 @@ export const config = ({
     },
   ],
   customModifiers,
-});
+};
 
 export const { t, loading, locales, locale, loadConfig } = new i18n();
 
