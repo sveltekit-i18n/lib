@@ -1,7 +1,7 @@
 import * as defaultModifiers from '../modifiers';
 import { useDefault } from './common';
 
-import type { ToDotNotation, GetTranslation, Translate, Route, ModifierOption, CustomModifiers, LoaderModule } from '../types';
+import type { ToDotNotation, FetchTranslations, Translate, Route, ModifierOption, CustomModifiers, LoaderModule } from '../types';
 
 export const toDotNotation: ToDotNotation = (input, parentKey) => Object.keys(useDefault(input)).reduce((acc, key) => {
   const value = input[key];
@@ -12,21 +12,28 @@ export const toDotNotation: ToDotNotation = (input, parentKey) => Object.keys(us
   return ({ ...acc, [outputKey]: value });
 }, {});
 
-export const getTranslation: GetTranslation = async (loaders) => {
+export const fetchTranslations: FetchTranslations = async (loaders) => {
   try {
     const data = await Promise.all(loaders.map(({ loader, ...rest }) => new Promise<LoaderModule & { data: any }>(async (res) => {
-      const data = await loader();
+      let data;
+      try {
+        data = await loader();
+      } catch (error) {
+        console.error(`Failed to load translation. Verify your '${rest.locale}' > '${rest.key}' loader.`);
+        console.error(error);
+      }
       res({ loader, ...rest, data });
     })));
 
-    return data.reduce<Record<string, any>>((acc, { key, data, locale }) => ({
+    return data.reduce<Record<string, any>>((acc, { key, data, locale }) => data ? ({
       ...acc,
       [locale]: toDotNotation({ ...useDefault<Record<any, any>>(acc[locale]), [key]: data }),
-    }), {});
+    }) : acc, {});
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to load translation. Verify the loader function.');
   }
+
+  return {};
 };
 
 export const testRoute = (route: string) => (input: Route) => {
