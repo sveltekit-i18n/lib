@@ -8,7 +8,7 @@
 ## Config
 
 ### `translations`?: __{ [locale: string]: Record<string, any> }__
-This parameter defines translations, which should be in place before `loads` will trigger. It's useful for synchronous translations (e.g. locally defined language names which are same for all language mutations).
+This parameter defines translations, which should be in place before `loaders` will trigger. It's useful for synchronous translations (e.g. locally defined language names which are same for all language mutations).
 
 ### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>> }>__
 You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation.
