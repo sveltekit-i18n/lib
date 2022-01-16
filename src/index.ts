@@ -1,6 +1,6 @@
 import { derived, get, writable } from 'svelte/store';
-import { getTranslation, testRoute, toDotNotation, translate } from './utils';
-import { useDefault as d } from './utils/common';
+import { fetchTranslations, testRoute, toDotNotation, translate } from './utils';
+import { useDefault as d, useDefault } from './utils/common';
 
 import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, LoadingStore, LocalTranslationFunction, Route, TranslationFunction, Translations, ExtendedStore } from './types';
 import type { Readable, Writable } from 'svelte/store';
@@ -192,13 +192,22 @@ export default class {
     if (filteredLoaders.length) {
       this.isLoading.set(true);
 
-      const translations = await getTranslation(filteredLoaders);
+      const translations = await fetchTranslations(filteredLoaders);
 
       this.isLoading.set(false);
 
-      const keys = filteredLoaders.reduce<Record<string, any>>(
-        (acc, { key, locale }) => ({ ...acc, [locale]: [...(acc[locale] || []), key] }), {},
+      const loadedKeys = Object.keys(translations).reduce<Record<string, string[]>>(
+        (acc, locale) => ({ ...acc, [locale]: Object.keys(translations[locale]) }), {},
       );
+
+      const keys = filteredLoaders
+        .filter(({ key, locale }) => useDefault<string[]>(loadedKeys[locale], []).some(
+          (loadedKey) => `${loadedKey}`.startsWith(key),
+        ))
+        .reduce<Record<string, any>>((acc, { key, locale }) => ({
+        ...acc,
+        [locale]: [...(acc[locale] || []), key],
+      }), {});
 
       return [translations, keys];
     }
