@@ -1,6 +1,7 @@
 {
   "title_built-in": "Built-in Modifiers",
   "title_custom": "Custom Modifiers",
+  "title_dynamic_default": "Dynamic default",
   "modifier_eq_string": "{{value; male:He; female:She; default:No one}} has a dog.",
   "modifier_ne_string": "The dog is not {{value:ne; male:his; female:her;}}.",
   "modifier_eq": "Value {{value; 10:is; default:is not;}} equal to ten",
@@ -13,5 +14,10 @@
   "modifier_date": "Local date format: {{value:date;}}",
   "modifier_ago": "Relative: {{value:ago;}}",
   "modifier_test": "Test modifier: {{value:test; default:no input}}",
-  "modifier_currency": "Currency: {{value:currency; currency:USD; ratio: 1;}}"
+  "modifier_currency": "Currency: {{value:currency; currency:USD; ratio: 1;}}",
+  "error": {
+    "404": "Not found.",
+    "500": "Internal server error.",
+    "default": "Some error occurred."
+  }
 }

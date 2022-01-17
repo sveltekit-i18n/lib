@@ -53,7 +53,7 @@ const unesc = (text:string) => text.replace(/\\(?=:|;|{|})/g, '');
 
 const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}, locale?: string) => text.replace(/{{\s*(?:(?!{{|}}).)+\s*}}/g, (placeholder: string) => {
   const key = unesc(`${placeholder.match(/(?!{|\s).+?(?!\\[:;]).(?=\s*(?:[:;]|}}$))/)}`);
-  const value = vars[key];
+  const value = vars?.[key];
   const [,defaultValue = ''] = useDefault(placeholder.match(/.+?(?!\\;).;\s*default\s*:\s*([^\s:;].+?(?:\\[:;]|[^;\s}])*)(?=\s*(?:;|}}$))/i), []);
 
   let [,modifierKey = ''] = useDefault(placeholder.match(/{{\s*(?:[^;]|(?:\\;))+\s*(?:(?!\\:).[:])\s*(?!\s)((?:\\;|[^;])+?)(?=\s*(?:[;]|}}$))/i), []);
@@ -99,13 +99,17 @@ export const interpolate = (text: string, vars: Record<any, any> = {}, customMod
   }
 };
 
-export const translate: Translate = ({ translation, translations = {}, key, vars = {}, customModifiers = {}, locale, fallbackLocale }) => {
+export const translate: Translate = ({ translation, translations = {}, key, vars, customModifiers = {}, locale, fallbackLocale }) => {
   if (!key) throw new Error('no key provided to $t()');
 
   let text = useDefault(translation)[key];
 
   if (fallbackLocale && text === undefined) {
     text = useDefault(translations[fallbackLocale])[key];
+  }
+
+  if (vars?.default && text === undefined) {
+    text = `${vars.default}`;
   }
 
   if (text === undefined) {

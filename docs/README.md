@@ -163,6 +163,13 @@ You can also use `default` value. This value is used in case there is no appropr
 {{placeholder; default:This is default value;}}
 ```
 
+The `default` value can be also set dynamically using the translation payload in your `.svelte` file. For example:
+
+```javascript
+$t(`error.${code}`, { default: $t('error.default') })
+```
+This value is used in case no `default` value is defined within the placeholder definition itself. For more, see `Dynamic default` section in [custom-modifiers](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples/custom-modifiers) example.
+
 ### Modifiers
 Modifiers don't represent the payload value directly, but they can use it for further calculations. Currently, these modifiers are in place:
 

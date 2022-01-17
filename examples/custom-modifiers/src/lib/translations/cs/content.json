@@ -1,6 +1,7 @@
 {
   "title_built-in": "Vestavěné modifikátory",
   "title_custom": "Vlastní modifikátory",
+  "title_dynamic_default": "Proměnná výchozí hodnota",
   "modifier_eq_string": "{{value; male:On; female:Ona; default:Někdo}} má psa.",
   "modifier_ne_string": "Ten pes není {{value:ne; male:jeho; female:její;}}.",
   "modifier_eq": "Hodnota {{value; 10:je; default:není;}} rovna deseti",
@@ -13,5 +14,10 @@
   "modifier_date": "Lokální formát data: {{value:date;}}",
   "modifier_ago": "Relativní: {{value:ago;}}",
   "modifier_test": "Testovací modifikátor: {{value:test; default:žádný vstup}}",
-  "modifier_currency": "Měna: {{value:currency; currency:CZK; ratio: 22.4;}}"
+  "modifier_currency": "Měna: {{value:currency; currency:CZK; ratio: 22.4;}}",
+  "error": {
+    "404": "Nenalezeno.",
+    "500": "Chyba serveru.",
+    "default": "Něco se pokazilo."
+  }
 }

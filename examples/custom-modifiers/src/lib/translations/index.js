@@ -3,7 +3,7 @@ import lang from './lang.json';
 import * as customModifiers from './modifiers';
 
 /** @type {import('sveltekit-i18n').Config} */
-export const config = {
+const config = {
   initLocale: 'en',
   translations: {
     en: { lang },
@@ -24,6 +24,12 @@ export const config = {
   customModifiers,
 };
 
-export const { t, loading, locales, locale, loadConfig } = new i18n();
+export const { t, loading, locales, locale, translations } = new i18n(config);
 
-loading.subscribe(($loading) => $loading && console.log('Loading translations...'));
+loading.subscribe(async ($loading) => {
+  if ($loading) {
+    console.log('Loading translations...');
+    await loading.toPromise();
+    console.log('Updated translations', translations.get());
+  }
+});
