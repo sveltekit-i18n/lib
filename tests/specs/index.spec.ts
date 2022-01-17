@@ -307,6 +307,14 @@ describe('translation', () => {
 
     expect($t('common.placeholder_default')).toBe('VALUES: DEFAULT_VALUE, DEFAULT_VALUE, DEFAULT_VALUE, DEFAULT_VALUE');
   });
+  it('dynamic default works for placeholders', async () => {
+    const { t, loadConfig } = new i18n();
+
+    await loadConfig(CONFIG);
+    const $t = t.get;
+
+    expect($t('common.placeholder_unknown', { default: 'DYNAMIC_DEFAULT_VALUE' })).toBe('DYNAMIC_DEFAULT_VALUE');
+  });
   it('placeholders containing escaped values work', async () => {
     const { t, loadConfig } = new i18n();
 
