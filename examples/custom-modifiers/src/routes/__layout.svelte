@@ -1,8 +1,8 @@
 <script context="module">
-  import { t, locales, locale, loadConfig, config } from '$lib/translations';
+  import { t, loading, locales, locale } from '$lib/translations';
 
   export const load = async () => {
-    await loadConfig(config);
+    await loading.toPromise();
 
     return {};
   }

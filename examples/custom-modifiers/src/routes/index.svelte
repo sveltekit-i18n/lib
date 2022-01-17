@@ -8,6 +8,7 @@
   const currency = 100;
   const test = 'TEST_VALUE';
   const gender = writable('female');
+  const error = writable(404);
 </script>
 
 <h1>{$t('content.title_built-in')}</h1>
@@ -38,3 +39,11 @@
 <h1>{$t('content.title_custom')}</h1>
 <p>{$t('content.modifier_test', { value: test})}</p>
 <p>{$t('content.modifier_currency', { value: currency})}</p>
+
+<h1>{$t('content.title_dynamic_default')}</h1>
+<b>Set error code:</b>
+<button on:click="{() => {$error = 404}}">404</button>
+<button on:click="{() => {$error = 500}}">500</button>
+<button on:click="{() => {$error = undefined}}">(undefined)</button>
+<br />
+<p>{$t(`content.error.${$error}`, { default: $t('content.error.default')})} ({$error})</p>
