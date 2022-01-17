@@ -19,7 +19,7 @@
 
 <div class="content">
   <h1>{$t('error.shit.happens')} ({status})</h1>
-  <p>{$t(`error.${status}.some.info`)}</p>
+  <p>{$t(`error.${status}`, { default: $t('error.default') })}</p>
   <br>
   <br>
   {$locale} – {$t(`lang.${$locale}`)}
