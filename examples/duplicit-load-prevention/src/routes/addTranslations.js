@@ -1,10 +1,11 @@
 import { addTranslations } from '../lib/translations';
 
-export async function post({ body }) {
-  const { translationProps } = body;
+/** @type {import('@sveltejs/kit').RequestHandler} */
+export const post = async ({ request }) => {
+  const { translationProps } = await request.json();
 
   // add translations on server-side
   addTranslations(...translationProps);
 
   return {};
-}
+};

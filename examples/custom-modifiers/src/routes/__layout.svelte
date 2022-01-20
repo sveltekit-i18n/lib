@@ -1,6 +1,7 @@
 <script context="module">
   import { t, loading, locales, locale } from '$lib/translations';
 
+  /** @type {import('@sveltejs/kit').Load} */
   export const load = async () => {
     await loading.toPromise();
 

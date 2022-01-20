@@ -1,7 +1,8 @@
 import { addTranslations, getTranslationProps } from '../lib/translations';
 
-export async function post({ body }) {
-  const { initLocale, pathname } = body;
+/** @type {import('@sveltejs/kit').RequestHandler} */
+export const post = async ({ request }) => {
+  const { initLocale, pathname } = await request.json();
 
   const translationProps = await getTranslationProps(initLocale, pathname);
 
@@ -13,4 +14,4 @@ export async function post({ body }) {
       translationProps,
     },
   };
-}
+};

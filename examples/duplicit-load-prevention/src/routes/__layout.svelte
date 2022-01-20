@@ -3,7 +3,8 @@
   import { page } from '$app/stores';
   import { get, writable } from 'svelte/store';
   import { t, loading, locale, locales, addTranslations, getTranslationProps, loadTranslations } from '$lib/translations';
-
+  
+  /** @type {import('@sveltejs/kit').Load} */
   export const load = async ({ url, fetch }) => {
     const { pathname } = url;
 
