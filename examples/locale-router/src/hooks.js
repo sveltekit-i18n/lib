@@ -4,13 +4,15 @@ import { defaultLocale, locales } from '$lib/translations';
 const routeRegex = new RegExp(/^\/[^.]*([?#].*)?$/);
 
 /** @type {import('@sveltejs/kit').Handle} */
-export const handle = async ({ request, resolve }) => {
-  const { pathname } = request.url;
+export const handle = async ({ event, resolve }) => {
+  const { url, request } = event;
+  const { pathname } = url;
 
   // If this request is a route request
   if (routeRegex.test(pathname)) {
     // Get defined locales
     const supportedLocales = locales.get();
+
     // Try to get locale from `pathname`.
     let locale = supportedLocales.find((l) => l === `${pathname.match(/[^/]+?(?=\/|$)/)}`.toLowerCase());
 
@@ -22,17 +24,16 @@ export const handle = async ({ request, resolve }) => {
       // Set default locale if user preferred locale does not match
       if (!supportedLocales.includes(locale)) locale = defaultLocale;
 
-      // 301 redirect to appropriate language mutation
-      return ({ status: 301, headers: { location: `/${locale}${pathname}` } });
+      // 301 redirect
+      return new Response(undefined, { headers: { 'location': `/${locale}${pathname}` }, status: 301 });
     }
 
     // Add html `lang` attribute
-    const response = await resolve(request);
-    return {
-      ...response,
-      body: `${response.body}`.replace(/<html.*>/, `<html lang="${locale}">`),
-    };
+    const response = await resolve(event);
+    const body = await response.text();
+
+    return new Response(`${body}`.replace(/<html.*>/, `<html lang="${locale}">`), response);
   }
 
-  return resolve(request);
+  return resolve(event);
 };
