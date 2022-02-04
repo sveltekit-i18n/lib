@@ -1,8 +1,9 @@
 import { derived, get, writable } from 'svelte/store';
-import { fetchTranslations, testRoute, toDotNotation, translate } from './utils';
-import { useDefault as d, useDefault } from './utils/common';
+import { fetchTranslations, testRoute, toDotNotation, useDefault as d } from './utils';
+import parser from './parser/parser';
 
-import type { Config, ConfigTranslations, CustomModifiers, LoaderModule, LoadingStore, LocalTranslationFunction, Route, TranslationFunction, Translations, ExtendedStore } from './types';
+import type { Config, ConfigTranslations, LoaderModule, LoadingStore, LocalTranslationFunction, Route, TranslationFunction, Translations, ExtendedStore } from './types';
+import type { CustomModifiers } from './parser/types';
 import type { Readable, Writable } from 'svelte/store';
 
 export { Config };
@@ -71,13 +72,13 @@ export default class {
 
   t: ExtendedStore<TranslationFunction, TranslationFunction> = {
     ...derived(
-      [this.translation, this.config],
-      ([$translation, { customModifiers, fallbackLocale }]): TranslationFunction => (key, vars) => translate({
-        translation: $translation,
-        translations: this.translations.get(),
-        key,
-        vars,
+      [this.config, this.translation],
+      ([{ customModifiers, fallbackLocale }]): TranslationFunction => (key, payload) => parser({
         customModifiers: d<CustomModifiers>(customModifiers),
+      }).parse({
+        key,
+        payload,
+        translations: this.translations.get(),
         locale: this.locale.get(),
         fallbackLocale,
       }),
@@ -87,14 +88,14 @@ export default class {
 
   l: ExtendedStore<LocalTranslationFunction, LocalTranslationFunction> = {
     ...derived(
-      [this.translations, this.config],
-      ([$translations, { customModifiers, fallbackLocale }]): LocalTranslationFunction => (locale, key, vars) => translate({
-        translation: $translations[locale],
-        translations: $translations,
-        key,
-        vars,
+      [this.config, this.translations],
+      ([{ customModifiers, fallbackLocale }, translations]): LocalTranslationFunction => (locale, key, payload) => parser({
         customModifiers: d<CustomModifiers>(customModifiers),
-        locale: this.locale.get(),
+      }).parse({
+        key,
+        payload,
+        translations,
+        locale,
         fallbackLocale,
       }),
     ),
@@ -201,7 +202,7 @@ export default class {
       );
 
       const keys = filteredLoaders
-        .filter(({ key, locale }) => useDefault<string[]>(loadedKeys[locale], []).some(
+        .filter(({ key, locale }) => d<string[]>(loadedKeys[locale], []).some(
           (loadedKey) => `${loadedKey}`.startsWith(key),
         ))
         .reduce<Record<string, any>>((acc, { key, locale }) => ({

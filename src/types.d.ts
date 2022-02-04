@@ -1,5 +1,7 @@
 import { Readable } from 'svelte/store';
 
+import type { CustomModifiers } from './parser/types';
+
 export type LoadingStore = Readable<boolean> & { toPromise: () => Promise<void[]>, get: () => boolean };
 
 export type Loader = () => Promise<Record<any, any>>;
@@ -21,16 +23,6 @@ export type ToDotNotation = (input: DotNotationInput, parentKey?: string) => Dot
 
 export type FetchTranslations = (loaders: LoaderModule[]) => Promise<Record<string, DotNotationOutput>>;
 
-export type Translate = (props: {
-  translation: DotNotationOutput;
-  translations: Record<string, DotNotationOutput>;
-  key: string;
-  vars?: Record<any, any>;
-  customModifiers?: CustomModifiers;
-  locale?: string;
-  fallbackLocale?: string;
-}) => string;
-
 export type TranslationFunction = (key: string, vars?: Record<any, any>) => string;
 
 export type LocalTranslationFunction = (locale: string, key: string, vars?: Record<any, any>) => string;
@@ -50,13 +42,3 @@ export type Config = {
 };
 
 export type GetConfig = (...params: any) => Config;
-
-export type ModifierKey = 'lt' | 'lte' | 'eq' | 'gte' | 'gt';
-
-export type ModifierOption =  Record<'key' | 'value', string>;
-
-export type Modifier = (value: any, options:ModifierOption[], defaultValue?: string, locale?: string) => string;
-
-export type DefaultModifiers = Record<ModifierKey, Modifier>;
-
-export type CustomModifiers = Record<string, Modifier>;
