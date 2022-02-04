@@ -1,5 +1,5 @@
 import * as defaultModifiers from './modifiers';
-import { useDefault } from '../utils';
+import { useDefault } from './utils';
 
 import type { CustomModifiers, ModifierOption, Parser } from './types';
 

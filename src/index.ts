@@ -1,6 +1,6 @@
 import { derived, get, writable } from 'svelte/store';
 import { fetchTranslations, testRoute, toDotNotation, useDefault as d } from './utils';
-import parser from './parser/parser';
+import parser from './parser';
 
 import type { Config, ConfigTranslations, LoaderModule, LoadingStore, LocalTranslationFunction, Route, TranslationFunction, Translations, ExtendedStore } from './types';
 import type { CustomModifiers } from './parser/types';

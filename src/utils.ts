@@ -1,7 +1,8 @@
-import type { ToDotNotation, FetchTranslations, Route, LoaderModule } from './types';
-import type { ModifierOption } from './parser/types';
+import { useDefault } from './parser/utils';
 
-export const useDefault = <T = any>(value: any, def:any = {}): T => value || def;
+import type { ToDotNotation, FetchTranslations, Route, LoaderModule } from './types';
+
+export { useDefault };
 
 export const toDotNotation: ToDotNotation = (input, parentKey) => Object.keys(useDefault(input)).reduce((acc, key) => {
   const value = input[key];
@@ -46,5 +47,3 @@ export const testRoute = (route: string) => (input: Route) => {
 
   return false;
 };
-
-export const findOption = <T = string>(options: ModifierOption[], key: string, defaultValue?: string): T => ((options.find((option) => option.key === key))?.value || defaultValue) as any;
