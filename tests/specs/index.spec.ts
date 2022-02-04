@@ -266,7 +266,7 @@ describe('i18n instance', () => {
   });
 });
 
-describe('translation', () => {
+describe('parser', () => {
   it('returns a key string if not defined', async () => {
     const { t, loadConfig } = new i18n();
 
