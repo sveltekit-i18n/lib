@@ -7,9 +7,9 @@ const hasPlaceholders = (text:string = '') => /{{(?:(?!{{|}}).)+}}/.test(`${text
 
 const unesc = (text:string) => text.replace(/\\(?=:|;|{|})/g, '');
 
-const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers: CustomModifiers = {}, locale?: string) => text.replace(/{{\s*(?:(?!{{|}}).)+\s*}}/g, (placeholder: string) => {
+const placeholders = (text: string, payload: Record<any, any> = {}, customModifiers: CustomModifiers = {}, locale?: string) => text.replace(/{{\s*(?:(?!{{|}}).)+\s*}}/g, (placeholder: string) => {
   const key = unesc(`${placeholder.match(/(?!{|\s).+?(?!\\[:;]).(?=\s*(?:[:;]|}}$))/)}`);
-  const value = vars?.[key];
+  const value = payload?.[key];
   const [,defaultValue = ''] = useDefault(placeholder.match(/.+?(?!\\;).;\s*default\s*:\s*([^\s:;].+?(?:\\[:;]|[^;\s}])*)(?=\s*(?:;|}}$))/i), []);
 
   let [,modifierKey = ''] = useDefault(placeholder.match(/{{\s*(?:[^;]|(?:\\;))+\s*(?:(?!\\:).[:])\s*(?!\s)((?:\\;|[^;])+?)(?=\s*(?:[;]|}}$))/i), []);
@@ -45,11 +45,11 @@ const placeholders = (text: string, vars: Record<any, any> = {}, customModifiers
 
 });
 
-const interpolate = (text: string, vars: Record<any, any> = {}, customModifiers?: CustomModifiers, locale?: string):string => {
+const interpolate = (text: string, payload: Record<any, any> = {}, customModifiers?: CustomModifiers, locale?: string):string => {
   if (hasPlaceholders(text)) {
-    const output = placeholders(text, vars, customModifiers, locale);
+    const output = placeholders(text, payload, customModifiers, locale);
 
-    return interpolate(output, vars, customModifiers, locale);
+    return interpolate(output, payload, customModifiers, locale);
   } else {
     return unesc(`${text}`);
   }
