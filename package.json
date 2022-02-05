@@ -15,11 +15,10 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "dev": "rollup -c -w",
+    "dev": "tsup src/index.ts --watch",
     "test": "jest",
-    "cleanup": "rm -rf lib types",
-    "build": "npm run cleanup && rollup -c",
-    "prepublishOnly": "npm run build",
+    "build": "tsup src/index.ts --dts --format cjs,esm --minify",
+    "prepublishOnly": "rm -rf dist && npm run build",
     "lint": "eslint --fix --ext .ts,.js --ignore-path .gitignore ."
   },
   "files": [
@@ -62,6 +61,11 @@
     "pre-commit": "^1.2.2",
     "svelte": "^3.44.3",
     "ts-jest": "^27.1.2",
+    "tsup": "^5.11.13",
     "typescript": "^4.5.4"
+  },
+  "dependencies": {
+    "@sveltekit-i18n/base": "latest",
+    "@sveltekit-i18n/parser-default": "latest"
   }
 }
