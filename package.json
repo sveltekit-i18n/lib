@@ -1,12 +1,17 @@
 {
   "name": "sveltekit-i18n",
-  "version": "1.5.4",
+  "version": "2.0.0",
   "description": "Internationalization library for SvelteKit",
   "type": "module",
-  "main": "./lib/index.js",
-  "types": "./types/index.d.ts",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./lib/index.js",
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -18,8 +23,7 @@
     "lint": "eslint --fix --ext .ts,.js --ignore-path .gitignore ."
   },
   "files": [
-    "lib",
-    "types"
+    "dist"
   ],
   "pre-commit": [
     "lint"
@@ -47,7 +51,6 @@
     "svelte": "^3.44.3"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^8.3.0",
     "@types/jest": "^27.0.3",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
@@ -57,10 +60,6 @@
     "eslint-plugin-svelte3": "^3.2.1",
     "jest": "^27.4.5",
     "pre-commit": "^1.2.2",
-    "rollup": "^2.61.1",
-    "rollup-plugin-auto-external": "^2.0.0",
-    "rollup-plugin-dts": "^4.0.1",
-    "rollup-plugin-terser": "^7.0.2",
     "svelte": "^3.44.3",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
