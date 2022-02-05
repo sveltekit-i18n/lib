@@ -11,7 +11,6 @@ export type CustomModifiers = Record<string, Modifier>;
 export type Parser = (config: {
   customModifiers?: CustomModifiers;
 }) => {
-  fallbackLocale?: string,
   parse: (props: {
     translations: Record<string, Record<string, any>>;
     key: string;

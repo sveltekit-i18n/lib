@@ -55,7 +55,6 @@ const interpolate = (text: string, payload: Record<any, any> = {}, customModifie
   }
 };
 
-
 const parser: Parser = ({ customModifiers = {} }) => ({
   parse: ({ translations = {}, key, payload, locale, fallbackLocale }) => {
     if (!key) throw new Error('No key provided to $t()');

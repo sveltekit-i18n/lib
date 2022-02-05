@@ -12,7 +12,7 @@
 ✅ Component-scoped translations – you can create multiple instances with custom definitions\
 ✅ Custom modifiers – you can modify the input data the way you really need\
 ✅ TS support\
-✅ No dependencies
+✅ No external dependencies
 
 ## Usage
 
