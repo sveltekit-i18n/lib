@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/sveltekit-i18n.svg)](https://badge.fury.io/js/sveltekit-i18n) ![](https://github.com/jarda-svoboda/sveltekit-i18n/workflows/Tests/badge.svg)
+[![npm version](https://badge.fury.io/js/sveltekit-i18n.svg)](https://badge.fury.io/js/sveltekit-i18n) ![](https://github.com/sveltekit-i18n/lib/workflows/Tests/badge.svg)
 
 # sveltekit-i18n
 `sveltekit-i18n` is a tiny, dependency-less library built for [Svelte](https://github.com/sveltejs/svelte) and [SvelteKit](https://github.com/sveltejs/kit).
@@ -111,6 +111,6 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 ```
 
 ## More info
-[Docs](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/docs/README.md)\
-[Examples](https://github.com/jarda-svoboda/sveltekit-i18n/tree/master/examples)\
-[Changelog](https://github.com/jarda-svoboda/sveltekit-i18n/releases)
+[Docs](https://github.com/sveltekit-i18n/lib/tree/master/docs/README.md)\
+[Examples](https://github.com/sveltekit-i18n/lib/tree/master/examples)\
+[Changelog](https://github.com/sveltekit-i18n/lib/releases)

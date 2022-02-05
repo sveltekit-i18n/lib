@@ -26,7 +26,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/jarda-svoboda/sveltekit-i18n.git"
+    "url": "git+ssh://git@github.com/sveltekit-i18n/lib.git"
   },
   "keywords": [
     "svelte",
@@ -40,9 +40,9 @@
   "author": "Jarda Svoboda",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jarda-svoboda/sveltekit-i18n/issues"
+    "url": "https://github.com/sveltekit-i18n/lib/issues"
   },
-  "homepage": "https://github.com/jarda-svoboda/sveltekit-i18n#readme",
+  "homepage": "https://github.com/sveltekit-i18n/lib#readme",
   "peerDependencies": {
     "svelte": "^3.44.3"
   },
