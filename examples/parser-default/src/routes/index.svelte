@@ -11,6 +11,11 @@
   const error = writable(404);
 </script>
 
+<h1>{$t('content.title_placeholders')}</h1>
+{$t('content.placeholder_simple', { placeholder: 'output' })}<br />
+{$t('content.placeholder_default')}<br />
+{$t('content.placeholder_simple', { default: `dynamic default ${$number}` })}<br />
+
 <h1>{$t('content.title_built-in')}</h1>
 <div>
   {$t('content.modifier_number', { count: $count })}<br />

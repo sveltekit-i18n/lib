@@ -36,7 +36,7 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - this approach is great if you care about SEO
 - optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
 
-## Parsers examples
+### Parsers
 `parser-default`
 - this app demonstrates features of the [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default)
 
