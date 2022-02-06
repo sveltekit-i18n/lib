@@ -15,7 +15,7 @@
     "./package.json": "./package.json"
   },
   "scripts": {
-    "dev": "tsup src/index.ts --watch",
+    "dev": "tsup src/index.ts --dts --format cjs,esm --sourcemap --watch",
     "test": "jest",
     "build": "tsup src/index.ts --dts --format cjs,esm --minify",
     "prepublishOnly": "rm -rf dist && npm run build",
