@@ -15,5 +15,5 @@ export default class extends I18n {
     super(config && normalizeConfig(config));
   }
 
-  loadConfig = (config: Config) => super.loadConfig(normalizeConfig(config));
+  loadConfig = (config: Config) => config && super.configLoader(normalizeConfig(config));
 }
