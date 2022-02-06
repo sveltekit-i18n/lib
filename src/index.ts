@@ -15,16 +15,5 @@ export default class extends I18n {
     super(config && normalizeConfig(config));
   }
 
-  loadConfig = async (config: Config) => {
-    if (!config) throw new Error('No config!');
-
-    const { initLocale = '', translations } = config;
-    const normalizedConfig = normalizeConfig(config || {});
-
-    this.config.set(normalizedConfig);
-
-    if (translations) this.addTranslations(translations);
-
-    await this.loadTranslations(initLocale);
-  };
+  loadConfig = (config: Config) => super.loadConfig(normalizeConfig(config));
 }
