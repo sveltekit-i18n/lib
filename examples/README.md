@@ -23,9 +23,6 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - app translations are loaded the same way as for `multi-page` (SSR)
 - component's translations are loaded in component promise (CSR - SvelteKit does not provide server side load method for components, so translation loaders are triggered on client side only)
 
-`custom-modifiers`
-- this app demonstrates custom modifiers integration (`config.customModifiers`) and includes an overview of built-in modifiers
-
 `fallback-locale`
 - this app demonstrates `config.fallbackLocale`
 
@@ -38,6 +35,10 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
 - this approach is great if you care about SEO
 - optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
+
+## Parsers examples
+`parser-default`
+- this app demonstrates features of the [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default)
 
 ## How to
 

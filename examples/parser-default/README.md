@@ -1,0 +1,2 @@
+# @sveltekit-i18n/parser-default
+This app demonstrates features of the [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default). It includes an overview of [placeholders](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default/README.md#placeholders), [built-in modifiers](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default/README.md#modifiers) and [custom modifiers](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default/README.md#options).
