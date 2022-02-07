@@ -47,7 +47,7 @@
   },
   "homepage": "https://github.com/sveltekit-i18n/lib#readme",
   "peerDependencies": {
-    "svelte": "^3.44.3"
+    "svelte": "^3.x"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
@@ -59,13 +59,12 @@
     "eslint-plugin-svelte3": "^3.2.1",
     "jest": "^27.4.5",
     "pre-commit": "^1.2.2",
-    "svelte": "^3.44.3",
     "ts-jest": "^27.1.2",
     "tsup": "^5.11.13",
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@sveltekit-i18n/base": "latest",
-    "@sveltekit-i18n/parser-default": "latest"
+    "@sveltekit-i18n/base": "^1.x",
+    "@sveltekit-i18n/parser-default": "^1.x"
   }
 }
