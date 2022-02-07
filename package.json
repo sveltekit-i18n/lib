@@ -41,7 +41,7 @@
     "translation"
   ],
   "author": "Jarda Svoboda",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sveltekit-i18n/lib/issues"
   },
