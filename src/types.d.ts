@@ -1,22 +1,6 @@
-import type { ParserOptions } from '@sveltekit-i18n/parser-default';
+import type { IConfig } from '@sveltekit-i18n/base';
+import type { IParser } from '@sveltekit-i18n/parser-default';
 
-export type Loader = () => Promise<Record<any, any>>;
-
-export type Route = string | RegExp;
-
-export type LoaderModule = {
-  key: string;
-  locale: string;
-  routes?: Route[];
-  loader: Loader;
-};
-
-export type ConfigTranslations = { [locale: string]: Record<string, any> };
-
-export type Config = {
-  loaders?: LoaderModule[];
-  translations?: ConfigTranslations;
-  initLocale?: string;
-  fallbackLocale?: string;
-  parserOptions?: ParserOptions;
-};
+export interface Config extends Omit<IConfig.Config, 'parser'> {
+  parserOptions?: IParser.Options;
+}
