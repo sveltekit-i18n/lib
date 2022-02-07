@@ -1,7 +1,10 @@
 {
+  "title_placeholders": "Placeholdery",
   "title_built-in": "Vestavěné modifikátory",
   "title_custom": "Vlastní modifikátory",
   "title_dynamic_default": "Proměnná výchozí hodnota",
+  "placeholder_simple": "Toto je {{placeholder}}",
+  "placeholder_default": "Toto je {{placeholder; default:výchozí hodnota.}}",
   "modifier_eq_string": "{{value; male:On; female:Ona; default:Někdo}} má psa.",
   "modifier_ne_string": "Ten pes není {{value:ne; male:jeho; female:její;}}.",
   "modifier_eq": "Hodnota {{value; 10:je; default:není;}} rovna deseti",

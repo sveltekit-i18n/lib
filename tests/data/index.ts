@@ -27,7 +27,9 @@ export const CONFIG:Config = {
       loader: async () => (import('../data/translations/cs/common.json')),
     },
   ],
-  customModifiers: {
-    test: (value) => value,
+  parserOptions: {
+    customModifiers: {
+      test: (value) => value,
+    },
   },
 };

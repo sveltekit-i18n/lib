@@ -1,7 +1,10 @@
 {
+  "title_placeholders": "Placeholders",
   "title_built-in": "Built-in Modifiers",
   "title_custom": "Custom Modifiers",
   "title_dynamic_default": "Dynamic default",
+  "placeholder_simple": "This is {{placeholder}}",
+  "placeholder_default": "This is {{placeholder; default:a default value.}}",
   "modifier_eq_string": "{{value; male:He; female:She; default:No one}} has a dog.",
   "modifier_ne_string": "The dog is not {{value:ne; male:his; female:her;}}.",
   "modifier_eq": "Value {{value; 10:is; default:is not;}} equal to ten",

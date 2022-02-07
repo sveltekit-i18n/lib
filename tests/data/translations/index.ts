@@ -1,9 +1,7 @@
-import { toDotNotation } from '../../../src/utils';
-import type { DotNotationOutput } from '../../../src/types';
-
 import * as common from './en/common.json';
 import * as route from './en/route.json';
 import * as common_cs from './cs/common.json';
+import { toDotNotation } from '../../utils';
 
 export default ({
   en: toDotNotation({
@@ -14,4 +12,4 @@ export default ({
   cs: toDotNotation({
     common: common_cs,
   }),
-}) as Record<string, DotNotationOutput>;
+}) as Record<string, any>;

@@ -1,4 +1,6 @@
 import i18n from 'sveltekit-i18n';
+// Or you could use @sveltekit-i18n/base and @sveltekit-i18n/parser-default
+
 import lang from './lang.json';
 import * as customModifiers from './modifiers';
 
@@ -21,7 +23,9 @@ const config = {
       loader: async () => (await import('./cs/content.json')).default,
     },
   ],
-  customModifiers,
+  parserOptions: {
+    customModifiers,
+  },
 };
 
 export const { t, loading, locales, locale, translations } = new i18n(config);
