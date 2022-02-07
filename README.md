@@ -22,6 +22,7 @@ Setup `translations.js` in your lib folder...
 ```javascript
 import i18n from 'sveltekit-i18n';
 
+/** @type {import('sveltekit-i18n').Config} */
 export const config = ({
   loaders: [
     {
