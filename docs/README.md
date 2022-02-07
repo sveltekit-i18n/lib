@@ -192,7 +192,7 @@ Each modifier returns a string value based on these input parameters:
 
 When placeholder value is not matched and you don't specify the `default` value, modifier returns an empty string.
 
-You can include your own modifiers in the [Config](#custommodifiers-recordstring-value-string-options-arraykey-string-value-string-defaultvalue-string--string)! See [Examples](https://github.com/sveltekit-i18n/lib/tree/1.x/examples).
+You can include your own modifiers in the [Config](#config)! See [Examples](https://github.com/sveltekit-i18n/lib/tree/1.x/examples).
 
 
 Modifier definition looks like this:
