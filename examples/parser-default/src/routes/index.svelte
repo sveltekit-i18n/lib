@@ -4,7 +4,11 @@
 
   const number = writable(10);
   const count = writable(1000);
-  const time = Date.now() - (10 * 60 * 1000);
+
+  const now = writable(Date.now());
+  setInterval(() => now.set(Date.now()), 1000);
+  $: time = $now - (10 * 60 * 1000);
+
   const currency = 100;
   const test = 'TEST_VALUE';
   const gender = writable('female');
@@ -38,8 +42,8 @@
   {$t('content.modifier_eq_string', { value: $gender })}<br />
   {$t('content.modifier_ne_string', { value: $gender })}<br />
 </div>
-<p>{$t('content.modifier_date', { value: time})}</p>
-<p>{$t('content.modifier_ago', { value: time})}</p>
+<p>{$t('content.modifier_date', { value: time })}</p>
+<p>{$t('content.modifier_ago', { value: time })}</p>
 
 <h1>{$t('content.title_custom')}</h1>
 <p>{$t('content.modifier_test', { value: test})}</p>
