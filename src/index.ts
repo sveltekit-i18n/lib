@@ -16,5 +16,5 @@ export default class extends I18n<ParserParams> {
     super(config && normalizeConfig(config));
   }
 
-  loadConfig = (config: Config) => config && super.configLoader(normalizeConfig(config));
+  loadConfig = (config: Config) => super.configLoader(normalizeConfig(config));
 }
