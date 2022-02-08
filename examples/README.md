@@ -4,7 +4,7 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 
 `single-load`
 - loads all translations for all language mutations during `i18n` initialization
-- usually this is not what you are looking for, but it can be handy if you need all your translations in place.
+- usually this is not what you are looking for, but it can be useful if you need all your translations in place.
 
 `one-page`
 - this approach is useful for one-page apps
