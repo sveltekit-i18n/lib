@@ -65,6 +65,6 @@
   },
   "dependencies": {
     "@sveltekit-i18n/base": "^1.0.0-rc.2",
-    "@sveltekit-i18n/parser-default": "^1.0.0-rc.2"
+    "@sveltekit-i18n/parser-default": "^1.0.0-rc.3"
   }
 }
