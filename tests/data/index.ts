@@ -29,7 +29,7 @@ export const CONFIG:Config = {
   ],
   parserOptions: {
     customModifiers: {
-      test: (value) => value,
+      test: ({ value }) => value,
     },
   },
 };

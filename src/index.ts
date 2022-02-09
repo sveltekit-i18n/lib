@@ -1,7 +1,7 @@
 import Base from '@sveltekit-i18n/base';
 import parser from '@sveltekit-i18n/parser-default';
 
-import type { IParser } from '@sveltekit-i18n/parser-default';
+import type { Parser } from '@sveltekit-i18n/parser-default';
 import type { Config } from './types';
 
 export { Config };
@@ -11,7 +11,7 @@ const normalizeConfig = ({ parserOptions = {}, ...rest }: Config) => ({
   parser: parser(parserOptions),
 });
 
-class I18n extends Base<IParser.Params> {
+class I18n extends Base<Parser.Params> {
   constructor(config?: Config) {
     super(config && normalizeConfig(config));
   }
