@@ -30,7 +30,7 @@ If you set this property, translations are automatically loaded not for current 
 
 Note that it's not recommended to use this property if you don't really need it. It may affect your data load.
 
-### `parserOptions`?: __{customModufiers: CustomModifiers}__
+### `parserOptions`?: __{ customModufiers: CustomModifiers }__
 This property includes configuration related to `@sveltekit-i18n/parser-default`.
 
 Read more about `parserOptions` [here](https://github.com/sveltekit-i18n/parsers/tree/master/parser-default#options).
