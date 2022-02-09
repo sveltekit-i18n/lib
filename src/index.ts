@@ -4,7 +4,7 @@ import parser from '@sveltekit-i18n/parser-default';
 import type { Parser } from '@sveltekit-i18n/parser-default';
 import type { Config } from './types';
 
-export { Config };
+export type { Config };
 
 const normalizeConfig = ({ parserOptions = {}, ...rest }: Config) => ({
   ...rest,
