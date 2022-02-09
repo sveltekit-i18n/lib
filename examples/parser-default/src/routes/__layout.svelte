@@ -1,4 +1,4 @@
-<script context="module">
+<script context="module" lang="ts">
   import { t, loading, locales, locale } from '$lib/translations';
 
   /** @type {import('@sveltejs/kit').Load} */

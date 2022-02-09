@@ -10,11 +10,13 @@
   "devDependencies": {
     "@sveltejs/adapter-static": "^1.0.0-next.24",
     "@sveltejs/kit": "^1.0.0-next.216",
-    "svelte": "^3.44.3"
+    "svelte": "^3.44.3",
+    "svelte-preprocess": "^4.10.2",
+    "typescript": "^4.5.4"
   },
   "type": "module",
   "dependencies": {
-    "@sveltekit-i18n/base": "file:../../",
-    "@sveltekit-i18n/parser-default": "file:../../"
+    "@sveltekit-i18n/base": "file:../../node_modules/@sveltekit-i18n/base",
+    "@sveltekit-i18n/parser-default": "file:../../node_modules/@sveltekit-i18n/parser-default"
   }
 }
