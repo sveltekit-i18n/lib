@@ -1,5 +1,5 @@
 import { get } from 'svelte/store';
-import i18n from '../../src/index';
+import i18n from '../../src';
 import { CONFIG, TRANSLATIONS } from '../data';
 import { filterTranslationKeys } from '../utils';
 

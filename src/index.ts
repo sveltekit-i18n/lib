@@ -11,7 +11,7 @@ const normalizeConfig = ({ parserOptions = {}, ...rest }: Config) => ({
   parser: parser(parserOptions),
 });
 
-class I18n extends Base<Parser.Params> {
+class I18n<Params extends Parser.Params> extends Base<Params> {
   constructor(config?: Config) {
     super(config && normalizeConfig(config));
   }
