@@ -11,12 +11,13 @@
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "$lib": [
-        "src/lib"
+        "./src/lib"
       ],
       "$lib/*": [
-        "src/lib/*"
+        "./src/lib/*"
       ]
     }
   },
