@@ -17,7 +17,8 @@
   "modifier_date": "Local date format: {{value:date;}}",
   "modifier_ago": "Relative: {{value:ago;}}",
   "modifier_test": "Test modifier: {{value:test; default:no input}}",
-  "modifier_currency": "Currency: {{value:currency; currency:USD; ratio: 1;}}",
+  "modifier_currency": "Currency: {{value:currency}}",
+  "currency": "USD",
   "error": {
     "404": "Not found.",
     "500": "Internal server error.",

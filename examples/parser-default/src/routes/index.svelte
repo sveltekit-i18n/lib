@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '$lib/translations'; 
+  import { locale, t } from '$lib/translations'; 
   import { derived, writable } from 'svelte/store';
   import Layout from './__layout.svelte';
 
@@ -11,10 +11,12 @@
   const now = writable(initTime);
   setInterval(() => {now.set(Date.now() - t10)}, 1000);
 
-  const currency = 100;
   const test = 'TEST_VALUE';
   const gender = writable('female');
   const error = writable(404);
+  
+  const currency = 100;
+  const currencyRatio = { en: 1, cs: 22.4 };
 </script>
 
 <h1>{$t('content.title_placeholders')}</h1>
@@ -48,8 +50,8 @@
 <p>{$t('content.modifier_ago', { value: initTime }, { format: 'auto' })}</p>
 
 <h1>{$t('content.title_custom')}</h1>
-<p>{$t('content.modifier_test', { value: test})}</p>
-<p>{$t('content.modifier_currency', { value: currency})}</p>
+<p>{$t('content.modifier_test', { value: test })}</p>
+<p>{$t('content.modifier_currency', { value: currency }, { currency: $t('content.currency'), ratio: currencyRatio[$locale] })}</p>
 
 <h1>{$t('content.title_dynamic_default')}</h1>
 <b>Set error code:</b>

@@ -1,9 +1,11 @@
-import { Modifier } from '@sveltekit-i18n/parser-default';
-
-const findOption = (options, key, defaultValue) => ((options || []).find((option) => option.key === key) || {}).value || defaultValue;
+import type { Modifier } from '@sveltekit-i18n/parser-default';
 
 export const test: Modifier.T = ({ value, defaultValue }) => `${value || defaultValue} 🥳`;
 
-export const currency: Modifier.T = ({ value, options, defaultValue, locale }) => (
-  new Intl.NumberFormat(locale, { style: 'currency', currency: findOption(options, 'currency', 'EUR') }).format(findOption(options, 'ratio', 1) * (value || defaultValue))
-);
+export type CurrencyProps = Intl.NumberFormatOptions & { ratio?: number };
+
+export const currency: Modifier.T<CurrencyProps> = ({ value, props, defaultValue, locale }) => {
+  const { ratio = 1, currency } = props || {};
+
+  return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(ratio * (value || defaultValue));
+};

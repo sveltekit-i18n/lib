@@ -17,7 +17,8 @@
   "modifier_date": "Lokální formát data: {{value:date;}}",
   "modifier_ago": "Relativní: {{value:ago;}}",
   "modifier_test": "Testovací modifikátor: {{value:test; default:žádný vstup}}",
-  "modifier_currency": "Měna: {{value:currency; currency:CZK; ratio: 22.4;}}",
+  "modifier_currency": "Měna: {{value:currency;}}",
+  "currency": "CZK",
   "error": {
     "404": "Nenalezeno.",
     "500": "Chyba serveru.",
