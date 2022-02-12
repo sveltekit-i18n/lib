@@ -1,12 +1,15 @@
-import i18n, { Config } from '@sveltekit-i18n/base';
-import parser, { Parser } from '@sveltekit-i18n/parser-default';
+import i18n from '@sveltekit-i18n/base';
+import parser, { Config } from '@sveltekit-i18n/parser-default';
 // Or you could use `sveltekit-i18n`
 
 import lang from './lang.json';
 import * as customModifiers from './modifiers';
 import type { CurrencyProps } from './modifiers';
 
-const config: Config.T<Parser.Params<{}, CurrencyProps>> = {
+const config: Config<
+{}, /* Translation payload props */
+CurrencyProps /* Modifier props */
+> = {
   initLocale: 'en',
 
   parser: parser({

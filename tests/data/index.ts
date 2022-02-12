@@ -1,7 +1,10 @@
-import { Config } from '../../src';
+import type { Config } from '../../src/types';
 export { default as TRANSLATIONS } from './translations';
 
-export const CONFIG:Config = {
+export const CONFIG:Config<
+{} /* Add your payload props here */,
+{} /* Add your modifier props here */
+> = {
   initLocale: 'en',
   loaders: [
     {
@@ -29,7 +32,7 @@ export const CONFIG:Config = {
   ],
   parserOptions: {
     customModifiers: {
-      test: ({ value }) => value,
+      test: (({ value }) => value),
     },
   },
 };
