@@ -16,7 +16,7 @@ Each loader can include:
 
 `locale`: __string__ – locale (e.g. `en`, `de`) which is this loader for.
 
-`key`: __string__ – represents the translation module. This key is used as a translation prefix so it should be module-unique. You can access your translation later using `$t('key.yourTranslation')`. It shouldn't include `.` (dot) character.
+`key`: __string__ – represents the translation namespace. This key is used as a translation prefix so it should be module-unique. You can access your translation later using `$t('key.yourTranslation')`. It shouldn't include `.` (dot) character.
 
 `loader`:__() => Promise<Record<any, any>> | Record<any, any>__ – is a function returning a `Promise` with translation data, or translation data itself. You can use it to load files locally, fetch it from your API etc...
 
