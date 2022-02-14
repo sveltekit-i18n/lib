@@ -7,6 +7,8 @@
     const initialLocale ='en'; // get from cookie / url / fetch from server...
     await loadTranslations(initialLocale);
 
+    locale.set(initLocale); // <== keep this just before the `return` – see https://github.com/sveltekit-i18n/lib/issues/32
+
     return {};
   }
 </script>

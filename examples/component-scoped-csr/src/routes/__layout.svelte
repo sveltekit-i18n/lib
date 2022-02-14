@@ -11,6 +11,8 @@
 
     await loadTranslations(initLocale, pathname);
 
+    locale.set(initLocale); // <== keep this just before the `return` – see https://github.com/sveltekit-i18n/lib/issues/32
+
     return {};
   }
 </script>
