@@ -16,7 +16,7 @@ Each loader can include:
 
 `locale`: __string__ – locale (e.g. `en`, `de`) which is this loader for.
 
-`key`: __string__ – represents the translation module. This key is used as a translation prefix so it should be module-unique. You can access your translation later using `$t('key.yourTranslation')`. It shouldn't include `.` (dot) character.
+`key`: __string__ – represents the translation namespace. This key is used as a translation prefix so it should be module-unique. You can access your translation later using `$t('key.yourTranslation')`. It shouldn't include `.` (dot) character.
 
 `loader`:__() => Promise<Record<any, any>> | Record<any, any>__ – is a function returning a `Promise` with translation data, or translation data itself. You can use it to load files locally, fetch it from your API etc...
 
@@ -35,7 +35,7 @@ When you are running your app on Node.js server, translations are loaded only on
 
 Tip: You can set to `Number.POSITIVE_INFINITY` to disable server-side refreshing.
 
-### `parserOptions`?: __{ customModufiers: CustomModifiers }__
+### `parserOptions`?: __{ modifierDefaults?: Modifier.Defaults, customModufiers?: Modifier.CustomModifiers }__
 This property includes configuration related to `@sveltekit-i18n/parser-default`.
 
 Read more about `parserOptions` [here](https://github.com/sveltekit-i18n/parsers/tree/master/parser-default#options).
