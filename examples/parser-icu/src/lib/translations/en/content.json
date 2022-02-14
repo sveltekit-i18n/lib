@@ -1,0 +1,7 @@
+{
+  "plural": "You have {value, plural, =0 {no photos.} =1 {one photo.} other {# photos.}}",
+  "select": "{value, select, male {He} female {She} other {They}} will respond shortly.",
+  "selectordinal": "It's my cat's {value, selectordinal, one {#st} two {#nd} few {#rd} other {#th}} birthday",
+  "number": "The price is: {value, number, ::currency/EUR}",
+  "date": "Today is: {value, date, FULL}"
+}

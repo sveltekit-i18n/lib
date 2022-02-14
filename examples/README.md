@@ -40,6 +40,9 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 `parser-default`
 - this app demonstrates features of the [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default)
 
+`parser-icu`
+- this app demonstrates features of the [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/blob/master/parser-icu)
+
 ## How to
 
 - clone or download example you want to use

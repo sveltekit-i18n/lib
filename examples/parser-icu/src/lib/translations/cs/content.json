@@ -1,0 +1,7 @@
+{
+  "plural": "Máte {value, plural, =0 {nula fotek.} =1 {jednu fotku.} few {# fotky.} other {# fotek.}}",
+  "select": "{value, select, male {On} female {Ona} other {Oni}} odpoví brzy.",
+  "selectordinal": "Moje kočka slaví {value, selectordinal, other {#.}} narozeniny.",
+  "number": "Cena je: {value, number, ::currency/CZK}",
+  "date": "Dnes je: {value, date, FULL}"
+}
