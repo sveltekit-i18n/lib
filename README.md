@@ -92,6 +92,8 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 
     await loadTranslations(initLocale, pathname);
 
+    locale.set(initLocale); // keep this just before the `return`
+
     return {};
   }
 </script>
