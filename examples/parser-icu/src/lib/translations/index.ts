@@ -1,5 +1,7 @@
 import i18n from '@sveltekit-i18n/base';
-import parser, { Config } from '@sveltekit-i18n/parser-icu';
+import parser from '@sveltekit-i18n/parser-icu';
+
+import type { Config } from '@sveltekit-i18n/parser-icu';
 
 import lang from './lang.json';
 
