@@ -46,12 +46,12 @@
   {$t('content.modifier_eq_string', { value: $gender })}<br />
   {$t('content.modifier_ne_string', { value: $gender })}<br />
 </div>
-<p>{$t('content.modifier_date', { value: $now }, { timeStyle: 'full' })}</p>
-<p>{$t('content.modifier_ago', { value: initTime }, { format: 'auto' })}</p>
+<p>{$t('content.modifier_date', { value: $now }, { date: {timeStyle: 'full'} })}</p>
+<p>{$t('content.modifier_ago', { value: initTime }, { ago: {format: 'auto'} })}</p>
 
 <h1>{$t('content.title_custom')}</h1>
 <p>{$t('content.modifier_test', { value: test })}</p>
-<p>{$t('content.modifier_currency', { value: currency }, { currency: $t('content.currency'), ratio: currencyRatio[$locale] })}</p>
+<p>{$t('content.modifier_currency', { value: currency }, { currency: {currency: $t('content.currency'), ratio: currencyRatio[$locale]},  })}</p>
 
 <h1>{$t('content.title_dynamic_default')}</h1>
 <b>Set error code:</b>
