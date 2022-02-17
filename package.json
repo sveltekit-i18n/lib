@@ -18,7 +18,6 @@
     "dev": "tsup --watch",
     "test": "jest",
     "build": "tsup",
-    "prepublishOnly": "npm run build",
     "lint": "eslint --fix --ext .ts,.js --ignore-path .gitignore ."
   },
   "files": [
@@ -64,7 +63,7 @@
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "@sveltekit-i18n/base": "^1.0.0-rc",
-    "@sveltekit-i18n/parser-default": "^1.0.0-rc"
+    "@sveltekit-i18n/base": "^1.0.0-rc.8",
+    "@sveltekit-i18n/parser-default": "^1.0.0-rc.8"
   }
 }
