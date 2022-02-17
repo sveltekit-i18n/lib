@@ -1,9 +1,9 @@
 [![npm version](https://badge.fury.io/js/sveltekit-i18n.svg)](https://badge.fury.io/js/sveltekit-i18n) ![](https://github.com/sveltekit-i18n/lib/workflows/Tests/badge.svg)
 
 # sveltekit-i18n
-`sveltekit-i18n` is a tiny, dependency-less library built for [Svelte](https://github.com/sveltejs/svelte) and [SvelteKit](https://github.com/sveltejs/kit).
+`sveltekit-i18n` is a tiny library with no external dependencies, built for [Svelte](https://github.com/sveltejs/svelte) and [SvelteKit](https://github.com/sveltejs/kit).
 
-__IMPORTANT: This README is related to `sveltekit-i18n@2.0.0-rc.x` (NOT PRODUCTION RELEASE). Looking for version `1.x`? You can find it [here](https://github.com/sveltekit-i18n/lib/tree/1.x).__
+__Note this README is related to `sveltekit-i18n@2.x`. If you are looking for version `1.x` you can find it [here](https://github.com/sveltekit-i18n/lib/tree/1.x).__
 
 ## Key features
 
