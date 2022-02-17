@@ -7,7 +7,6 @@ export default defineConfig((options) => {
     dts: true,
     format: ['cjs', 'esm'],
     entry: ['src/index.ts'],
-    watch: options.watch && ['src/*', 'node_modules/@sveltekit-i18n/*'],
     minify: !options.watch,
     sourcemap: options.watch,
   };
