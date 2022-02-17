@@ -15,7 +15,7 @@
   "modifier_gte": "Value {{value:gte; 10:is; default:is not;}} bigger than or equal to ten",
   "modifier_number": "You have {{count:gt; 0:{{count:number;}} new {{count; 1:message; default:messages}}!; default:no messages...}}",
   "modifier_date": "Local date format: {{value:date;}}",
-  "modifier_ago": "Relative: {{value:ago;}}",
+  "modifier_ago": "Page loaded (relative format): {{value:ago;}}",
   "modifier_test": "Test modifier: {{value:test; default:no input}}",
   "modifier_currency": "Currency: {{value:currency}}",
   "currency": "USD",

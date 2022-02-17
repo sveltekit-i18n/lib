@@ -6,10 +6,9 @@
   const number = writable(10);
   const count = writable(1000);
   
-  const t10 = (10 * 60 * 1000);
-  const initTime = Date.now() - t10;
+  const initTime = Date.now();
   const now = writable(initTime);
-  setInterval(() => {now.set(Date.now() - t10)}, 1000);
+  setInterval(() => {now.set(Date.now())}, 1000);
 
   const test = 'TEST_VALUE';
   const gender = writable('female');
@@ -47,7 +46,7 @@
   {$t('content.modifier_ne_string', { value: $gender })}<br />
 </div>
 <p>{$t('content.modifier_date', { value: $now }, { date: {timeStyle: 'full'} })}</p>
-<p>{$t('content.modifier_ago', { value: initTime }, { ago: {format: 'auto'} })}</p>
+<p>{$t('content.modifier_ago', { value: initTime - $now }, { ago: {format: 'auto'} })}</p>
 
 <h1>{$t('content.title_custom')}</h1>
 <p>{$t('content.modifier_test', { value: test })}</p>
