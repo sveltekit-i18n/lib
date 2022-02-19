@@ -11,7 +11,7 @@
 This property defines translations, which should be in place before `loaders` will trigger. It's useful for synchronous translations (e.g. locally defined language names which are same for all language mutations).
 
 ### `loaders`?: __Array<{ locale: string; key: string; loader: () => Promise<Record<any, any>> }>__
-You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation. It can get refreshed according to `config.cache`.
+You can use `loaders` to define your asyncronous translation load. All loaded data are stored so loader is triggered only once – in case there is no previous version of the translation. It can get refreshed according to `config.cache`.\
 Each loader can include:
 
 `locale`: __string__ – locale (e.g. `en`, `de`) which is this loader for.
