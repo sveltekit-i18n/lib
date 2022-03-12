@@ -35,6 +35,9 @@ When you are running your app on Node.js server, translations are loaded only on
 
 Tip: You can set to `Number.POSITIVE_INFINITY` to disable server-side refreshing.
 
+### `debug`?: __boolean__
+This parameter enables debug logs (default: `false`).
+
 ### `parserOptions`?: __{ modifierDefaults?: Modifier.Defaults, customModufiers?: Modifier.CustomModifiers }__
 This property includes configuration related to `@sveltekit-i18n/parser-default`.
 
