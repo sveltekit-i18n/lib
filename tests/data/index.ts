@@ -26,8 +26,8 @@ export const CONFIG:Config<
     },
     {
       key: 'common',
-      locale: 'cs',
-      loader: async () => (import('../data/translations/cs/common.json')),
+      locale: 'zh-Hans',
+      loader: async () => (import('../data/translations/zh-Hans/common.json')),
     },
   ],
   parserOptions: {

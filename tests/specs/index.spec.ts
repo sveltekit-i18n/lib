@@ -3,7 +3,7 @@ import i18n from '../../src';
 import { CONFIG, TRANSLATIONS } from '../data';
 import { filterTranslationKeys } from '../utils';
 
-const { initLocale = '', loaders } = CONFIG;
+const { initLocale = '', loaders = [] } = CONFIG;
 
 describe('i18n instance', () => {
   it('exports all properties and methods', () => {
@@ -27,7 +27,7 @@ describe('i18n instance', () => {
 
     setRoute('/');
     const $initialized = get(initialized);
-    const $loading = get(loading);
+    const $loading = loading.get();
     const $locale = locale.get();
 
     expect($locale).toBe(undefined);
@@ -39,7 +39,7 @@ describe('i18n instance', () => {
 
     await setLocale(initLocale);
     setRoute('/');
-    const $loading = get(loading);
+    const $loading = loading.get();
     expect($loading).toBe(true);
 
     const $initialized = get(initialized);
@@ -50,7 +50,7 @@ describe('i18n instance', () => {
 
     setLocale(initLocale);
 
-    const $loading = get(loading);
+    const $loading = loading.get();
     expect($loading).toBe(false);
   });
   it('`setLocale` method triggers loading when route is set', async () => {
@@ -59,7 +59,7 @@ describe('i18n instance', () => {
     await setRoute('');
     setLocale(initLocale);
 
-    const $loading = get(loading);
+    const $loading = loading.get();
     expect($loading).toBe(true);
   });
   it('`setLocale` does not set `unknown` locale', async () => {
@@ -67,7 +67,7 @@ describe('i18n instance', () => {
 
     setLocale('unknown');
 
-    const $loading = get(loading);
+    const $loading = loading.get();
     const $locale = locale.get();
 
     expect($loading).toBe(false);
@@ -78,7 +78,7 @@ describe('i18n instance', () => {
 
     locale.set(initLocale);
 
-    const $loading = get(loading);
+    const $loading = loading.get();
     expect($loading).toBe(false);
 
     await loading.toPromise();
@@ -92,7 +92,7 @@ describe('i18n instance', () => {
     await setRoute('');
     locale.set(initLocale);
 
-    const $loading = get(loading);
+    const $loading = loading.get();
     expect($loading).toBe(true);
 
     await loading.toPromise();
@@ -106,7 +106,7 @@ describe('i18n instance', () => {
     await setRoute('');
     locale.set(initLocale.toUpperCase());
 
-    const $loading = get(loading);
+    const $loading = loading.get();
     expect($loading).toBe(true);
 
     await loading.toPromise();
@@ -117,13 +117,38 @@ describe('i18n instance', () => {
     const $locale = locale.get();
     expect($locale).toBe(initLocale.toLocaleLowerCase());
   });
+  it('`locale` can be non-standard', async () => {
+    const nonStandardLocale = 'ku';
+    const { loading, locale, locales, setRoute, initialized, translations } = new i18n({ loaders: [{ key: 'common', locale: `${nonStandardLocale}`.toUpperCase(), loader: () => import(`../data/translations/${nonStandardLocale}/common.json`) }] });
+    await setRoute('');
+    locale.set(nonStandardLocale);
+
+    const $loading = loading.get();
+    expect($loading).toBe(true);
+
+    await loading.toPromise();
+
+    const $initialized = get(initialized);
+    expect($initialized).toBe(true);
+
+    const $locale = locale.get();
+    expect($locale).toBe(nonStandardLocale);
+
+    const $locales = locales.get();
+    expect($locales).toContainEqual(nonStandardLocale);
+
+    const $translations = translations.get();
+    expect($translations[nonStandardLocale]).toEqual(
+      expect.objectContaining(filterTranslationKeys(TRANSLATIONS[nonStandardLocale], ['common'])),
+    );
+  });
   it('`getTranslationProps` method works', async () => {
     const { initialized, getTranslationProps } = new i18n({ loaders });
 
     const [translations = {}] = await getTranslationProps(initLocale);
     const $initialized = get(initialized);
 
-    const keys = (loaders || []).filter(({ routes }) => !routes).map(({ key }) => key);
+    const keys = loaders.filter(({ routes }) => !routes).map(({ key }) => key);
 
     expect(translations[initLocale]).toEqual(
       expect.objectContaining(filterTranslationKeys(TRANSLATIONS[initLocale], keys)),
@@ -147,7 +172,7 @@ describe('i18n instance', () => {
     addTranslations(TRANSLATIONS);
     loadTranslations(initLocale);
 
-    expect(get(loading)).toBe(false);
+    expect(loading.get()).toBe(false);
   });
   it('initializes properly with `initLocale`', async () => {
     const { initialized, loadConfig } = new i18n();
@@ -175,7 +200,7 @@ describe('i18n instance', () => {
       outputArray.push($loading);
     });
 
-    await loadConfig(CONFIG).then(() => expect(get(loading)).toBe(false));
+    await loadConfig(CONFIG).then(() => expect(loading.get()).toBe(false));
 
     testArray.forEach((value, index) => {
       expect(value).toBe(testArray[index]);
@@ -214,7 +239,7 @@ describe('i18n instance', () => {
   });
   it('includes both `translations` when using `fallbackLocale`', async () => {
     const { translations, locales, loadConfig } = new i18n();
-    const fallbackLocale = CONFIG.loaders?.find(({ locale }) => locale.toLowerCase() !== CONFIG.initLocale?.toLowerCase())?.locale;
+    const fallbackLocale = loaders.find(({ locale }) => locale.toLowerCase() !== initLocale?.toLowerCase())?.locale;
 
     await loadConfig({ ...CONFIG, fallbackLocale });
     const $translations = translations.get();
