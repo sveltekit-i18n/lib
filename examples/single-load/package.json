@@ -1,16 +1,17 @@
 {
-  "name": "single-load",
+  "name": "one-page",
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
     "package": "svelte-kit package",
-    "preview": "svelte-kit preview"
+    "preview": "svelte-kit preview",
+    "prepare": "svelte-kit sync"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "^1.0.0-next.24",
-    "@sveltejs/kit": "^1.0.0-next.216",
-    "svelte": "^3.44.3"
+    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/kit": "next",
+    "svelte": "^3.44.0"
   },
   "type": "module",
   "dependencies": {
