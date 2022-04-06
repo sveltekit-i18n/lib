@@ -6,12 +6,15 @@ import lang from './src/lib/translations/lang.js';
 const supportedLocales = Object.keys(lang);
 
 /** @type {import('@sveltejs/kit').Config} */
-export default {
+const config = {
   kit: {
     adapter: adapter(),
     prerender: {
+      default: true,
       // NOTE: You can modify your exported error pages here.
       entries: supportedLocales.reduce((acc, locale) => [...acc, `/${locale}`, `/${locale}/401`, `/${locale}/403`, `/${locale}/404`, `/${locale}/500`], ['*']),
     },
-  }
-}
+  },
+};
+
+export default config;
