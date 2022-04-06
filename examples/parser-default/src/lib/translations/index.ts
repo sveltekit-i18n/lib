@@ -1,5 +1,6 @@
 import i18n from '@sveltekit-i18n/base';
-import parser, { Config } from '@sveltekit-i18n/parser-default';
+import parser from '@sveltekit-i18n/parser-default';
+import type { Config } from '@sveltekit-i18n/parser-default';
 // Or you could use `import i18n from 'sveltekit-i18n';`
 
 import lang from './lang.json';
