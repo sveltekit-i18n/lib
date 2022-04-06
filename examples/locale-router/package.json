@@ -1,5 +1,5 @@
 {
-  "name": "one-page",
+  "name": "locale-router",
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
