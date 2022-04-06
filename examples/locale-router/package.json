@@ -1,18 +1,19 @@
 {
-  "name": "locale-router",
+  "name": "one-page",
   "version": "0.0.1",
-  "type": "module",
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
     "package": "svelte-kit package",
-    "preview": "svelte-kit preview"
+    "preview": "svelte-kit preview",
+    "prepare": "svelte-kit sync"
   },
   "devDependencies": {
-    "@sveltejs/adapter-node": "next",
+    "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
-    "svelte": "^3.44.3"
+    "svelte": "^3.44.0"
   },
+  "type": "module",
   "dependencies": {
     "sveltekit-i18n": "file:../../"
   }

@@ -1,9 +1,11 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import adapter from '@sveltejs/adapter-node';
+/* eslint-disable import/no-extraneous-dependencies */
+import adapter from '@sveltejs/adapter-auto';
 
 /** @type {import('@sveltejs/kit').Config} */
-export default {
+const config = {
   kit: {
     adapter: adapter(),
   },
 };
+
+export default config;
