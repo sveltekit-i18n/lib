@@ -19,7 +19,7 @@ export const handle = async ({ event, resolve }) => {
     // If route locale is not supported
     if (!locale) {
       // Get user preferred locale
-      locale = `${`${request.headers['accept-language']}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();
+      locale = `${`${request.headers.get('accept-language')}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();
 
       // Set default locale if user preferred locale does not match
       if (!supportedLocales.includes(locale)) locale = defaultLocale;
