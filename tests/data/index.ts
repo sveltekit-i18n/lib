@@ -30,6 +30,9 @@ export const CONFIG:Config<
       loader: async () => (import('../data/translations/zh-Hans/common.json')),
     },
   ],
+  log: {
+    level: 'error',
+  },
   parserOptions: {
     customModifiers: {
       test: (({ value }) => value),

@@ -30,13 +30,21 @@ If you set this property, translations are automatically loaded not for current 
 
 Note that it's not recommended to use this property if you don't really need it. It may affect your data load.
 
+### `fallbackValue`?: __any__
+By default, translation key is returned in case to translation is found for given translation key. For example, `$t('unknown.key')` will result in `'unknown.key'` output. You can set this output value using this config prop.
+
 ### `cache`?: __number__
-When you are running your app on Node.js server, translations are loaded only once during the SSR. This parameter allows you to setup a refresh period in milliseconds when your translations are refetched on the server. The default value is `86400000` (24 hours).
+When you are running your app on Node.js server, translations are loaded only once during the SSR. This property allows you to setup a refresh period in milliseconds when your translations are refetched on the server. The default value is `86400000` (24 hours).
 
 Tip: You can set to `Number.POSITIVE_INFINITY` to disable server-side refreshing.
 
-### `debug`?: __boolean__
-This parameter enables debug logs (default: `false`).
+### `log.level`?: __'error' | 'warn' | 'danger'__
+You can manage log level using this property (default: `'warn'`).
+
+### `log.prefix`?: __string__
+You can prefix output logs using this property (default: `'[i18n]: '`).
+### `log.logger`?: __Logger.T__
+You can setup your custom logger using this property (default: `console`).
 
 ### `parserOptions`?: __{ modifierDefaults?: Modifier.Defaults, customModufiers?: Modifier.CustomModifiers }__
 This property includes configuration related to `@sveltekit-i18n/parser-default`.
