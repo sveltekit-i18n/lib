@@ -65,5 +65,8 @@
   "dependencies": {
     "@sveltekit-i18n/base": "^1.2.0",
     "@sveltekit-i18n/parser-default": "^1.0.3"
-  }
+  },
+  "workspaces": [
+    "./examples/*/"
+  ]
 }
