@@ -253,6 +253,17 @@ describe('i18n instance', () => {
       );
     });
   });
+  it('`fallbackLocale` is used instead of unknown locale.', async () => {
+    const fallbackLocale = loaders.find(({ locale }) => locale.toLowerCase() !== initLocale?.toLowerCase())?.locale;
+
+    const { locale, loadTranslations } = new i18n({ loaders, fallbackLocale });
+
+    await loadTranslations('de', '');
+
+    const $locale = locale.get();
+
+    expect($locale).toBe(fallbackLocale);
+  });
   it('includes `translations` only for loaders without routes', async () => {
     const { translations, loadConfig } = new i18n();
 
