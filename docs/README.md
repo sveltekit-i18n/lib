@@ -26,7 +26,7 @@ Each loader can include:
 If you set this property, translations will be initialized immediately using this locale.
 
 ### `fallbackLocale`?: __string__
-If you set this property, translations are automatically loaded not for current `$locale` only, but for this locale as well. In case there is no translation for current `$locale`, fallback locale translation is used instead of translation key placeholder.
+If you set this property, translations are automatically loaded not for current `$locale` only, but for this locale as well. In case there is no translation for current `$locale`, fallback locale translation is used instead of translation key placeholder. This is also used as a fallback when unknown locale is set.
 
 Note that it's not recommended to use this property if you don't really need it. It may affect your data load.
 
