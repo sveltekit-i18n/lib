@@ -1,7 +1,6 @@
 <script lang="ts">
   import { locale, t } from '$lib/translations'; 
   import { derived, writable } from 'svelte/store';
-  import Layout from './__layout.svelte';
 
   const number = writable(10);
   const count = writable(1000);
