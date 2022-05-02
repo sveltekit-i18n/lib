@@ -47,7 +47,7 @@ You can prefix output logs using this property (default: `'[i18n]: '`).
 ### `log.logger`?: __[Logger.T](https://github.com/sveltekit-i18n/base/blob/b488f34b2c160b62943968929c9e6e1ee642c5e8/src/types.ts#L20-L22)__
 You can setup your custom logger using this property (default: `console`).
 
-### `parserOptions`?: __{ modifierDefaults?: Modifier.Defaults, customModifiers?: Modifier.CustomModifiers }__
+### `parserOptions`?: __[Parser.Options](https://github.com/sveltekit-i18n/parsers/blob/53f348a82274864a5f18934f921169b76bdabfa0/parser-default/src/types.ts#L35-L38)__
 This property includes configuration related to `@sveltekit-i18n/parser-default`.
 
 Read more about `parserOptions` [here](https://github.com/sveltekit-i18n/parsers/tree/master/parser-default#options).
