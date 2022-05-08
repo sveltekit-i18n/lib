@@ -18,10 +18,15 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - this app is based on `multi-page` solution, but uses SvelteKit's `fetch` method to prevent duplicit (server and client) translation load on app enter
 - it's useful, when you are fetching your translations from remote API, or using other data-expensive solution
 
-`component-scoped`
+`component-scoped-csr`
 - this is the most complex approach, which allows you to scope your translations to components, so they can have their own lexicons
 - app translations are loaded the same way as for `multi-page` (SSR)
 - component's translations are loaded in component promise (CSR - SvelteKit does not provide server side load method for components, so translation loaders are triggered on client side only)
+
+`component-scoped-ssr`
+- SvelteKit does not provide server side load method for components.
+- component's `load` is replaced by exported init method. This method initializes related language mutation within parent page's `load` method.
+- after the load, appropriate props are delegated back to the component instance.
 
 `fallback-locale`
 - this app demonstrates `config.fallbackLocale`
