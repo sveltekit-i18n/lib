@@ -15,6 +15,7 @@
   },
   "type": "module",
   "dependencies": {
+    "eslint-plugin-svelte3": "^4.0.0",
     "sveltekit-i18n": "file:../../"
   }
 }
