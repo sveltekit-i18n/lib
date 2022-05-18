@@ -4,7 +4,7 @@ import parser from '@sveltekit-i18n/parser-default';
 import type { Parser, Modifier } from '@sveltekit-i18n/parser-default';
 import type { Config } from './types';
 
-export type { Config };
+export type { Config, Parser, Modifier };
 
 const normalizeConfig = <P = Parser.PayloadDefault, M = Modifier.DefaultProps>({ parserOptions = {}, ...rest }: Config<P, M>) => ({
   ...rest,
