@@ -29,10 +29,9 @@ export const handle = async ({ event, resolve }) => {
     }
 
     // Add html `lang` attribute
-    const response = await resolve(event);
-    const body = await response.text();
-
-    return new Response(`${body}`.replace(/<html.*>/, `<html lang="${locale}">`), response);
+    return resolve(eventToResolve, {
+      transformPage: ({ html }) => html.replace(/<html.*>/, `<html lang="${locale}">`),
+    });
   }
 
   return resolve(event);
