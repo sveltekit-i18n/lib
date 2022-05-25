@@ -38,7 +38,7 @@ When you are running your app on Node.js server, translations are loaded only on
 
 Tip: You can set to `Number.POSITIVE_INFINITY` to disable server-side refreshing.
 
-### `log.level`?: __'error' | 'warn' | 'danger'__
+### `log.level`?: __'error' | 'warn' | 'debug'__
 You can manage log level using this property (default: `'warn'`).
 
 ### `log.prefix`?: __string__
