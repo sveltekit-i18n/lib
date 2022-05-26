@@ -29,7 +29,7 @@ export const handle = async ({ event, resolve }) => {
     }
 
     // Add html `lang` attribute
-    return resolve(eventToResolve, {
+    return resolve(event, {
       transformPage: ({ html }) => html.replace(/<html.*>/, `<html lang="${locale}">`),
     });
   }
