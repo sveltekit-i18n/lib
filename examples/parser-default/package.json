@@ -2,7 +2,7 @@
   "name": "parser-default",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
+    "dev": "vite dev",
     "build": "svelte-kit build",
     "package": "svelte-kit package",
     "preview": "svelte-kit preview",
@@ -17,7 +17,8 @@
     "svelte-check": "^2.2.6",
     "svelte-preprocess": "^4.10.1",
     "tslib": "^2.3.1",
-    "typescript": "~4.6.2"
+    "typescript": "^4.7.4",
+    "vite": "^3.0.0"
   },
   "type": "module",
   "dependencies": {
