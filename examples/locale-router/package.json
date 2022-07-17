@@ -9,7 +9,7 @@
     "prepare": "svelte-kit sync"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "next",
+    "@sveltejs/adapter-netlify": "next",
     "@sveltejs/kit": "next",
     "svelte": "^3.44.0"
   },
