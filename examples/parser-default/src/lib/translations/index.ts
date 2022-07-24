@@ -8,12 +8,12 @@ import * as customModifiers from './modifiers';
 import type { CurrencyProps } from './modifiers';
 
 const config: Config<
-  {
-    placeholder?: string;
-    value?: any;
-    count?: number;
-  }, /* Translation payload props */
-  CurrencyProps /* Modifier props */
+{
+  placeholder?: string;
+  value?: any;
+  count?: number;
+}, /* Translation payload props */
+CurrencyProps /* Modifier props */
 > = {
   initLocale: 'en',
 
