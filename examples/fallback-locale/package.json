@@ -2,16 +2,17 @@
   "name": "fallback-locale",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
+    "dev": "vite dev",
+    "build": "vite build",
     "package": "svelte-kit package",
-    "preview": "svelte-kit preview",
+    "preview": "vite preview",
     "prepare": "svelte-kit sync"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
-    "svelte": "^3.44.0"
+    "svelte": "^3.44.0",
+    "vite": "^3.0.2"
   },
   "type": "module",
   "dependencies": {
