@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev",
-    "build": "svelte-kit build",
+    "build": "vite build",
     "package": "svelte-kit package",
-    "preview": "svelte-kit preview",
+    "preview": "vite preview",
     "prepare": "svelte-kit sync",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
@@ -18,7 +18,7 @@
     "svelte-preprocess": "^4.10.1",
     "tslib": "^2.3.1",
     "typescript": "^4.7.4",
-    "vite": "^3.0.0"
+    "vite": "^3.0.2"
   },
   "type": "module",
   "dependencies": {
