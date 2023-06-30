@@ -9,14 +9,14 @@
   },
   "plugins": [
     "import",
-    "svelte3"
+    "svelte"
   ],
   "overrides": [
     {
       "files": [
         "*.svelte"
       ],
-      "processor": "svelte3/svelte3"
+      "processor": "svelte/svelte"
     }
   ],
   "rules": {
