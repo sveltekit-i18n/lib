@@ -11,6 +11,7 @@
     "moduleResolution": "node",
     "noEmit": true,
     "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "./src",

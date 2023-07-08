@@ -1,22 +1,28 @@
 {
   "extends": [
+    "plugin:svelte/recommended",
     "airbnb-typescript/base"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "**/tsconfig.json",
-    "sourceType": "module"
+    "sourceType": "module",
+    "extraFileExtensions": [
+      ".svelte"
+    ]
   },
   "plugins": [
-    "import",
-    "svelte3"
+    "import"
   ],
   "overrides": [
     {
       "files": [
         "*.svelte"
       ],
-      "processor": "svelte3/svelte3"
+      "parser": "svelte-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser"
+      }
     }
   ],
   "rules": {
