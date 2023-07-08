@@ -1,4 +1,5 @@
 **/.svelte-kit
+**/.netlify
 **/package
 **/build
 /lib
