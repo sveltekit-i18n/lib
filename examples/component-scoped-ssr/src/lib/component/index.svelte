@@ -9,7 +9,7 @@
 <div>
   {JSON.stringify($translations)}
   <p>{$t('common.info')}</p>
-  
+
   <select bind:value="{$locale}">
     {#each $locales as locale}
     <option value="{locale}">{$t(`lang.${locale}`)}</option>
