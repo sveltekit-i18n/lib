@@ -1,22 +1,28 @@
 {
   "extends": [
-    "airbnb-typescript/base"
+    "airbnb-typescript/base",
+    "plugin:svelte/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "**/tsconfig.json",
-    "sourceType": "module"
+    "sourceType": "module",
+    "extraFileExtensions": [
+      ".svelte"
+    ]
   },
   "plugins": [
-    "import",
-    "svelte3"
+    "import"
   ],
   "overrides": [
     {
       "files": [
         "*.svelte"
       ],
-      "processor": "svelte3/svelte3"
+      "parser": "svelte-eslint-parser",
+      "parserOptions": {
+        "parser": "@typescript-eslint/parser"
+      }
     }
   ],
   "rules": {
@@ -25,7 +31,10 @@
     "@typescript-eslint/no-redeclare": 0,
     "@typescript-eslint/no-shadow": 0,
     "no-trailing-spaces": "error",
-    "no-multiple-empty-lines": "error"
+    "no-multiple-empty-lines": "error",
+    "import/extensions": 0,
+    "import/no-extraneous-dependencies": 0,
+    "svelte/no-at-html-tags": 0
   },
   "settings": {}
 }

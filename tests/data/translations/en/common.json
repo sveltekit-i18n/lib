@@ -3,7 +3,7 @@
   "placeholder": "VALUES: {{value}}, {{value;}}, {{ value }}, {{ value; }}",
   "placeholder_default": "VALUES: {{value; default: DEFAULT_VALUE}}, {{value; default: DEFAULT_VALUE;}}, {{ value; default: DEFAULT_VALUE }}, {{ value; default: DEFAULT_VALUE; }}",
   "placeholder_escaped": "{{pl\\:ace\\;holder}}",
-  "modifier_eq": "VALUES: {{value; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}, {{value:eq; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value : eq ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}",
+  "modifier_eq": "VALUES: {{value; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value ; option1 : VALUE1 ; option2 : VALUE2 ; default : DEFAULT VALUE ;}}, {{value:eq; option1:VALUE1; option2:VALUE2; default:DEFAULT VALUE;}}, {{ value : eq  ; option1 : VALUE1  ; option2 : VALUE2  ; default : DEFAULT VALUE  ;}}",
   "modifier_ne": "{{value:ne; 10:VALUE2; default:DEFAULT VALUE;}}",
   "modifier_lt": "{{value:lt; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
   "modifier_lte": "{{value:lte; 1:VALUE1; 10:VALUE2; default:DEFAULT VALUE;}}",
@@ -13,5 +13,10 @@
   "modifier_date": "{{value:date;}}",
   "modifier_ago": "{{value:ago;}}",
   "modifier_custom": "{{data:test;}}",
-  "modifier_escaped": "{{va\\:lue; option\\:1:VA\\;\\{\\{LUE\\}\\}\\:1; option\\:2:VA\\;\\{\\{LUE\\}\\}\\:2; default:DEFAULT \\{\\{VALUE\\}\\}\\;}}"
+  "modifier_escaped": "{{va\\:lue; option\\:1:VA\\;\\{\\{LUE\\}\\}\\:1; option\\:2:VA\\;\\{\\{LUE\\}\\}\\:2; default:DEFAULT \\{\\{VALUE\\}\\}\\;}}",
+  "preprocess": [
+    {
+      "test": "passed"
+    }
+  ]
 }

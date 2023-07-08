@@ -9,10 +9,10 @@
     "prepare": "svelte-kit sync"
   },
   "devDependencies": {
-    "@sveltejs/adapter-static": "next",
-    "@sveltejs/kit": "next",
-    "svelte": "^3.44.0",
-    "vite": "^3.0.2"
+    "@sveltejs/adapter-static": "^2.0.2",
+    "@sveltejs/kit": "^1.22.1",
+    "svelte": "^4.0.5",
+    "vite": "^4.4.2"
   },
   "type": "module",
   "dependencies": {
