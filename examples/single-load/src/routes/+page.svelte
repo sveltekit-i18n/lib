@@ -1,7 +1,7 @@
 <script>
-  import { t, l, locales } from '$lib/translations'; 
+  import { t, l, locales } from '$lib/translations';
 
-  const link = 'https://kit.svelte.dev'
+  const link = 'https://kit.svelte.dev';
 </script>
 
 <h1>{$t('content.title')}</h1>
