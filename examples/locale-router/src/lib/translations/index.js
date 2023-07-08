@@ -83,7 +83,7 @@ const config = {
 
 export const defaultLocale = 'en';
 
-export const { t, locale, locales, loading, loadTranslations, translations } = new i18n(config);
+export const { t, locale, locales, loading, addTranslations, loadTranslations, translations, setRoute, setLocale } = new i18n(config);
 
 // Translations logs
 loading.subscribe(async ($loading) => {

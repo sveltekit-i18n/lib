@@ -1,12 +1,12 @@
 <script>
   import { t, locales, locale } from '$lib/translations';
-  import { page } from '$app/stores'
+  import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { writable } from 'svelte/store';
 
   const count = writable(2);
 
-  $: ({ route } = $page.stuff);
+  $: ({ route } = $page.data);
 </script>
 
 <a href="/{$locale}">{$t('menu.home')}</a>
@@ -14,8 +14,8 @@
 <br/>
 <br/>
 {$t('menu.notification', { count: $count })}<br />
-<button on:click="{() => {if ($count) $count-=1}}">–</button>
-<button on:click="{() => {$count+=1}}">+</button>
+<button on:click="{() => {if ($count) $count -= 1;}}">–</button>
+<button on:click="{() => {$count += 1;}}">+</button>
 <hr />
 <slot />
 <br />
