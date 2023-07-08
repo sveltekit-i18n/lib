@@ -48,6 +48,10 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 [`parser-icu`](./parser-icu)
 - this app demonstrates features of the [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/blob/master/parser-icu)
 
+### Other
+[`preprocess`](./preprocess)
+- this app demonstrates different `preprocess` configurations
+
 ## How to
 
 - clone or download example you want to use
