@@ -1,8 +1,8 @@
 <script>
-  import { t } from '$lib/translations'; 
-  import Component from '$lib/component/index.svelte'; 
+  import { t } from '$lib/translations';
+  import Component from '$lib/component/index.svelte';
 
-  const link = 'https://kit.svelte.dev'
+  const link = 'https://kit.svelte.dev';
 </script>
 
 <h1>{$t('home.title')}</h1>

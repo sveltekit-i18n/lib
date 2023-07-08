@@ -1,7 +1,7 @@
 {
   "extends": [
-    "plugin:svelte/recommended",
-    "airbnb-typescript/base"
+    "airbnb-typescript/base",
+    "plugin:svelte/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -31,7 +31,10 @@
     "@typescript-eslint/no-redeclare": 0,
     "@typescript-eslint/no-shadow": 0,
     "no-trailing-spaces": "error",
-    "no-multiple-empty-lines": "error"
+    "no-multiple-empty-lines": "error",
+    "import/extensions": 0,
+    "import/no-extraneous-dependencies": 0,
+    "svelte/no-at-html-tags": 0
   },
   "settings": {}
 }
