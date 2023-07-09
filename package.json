@@ -18,7 +18,7 @@
     "dev": "tsup --watch",
     "test": "npx cross-env NODE_OPTIONS=--experimental-vm-modules jest",
     "build": "tsup",
-    "lint": "eslint --fix --ext .ts,.js --ignore-path .gitignore ."
+    "lint": "eslint --fix --ext .ts,.js,.svelte --ignore-path .gitignore ."
   },
   "files": [
     "dist"

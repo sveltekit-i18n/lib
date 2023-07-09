@@ -1,18 +1,17 @@
 <script>
-  import { writable } from 'svelte/store';
   import init from './translations';
-  
+
   export let initLocale = 'en';
 
-  const { t, locale, locales, translations, loadTranslations, addTranslations } = init();
+  const { t, locale, locales, translations, loadTranslations/* , addTranslations */ } = init();
 
   /**
   * NOTE: IF YOU WANT TO REINIT COMPONENT WITH THE CURRENT VALUES ON NEXT LOAD:
-  * 
+  *
   * 1) Uncomment `if (savedData)` block
   * 2) Uncomment `onDestroy` block
   * 3) Implement your storing mechanism
-  * 
+  *
   * */
 
   // if (savedData) {
@@ -37,7 +36,7 @@
     Loading...
   {:then}
     <p>{$t('common.info')}</p>
-    
+
     <select bind:value="{$locale}">
       {#each $locales as locale}
       <option value="{locale}">{$t(`lang.${locale}`)}</option>

@@ -1,5 +1,5 @@
 <script>
-  import { t } from '$lib/translations'; 
+  import { t } from '$lib/translations';
 </script>
 
 <h1>{$t('missing.fallback.translation')}</h1>
