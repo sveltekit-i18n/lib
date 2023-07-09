@@ -1,5 +1,6 @@
 <script>
   import { full, preserveArrays, none, custom } from '$lib/translations';
+
   const { t: tFull, translations: translationsFull } = full;
   const { t: tPreserveArrays, translations: translationsPreserveArrays } = preserveArrays;
   const { t: tNone, translations: translationsNone } = none;
@@ -33,7 +34,7 @@
 {JSON.stringify($translationsPreserveArrays, null, 2)}
 </pre>
 
-{#each $tPreserveArrays('content') as content}
+{#each $tPreserveArrays('content', { default: [] }) as content}
   <h3>{$tPreserveArrays(`${content.title}`)}</h3>
   <p>{@html $tPreserveArrays(`${content.text}`, { link })}</p>
   <p>{$tPreserveArrays(`${content['something.else']}`)}</p>
@@ -48,7 +49,7 @@
 {JSON.stringify($translationsNone, null, 2)}
 </pre>
 
-{#each $tNone('content') as content}
+{#each $tNone('content', { default: [] }) as content}
   <h3>{$tNone(`${content.title}`)}</h3>
   <p>{@html $tNone(`${content.text}`, { link })}</p>
   <p>{$tNone(`${content.something.else}`)}</p>
@@ -63,7 +64,7 @@
 {JSON.stringify($translationsCustom, null, 2)}
 </pre>
 
-{#each $tCustom('content') as content}
+{#each $tCustom('content', { default: [] }) as content}
   <h3>{$tCustom(`${content.title}`)}</h3>
   <p>{@html $tCustom(`${content.text}`, { link })}</p>
   <p>{$tCustom(`${content.something.else}`)}</p>
