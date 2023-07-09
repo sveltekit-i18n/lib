@@ -4,13 +4,13 @@ This app shows how to integrate locale routing using `@sveltejs/adapter-static`.
 ## Setup
 
 ### `./svelte.config.js`
-This config contains `prerender` parameter to build your site's language mutations together with desired error pages.
+This config contains `prerender` object to build your site's language mutations together with desired error pages.
 
-### `./src/hooks.js`
+### `./src/hooks.server.js`
 Takes care about redirects to appropriate language mutation in dev mode and during the build process.
 
-### `./src/routes/[lang]/[...error]/index.svelte`
-This file handles errors. In dev mode, throws error (so you are redirected to `./src/routes/__error.svelte` with appropriate error code), while during the build process, includes the error page itself to render.
+### `./src/routes/[lang]/[...error]/+page.svelte`
+This file handles errors. In dev mode, throws error (so you are redirected to `./src/routes/+error.svelte` with appropriate error code), while during the build process, includes the error page itself to render.
 
 ## Build
 After you run `npm run build` command, this setup outputs your site with all defined language mutations in separate folders including translated error pages.
