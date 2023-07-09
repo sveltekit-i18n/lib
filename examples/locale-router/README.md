@@ -3,5 +3,5 @@ This app shows how to integrate locale routing using dynamic adapters (e.g. `@sv
 
 ## Setup
 
-### `./src/hooks.js`
+### `./src/hooks.server.js`
 Takes care about redirects to appropriate language mutation.
