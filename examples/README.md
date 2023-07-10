@@ -12,11 +12,8 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 
 [`multi-page`](./multi-page) – [Demo](https://multi-page-example.netlify.app)
 - this is the most frequent use-case – application with multiple routes
-- translations are loaded not only according to locale, but given routes as well
-
-[`duplicit-load-prevention`](./duplicit-load-prevention) – [Demo](https://duplicit-load-prevention.netlify.app)
-- this app is based on `multi-page` solution, but uses SvelteKit's `fetch` method to prevent duplicit (server and client) translation load on app enter
-- it's useful, when you are fetching your translations from remote API, or using other data-expensive solution
+- translations are loaded not only according to the locale, but given routes as well
+- it prevents duplicit (server and client) translation load on app enter
 
 [`component-scoped-csr`](./component-scoped-csr) – [Demo](https://component-scoped-csr.netlify.app)
 - this is the most complex approach, which allows you to scope your translations to components, so they can have their own lexicons
