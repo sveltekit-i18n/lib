@@ -36,7 +36,7 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - this approach is great if you care about SEO
 - optimized for `@sveltejs/adapter-static`
 
-[`locale-router`](./locale-router)
+[`locale-router`](./locale-router) – [Demo](https://locale-router.netlify.app)
 - this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
 - this approach is great if you care about SEO
 - optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
