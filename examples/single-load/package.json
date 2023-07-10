@@ -1,21 +1,28 @@
 {
-  "name": "single-load",
+  "name": "parser-icu",
   "version": "0.0.1",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
     "package": "svelte-kit package",
     "preview": "vite preview",
-    "prepare": "svelte-kit sync"
+    "prepare": "svelte-kit sync",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "^2.1.0",
+    "@sveltejs/adapter-netlify": "^2.0.7",
     "@sveltejs/kit": "^1.22.1",
     "svelte": "^4.0.5",
+    "svelte-check": "^3.4.5",
+    "svelte-preprocess": "^5.0.4",
+    "tslib": "^2.3.1",
+    "typescript": "^5.1.6",
     "vite": "^4.4.2"
   },
   "type": "module",
   "dependencies": {
-    "sveltekit-i18n": "file:../../"
+    "@sveltekit-i18n/base": "file:../../node_modules/@sveltekit-i18n/base",
+    "@sveltekit-i18n/parser-icu": "^1.0.0"
   }
 }
