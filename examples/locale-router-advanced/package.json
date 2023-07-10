@@ -4,7 +4,6 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "build:netlify": "npm i sveltekit-i18n@latest && vite build",
     "package": "svelte-kit package",
     "preview": "vite preview",
     "prepare": "svelte-kit sync",
