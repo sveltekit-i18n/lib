@@ -2,36 +2,33 @@
 
 These examples demonstrate how to integrate `sveltekit-i18n` into your app. Currently, these setups are present:
 
-[`single-load`](./single-load)
+[`single-load`](./single-load) – [Demo](https://single-load.netlify.app)
 - loads all translations for all language mutations during `i18n` initialization
 - usually this is not what you are looking for, but it can be useful if you need all your translations in place.
 
-[`one-page`](./one-page)
+[`one-page`](./one-page) – [Demo](https://one-page-example.netlify.app)
 - this approach is useful for one-page apps
 - translations are loaded dynamically according to locale
 
-[`multi-page`](./multi-page)
+[`multi-page`](./multi-page) – [Demo](https://multi-page-example.netlify.app)
 - this is the most frequent use-case – application with multiple routes
 - translations are loaded not only according to locale, but given routes as well
 
-[`duplicit-load-prevention`](./duplicit-load-prevention)
+[`duplicit-load-prevention`](./duplicit-load-prevention) – [Demo](https://duplicit-load-prevention.netlify.app)
 - this app is based on `multi-page` solution, but uses SvelteKit's `fetch` method to prevent duplicit (server and client) translation load on app enter
 - it's useful, when you are fetching your translations from remote API, or using other data-expensive solution
 
-[`component-scoped-csr`](./component-scoped-csr)
+[`component-scoped-csr`](./component-scoped-csr) – [Demo](https://component-scoped-csr.netlify.app)
 - this is the most complex approach, which allows you to scope your translations to components, so they can have their own lexicons
 - app translations are loaded the same way as for `multi-page` (SSR)
 - component's translations are loaded in component promise (CSR - SvelteKit does not provide server side load method for components, so translation loaders are triggered on client side only)
 
-[`component-scoped-ssr`](./component-scoped-ssr)
+[`component-scoped-ssr`](./component-scoped-ssr) – [Demo](https://component-scoped-ssr.netlify.app)
 - SvelteKit does not provide server side load method for components.
 - component's `load` is replaced by exported init method. This method initializes related language mutation within parent page's `load` method.
 - after the load, appropriate props are delegated back to the component instance.
 
-[`fallback-locale`](./fallback-locale)
-- this app demonstrates `config.fallbackLocale`
-
-[`locale-router-static`](./locale-router-static)
+[`locale-router-static`](./locale-router-static) – [Demo](https://locale-router-static.netlify.app)
 - this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
 - this approach is great if you care about SEO
 - optimized for `@sveltejs/adapter-static`
@@ -48,15 +45,18 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - default locale routes do not have any lang prefix in path
 
 ### Parsers
-[`parser-default`](./parser-default)
+[`parser-default`](./parser-default) – [Demo](https://parser-default.netlify.app)
 - this app demonstrates features of the [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default)
 
-[`parser-icu`](./parser-icu)
+[`parser-icu`](./parser-icu) – [Demo](https://parser-icu.netlify.app)
 - this app demonstrates features of the [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/blob/master/parser-icu)
 
 ### Other
-[`preprocess`](./preprocess)
+[`preprocess`](./preprocess) – [Demo](https://preprocess-example.netlify.app)
 - this app demonstrates different `preprocess` configurations
+
+[`fallback-locale`](./fallback-locale) – [Demo](https://fallback-locale.netlify.app)
+- this app demonstrates `config.fallbackLocale`
 
 ## How to
 
