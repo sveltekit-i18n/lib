@@ -7,28 +7,14 @@
   to = "/cs/:splat"
   status = 302
   conditions = {Language = ["cs"]}
-[[redirects]]
-  from = "/cs/*"
-  to = "/cs/404"
-  status = 404
-  conditions = {Language = ["cs"]}
 
 [[redirects]]
   from = "/*"
   to = "/de/:splat"
   status = 302
   conditions = {Language = ["de"]}
-[[redirects]]
-  from = "/de/*"
-  to = "/de/404"
-  status = 404
-  conditions = {Language = ["de"]}
 
 [[redirects]]
   from = "/*"
   to = "/en/:splat"
   status = 302
-[[redirects]]
-  from = "/en/*"
-  to = "/en/404"
-  status = 404
