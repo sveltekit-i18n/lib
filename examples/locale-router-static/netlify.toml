@@ -1,7 +1,34 @@
 [build]
     command = "cd ../../ && npm run build && npm run build --workspace locale-router-static"
     publish = "build"
+
 [[redirects]]
-  from = "/"
-  to = "/en/"
-  force = true
+  from = “/*”
+  to = “/cs/:splat”
+  status = 302
+  conditions = {Language = [“cs”]}
+[[redirects]]
+  from = “/*”
+  to = “/cs/404.html”
+  status = 404
+  conditions = {Language = [“cs”]}
+
+[[redirects]]
+  from = “/*”
+  to = “/de/:splat”
+  status = 302
+  conditions = {Language = [“de”]}
+[[redirects]]
+  from = “/*”
+  to = “/cs/404.html”
+  status = 404
+  conditions = {Language = [“de”]}
+
+[[redirects]]
+  from = “/*”
+  to = “/en/:splat”
+  status = 302
+[[redirects]]
+  from = “/*”
+  to = “/en/404.html"
+  status = 404
