@@ -1,33 +1,15 @@
 <script>
   import init from './translations';
+  const { t, locale, locales, translations, addTranslations, loadTranslations } = init();
 
-  export let initLocale = 'en';
+  export let initLocale;
+  export let initTranslations;
 
-  const { t, locale, locales, translations, loadTranslations/* , addTranslations */ } = init();
+  addTranslations(initTranslations);
+  const promise = loadTranslations(initLocale);
 
-  /**
-  * NOTE: IF YOU WANT TO REINIT COMPONENT WITH THE CURRENT VALUES ON NEXT LOAD:
-  *
-  * 1) Uncomment `if (savedData)` block
-  * 2) Uncomment `onDestroy` block
-  * 3) Implement your storing mechanism
-  *
-  * */
-
-  // if (savedData) {
-  //   addTranslations(savedData.savedTranslations);
-  //   initLocale = savedData.savedLocale;
-  // }
-
-    const promise = loadTranslations(initLocale);
-
-  // onDestroy(() => {
-  //   const savedData = {
-  //     savedTranslations: $translations,
-  //     savedLocale: $locale,
-  //   }
-  //   console.log('Data to store...', savedData);
-  // });
+  $: (initTranslations = $translations);
+  $: ($locale = initLocale);
 </script>
 
 <div>
@@ -37,9 +19,9 @@
   {:then}
     <p>{$t('common.info')}</p>
 
-    <select bind:value="{$locale}">
-      {#each $locales as locale}
-      <option value="{locale}">{$t(`lang.${locale}`)}</option>
+    <select bind:value={initLocale} on:input={() => locale.set(initLocale)}>
+      {#each $locales as l}
+      <option value="{l}">{$t(`lang.${l}`)}</option>
       {/each}
     </select>
   {/await}
