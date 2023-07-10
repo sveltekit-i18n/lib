@@ -1,4 +1,4 @@
-# Locale-loader-static
+# Locale-router-static
 This app shows how to integrate locale routing using `@sveltejs/adapter-static`. It includes two pages and three language mutations (`en`, `de`, `cs`). Error pages are included as well.
 
 ## Setup
