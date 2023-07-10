@@ -3,32 +3,32 @@
     publish = "build"
 
 [[redirects]]
-  from = “/*”
-  to = “/cs/:splat”
+  from = "/*"
+  to = "/cs/:splat"
   status = 302
-  conditions = {Language = [“cs”]}
+  conditions = {Language = ["cs"]}
 [[redirects]]
-  from = “/*”
-  to = “/cs/404.html”
+  from = "/*"
+  to = "/cs/404.html"
   status = 404
-  conditions = {Language = [“cs”]}
+  conditions = {Language = ["cs"]}
 
 [[redirects]]
-  from = “/*”
-  to = “/de/:splat”
+  from = "/*"
+  to = "/de/:splat"
   status = 302
-  conditions = {Language = [“de”]}
+  conditions = {Language = ["de"]}
 [[redirects]]
-  from = “/*”
-  to = “/cs/404.html”
+  from = "/*"
+  to = "/cs/404.html"
   status = 404
-  conditions = {Language = [“de”]}
+  conditions = {Language = ["de"]}
 
 [[redirects]]
-  from = “/*”
-  to = “/en/:splat”
+  from = "/*"
+  to = "/en/:splat"
   status = 302
 [[redirects]]
-  from = “/*”
-  to = “/en/404.html"
+  from = "/*"
+  to = "/en/404.html"
   status = 404
