@@ -6,8 +6,7 @@
     "build": "vite build",
     "package": "svelte-kit package",
     "preview": "vite preview",
-    "prepare": "svelte-kit sync",
-    "deploy": "npx netlify-cli deploy"
+    "prepare": "svelte-kit sync"
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "^2.0.7",
