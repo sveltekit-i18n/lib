@@ -2,7 +2,6 @@
     command = "cd ../../ && npm run build && npm run build --workspace locale-router-static"
     publish = "build"
 [[redirects]]
-  from = "/en/*"
-  to = "/:splat"
-  status = 200
+  from = "/"
+  to = "/en/"
   force = true
