@@ -8,8 +8,8 @@
   status = 302
   conditions = {Language = ["cs"]}
 [[redirects]]
-  from = "/*"
-  to = "/cs/404.html"
+  from = "/cs/*"
+  to = "/cs/404"
   status = 404
   conditions = {Language = ["cs"]}
 
@@ -19,8 +19,8 @@
   status = 302
   conditions = {Language = ["de"]}
 [[redirects]]
-  from = "/*"
-  to = "/cs/404.html"
+  from = "/de/*"
+  to = "/de/404"
   status = 404
   conditions = {Language = ["de"]}
 
@@ -29,6 +29,6 @@
   to = "/en/:splat"
   status = 302
 [[redirects]]
-  from = "/*"
-  to = "/en/404.html"
+  from = "/en/*"
+  to = "/en/404"
   status = 404
