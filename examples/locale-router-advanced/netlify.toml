@@ -1,5 +1,5 @@
 [build]
-    command = "npm run build:netlify"
+    command = "cd ../../ && npm run build && npm run build --workspace locale-router-advanced"
     publish = "build"
 [functions]
   node_bundler = "esbuild"
