@@ -1,5 +1,5 @@
 [build]
-    command = "cd ../../ && npm run build && npm run build --workspace parser-default"
+    command = "npm run build"
     publish = "build"
 [functions]
   node_bundler = "esbuild"
