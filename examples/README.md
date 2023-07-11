@@ -49,7 +49,7 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 
 ### Other
 [`preprocess`](./preprocess) – [Demo](https://preprocess-example.netlify.app)
-- this app demonstrates different `preprocess` configurations
+- this app demonstrates different `config.preprocess` configurations
 
 [`fallback-locale`](./fallback-locale) – [Demo](https://fallback-locale.netlify.app)
 - this app demonstrates `config.fallbackLocale`
