@@ -15,16 +15,6 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - translations are loaded not only according to the locale, but given routes as well
 - it prevents duplicit (server and client) translation load on app enter
 
-[`component-scoped-csr`](./component-scoped-csr) – [Demo](https://component-scoped-csr.netlify.app)
-- this is the most complex approach, which allows you to scope your translations to components, so they can have their own lexicons
-- app translations are loaded the same way as for `multi-page` (SSR)
-- component's translations are loaded in component promise (CSR - SvelteKit does not provide server side load method for components, so translation loaders are triggered on client side only)
-
-[`component-scoped-ssr`](./component-scoped-ssr) – [Demo](https://component-scoped-ssr.netlify.app)
-- SvelteKit does not provide server side load method for components.
-- component's `load` is replaced by exported init method. This method initializes related language mutation within parent page's `load` method.
-- after the load, appropriate props are delegated back to the component instance.
-
 [`locale-router-static`](./locale-router-static) – [Demo](https://locale-router-static.netlify.app)
 - this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
 - this approach is great if you care about SEO
@@ -41,6 +31,15 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
 - default locale routes do not have any lang prefix in path
 
+[`component-scoped-csr`](./component-scoped-csr) – [Demo](https://component-scoped-csr.netlify.app)
+- this is the most complex approach, which allows you to scope your translations to components, so they can have their own lexicons
+- app translations are loaded the same way as for `multi-page` (SSR)
+- component's translations are loaded in component promise (CSR - SvelteKit does not provide server side load method for components, so translation loaders are triggered on client side only)
+
+[`component-scoped-ssr`](./component-scoped-ssr) – [Demo](https://component-scoped-ssr.netlify.app)
+- SvelteKit does not provide server side load method for components.
+- component's `load` is replaced by exported init method. This method initializes related language mutation within parent page's `load` method.
+- after the load, appropriate props are delegated back to the component instance.
 ### Parsers
 [`parser-default`](./parser-default) – [Demo](https://parser-default.netlify.app)
 - this app demonstrates features of the [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default)
