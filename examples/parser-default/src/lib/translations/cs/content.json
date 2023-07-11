@@ -3,6 +3,7 @@
   "title_built-in": "Vestavěné modifikátory",
   "title_custom": "Vlastní modifikátory",
   "title_dynamic_default": "Proměnná výchozí hodnota",
+  "title_direct_input": "Přímý vstup",
   "placeholder_simple": "Toto je {{placeholder}}",
   "placeholder_default": "Toto je {{placeholder; default:výchozí hodnota.}}",
   "modifier_eq_string": "{{value; male:On; female:Ona; default:Někdo}} má psa.",

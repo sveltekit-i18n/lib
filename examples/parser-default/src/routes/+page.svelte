@@ -2,7 +2,6 @@
   import { locale, t } from '$lib/translations';
 
   $: number = 10;
-  $: count = 1000;
 
   const initTime = Date.now();
   $: now = initTime;
@@ -14,6 +13,8 @@
 
   const currency = 100;
   const currencyRatio = { en: 1, cs: 22.4 };
+
+  $: direct = 'hardcoded';
 </script>
 
 <h1>{$t('content.title_placeholders')}</h1>
@@ -23,13 +24,14 @@
 
 <h1>{$t('content.title_built-in')}</h1>
 <div>
-  {$t('content.modifier_number', { count })}<br />
-  <button on:click="{() => {if (count) count -= 1;}}">–</button>
-  <button on:click="{() => {count += 1;}}">+</button>
+  {$t('content.modifier_number', { count: number })}<br />
+  <br>
+  <input type="number" bind:value="{number}" />
+  <button on:click="{() => {number -= 1;}}">–</button>
+  <button on:click="{() => {number += 1;}}">+</button>
 </div>
 <br />
 <div>
-  <input type="number" bind:value="{number}" /><br />
   {$t('content.modifier_eq', { value: number })}<br />
   {$t('content.modifier_ne', { value: number })}<br />
   {$t('content.modifier_lt', { value: number })}<br />
@@ -57,3 +59,8 @@
 <button on:click="{() => {error = undefined;}}">(undefined)</button>
 <br />
 <p>{$t(`content.error.${error}`, { default: $t('content.error.default') })} ({error})</p>
+
+<h1>{$t('content.title_direct_input')}</h1>
+<button on:click="{() => {direct = 'hardcoded';}}">Hardcoded</button>
+<button on:click="{() => {direct = 'dynamic';}}">Dynamic</button>
+<p>{$t('This input is {{ value; }}!', { value: direct })}</p>
