@@ -1,18 +1,16 @@
 <script>
-  import { writable } from 'svelte/store';
   import { t, locale, locales } from '$lib/translations';
 
-
-  const count = writable(2);
+  $: count = 2;
 </script>
 
 <a href="/">{$t('menu.home')}</a>
 <a href="/about">{$t('menu.about')}</a>
 <br/>
 <br/>
-{$t('menu.notification', { count: $count })}<br />
-<button on:click="{() => {if ($count) $count -= 1;}}">–</button>
-<button on:click="{() => {$count += 1;}}">+</button>
+{$t('menu.notification', { count })}<br />
+<button on:click="{() => {if (count) count -= 1;}}">–</button>
+<button on:click="{() => {count += 1;}}">+</button>
 <hr />
 <slot />
 <br />

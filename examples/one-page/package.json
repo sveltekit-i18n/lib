@@ -9,7 +9,7 @@
     "prepare": "svelte-kit sync"
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "^2.1.0",
+    "@sveltejs/adapter-netlify": "^2.0.7",
     "@sveltejs/kit": "^1.22.1",
     "svelte": "^4.0.5",
     "vite": "^4.4.2"

@@ -1,7 +1,12 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d9f3cafa-1da9-41ce-a20d-885e9a668c1d/deploy-status)](https://app.netlify.com/sites/locale-router-static/deploys)
+
 # Locale-router-static
 This app shows how to integrate locale routing using `@sveltejs/adapter-static`. It includes two pages and three language mutations (`en`, `de`, `cs`). Error pages are included as well.
 
-## Setup
+## Preview
+You can view this demo live on [Netlify](https://locale-router-static.netlify.app).
+
+## Noticeable files
 
 ### `./svelte.config.js`
 This config contains `prerender` object to build your site's language mutations together with desired error pages.
