@@ -3,6 +3,7 @@
   "title_built-in": "Built-in Modifiers",
   "title_custom": "Custom Modifiers",
   "title_dynamic_default": "Dynamic default",
+  "title_direct_input": "Direct input",
   "placeholder_simple": "This is {{placeholder}}",
   "placeholder_default": "This is {{placeholder; default:a default value.}}",
   "modifier_eq_string": "{{value; male:He; female:She; default:No one}} has a dog.",
