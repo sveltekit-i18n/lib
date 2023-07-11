@@ -3,7 +3,9 @@
 </script>
 
 <script>
-  export let t, locale, locales, translations;
+  export let props;
+
+  const { translations, locale, locales, t } = props;
 </script>
 
 <div>

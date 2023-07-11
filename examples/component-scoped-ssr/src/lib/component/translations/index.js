@@ -37,4 +37,12 @@ export const config = {
   ],
 };
 
-export default (initLocale) => new i18n({ ...config, initLocale });
+export default (initLocale) => {
+  const instance = new i18n({ ...config, initLocale });
+
+  instance.loading.subscribe(($loading) => {
+    if ($loading) console.log(`Loading translations for '${initLocale}' instance...`);
+  });
+
+  return instance;
+};
