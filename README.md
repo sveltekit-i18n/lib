@@ -80,6 +80,7 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 ```javascript
 import { loadTranslations } from '$lib/translations';
 
+/** @type {import('@sveltejs/kit').Load} */
 export const load = async ({ url }) => {
   const { pathname } = url;
 
