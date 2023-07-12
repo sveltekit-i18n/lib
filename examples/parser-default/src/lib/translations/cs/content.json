@@ -18,6 +18,7 @@
   "modifier_date": "Lokální formát data: {{value:date;}}",
   "modifier_ago": "Stránka načtena (relativní formát): {{value:ago;}}",
   "modifier_test": "Testovací modifikátor: {{value:test; default:žádný vstup}}",
+  "modifier_eqAbs": "Absolutní hodnota {{value:eqAbs; 10:je; default:není;}} rovna deseti.",
   "modifier_currency": "Měna: {{value:currency;}}",
   "currency": "CZK",
   "error": {

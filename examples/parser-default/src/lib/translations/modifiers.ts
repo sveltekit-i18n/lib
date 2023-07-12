@@ -2,6 +2,8 @@ import type { Modifier } from '@sveltekit-i18n/parser-default';
 
 export const test: Modifier.T = ({ value, defaultValue }) => `${value || defaultValue} 🥳`;
 
+export const eqAbs: Modifier.T = ({ value, options, defaultValue }) => options.find(({ key }) => Math.abs(+key) === Math.abs(value))?.value || defaultValue;
+
 export type CurrencyProps = { currency?: Intl.NumberFormatOptions & { ratio?: number } };
 
 export const currency: Modifier.T<CurrencyProps> = ({ value, props, defaultValue, locale }) => {

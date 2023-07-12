@@ -18,6 +18,7 @@
   "modifier_date": "Local date format: {{value:date;}}",
   "modifier_ago": "Page loaded (relative format): {{value:ago;}}",
   "modifier_test": "Test modifier: {{value:test; default:no input}}",
+  "modifier_eqAbs": "Absolute value {{value:eqAbs; 10:is; default:is not;}} equal to ten.",
   "modifier_currency": "Currency: {{value:currency}}",
   "currency": "USD",
   "error": {

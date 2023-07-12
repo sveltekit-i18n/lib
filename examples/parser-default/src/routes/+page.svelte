@@ -47,10 +47,11 @@
 </div>
 <p>{$t('content.modifier_date', { value: now }, { date: { timeStyle: 'full' } })}</p>
 <p>{$t('content.modifier_ago', { value: initTime - now }, { ago: { format: 'auto' } })}</p>
+<p>{$t('content.modifier_currency', { value: currency }, { currency: { currency: $t('content.currency'), ratio: currencyRatio[$locale] }  })}</p>
 
 <h1>{$t('content.title_custom')}</h1>
 <p>{$t('content.modifier_test', { value: test })}</p>
-<p>{$t('content.modifier_currency', { value: currency }, { currency: { currency: $t('content.currency'), ratio: currencyRatio[$locale] }  })}</p>
+<p>{$t('content.modifier_eqAbs', { value: number })}</p>
 
 <h1>{$t('content.title_dynamic_default')}</h1>
 <b>Set error code:</b>
