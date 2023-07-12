@@ -1,0 +1,45 @@
+name: NPM Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+        version:
+          description: 'Version'
+          required: true
+          default: 'patch'
+          type: choice
+          options:
+            - patch
+            - minor
+            - major
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+
+  publish-npm:
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+      - name: Publish package
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        run: |
+          npm install
+          npm version ${{ inputs.version }}
+          npm publish
+      - uses: nyaa8/package-version@v1
+        with:
+          path: 'package.json'
+      - name: Commit files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m '`sveltekit-i18n@${{ env.PACKAGE_VERSION }}` has been published'
+      - name: Push changes
+        uses: ad-m/github-push-action@master
