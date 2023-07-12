@@ -24,5 +24,8 @@
   "dependencies": {
     "@sveltekit-i18n/base": "file:../../node_modules/@sveltekit-i18n/base",
     "@sveltekit-i18n/parser-icu": "^1.0.0"
+  },
+  "peerDependencies": {
+    "sveltekit-i18n": "file:../../"
   }
 }
