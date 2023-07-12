@@ -5,5 +5,6 @@
   "custom_modifier": "{{date:date;}}",
   "modifier_number": "{{value:number;}}",
   "modifier_date": "{{value:date;}}",
-  "modifier_ago": "{{value:ago;}}"
+  "modifier_ago": "{{value:ago;}}",
+  "modifier_currency": "{{value:currency;}}"
 }
