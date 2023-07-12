@@ -1,12 +1,7 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/474b5633-14d8-4e1b-846f-f122f2ad4c25/deploy-status)](https://app.netlify.com/sites/locale-router/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/bea2dd0c-89ec-4fcc-87c7-86192d1fe48d/deploy-status)](https://app.netlify.com/sites/locale-param/deploys)
 
-# Locale-router
-This app shows how to integrate locale routing using dynamic adapters (e.g. `@sveltejs/adapter-node`). It includes two pages and three language mutations (`en`, `de`, `cs`). Error pages are included as well.
+# Locale-param
+This `multi-page` app demonstrates lang routing based on URL parameter (e.g. `https://example.com/?lang=en`).
 
 ## Preview
-You can view this demo live on [Netlify](https://locale-router.netlify.app).
-
-## Naticeable files
-
-### `./src/hooks.server.js`
-Takes care about redirects to appropriate language mutation.
+You can view this demo live on [Netlify](https://locale-param.netlify.app).

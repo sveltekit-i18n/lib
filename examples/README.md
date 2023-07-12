@@ -15,6 +15,9 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - translations are loaded not only according to the locale, but given routes as well
 - it prevents duplicit (server and client) translation load on app enter
 
+[`locale-param`](./locale-param) – [Demo](https://locale-param.netlify.app)
+- this `multi-page` app demonstrates lang routing based on URL parameter (e.g. `https://example.com/?lang=en`)
+
 [`locale-router-static`](./locale-router-static) – [Demo](https://locale-router-static.netlify.app)
 - this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
 - this approach is great if you care about SEO
