@@ -12,6 +12,6 @@ export const load = async ({ url, cookies }) => {
 
   return {
     i18n: { locale: initLocale, route: pathname },
-    translations: translations.get(),
+    translations: translations.get(), // `translations` on server contain all translations loaded by different clients
   };
 };

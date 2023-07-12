@@ -1,12 +1,14 @@
-import { loadTranslations } from '$lib/translations';
+import { addTranslations, setLocale, setRoute } from '$lib/translations';
 
 /** @type {import('@sveltejs/kit').Load} */
-export const load = async ({ url }) => {
-  const { pathname } = url;
+export const load = async ({ data }) => {
+  const { i18n, translations } = data;
+  const { locale, route } = i18n;
 
-  const initLocale = 'en'; // get from cookie / user session etc...
+  addTranslations(translations);
 
-  await loadTranslations(initLocale, pathname); // keep this just before the `return`
+  await setRoute(route);
+  await setLocale(locale);
 
-  return {};
+  return i18n;
 };
