@@ -78,14 +78,12 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 ...load your translations in `+layout.js`...
 
 ```javascript
-import { locale, loadTranslations } from '$lib/translations';
+import { loadTranslations } from '$lib/translations';
 
 export const load = async ({ url }) => {
   const { pathname } = url;
 
-  const defaultLocale = 'en'; // get from cookie, user session, ...
-  
-  const initLocale = locale.get() || defaultLocale; // set default if no locale already set
+  const initLocale = 'en'; // get from cookie, user session, ...
 
   await loadTranslations(initLocale, pathname); // keep this just before the `return`
 
