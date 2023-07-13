@@ -1,5 +1,5 @@
 [build]
-    command = "cd ../../ && npm run build && npm run build --workspace loaders"
-    publish = "build"
+  command = "cd ../../ && npm run build && npm run build --workspace loaders"
+  publish = "build"
 [functions]
   node_bundler = "esbuild"
