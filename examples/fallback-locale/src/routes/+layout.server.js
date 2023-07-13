@@ -1,16 +1,11 @@
 import { locales, loadTranslations, translations, defaultLocale } from '$lib/translations';
 
 /** @type {import('@sveltejs/kit').ServerLoad} */
-export const load = async ({ url, cookies, request }) => {
+export const load = async ({ url, cookies }) => {
   const { pathname } = url;
 
   // Try to get the locale from cookie
   let locale = (cookies.get('lang') || '').toLowerCase();
-
-  // Get user preferred locale
-  if (!locale) {
-    locale = `${`${request.headers.get('accept-language')}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();
-  }
 
   // Get defined locales
   const supportedLocales = locales.get().map((l) => l.toLowerCase());

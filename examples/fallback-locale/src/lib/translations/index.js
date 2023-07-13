@@ -1,7 +1,7 @@
 import i18n from 'sveltekit-i18n';
 import lang from './lang.json';
 
-export const defaultLocale = 'en';
+export const defaultLocale = 'cs';
 
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
