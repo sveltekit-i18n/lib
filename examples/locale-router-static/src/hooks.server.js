@@ -6,7 +6,7 @@ export const handle = async ({ event, resolve }) => {
   const { pathname } = url;
 
   // Get defined locales
-  const supportedLocales = locales.get();
+  const supportedLocales = locales.get().map((l) => l.toLowerCase());
 
   // Try to get locale from `pathname`.
   let locale = supportedLocales.find((l) => l === `${pathname.match(/[^/]+?(?=\/|$)/)}`.toLowerCase());
