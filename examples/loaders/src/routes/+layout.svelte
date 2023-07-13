@@ -1,6 +1,12 @@
 <script>
   import { t, locale, locales } from '$lib/translations';
 
+  const handleChange = ({ currentTarget }) => {
+    const { value } = currentTarget;
+
+    document.cookie = `lang=${value} ;`;
+  };
+
   $: count = 2;
 </script>
 
@@ -17,7 +23,7 @@
 <br />
 <br />
 <br />
-<select bind:value="{$locale}">
+<select bind:value="{$locale}" on:input={handleChange}>
   {#each $locales as value}
     <option value="{value}">{$t(`lang.${value}`)}</option>
   {/each}
