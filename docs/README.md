@@ -62,7 +62,7 @@ Note that it's not recommended to use this property if you don't really need it.
 By default, translation key is returned in case no translation is found for given translation key. For example, `$t('unknown.key')` will result in `'unknown.key'` output. You can set this output value using this config prop.
 
 ### `cache`?: __number__
-When you are running your app on Node.js server, translations are loaded only once during the SSR. This property allows you to setup a refresh period in milliseconds when your translations are refetched on the server. The default value is `86400000` (24 hours).
+When you are serving your app, translations are loaded only once during the SSR. This property allows you to setup a refresh period in milliseconds when your translations are refetched on the server. The default value is `86400000` (24 hours).
 
 Tip: You can set to `Number.POSITIVE_INFINITY` to disable server-side refreshing.
 
