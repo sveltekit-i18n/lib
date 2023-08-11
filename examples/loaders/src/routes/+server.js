@@ -7,8 +7,8 @@ import { default as en } from '$lib/translations/en/home.json';
 const translations = { cs, en };
 
 /** @type {import('./home/$types').RequestHandler} */
-export async function GET(event) {
-  const { lang = defaultLocale } = event.url.searchParams;
+export async function GET({ url }) {
+  const lang = url.searchParams.get('lang') || defaultLocale;
 
   const translation = translations[lang];
 
