@@ -1,15 +1,24 @@
-import { loadTranslations, translations } from '$lib/translations';
+import { locales, loadTranslations, translations, defaultLocale } from '$lib/translations';
 
 /** @type {import('@sveltejs/kit').ServerLoad} */
-export const load = async ({ url }) => {
+export const load = async ({ url, cookies }) => {
   const { pathname } = url;
 
-  const initLocale = 'en'; // get from cookie / user session etc...
+  // Try to get the locale from cookie
+  let locale = (cookies.get('lang') || '').toLowerCase();
 
-  await loadTranslations(initLocale, pathname); // keep this just before the `return`
+  // Get defined locales
+  const supportedLocales = locales.get().map((l) => l.toLowerCase());
+
+  // Use default locale if current locale is not supported
+  if (!supportedLocales.includes(locale)) {
+    locale = defaultLocale;
+  }
+
+  await loadTranslations(locale, pathname); // keep this just before the `return`
 
   return {
-    i18n: { locale: initLocale, route: pathname },
+    i18n: { locale, route: pathname },
     translations: translations.get(), // `translations` on server contain all translations loaded by different clients
   };
 };

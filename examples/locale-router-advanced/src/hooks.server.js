@@ -11,7 +11,7 @@ export const handle = async ({ event, resolve }) => {
   if (routeRegex.test(pathname)) {
 
     // Get defined locales
-    const supportedLocales = locales.get();
+    const supportedLocales = locales.get().map((l) => l.toLowerCase());
 
     // Try to get locale from `pathname`.
     let locale = supportedLocales.find((l) => l === `${pathname.match(/[^/]+?(?=\/|$)/)}`.toLowerCase());

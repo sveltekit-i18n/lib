@@ -22,8 +22,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@sveltekit-i18n/base": "file:../../node_modules/@sveltekit-i18n/base",
-    "@sveltekit-i18n/parser-default": "file:../../node_modules/@sveltekit-i18n/parser-default"
+    "@sveltekit-i18n/base": "^1.0.0",
+    "@sveltekit-i18n/parser-default": "^1.0.0"
   },
   "peerDependencies": {
     "sveltekit-i18n": "file:../../"
