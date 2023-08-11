@@ -51,6 +51,9 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - this app demonstrates features of the [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/blob/master/parser-icu)
 
 ### Other
+[`loaders`](./loaders) – [Demo](https://loaders-example.netlify.app)
+- this app demonstrates different `config.loaders` configurations
+
 [`preprocess`](./preprocess) – [Demo](https://preprocess-example.netlify.app)
 - this app demonstrates different `config.preprocess` configurations
 
