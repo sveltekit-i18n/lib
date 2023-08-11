@@ -28,7 +28,7 @@ export const config = {
     {
       locale: 'en',
       key: 'home',
-      routes: ['/'],
+      routes: ['', '/'],
       /* Fetch request */
       loader: () => fetch(`${API_URL}/?lang=en`).then((res) => res.json()),
     },
@@ -57,7 +57,7 @@ export const config = {
     {
       locale: 'cs',
       key: 'home',
-      routes: ['/'],
+      routes: ['', '/'],
       /* Fetch request */
       loader: () => fetch(`${API_URL}/?lang=cs`).then((res) => res.json()),
     },
