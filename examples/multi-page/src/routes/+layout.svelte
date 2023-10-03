@@ -25,6 +25,6 @@
 <br />
 <select bind:value="{$locale}" on:change={handleChange}>
   {#each $locales as value}
-    <option value="{value}">{$t(`lang.${value}`)}</option>
+    <option value="{value}" selected="{$locale === value}">{$t(`lang.${value}`)}</option>
   {/each}
 </select>
