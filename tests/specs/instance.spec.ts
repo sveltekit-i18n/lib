@@ -211,7 +211,7 @@ describe('i18n instance', () => {
 
     const $translations = translations.get();
 
-    expect($translations[initLocale]['common.preprocess.0.test']).toBe('passed');
+    expect($translations[initLocale]['common.preprocess.0.test.array']).toBe('passed');
   });
   it('`preprocess` works when set to `preserveArrays`', async () => {
     const { loadTranslations, translations } = new i18n({ loaders, log, preprocess: 'preserveArrays' });
@@ -220,7 +220,16 @@ describe('i18n instance', () => {
 
     const $translations = translations.get();
 
-    expect($translations[initLocale]['common.preprocess'][0].test).toBe('passed');
+    expect($translations[initLocale]['common.preprocess']).toStrictEqual([
+      { 'test.array': 'passed' },
+      'string',
+      null,
+      0,
+      1,
+      -1,
+      true,
+      false,
+    ]);
   });
   it('`preprocess` works when set to `none`', async () => {
     const { loadTranslations, translations, rawTranslations } = new i18n({ loaders, log, preprocess: 'none' });
@@ -231,7 +240,7 @@ describe('i18n instance', () => {
     const $rawTranslations = rawTranslations.get();
 
     expect($translations).toStrictEqual($rawTranslations);
-    expect($translations[initLocale].common.preprocess[0].test).toBe('passed');
+    expect($translations[initLocale].common.preprocess[0].test.array).toBe('passed');
   });
   it('initializes properly with `initLocale`', async () => {
     const { initialized, loadConfig } = new i18n();
