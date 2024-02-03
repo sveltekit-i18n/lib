@@ -25,7 +25,7 @@
 <select
   on:change={({ target }) => {
     goto(`/${target.value}${route}`);
-    document.querySelector("html").setAttribute("lang", target.value);
+    document.querySelector('html').setAttribute('lang', target.value);
   }}
 >
   {#each $locales as lc}
