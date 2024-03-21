@@ -8,9 +8,21 @@ export const load = async ({ url, cookies, request }) => {
   let locale = (cookies.get('lang') || '').toLowerCase();
 
   // Get user preferred locale
-  if (!locale) {
-    locale = `${`${request.headers.get('accept-language')}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();
-  }
+ 	if (!locale) {
+		// If no cookie is set, try to determine the locale from the 'Accept-Language' header
+		const acceptLanguageHeader = request.headers.get('accept-language') || '';
+		// Attempt to match the language code with optional region code
+		let match = acceptLanguageHeader.match(/^[a-z]+(?=[-_])/i);
+
+		// If no match is found, try to match just the language code
+		if (!match) {
+			match = acceptLanguageHeader.match(/^[a-z]+/i);
+		}
+
+		// If a match is found, use it as the locale, otherwise fall back to the default locale
+		locale = match ? match[0].toLowerCase() : defaultLocale;
+	}
+
 
   // Get defined locales
   const supportedLocales = locales.get().map((l) => l.toLowerCase());
