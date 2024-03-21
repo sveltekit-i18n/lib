@@ -7,10 +7,20 @@ export const load = async ({ url, cookies, request }) => {
   // Try to get the locale from cookie
   let locale = (cookies.get('lang') || '').toLowerCase();
 
-  // Get user preferred locale
-  if (!locale) {
-    locale = `${`${request.headers.get('accept-language')}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();
-  }
+	// Get user preferred locale
+	if (!locale) {
+		const acceptLanguageHeader = request.headers.get('accept-language');
+		let match = acceptLanguageHeader.match(/^[a-zA-Z]+(?=[-_])/);
+
+		// If no match, try to get the locale without the region
+		if (!match) {
+			match = acceptLanguageHeader.match(/^[a-zA-Z]+/);
+		}
+
+		if (match) {
+			locale = match[0].toLowerCase();
+		}
+	}
 
   // Get defined locales
   const supportedLocales = locales.get().map((l) => l.toLowerCase());
