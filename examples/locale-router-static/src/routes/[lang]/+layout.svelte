@@ -22,8 +22,13 @@
 <br />
 <br />
 <br />
-<select on:change="{({ target }) => goto(target.value)}">
+<select
+  on:change={({ target }) => {
+    goto(`/${target.value}${route}`);
+    document.querySelector('html').setAttribute('lang', target.value);
+  }}
+>
   {#each $locales as lc}
-    <option value="/{lc}{route}" selected="{lc === $locale}">{$t(`lang.${lc}`)}</option>
+    <option value={lc} selected={lc === $locale}>{$t(`lang.${lc}`)}</option>
   {/each}
 </select>
