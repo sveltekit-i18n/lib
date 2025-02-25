@@ -1,5 +1,11 @@
 [![npm version](https://badge.fury.io/js/sveltekit-i18n.svg)](https://badge.fury.io/js/sveltekit-i18n) ![](https://github.com/sveltekit-i18n/lib/workflows/Tests/badge.svg)
 
+> [!NOTE]
+> Looking for maintainers. Feel free to contact me if you want to take over the maintanance of this project.
+> 
+> https://github.com/sveltekit-i18n/lib/issues/197
+
+
 # sveltekit-i18n
 `sveltekit-i18n` is a tiny library with no external dependencies, built for [Svelte](https://github.com/sveltejs/svelte) and [SvelteKit](https://github.com/sveltejs/kit). It glues [@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) and [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/tree/master/parser-default) together to provide you the most straightforward `sveltekit-i18n` solution.
 
