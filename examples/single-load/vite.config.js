@@ -1,8 +1,12 @@
-import { sveltekit } from '@sveltejs/kit/vite';
+import { sveltekit } from "@sveltejs/kit/vite";
+import { defineConfig } from "vite";
+import path from "path";
 
-/** @type {import('vite').UserConfig} */
-const config = {
+export default defineConfig({
   plugins: [sveltekit()],
-};
-
-export default config;
+  resolve: {
+    alias: {
+      "sveltekit-i18n": path.resolve(__dirname, "../../src/index.ts"),
+    },
+  },
+});
