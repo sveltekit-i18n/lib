@@ -1,5 +1,5 @@
 [build]
-    command = "cd ../../ && pnpm build && pnpm build --filter single-load"
+    command = "cd ../../ && pnpm install && pnpm run build && pnpm run build --filter single-load"
     publish = "build"
 [functions]
   node_bundler = "esbuild"
