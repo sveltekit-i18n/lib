@@ -5,3 +5,9 @@ In this app, translations are loaded dynamically according to user navigation an
 
 ## Preview
 You can view this demo live on [Netlify](https://multi-page-example.netlify.app).
+
+## How to use this example
+
+- Download this example
+- Run `npm i` to install all dependencies (or `pnpm i`, `yarn`, etc.)
+- Run `npm run dev -- --open` to preview (or `pnpm run dev -- --open`, `yarn dev --open`, etc.)

@@ -5,3 +5,9 @@ This `multi-page` app demonstrates lang routing based on URL parameter (e.g. `ht
 
 ## Preview
 You can view this demo live on [Netlify](https://locale-param.netlify.app).
+
+## How to use this example
+
+- Download this example
+- Run `npm i` to install all dependencies (or `pnpm i`, `yarn`, etc.)
+- Run `npm run dev -- --open` to preview (or `pnpm run dev -- --open`, `yarn dev --open`, etc.)

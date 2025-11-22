@@ -5,3 +5,9 @@ This demo shows different `config.loaders` in action. It covers importing transl
 
 ## Preview
 You can view this demo live on [Netlify](https://loaders-example.netlify.app).
+
+## How to use this example
+
+- Download this example
+- Run `npm i` to install all dependencies (or `pnpm i`, `yarn`, etc.)
+- Run `npm run dev -- --open` to preview (or `pnpm run dev -- --open`, `yarn dev --open`, etc.)

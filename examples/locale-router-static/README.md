@@ -17,8 +17,14 @@ Takes care about redirects to appropriate language mutation in dev mode and duri
 ### `./src/routes/[lang]/[...error]/+page.svelte`
 This file handles errors. In dev mode, throws error (so you are redirected to `./src/routes/+error.svelte` with appropriate error code), while during the build process, includes the error page itself to render.
 
+## How to use this example
+
+- Download this example
+- Run `npm i` to install all dependencies (or `pnpm i`, `yarn`, etc.)
+- Run `npm run dev -- --open` to preview (or `pnpm run dev -- --open`, `yarn dev --open`, etc.)
+
 ## Build
-After you run `npm run build` command, this setup outputs your site with all defined language mutations in separate folders including translated error pages.
+After you run `npm run build` (or `pnpm run build`, `yarn build`, etc.) command, this setup outputs your site with all defined language mutations in separate folders including translated error pages.
 
 For example:
 ```
