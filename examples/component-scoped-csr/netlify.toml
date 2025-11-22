@@ -1,5 +1,5 @@
 [build]
-    command = "cd ../../ && pnpm install && pnpm run build && pnpm run build --filter component-scoped-csr"
+    command = "cd ../../ && pnpm install && pnpm run build && pnpm --filter component-scoped-csr run build"
     publish = "build"
 [functions]
   node_bundler = "esbuild"

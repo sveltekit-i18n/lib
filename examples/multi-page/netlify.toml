@@ -1,5 +1,5 @@
 [build]
-    command = "cd ../../ && pnpm install && pnpm run build && pnpm run build --filter multi-page"
+    command = "cd ../../ && pnpm install && pnpm run build && pnpm --filter multi-page run build"
     publish = "build"
 [functions]
   node_bundler = "esbuild"

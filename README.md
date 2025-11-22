@@ -118,3 +118,6 @@ export const load = async ({ url }) => {
 [Docs](https://github.com/sveltekit-i18n/lib/tree/master/docs/README.md)\
 [Examples](https://github.com/sveltekit-i18n/lib/tree/master/examples)\
 [Changelog](https://github.com/sveltekit-i18n/lib/releases)
+
+## Roadmap
+
