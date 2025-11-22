@@ -60,10 +60,17 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 [`fallback-locale`](./fallback-locale) – [Demo](https://fallback-locale.netlify.app)
 - this app demonstrates `config.fallbackLocale`
 
-## How to
+## How to use an example
 
-- clone or download example you want to use
-- navigate to downloaded folder using Terminal (`cd ./your/example/destination/`)
-- run `npm i sveltekit-i18n@latest` to fetch this dependecy from NPM and install all other dependencies\
-_(or `npm i @sveltekit-i18n/PACKAGE_NAME@latest` for parser examples - see related dependencies)_
-- run `npm run dev -- --open` to preview
+- Clone or download the example you want to use
+- Navigate to the downloaded folder using Terminal (e.g. `cd ./your/example/destination/`)
+- Install dependencies using your preferred package manager:
+  - `npm i sveltekit-i18n@latest` (or `npm i @sveltekit-i18n/PACKAGE_NAME@latest` for parser examples - see related dependencies)
+  - `pnpm i sveltekit-i18n@latest`
+  - `yarn add sveltekit-i18n@latest`
+  - Or any other package manager you prefer
+- Run the dev server to preview:
+  - `npm run dev -- --open`
+  - `pnpm run dev -- --open`
+  - `yarn dev --open`
+  - Or the equivalent command for your package manager

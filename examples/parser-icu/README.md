@@ -6,9 +6,9 @@ This app demonstrates features of the [@sveltekit-i18n/parser-icu](https://githu
 ## Preview
 You can view this demo live on [Netlify](https://parser-icu.netlify.app).
 
-## How to
+## How to use this example
 
-- download this example
-- run `cd ./parser-icu/` in Terminal to navigate to example's folder
-- run `npm i` to install all dependencies
-- run `npm run dev -- --open` to preview
+- Download this example
+- Run `cd ./parser-icu/` in Terminal to navigate to example's folder
+- Run `npm i` to install all dependencies (or `pnpm i`, `yarn`, etc.)
+- Run `npm run dev -- --open` to preview (or `pnpm run dev -- --open`, `yarn dev --open`, etc.)
