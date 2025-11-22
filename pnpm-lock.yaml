@@ -283,6 +283,9 @@ importers:
       '@sveltekit-i18n/parser-default':
         specifier: ^1.0.0
         version: 1.1.1
+      sveltekit-i18n:
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -320,6 +323,9 @@ importers:
       '@sveltekit-i18n/parser-icu':
         specifier: ^1.0.0
         version: 1.0.8
+      sveltekit-i18n:
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4

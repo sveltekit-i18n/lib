@@ -27,6 +27,6 @@
     "vite": "^7.1.10"
   },
   "peerDependencies": {
-    "sveltekit-i18n": "file:../../"
+    "sveltekit-i18n": "workspace:*"
   }
 }
