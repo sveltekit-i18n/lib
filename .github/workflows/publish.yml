@@ -23,24 +23,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10
+
       - uses: actions/setup-node@v3
         with:
           node-version: 18
           registry-url: https://registry.npmjs.org/
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Update version
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          npm version ${{ inputs.version }}
+          pnpm version ${{ inputs.version }}
 
       - name: Publish package
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-        run: npm publish
+        run: pnpm publish
 
       - name: Push changes
         run: git push
