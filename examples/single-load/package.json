@@ -10,7 +10,7 @@
     "prepare": "svelte-kit sync || echo ''"
   },
   "dependencies": {
-    "sveltekit-i18n": "file:../../"
+    "sveltekit-i18n": "workspace:*"
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "^5.2.4",

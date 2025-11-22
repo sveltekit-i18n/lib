@@ -58,8 +58,8 @@ importers:
   examples/component-scoped-csr:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -80,8 +80,8 @@ importers:
   examples/component-scoped-ssr:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -102,8 +102,8 @@ importers:
   examples/fallback-locale:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -124,8 +124,8 @@ importers:
   examples/loaders:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -146,8 +146,8 @@ importers:
   examples/locale-param:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -168,8 +168,8 @@ importers:
   examples/locale-router:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -190,8 +190,8 @@ importers:
   examples/locale-router-advanced:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -212,8 +212,8 @@ importers:
   examples/locale-router-static:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -234,8 +234,8 @@ importers:
   examples/multi-page:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -256,8 +256,8 @@ importers:
   examples/one-page:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -358,8 +358,8 @@ importers:
   examples/preprocess:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -380,8 +380,8 @@ importers:
   examples/single-load:
     dependencies:
       sveltekit-i18n:
-        specifier: file:../../
-        version: file:(svelte@5.43.12)
+        specifier: workspace:*
+        version: link:../..
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
@@ -3156,11 +3156,6 @@ packages:
   svelte@5.43.12:
     resolution: {integrity: sha512-d1R+3pFa39LXoHCsxHmV//D2pSFZlEMlnxCVQ54TlrQv+4o5pewJO0/Pc5MUp+j71PJrOrPJHTvREZJHn+ymDQ==}
     engines: {node: '>=18'}
-
-  'sveltekit-i18n@file:':
-    resolution: {directory: '', type: directory}
-    peerDependencies:
-      svelte: '>=3.49.0'
 
   test-exclude@6.0.0:
     resolution: {integrity: sha512-cAGWPIyOHU6zlmg88jwm7VRyXnMN7iV68OGAbYDk/Mh/xC/pzVPlQtY6ngoIH/5/tciuhGfvESU8GrHrcxD56w==}
@@ -6602,12 +6597,6 @@ snapshots:
       locate-character: 3.0.0
       magic-string: 0.30.21
       zimmerframe: 1.1.4
-
-  sveltekit-i18n@file:(svelte@5.43.12):
-    dependencies:
-      '@sveltekit-i18n/base': 1.3.7(svelte@5.43.12)
-      '@sveltekit-i18n/parser-default': 1.1.1
-      svelte: 5.43.12
 
   test-exclude@6.0.0:
     dependencies:
