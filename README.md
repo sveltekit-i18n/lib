@@ -121,4 +121,12 @@ export const load = async ({ url }) => {
 
 ## Roadmap
 
-[] - 
+### Q4 2025
+
+[ ] - Update the examples
+[ ] - Stabalise build & tests
+[ ] - Consolidate issues
+
+### Q1 2026
+
+[ ] - Storage + State management overhall

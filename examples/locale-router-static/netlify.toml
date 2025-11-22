@@ -2,6 +2,9 @@
     command = "cd ../../ && pnpm install && pnpm run build && pnpm --filter locale-router-static run build"
     publish = "build"
 
+[build.environment]
+    NODE_VERSION = "22"
+
 [[redirects]]
   from = "/*"
   to = "/cs/:splat"
