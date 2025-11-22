@@ -1,5 +1,5 @@
 [build]
-    command = "cd ../../ && pnpm install && pnpm run build && pnpm run build --filter locale-router"
+    command = "cd ../../ && pnpm install && pnpm run build && pnpm --filter locale-router run build"
     publish = "build"
 [functions]
   node_bundler = "esbuild"
