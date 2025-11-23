@@ -2,8 +2,5 @@
     command = "cd ../../ && pnpm install && pnpm run build && pnpm --filter component-scoped-csr run build"
     publish = "build"
 
-[build.environment]
-    NODE_VERSION = "22"
-
 [functions]
   node_bundler = "esbuild"
