@@ -1,16 +1,22 @@
 <script>
-  import { writable } from 'svelte/store';
+  import favicon from '$lib/assets/favicon.svg';
   import { t, locales, locale } from '$lib/translations';
 
-  const count = writable(2);
+  let { children } = $props();
+
+  let count = $state(2);
 </script>
 
-{$t('menu.notification', { count: $count })}<br />
-<button on:click="{() => {if ($count) $count -= 1;}}">–</button>
-<button on:click="{() => {$count += 1;}}">+</button>
+<svelte:head>
+  <link rel="icon" href={favicon} />
+</svelte:head>
+
+{$t('menu.notification', { count })}<br />
+<button onclick={() => {if (count) count -= 1;}}>–</button>
+<button onclick={() => {count += 1;}}>+</button>
 <hr />
 
-<slot />
+{@render children()}
 <br />
 <br />
 <br />

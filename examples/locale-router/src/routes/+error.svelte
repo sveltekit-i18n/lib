@@ -2,7 +2,7 @@
   import { page } from '$app/stores';
   import { t, locale } from '$lib/translations';
 
-  const { status } = $page;
+  let status = $derived($page.status);
 </script>
 
 <div class="content">

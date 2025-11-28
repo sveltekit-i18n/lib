@@ -2,7 +2,7 @@
   import { t, locale } from '$lib/translations';
   import { page } from '$app/stores';
 
-  export let status = $page.status;
+  let { status = $page.status } = $props();
 </script>
 
 <div class="content">
