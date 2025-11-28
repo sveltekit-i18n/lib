@@ -2,10 +2,9 @@
   import Component from '$lib/component/index.svelte';
   import { t } from '$lib/translations';
 
-  export let data;
+  let { data } = $props();
 
   const link = 'https://kit.svelte.dev';
-
 </script>
 
 <h1>{$t('home.title')}</h1>

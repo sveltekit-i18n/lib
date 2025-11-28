@@ -1,6 +1,9 @@
 <script>
+  import favicon from '$lib/assets/favicon.svg';
   import { full, preserveArrays, none, custom } from '$lib/translations';
   const { t, locale, locales } = full;
+
+  let { children } = $props();
 
   locale.subscribe((value) => {
     preserveArrays.setLocale(value);
@@ -9,7 +12,11 @@
   });
 </script>
 
-<slot />
+<svelte:head>
+  <link rel="icon" href={favicon} />
+</svelte:head>
+
+{@render children()}
 <br />
 <br />
 <br />

@@ -1,7 +1,7 @@
 <script>
   import Error from '../../+error.svelte';
 
-  export let data;
+  let { data } = $props();
 </script>
 
 <Error status={data.status} />

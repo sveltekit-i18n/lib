@@ -4,7 +4,7 @@
 
   const link = 'https://kit.svelte.dev';
 
-  let props = [
+  let props = $state([
     {
       initLocale: 'cs',
       initTranslations: {},
@@ -13,11 +13,11 @@
       initLocale: 'de',
       initTranslations: {},
     },
-  ];
+  ]);
 
   /** @type {import('./$types').Snapshot} */
   export const snapshot = {
-    capture: () => props,
+    capture: () => $state.snapshot(props),
     restore: (value) => { props = value; },
   };
 </script>

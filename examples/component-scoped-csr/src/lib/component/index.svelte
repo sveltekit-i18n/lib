@@ -2,14 +2,18 @@
   import init from './translations';
   const { t, locale, locales, translations, addTranslations, loadTranslations } = init();
 
-  export let initLocale;
-  export let initTranslations;
+  let { initLocale = $bindable(), initTranslations = $bindable() } = $props();
 
   addTranslations(initTranslations);
   const promise = loadTranslations(initLocale);
 
-  $: (initTranslations = $translations);
-  $: ($locale = initLocale);
+  $effect(() => {
+    initTranslations = $translations;
+  });
+
+  $effect(() => {
+    $locale = initLocale;
+  });
 </script>
 
 <div>
@@ -19,7 +23,7 @@
   {:then}
     <p>{$t('common.info')}</p>
 
-    <select bind:value={initLocale} on:input={() => locale.set(initLocale)}>
+    <select bind:value={initLocale} oninput={() => locale.set(initLocale)}>
       {#each $locales as l}
       <option value="{l}">{$t(`lang.${l}`)}</option>
       {/each}

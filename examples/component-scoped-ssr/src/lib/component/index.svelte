@@ -1,9 +1,9 @@
-<script context="module">
+<script module>
   export { default as init } from './translations';
 </script>
 
 <script>
-  export let props;
+  let { props = $bindable() } = $props();
 
   const { translations, locale, locales, t } = props;
 </script>
@@ -13,8 +13,8 @@
   <p>{$t('common.info')}</p>
 
   <select bind:value="{$locale}">
-    {#each $locales as locale}
-    <option value="{locale}">{$t(`lang.${locale}`)}</option>
+    {#each $locales as loc}
+    <option value="{loc}">{$t(`lang.${loc}`)}</option>
     {/each}
   </select>
 </div>
