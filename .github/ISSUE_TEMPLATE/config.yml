@@ -1,0 +1,15 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Discussions
+    url: https://github.com/sveltekit-i18n/lib/discussions
+    about: Ask questions, share ideas, or discuss the project
+  - name: 📖 Documentation
+    url: https://github.com/sveltekit-i18n/lib/tree/master/docs
+    about: Read the complete documentation
+  - name: 🔧 Troubleshooting Guide
+    url: https://github.com/sveltekit-i18n/lib/blob/master/docs/TROUBLESHOOTING.md
+    about: Common issues and solutions
+  - name: 💡 Examples
+    url: https://github.com/sveltekit-i18n/lib/tree/master/examples
+    about: Working example applications
+

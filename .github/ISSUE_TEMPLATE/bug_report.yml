@@ -1,0 +1,120 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us investigate.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: What went wrong?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Steps to reproduce the behavior, or a link to a minimal reproduction (CodeSandbox, StackBlitz, GitHub repo).
+      placeholder: |
+        1. Configure i18n with...
+        2. Navigate to...
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+      placeholder: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened?
+      placeholder: What actually happened?
+    validations:
+      required: true
+
+  - type: input
+    id: sveltekit-i18n-version
+    attributes:
+      label: sveltekit-i18n version
+      description: What version of sveltekit-i18n are you using?
+      placeholder: "2.4.2"
+    validations:
+      required: true
+
+  - type: input
+    id: sveltekit-version
+    attributes:
+      label: SvelteKit version
+      description: What version of SvelteKit are you using?
+      placeholder: "2.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: node-version
+    attributes:
+      label: Node.js version
+      description: What version of Node.js are you using?
+      placeholder: "20.10.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: adapter
+    attributes:
+      label: SvelteKit Adapter
+      description: Which SvelteKit adapter are you using?
+      options:
+        - "@sveltejs/adapter-auto"
+        - "@sveltejs/adapter-node"
+        - "@sveltejs/adapter-static"
+        - "@sveltejs/adapter-vercel"
+        - "@sveltejs/adapter-netlify"
+        - "@sveltejs/adapter-cloudflare"
+        - "Other (specify in additional context)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error logs
+      description: Please paste any relevant error messages or console logs.
+      render: shell
+      placeholder: Paste error logs here
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here (browser, operating system, etc.).
+      placeholder: Any additional information that might help
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true
+        - label: I have provided a minimal reproduction (if possible)
+          required: false
+        - label: I have checked the [Troubleshooting Guide](https://github.com/sveltekit-i18n/lib/blob/master/docs/TROUBLESHOOTING.md)
+          required: false
+

@@ -1,0 +1,92 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please provide as much detail as possible.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: Is your feature request related to a problem? Please describe what you're trying to achieve.
+      placeholder: I'm trying to do X but can't because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe the solution you'd like to see.
+      placeholder: I would like to be able to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: api
+    attributes:
+      label: Proposed API (if applicable)
+      description: If you have ideas about how the API should look, share them here.
+      placeholder: |
+        ```javascript
+        const config = {
+          newFeature: { ... }
+        };
+        ```
+      render: markdown
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you tried any workarounds or alternative approaches?
+      placeholder: I tried X but it didn't work because...
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+      description: Describe your use case. How would this feature benefit you and others?
+      placeholder: This would help with...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Which package?
+      description: Which package would this feature be for?
+      options:
+        - "sveltekit-i18n (main lib)"
+        - "@sveltekit-i18n/base"
+        - "@sveltekit-i18n/parser-default"
+        - "@sveltekit-i18n/parser-icu"
+        - "New parser"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context, screenshots, or examples about the feature request.
+      placeholder: Any additional information
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues and discussions to avoid duplicates
+          required: true
+        - label: I have checked the [documentation](https://github.com/sveltekit-i18n/lib/tree/master/docs) and [examples](https://github.com/sveltekit-i18n/lib/tree/master/examples)
+          required: true
+        - label: This feature cannot be achieved with current functionality
+          required: true
+

@@ -1,0 +1,69 @@
+name: Documentation Issue
+description: Report an issue with documentation or suggest improvements
+title: "[Docs]: "
+labels: ["documentation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve our documentation!
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation type
+      description: What kind of documentation issue is this?
+      options:
+        - "Error or incorrect information"
+        - "Missing information"
+        - "Unclear or confusing explanation"
+        - "Broken link"
+        - "Typo or grammar"
+        - "Suggestion for improvement"
+        - "Other"
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Documentation location
+      description: Which documentation page or file is this about?
+      placeholder: "docs/GETTING_STARTED.md, README.md, etc."
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current documentation
+      description: What does the current documentation say? (copy/paste or describe)
+      placeholder: The current docs say...
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue
+    attributes:
+      label: What's the issue?
+      description: What's wrong or missing?
+      placeholder: The issue is...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: How should it be changed or what should be added?
+      placeholder: It should say... or Add section about...
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Any other context that might help.
+      placeholder: Any additional information
+
