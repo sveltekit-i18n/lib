@@ -9,7 +9,7 @@ This app includes multiple instances of `sveltekit-i18n`.
 This approach is good for more complex apps.
 
 ## Preview
-You can view this demo live on [Netlify](https://compoent-scoped-csr.netlify.app).
+You can view this demo live on [Netlify](https://component-scoped-csr.netlify.app).
 
 ## How to use this example
 
