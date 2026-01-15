@@ -66,10 +66,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -88,10 +88,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -110,10 +110,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -132,10 +132,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -154,10 +154,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -176,10 +176,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -198,10 +198,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -220,10 +220,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-static':
         specifier: ^3.0.8
-        version: 3.0.10(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 3.0.10(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -242,10 +242,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -264,10 +264,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -292,10 +292,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -332,10 +332,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -366,10 +366,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -388,10 +388,10 @@ importers:
     devDependencies:
       '@sveltejs/adapter-netlify':
         specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))
+        version: 5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))
       '@sveltejs/kit':
         specifier: ^2.47.1
-        version: 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+        version: 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       '@sveltejs/vite-plugin-svelte':
         specifier: ^6.2.1
         version: 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
@@ -1165,11 +1165,16 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
-  '@standard-schema/spec@1.0.0':
-    resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
+  '@standard-schema/spec@1.1.0':
+    resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
   '@sveltejs/acorn-typescript@1.0.7':
     resolution: {integrity: sha512-znp1A/Y1Jj4l/Zy7PX5DZKBE0ZNY+5QBngiE21NJkfSTyzzC5iKNWOtwFXKtIrn7MXEFBck4jD95iBNkGjK92Q==}
+    peerDependencies:
+      acorn: ^8.9.0
+
+  '@sveltejs/acorn-typescript@1.0.8':
+    resolution: {integrity: sha512-esgN+54+q0NjB0Y/4BomT9samII7jGwNy/2a3wNZbT2A2RpmXsXwUt24LvLhx6jUq2gVk4cWEvcRO6MFQbOfNA==}
     peerDependencies:
       acorn: ^8.9.0
 
@@ -1183,17 +1188,20 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
-  '@sveltejs/kit@2.49.0':
-    resolution: {integrity: sha512-oH8tXw7EZnie8FdOWYrF7Yn4IKrqTFHhXvl8YxXxbKwTMcD/5NNCryUSEXRk2ZR4ojnub0P8rNrsVGHXWqIDtA==}
+  '@sveltejs/kit@2.49.5':
+    resolution: {integrity: sha512-dCYqelr2RVnWUuxc+Dk/dB/SjV/8JBndp1UovCyCZdIQezd8TRwFLNZctYkzgHxRJtaNvseCSRsuuHPeUgIN/A==}
     engines: {node: '>=18.13'}
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.0.0
       '@sveltejs/vite-plugin-svelte': ^3.0.0 || ^4.0.0-next.1 || ^5.0.0 || ^6.0.0-next.0
       svelte: ^4.0.0 || ^5.0.0-next.0
+      typescript: ^5.3.3
       vite: ^5.0.3 || ^6.0.0 || ^7.0.0-beta.0
     peerDependenciesMeta:
       '@opentelemetry/api':
+        optional: true
+      typescript:
         optional: true
 
   '@sveltejs/vite-plugin-svelte-inspector@5.0.1':
@@ -1692,8 +1700,8 @@ packages:
     resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
 
-  devalue@5.5.0:
-    resolution: {integrity: sha512-69sM5yrHfFLJt0AZ9QqZXGCPfJ7fQjvpln3Rq5+PS03LD32Ost1Q9N+eEnaQwGRIriKkMImXD56ocjQmfjbV3w==}
+  devalue@5.6.2:
+    resolution: {integrity: sha512-nPRkjWzzDQlsejL1WVifk5rvcFi/y1onBRxjaFMjZeR9mFpqu2gmAZ9xUB9/IEanEP/vBtGeGganC/GO1fmufg==}
 
   diff-sequences@29.6.3:
     resolution: {integrity: sha512-EjePK1srD3P08o2j4f0ExnylqRs5B9tJjcp9t1krH2qRi8CCdsYfwe9JgSLurFBWwq4uOlipzfk5fHNvwFKr8Q==}
@@ -4169,32 +4177,36 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@standard-schema/spec@1.0.0': {}
+  '@standard-schema/spec@1.1.0': {}
 
   '@sveltejs/acorn-typescript@1.0.7(acorn@8.15.0)':
     dependencies:
       acorn: 8.15.0
 
-  '@sveltejs/adapter-netlify@5.2.4(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))':
+  '@sveltejs/acorn-typescript@1.0.8(acorn@8.15.0)':
+    dependencies:
+      acorn: 8.15.0
+
+  '@sveltejs/adapter-netlify@5.2.4(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))':
     dependencies:
       '@iarna/toml': 2.2.5
-      '@sveltejs/kit': 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+      '@sveltejs/kit': 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
       esbuild: 0.25.12
       set-cookie-parser: 2.7.2
 
-  '@sveltejs/adapter-static@3.0.10(@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))':
+  '@sveltejs/adapter-static@3.0.10(@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1)))':
     dependencies:
-      '@sveltejs/kit': 2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
+      '@sveltejs/kit': 2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))
 
-  '@sveltejs/kit@2.49.0(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))':
+  '@sveltejs/kit@2.49.5(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(typescript@5.9.3)(vite@7.2.4(@types/node@24.10.1))':
     dependencies:
-      '@standard-schema/spec': 1.0.0
-      '@sveltejs/acorn-typescript': 1.0.7(acorn@8.15.0)
+      '@standard-schema/spec': 1.1.0
+      '@sveltejs/acorn-typescript': 1.0.8(acorn@8.15.0)
       '@sveltejs/vite-plugin-svelte': 6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))
       '@types/cookie': 0.6.0
       acorn: 8.15.0
       cookie: 0.6.0
-      devalue: 5.5.0
+      devalue: 5.6.2
       esm-env: 1.2.2
       kleur: 4.1.5
       magic-string: 0.30.21
@@ -4204,6 +4216,8 @@ snapshots:
       sirv: 3.0.2
       svelte: 5.43.12
       vite: 7.2.4(@types/node@24.10.1)
+    optionalDependencies:
+      typescript: 5.9.3
 
   '@sveltejs/vite-plugin-svelte-inspector@5.0.1(@sveltejs/vite-plugin-svelte@6.2.1(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1)))(svelte@5.43.12)(vite@7.2.4(@types/node@24.10.1))':
     dependencies:
@@ -4765,7 +4779,7 @@ snapshots:
 
   detect-newline@3.1.0: {}
 
-  devalue@5.5.0: {}
+  devalue@5.6.2: {}
 
   diff-sequences@29.6.3: {}
 
