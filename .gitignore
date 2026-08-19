@@ -8,6 +8,11 @@
 .env
 .vscode
 
+# Claude Code: user- and session-local only. Shared settings, skills, agents
+# and commands under .claude/ stay tracked.
+.claude/settings.local.json
+.claude/worktrees/
+
 # These are some examples of commonly ignored file patterns.
 # You should customize this list as applicable to your project.
 # Learn more about .gitignore:
