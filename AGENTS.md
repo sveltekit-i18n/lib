@@ -34,3 +34,8 @@ the ecosystem's shared issue tracker, docs, and examples for the whole family
 - The v3 rewrite is tracked in
   [#214](https://github.com/sveltekit-i18n/lib/issues/214) and lands here
   **last** (#228-#230), after `base`, `parsers`, and `extensions` are ready.
+
+## Comments
+
+If you need a paragraph-long comment to justify why the workaround is OK,
+the code is wrong — fix the code.
