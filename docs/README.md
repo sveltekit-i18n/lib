@@ -685,6 +685,31 @@ export const { t, locale, locales, loading, loadTranslations } = new i18n(config
 - ✅ Generic types for custom parsers
 - ❌ Automatic inference of translation keys (not built-in)
 
+### Typing the payload
+
+`Config` is generic over the payload your translations take (and, as a second
+argument, over the props your custom modifiers take). Spell it out to have the
+payload argument of `$t` checked:
+
+```typescript
+import i18n, { type Config } from 'sveltekit-i18n';
+
+type Payload = { applicationName: string };
+
+const config: Config<Payload> = {
+  loaders: [/* ... */],
+};
+
+export const { t } = new i18n(config);
+
+// $t('common.welcome', { applicationName: 'My app' })  ✅
+// $t('common.welcome', { aplicationName: 'My app' })   ❌ typo caught
+```
+
+The payload type is app-wide — it is not derived per key. Leaving `Config`
+bare pins it to the empty default, which rejects every named parameter
+([#188](https://github.com/sveltekit-i18n/lib/issues/188)).
+
 ### Type-Safe Translations (Custom Pattern)
 
 The library doesn't automatically infer translation keys from JSON files, but you can implement your own type-safe pattern:

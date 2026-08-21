@@ -431,28 +431,43 @@ Check console for errors when locale changes. Translation loading might be faili
 **Error:**
 
 ```typescript
-const config: Config<ParserConfig> = {  // ❌ Error here
+import type { Config } from 'sveltekit-i18n';
+
+const config: Config<ParserConfig> = {  // ❌ Type 'Config' is not generic
   // ...
 };
 ```
+
+**Cause:** `Config` is generic, but over the **payload** type your translations
+take and — optionally — the **modifier props** type, not over a parser config.
+Only `@sveltekit-i18n/base` is parameterized by the parser, and there the type
+lives in a namespace as `Config.T<Params>`.
 
 **Solution:**
 
 ```typescript
 import type { Config } from 'sveltekit-i18n';
 
-const config: Config = {  // ✅ Don't use generic for main lib
+type Payload = { applicationName: string };
+
+const config: Config<Payload> = {  // ✅ payload type first, modifier props second
   // ...
 };
 ```
 
-For `@sveltekit-i18n/base`:
+Naming the payload type is also what makes the payload argument type-check. A
+bare `Config` annotation pins the payload to the empty default, so
+`$t('key', { applicationName: '…' })` is rejected with *Object literal may only
+specify known properties* — see
+[#188](https://github.com/sveltekit-i18n/lib/issues/188).
+
+For `@sveltekit-i18n/base`, annotate with the parser's parameter tuple:
 
 ```typescript
 import type { Config } from '@sveltekit-i18n/base';
-import type { Config as ParserConfig } from '@sveltekit-i18n/parser-default';
+import type { Parser } from '@sveltekit-i18n/parser-default';
 
-const config: Config<ParserConfig> = {  // ✅ Generic for base
+const config: Config.T<Parser.Params<Payload>> = {  // ✅ parser params for base
   // ...
 };
 ```

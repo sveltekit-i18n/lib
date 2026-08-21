@@ -209,6 +209,11 @@ const config: Config = {
 export const { t, locale, locales, loading, loadTranslations } = new i18n(config);
 ```
 
+`Config` is generic over the payload your translations take, so
+`const config: Config<{ applicationName: string }> = { … }` has `$t` check the
+payload argument. Left bare it pins the empty default and rejects every named
+parameter.
+
 **Note:** The library provides type definitions but does not automatically infer translation keys from your JSON files. You can create custom type-safe wrappers if needed (see [Best Practices](./docs/BEST_PRACTICES.md#typescript-patterns)).
 
 ## Contributing
