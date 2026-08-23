@@ -12,6 +12,17 @@ on:
             - patch
             - minor
             - major
+            - prerelease
+        preid:
+          description: 'Prerelease identifier (used by the prerelease bump)'
+          required: false
+          default: 'next'
+          type: string
+        tag:
+          description: 'npm dist-tag to publish under'
+          required: false
+          default: 'latest'
+          type: string
 
 jobs:
   tests:
@@ -40,12 +51,12 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          pnpm version ${{ inputs.version }}
+          pnpm version ${{ inputs.version }} --preid=${{ inputs.preid }}
+
+      - name: Push changes
+        run: git push --follow-tags
 
       - name: Publish package
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-        run: pnpm publish
-
-      - name: Push changes
-        run: git push
+        run: pnpm publish --tag ${{ inputs.tag }}
