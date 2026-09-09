@@ -33,6 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     steps:
       # The release commit lands on a protected branch; the app is on the
       # bypass allowlist, GITHUB_TOKEN is not.
@@ -60,6 +61,11 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: 'pnpm'
 
+      # Trusted publishing needs npm 11.5.1 or newer; the npm bundled with a
+      # Node release is not guaranteed to be one.
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         run: pnpm install
 
@@ -75,10 +81,13 @@ jobs:
       - name: Push release commit and tag
         run: git push --atomic origin HEAD:${{ github.ref_name }} '${{ steps.bump.outputs.tag }}'
 
+      # No token: the registry authenticates the workflow itself over OIDC and
+      # attaches provenance in the same step. The upload goes through npm even
+      # though the install goes through pnpm -- npm is the client the registry
+      # documents for trusted publishing, and this package declares no
+      # `workspace:` dependency for pnpm to rewrite.
       - name: Publish package
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm publish --tag ${{ inputs.tag }}
+        run: npm publish --tag ${{ inputs.tag }}
 
       # Last: publishing is irreversible, so a release must never announce a
       # version that failed to reach the registry.
