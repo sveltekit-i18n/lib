@@ -6,23 +6,13 @@ on:
         version:
           description: 'Version'
           required: true
-          default: 'patch'
+          default: 'next'
           type: choice
           options:
+            - next
             - patch
             - minor
             - major
-            - prerelease
-        preid:
-          description: 'Prerelease identifier (used by the prerelease bump)'
-          required: false
-          default: 'next'
-          type: string
-        tag:
-          description: 'npm dist-tag to publish under'
-          required: false
-          default: 'latest'
-          type: string
 
 jobs:
   tests:
@@ -74,7 +64,17 @@ jobs:
         run: |
           git config --local user.name '${{ steps.app-token.outputs.app-slug }}[bot]'
           git config --local user.email '${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
-          echo "tag=$(pnpm version ${{ inputs.version }} --preid=${{ inputs.preid }} | tail -n 1)" >> "$GITHUB_OUTPUT"
+          # The bump picks the dist-tag: a prerelease can only reach `next`,
+          # and only a released version can move `latest`.
+          if [ '${{ inputs.version }}' = next ]; then
+            TAG="$(pnpm version prerelease --preid=next | tail -n 1)"
+            DIST_TAG=next
+          else
+            TAG="$(pnpm version '${{ inputs.version }}' | tail -n 1)"
+            DIST_TAG=latest
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "dist-tag=$DIST_TAG" >> "$GITHUB_OUTPUT"
 
       # Atomic: the branch and the tag land together or not at all, and the
       # publish below never runs on a half-pushed release.
@@ -87,7 +87,7 @@ jobs:
       # documents for trusted publishing, and this package declares no
       # `workspace:` dependency for pnpm to rewrite.
       - name: Publish package
-        run: npm publish --tag ${{ inputs.tag }}
+        run: npm publish --tag ${{ steps.bump.outputs.dist-tag }}
 
       # Last: publishing is irreversible, so a release must never announce a
       # version that failed to reach the registry.
