@@ -1,22 +1,37 @@
 # Documentation Index
 
-Complete documentation for the `sveltekit-i18n` ecosystem. Whether you're just getting started or need detailed API references, you'll find everything here.
+Complete documentation for the `sveltekit-i18n` ecosystem, covering **v3**: one
+reactive instance built on Svelte 5 runes, no stores, and the parser wired in —
+`npm install sveltekit-i18n` is the whole install.
+
+Upgrading from v2? Go straight to
+[Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2) and the
+[migration table](./README.md#migrating-from-v2).
+
+---
 
 ## 🚀 Getting Started
 
 New to sveltekit-i18n? Start here:
 
 ### [Getting Started Guide](./GETTING_STARTED.md)
-**Time to complete: 15 minutes**
+**A SvelteKit app from nothing to multilingual, in eight steps**
 
-Step-by-step tutorial that walks you through:
-- Installing the library
-- Creating your first translations
-- Loading translations in your app
-- Using translations in components
-- Switching between languages
+- [Requirements](./GETTING_STARTED.md#requirements) and
+  [installation](./GETTING_STARTED.md#installation) – Svelte 5, Node 22, ESM-only
+- [Basic concepts](./GETTING_STARTED.md#basic-concepts) – locales, keys, loaders,
+  namespaces, the instance
+- [Your first multilingual app](./GETTING_STARTED.md#your-first-multilingual-app) –
+  translation files, exporting the config, resolving the visitor's locale, one
+  instance per request, the snapshot, Svelte context, components
+- [Route-based loading](./GETTING_STARTED.md#route-based-loading) and
+  [switching locales](./GETTING_STARTED.md#switching-locales)
+- [Placeholders and modifiers](./GETTING_STARTED.md#placeholders-and-modifiers),
+  including `parserOptions`
+- [TypeScript](./GETTING_STARTED.md#typescript) and
+  [testing components](./GETTING_STARTED.md#testing-components-that-translate)
 
-Perfect for: First-time users, quick setup
+Perfect for: first-time users, quick setup
 
 ---
 
@@ -25,38 +40,57 @@ Perfect for: First-time users, quick setup
 ### [Architecture Overview](./ARCHITECTURE.md)
 **Understanding how everything works**
 
-Learn about:
-- Package relationships (base, lib, parsers)
-- Data flow (configuration → loading → translation)
-- Loading strategies (route-based, SSR/CSR)
-- When to use each package
-- Performance considerations
+- [Package overview](./ARCHITECTURE.md#package-overview) and
+  [relationships](./ARCHITECTURE.md#package-relationships) – core, parser, this
+  package; composition rather than inheritance, and the parser extension
+- [The reactive engine](./ARCHITECTURE.md#the-reactive-engine) – runes, and why
+  the core ships its rune modules uncompiled
+- [Data flow](./ARCHITECTURE.md#data-flow) – construction, loading, translation,
+  locale switch
+- [Loading strategy](./ARCHITECTURE.md#loading-strategy) – route matching,
+  load-once, deduplication, cache and invalidation
+- [Instance lifetime](./ARCHITECTURE.md#instance-lifetime) – per-request
+  instances, `snapshot()`, `destroy()`
+- [Core concepts](./ARCHITECTURE.md#core-concepts),
+  [when to use each package](./ARCHITECTURE.md#when-to-use-each-package),
+  [performance](./ARCHITECTURE.md#performance-considerations)
 
-Perfect for: Understanding internals, making architecture decisions
+Perfect for: understanding internals, making architecture decisions
 
 ### [API Documentation](./README.md)
-**Complete reference for sveltekit-i18n**
+**Complete reference for `sveltekit-i18n`**
 
-Includes:
-- All configuration options with examples
-- Parser options (modifierDefaults, customModifiers)
-- Instance properties and methods ($t, $locale, etc.)
-- Message format syntax
-- TypeScript usage
+- [Installation and packaging](./README.md#installation-and-packaging) – ESM-only,
+  one install, bundler requirements
+- [Configuration](./README.md#configuration) – `loaders`, `translations`,
+  `initLocale`, `fallbackLocale`, `fallbackValue`, `preprocess`,
+  `sanitizeLocales`, `cache`, `log`, `schema`, `extensions`
+- [Parser options](./README.md#parser-options) – `modifierDefaults`,
+  `customModifiers`, `onReport`
+- [The instance](./README.md#the-instance) – reactive properties, reactive
+  functions, promise-returning methods, synchronous methods
+- [Message format](./README.md#message-format),
+  [exported types](./README.md#exported-types),
+  [utilities](./README.md#utilities)
+- [TypeScript](./README.md#typescript), [extensions](./README.md#extensions),
+  [SSR](./README.md#server-side-rendering),
+  [testing](./README.md#testing-components-that-translate)
+- [Migrating from v2](./README.md#migrating-from-v2)
 
-Perfect for: Day-to-day development, looking up specific APIs
+Perfect for: day-to-day development, looking up specific APIs
 
-### [@sveltekit-i18n/base API Documentation](https://github.com/sveltekit-i18n/base/tree/master/docs/README.md)
-**API reference for base package**
+### [@sveltekit-i18n/base API Documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md)
+**The canonical reference for every member this package inherits**
 
-Detailed documentation for:
-- Core configuration options
-- Loaders (local files, APIs, databases)
-- Preprocessing strategies
-- All stores and methods
-- Advanced use cases
+- [Configuration](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#configuration)
+  and [loaders](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#loaders)
+- [Instance properties and methods](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#instance-properties-and-methods)
+- [Server-side rendering](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#server-side-rendering)
+- [The parser contract](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#the-parser-contract)
+  – for building on the core with a different parser
+- [TypeScript](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#typescript)
 
-Perfect for: Using base package with custom parsers
+Perfect for: member-level detail, or using the core with a custom parser
 
 ---
 
@@ -65,18 +99,34 @@ Perfect for: Using base package with custom parsers
 ### [Best Practices Guide](./BEST_PRACTICES.md)
 **Recommended patterns for production apps**
 
-Covers:
-- **Organization** – File structure, naming conventions
-- **Performance** – Lazy loading, caching, bundle optimization
-- **TypeScript** – Typed configuration, custom type-safe patterns
-- **SSR/CSR** – Server-side rendering considerations
-- **Component-scoped** – Isolated translation contexts
-- **Dynamic routes** – Locale-based routing patterns
-- **Content management** – CMS and database integration
-- **Testing** – Mocking translations, test strategies
-- **Production** – Deployment, monitoring, error handling
+- **[Instance ownership](./BEST_PRACTICES.md#instance-ownership)** – per-request
+  instances, the module-level singleton hazard, `destroy()`, why value
+  properties must not be destructured
+- **[Awaiting loads](./BEST_PRACTICES.md#awaiting-loads)** – await the matching
+  load instead of polling `loading`
+- **[SSR and CSR](./BEST_PRACTICES.md#ssr-and-csr-considerations)** – snapshot,
+  hydration, no flash of untranslated content
+- **[Organization](./BEST_PRACTICES.md#translation-file-organization)** and
+  **[key naming](./BEST_PRACTICES.md#key-naming-conventions)**
+- **[Performance](./BEST_PRACTICES.md#performance-optimization)** – lazy loading,
+  preloading, `cache` and `invalidate()`
+- **[TypeScript](./BEST_PRACTICES.md#typescript-patterns)** – `schema`, one
+  payload type, locale completion, custom modifier props
+- **[Extensions](./BEST_PRACTICES.md#extensions)** – the pipe, and getting the
+  `$t` surface back
+- **[Component-scoped](./BEST_PRACTICES.md#component-scoped-translations)** –
+  isolated translation contexts
+- **[Library authors](./BEST_PRACTICES.md#library-authors-shipping-translations)** –
+  shipping translations with a package
+- **[Dynamic routes](./BEST_PRACTICES.md#dynamic-routes-and-locales)** –
+  locale-based routing patterns
+- **[Content management](./BEST_PRACTICES.md#content-management)** – CMS, API and
+  database sources
+- **[Testing](./BEST_PRACTICES.md#testing)** – a real instance instead of a mock
+- **[Production](./BEST_PRACTICES.md#production-deployment)** – logging, parser
+  reports, loader failures, monitoring
 
-Perfect for: Building production applications, scaling your i18n implementation
+Perfect for: building production applications, scaling your i18n implementation
 
 ---
 
@@ -85,55 +135,51 @@ Perfect for: Building production applications, scaling your i18n implementation
 ### [Troubleshooting & FAQ](./TROUBLESHOOTING.md)
 **Solutions to common problems**
 
-Includes:
-- **Common Issues** with step-by-step solutions:
-  - Translations not loading
-  - Keys displayed instead of values
-  - Flashing content (FOUC)
-  - Route-based loading problems
-  - Locale not changing
-  - TypeScript errors
-  - SSR errors
-  - Performance issues
-- **Debugging tips** – Inspect stores, test loaders, enable logging
-- **FAQ** – 15+ frequently asked questions
-- **Known limitations** – What to be aware of
+- **[Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2)** – `$t` is not a
+  store, destructured values that never update, the removal of `.get()` /
+  `.set()` / `.subscribe()` / `toPromise()` / `getTranslationProps()`, and
+  `instanceof`
+- **[Setup and packaging](./TROUBLESHOOTING.md#setup-and-packaging)** –
+  `$state is not defined`, two copies of the core, `ERR_REQUIRE_ESM`
+- **[Common issues](./TROUBLESHOOTING.md#common-issues)** – translations not
+  loading, keys instead of values, flashing content, route matching, locale not
+  changing, stale translations, one visitor's locale in another's page, silent
+  parser reports, TypeScript errors, tests, performance
+- **[Debugging tips](./TROUBLESHOOTING.md#debugging-tips)** – inspect
+  translations, enable debug logging, open the report channel, test a loader
+- **[FAQ](./TROUBLESHOOTING.md#frequently-asked-questions)** – 17 common
+  questions
+- **[Known limitations](./TROUBLESHOOTING.md#known-limitations)** – what to be
+  aware of
 
-Perfect for: Fixing issues, understanding limitations
+Perfect for: fixing issues, understanding limitations
 
 ---
 
 ## 🎨 Parser Documentation
 
-### [Parsers Overview](https://github.com/sveltekit-i18n/parsers)
-**Available parsers and creating custom ones**
+Message interpolation lives in a parser. This package wires one; the core takes
+any parser that satisfies
+[base's parser contract](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#the-parser-contract).
 
-Learn about:
-- Choosing between parsers
-- Parser comparison
-- Creating custom parsers
-- Parser integration with base
+### [@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)
+**The parser wired into this package**
 
-### [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/tree/master/parser-default)
-**Default parser with placeholders and modifiers**
-
-Features:
-- Simple placeholder syntax: `{{name}}`
-- Built-in modifiers: number, date, currency, ago
-- Conditionals: `{{count; 1:item; default:items;}}`
-- Comparison operators: eq, ne, lt, gt, lte, gte
-- Custom modifiers
-- No external dependencies
+- Placeholders `{{name}}`, default values, nested placeholders, escaping
+- Modifiers (`number`, `date`, `currency`, `ago`, …) and comparisons
+- Custom modifiers, modifier defaults and the report channel — all reachable
+  here through [`parserOptions`](./README.md#parser-options)
+- Implements the [Curly Message Format](https://github.com/curly-message/spec)
 
 ### [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)
-**ICU message format parser**
+**ICU message format**
 
-Features:
-- Industry-standard ICU syntax
-- Advanced pluralization
-- Select format (gender, etc.)
-- Number/date/time formatting
-- Comprehensive Intl support
+For an application that wants ICU syntax, built on
+[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) directly — this
+package fills the `parser` slot itself and cannot take another parser.
+
+### [Parsers Overview](https://github.com/sveltekit-i18n/parsers)
+**The parser monorepo, and writing your own**
 
 ---
 
@@ -142,54 +188,40 @@ Features:
 ### [All Examples](../examples)
 **Working code you can learn from**
 
-Browse examples by use case:
+Covers single-load, one-page and multi-page setups, locale routing (URL
+parameter, path prefix, static adapter), component-scoped translations,
+fallback locales, loaders and preprocessing.
 
-#### Basic Examples
-- **[Single Load](../examples/single-load)** – Load all translations at once
-- **[One Page](../examples/one-page)** – Simple one-page app
-- **[Multi Page](../examples/multi-page)** – Multiple routes (most common)
-
-#### Routing Examples
-- **[Locale Parameter](../examples/locale-param)** – URL parameter (`?lang=en`)
-- **[Locale Router](../examples/locale-router)** – Path-based (`/en/about`)
-- **[Locale Router Advanced](../examples/locale-router-advanced)** – Default locale without prefix
-- **[Locale Router Static](../examples/locale-router-static)** – Static adapter optimized
-
-#### Advanced Examples
-- **[Component Scoped CSR](../examples/component-scoped-csr)** – Client-side component translations
-- **[Component Scoped SSR](../examples/component-scoped-ssr)** – Server-side component translations
-- **[Fallback Locale](../examples/fallback-locale)** – Handling missing translations
-
-#### Parser Examples
-- **[Parser Default](../examples/parser-default)** – Default parser features
-- **[Parser ICU](../examples/parser-icu)** – ICU message format
-
-#### Configuration Examples
-- **[Loaders](../examples/loaders)** – Different loader configurations
-- **[Preprocess](../examples/preprocess)** – Preprocessing strategies
-
-Each example includes:
-- Complete working code
-- Live demo on Netlify
-- README with explanations
+**Note:** the examples still show the v2 API. Their rework is tracked in
+[#230](https://github.com/sveltekit-i18n/lib/issues/230); until it lands, use
+the [Getting Started guide](./GETTING_STARTED.md) as the reference for v3
+wiring.
 
 ---
 
 ## 📦 Package Documentation
 
-### Main Library
-- **[sveltekit-i18n](../../README.md)** – Main library README
-- **[Changelog](https://github.com/sveltekit-i18n/lib/releases)** – Version history
+### This Package
+- **[sveltekit-i18n README](../README.md)** – overview and quick start
+- **[Contributing guide](../CONTRIBUTING.md)** – repository layout, workflow, tests
+- **[Releases](https://github.com/sveltekit-i18n/lib/releases)** – version history
 
-### Core Package
-- **[@sveltekit-i18n/base](../../../base/README.md)** – Base package README
-- **[Base Changelog](https://github.com/sveltekit-i18n/base/releases)** – Version history
+### The Family
+- **[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base)** – the core;
+  state, loading, caching, route matching, preprocessing
+  ([releases](https://github.com/sveltekit-i18n/base/releases))
+- **[@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)**
+  and **[@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)**
+  ([releases](https://github.com/sveltekit-i18n/parsers/releases))
+- **[Extensions](https://github.com/sveltekit-i18n/extensions)** – official
+  adapters for the `config.extensions` pipe, including
+  **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)**
+  (the `$t` / `$locale` / `$loading` surface)
+- **[Curly Message Format](https://github.com/curly-message/spec)** – the message
+  format specification
 
-### Parsers
-- **[Parsers](../../../parsers/README.md)** – Parsers overview
-- **[parser-default](../../../parsers/parser-default/README.md)** – Default parser
-- **[parser-icu](../../../parsers/parser-icu/README.md)** – ICU parser
-- **[Parser Changelogs](https://github.com/sveltekit-i18n/parsers/releases)** – Version history
+`base`, `parsers` and `extensions` release aligned at 3.0.0; `sveltekit-i18n`
+last.
 
 ---
 
@@ -200,11 +232,23 @@ Each example includes:
 #### Learn the basics
 → [Getting Started Guide](./GETTING_STARTED.md)
 
+#### Upgrade an app from v2
+→ [Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2) and the
+[migration table](./README.md#migrating-from-v2)
+
+#### Get `$t` back
+→ [Best Practices: Extensions](./BEST_PRACTICES.md#extensions)
+
 #### Understand how it works
 → [Architecture Overview](./ARCHITECTURE.md)
 
 #### Look up an API
-→ [API Documentation](./README.md) or [Base API Documentation](https://github.com/sveltekit-i18n/base/tree/master/docs/README.md)
+→ [API Documentation](./README.md) or
+[base API Documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md)
+
+#### Render on the server without leaking a visitor's locale
+→ [API Docs: SSR](./README.md#server-side-rendering) or
+[Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership)
 
 #### Build a production app
 → [Best Practices Guide](./BEST_PRACTICES.md)
@@ -213,25 +257,33 @@ Each example includes:
 → [Troubleshooting Guide](./TROUBLESHOOTING.md)
 
 #### See working code
-→ [Examples](../examples)
+→ [Examples](../examples) (v2 until [#230](https://github.com/sveltekit-i18n/lib/issues/230))
 
-#### Use a different parser
-→ [Parsers Overview](https://github.com/sveltekit-i18n/parsers)
+#### Write a custom modifier or open the report channel
+→ [API Docs: Parser options](./README.md#parser-options) or
+[parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)
+
+#### Use a different message format
+→ [Architecture: When to Use Each Package](./ARCHITECTURE.md#when-to-use-each-package)
 
 #### Create locale-based URLs
-→ [Locale Router Example](../examples/locale-router) or [Best Practices: Dynamic Routes](./BEST_PRACTICES.md#dynamic-routes-and-locales)
+→ [Best Practices: Dynamic Routes](./BEST_PRACTICES.md#dynamic-routes-and-locales)
 
 #### Optimize performance
-→ [Best Practices: Performance](./BEST_PRACTICES.md#performance-optimization) or [Architecture: Performance](./ARCHITECTURE.md#performance-considerations)
+→ [Best Practices: Performance](./BEST_PRACTICES.md#performance-optimization) or
+[Architecture: Performance](./ARCHITECTURE.md#performance-considerations)
 
-#### Add TypeScript
-→ [Best Practices: TypeScript](./BEST_PRACTICES.md#typescript-patterns) or [API Docs: TypeScript](./README.md#typescript)
+#### Type my keys and payloads
+→ [Best Practices: TypeScript](./BEST_PRACTICES.md#typescript-patterns) or
+[API Docs: TypeScript](./README.md#typescript)
 
-#### Load from API/database
-→ [Best Practices: Content Management](./BEST_PRACTICES.md#content-management) or [Base API: Loaders](https://github.com/sveltekit-i18n/base/tree/master/docs/README.md#loader-required)
+#### Load from an API or database
+→ [Best Practices: Content Management](./BEST_PRACTICES.md#content-management) or
+[base API: Loaders](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#loaders)
 
-#### Test my translations
-→ [Best Practices: Testing](./BEST_PRACTICES.md#testing)
+#### Test components that translate
+→ [Best Practices: Testing](./BEST_PRACTICES.md#testing) or
+[Getting Started: Testing](./GETTING_STARTED.md#testing-components-that-translate)
 
 #### Deploy to production
 → [Best Practices: Production](./BEST_PRACTICES.md#production-deployment)
@@ -241,19 +293,27 @@ Each example includes:
 ## 📖 Reading Order
 
 ### For Beginners
-1. [Getting Started Guide](./GETTING_STARTED.md) – Learn by building
-2. [Examples](../examples) – See more use cases
-3. [Best Practices](./BEST_PRACTICES.md) – Level up your implementation
+1. [Getting Started Guide](./GETTING_STARTED.md) – learn by building
+2. [API Documentation](./README.md) – the surface, member by member
+3. [Best Practices](./BEST_PRACTICES.md) – level up your implementation
+
+### For Upgraders
+1. [Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2) – the first-day errors
+2. [Migrating from v2](./README.md#migrating-from-v2) – the old member, the new one
+3. [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership) –
+   what per-request instances change
 
 ### For Advanced Users
-1. [Architecture Overview](./ARCHITECTURE.md) – Understand the system
-2. [Base API Documentation](https://github.com/sveltekit-i18n/base/tree/master/docs/README.md) – Deep dive into APIs
-3. [Parsers](https://github.com/sveltekit-i18n/parsers) – Custom message formats
+1. [Architecture Overview](./ARCHITECTURE.md) – understand the system
+2. [base API Documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) – deep dive
+3. [Parsers](https://github.com/sveltekit-i18n/parsers) and
+   [Extensions](https://github.com/sveltekit-i18n/extensions) – custom message
+   formats and custom surfaces
 
 ### For Troubleshooting
-1. [Troubleshooting Guide](./TROUBLESHOOTING.md) – Find your issue
-2. [FAQ](./TROUBLESHOOTING.md#frequently-asked-questions) – Common questions
-3. [GitHub Issues](https://github.com/sveltekit-i18n/lib/issues) – Get help
+1. [Troubleshooting Guide](./TROUBLESHOOTING.md) – find your issue
+2. [FAQ](./TROUBLESHOOTING.md#frequently-asked-questions) – common questions
+3. [GitHub Issues](https://github.com/sveltekit-i18n/lib/issues) – get help
 
 ---
 
@@ -261,11 +321,15 @@ Each example includes:
 
 Interested in contributing to sveltekit-i18n?
 
-- **[GitHub Repository](https://github.com/sveltekit-i18n/lib)** – Main library
-- **[Issues](https://github.com/sveltekit-i18n/lib/issues)** – Report bugs, request features
-- **[Discussions](https://github.com/sveltekit-i18n/lib/discussions)** – Ask questions, share ideas
+- **[Contributing Guide](../CONTRIBUTING.md)** – setup, workflow, tests, PRs
+- **[GitHub Repository](https://github.com/sveltekit-i18n/lib)** – main library,
+  and the shared issue tracker for the whole family
+- **[Issues](https://github.com/sveltekit-i18n/lib/issues)** – report bugs, request features
+- **[Discussions](https://github.com/sveltekit-i18n/lib/discussions)** – ask questions, share ideas
 
-**Note:** We're currently looking for maintainers. If you're interested in helping maintain this project, please see [this issue](https://github.com/sveltekit-i18n/lib/issues/197).
+**Note:** We're currently looking for maintainers. If you're interested in
+helping maintain this project, please see
+[this issue](https://github.com/sveltekit-i18n/lib/issues/197).
 
 ---
 
@@ -275,5 +339,5 @@ MIT License – See individual repositories for details.
 
 ---
 
-**Can't find what you're looking for?** Check the [Troubleshooting Guide](./TROUBLESHOOTING.md#getting-help) for how to get help.
-
+**Can't find what you're looking for?** Check the
+[Troubleshooting Guide](./TROUBLESHOOTING.md#getting-help) for how to get help.
