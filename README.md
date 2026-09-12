@@ -8,24 +8,33 @@
 
 # sveltekit-i18n
 
-A lightweight, powerful internationalization (i18n) library designed specifically for [SvelteKit](https://github.com/sveltejs/kit). This package combines [@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) with [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/tree/master/parser-default) to provide the quickest way to add multilingual support to your SvelteKit applications.
+A lightweight, powerful internationalization (i18n) library designed specifically for [SvelteKit](https://github.com/sveltejs/kit). This package combines [@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) with [@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly) to provide the quickest way to add multilingual support to your SvelteKit applications.
 
 ## Why sveltekit-i18n?
 
-- 🚀 **SvelteKit-optimized** – Built specifically for SvelteKit with full SSR support
-- 📦 **Minimal dependencies** – Only ecosystem packages (base + parser-default)
+- 🚀 **SvelteKit-optimized** – Built specifically for SvelteKit, with per-request instances on the server
+- 📦 **One install** – The core and the parser come with it; nothing else to add
 - ⚡ **Smart loading** – Translations load only for visited pages (lazy loading)
 - 🎯 **Route-based** – Automatic translation loading based on your routes
 - 🔧 **Flexible** – Support for custom data sources (local files, APIs, databases)
-- 🌐 **Multiple parsers** – Choose the syntax that fits your needs
-- 📝 **TypeScript** – Complete type definitions and typed API
+- 🧩 **Extensible** – Add surfaces (Svelte stores, for instance) through the extensions pipe
+- 📝 **TypeScript** – Complete type definitions, with a `schema` slot that types keys and payloads
 - 🎨 **Component-scoped** – Create multiple translation instances for different parts of your app
+
+## Requirements
+
+Svelte 5 or newer and Node 22 or newer. The package is ESM-only.
 
 ## Installation
 
 ```bash
 npm install sveltekit-i18n
 ```
+
+That is the whole install. `@sveltekit-i18n/base` and
+`@sveltekit-i18n/parser-curly` come with it: the core's whole API and the
+parser's types are re-exported here — **do not install them alongside**, or your
+app ends up with two copies of the core and two reactive graphs.
 
 ## Quick Start
 
@@ -53,10 +62,10 @@ npm install sveltekit-i18n
 
 ```javascript
 // src/lib/translations/index.js
-import i18n from 'sveltekit-i18n';
+import { I18n } from 'sveltekit-i18n';
 
 /** @type {import('sveltekit-i18n').Config} */
-const config = {
+export const config = {
   loaders: [
     {
       locale: 'en',
@@ -71,42 +80,84 @@ const config = {
   ],
 };
 
-export const { t, locale, locales, loading, loadTranslations } = new i18n(config);
+export const i18n = new I18n(config);
 ```
+
+> [!IMPORTANT]
+> That instance is a module-level singleton. On the server it is shared by
+> every request in the process, so it fits a client-only app
+> (`export const ssr = false`) or one that renders a single locale. Anything
+> that server-renders per visitor needs the per-request wiring in
+> [Server-side rendering](#server-side-rendering).
+
+Export the instance, not its parts: `locale`, `locales`, `loading`,
+`initialized` and `translations` are reactive properties, and a destructured
+value is a one-time snapshot. `t` and `l` are functions and stay reactive even
+when destructured, because their tracked reads happen at call time.
 
 ### 3. Load translations in your layout
 
 ```javascript
 // src/routes/+layout.js
-import { loadTranslations } from '$lib/translations';
+import { i18n } from '$lib/translations';
 
 /** @type {import('./$types').LayoutLoad} */
 export const load = async ({ url }) => {
   const { pathname } = url;
-  
+
   const initLocale = 'en'; // determine from cookie, user preference, etc.
-  
-  await loadTranslations(initLocale, pathname);
-  
+
+  await i18n.loadTranslations(initLocale, pathname);
+
   return {};
 };
 ```
+
+`loadTranslations` returns the promise of the matching load, so awaiting it is
+all the coordination you need — concurrent triggers for the same locale and
+route join the load already in flight instead of fetching twice.
 
 ### 4. Use translations in your components
 
 ```svelte
 <!-- src/routes/+page.svelte -->
 <script>
-  import { t } from '$lib/translations';
+  import { i18n } from '$lib/translations';
 </script>
 
-<h1>{$t('common.greeting', { name: 'World' })}</h1>
+<h1>{i18n.t('common.greeting', { name: 'World' })}</h1>
 
 <nav>
-  <a href="/">{$t('common.nav.home')}</a>
-  <a href="/about">{$t('common.nav.about')}</a>
+  <a href="/">{i18n.t('common.nav.home')}</a>
+  <a href="/about">{i18n.t('common.nav.about')}</a>
 </nav>
 ```
+
+The call reads the reactive translation table and locale, so the text updates
+when either changes. If you prefer the `$t` store form, add
+[`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)
+to `config.extensions`.
+
+## The instance
+
+Everything lives on one reactive instance:
+
+| Member | What it is |
+| --- | --- |
+| `t(key, ...params)` | translates for the active locale |
+| `l(locale, key, ...params)` | translates for a locale the call names |
+| `locale` | the active locale; assigning it is a fire-and-forget `setLocale()` |
+| `locales` | the locales the config knows |
+| `loading` | `true` while any load is in flight |
+| `initialized` | `true` once a locale and a route are set and translations are present |
+| `translations` / `rawTranslations` | the tables, after and before preprocessing |
+| `loadTranslations`, `setLocale`, `setRoute` | return the promise of the matching load |
+| `loadConfig` | returns the promise of the config load |
+| `addTranslations`, `invalidate`, `snapshot`, `destroy` | synchronous |
+
+Reading a property is reactive wherever reads are tracked — a component
+template, `$derived`, `$effect`. The full reference is in
+[the API documentation](./docs/README.md).
 
 ## Key Features
 
@@ -146,12 +197,54 @@ Use dynamic values in your translations:
 
 ```svelte
 <script>
-  import { t } from '$lib/translations';
+  import { i18n } from '$lib/translations';
 </script>
 
-<p>{$t('welcome', { name: 'Alice' })}</p>
-<p>{$t('items', { count: 5 })}</p>
+<p>{i18n.t('welcome', { name: 'Alice' })}</p>
+<p>{i18n.t('items', { count: 5 })}</p>
 ```
+
+The syntax is the [Curly Message Format](https://github.com/curly-message/spec).
+Its parser options — custom modifiers, modifier defaults and a report channel —
+go under `config.parserOptions`:
+
+```javascript
+const config = {
+  parserOptions: {
+    modifierDefaults: { number: { maximumFractionDigits: 2 } },
+    onReport: (report) => console.warn(report.message, report),
+  },
+  loaders: [/* … */],
+};
+```
+
+Reports are silent by default; `onReport` is where you route them.
+
+### Server-side rendering
+
+Build one instance **per request** on the server — a module-level instance is
+shared between concurrent requests, which leaks one visitor's locale into
+another's page. Export the config, and let each request build from it:
+
+```javascript
+// src/routes/+layout.server.js
+import { I18n } from 'sveltekit-i18n';
+import { config } from '$lib/translations';
+
+export const load = async ({ url, locals }) => {
+  const i18n = new I18n(config);
+
+  await i18n.loadTranslations(locals.locale, url.pathname);
+
+  return { locale: locals.locale, translations: i18n.snapshot() };
+};
+```
+
+The client hydrates by handing that payload back through
+`config.translations`, so the loaders behind it do not run a second time. The
+full wiring — including the browser-side instance and passing it down through
+Svelte context — is in the
+[Getting Started guide](./docs/GETTING_STARTED.md).
 
 ## Documentation
 
@@ -167,6 +260,12 @@ Use dynamic values in your translations:
 
 ## Examples
 
+> [!NOTE]
+> The examples still show the v2 API. Their rework is tracked in
+> [#230](https://github.com/sveltekit-i18n/lib/issues/230); until it lands, the
+> [Getting Started guide](./docs/GETTING_STARTED.md) is the reference for v3
+> wiring.
+
 Explore working examples for different use cases:
 
 - [Multi-page app](./examples/multi-page) – Most common setup
@@ -179,26 +278,43 @@ Explore working examples for different use cases:
 
 ### Need a different parser?
 
-This library uses `@sveltekit-i18n/parser-default`. If you need ICU message format or want to create your own parser, use [@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) directly:
+This package wires `@sveltekit-i18n/parser-curly` and fills the core's `parser`
+slot itself, so a different message format means building on
+[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) directly:
 
 ```javascript
-import i18n from '@sveltekit-i18n/base';
+import { I18n } from '@sveltekit-i18n/base';
 import parser from '@sveltekit-i18n/parser-icu';
 
 const config = {
-  parser: parser(),
+  parser: parser({ onReport: null }),
   // ... rest of config
 };
 ```
 
-Learn more about [parsers](https://github.com/sveltekit-i18n/parsers).
+That is the one case where installing the core directly is right — you are then
+not using this package at all. Learn more about
+[parsers](https://github.com/sveltekit-i18n/parsers).
+
+### Extensions
+
+`config.extensions` pipes the constructed instance through adapter functions,
+left to right, and `new I18n(config)` evaluates to the last one's output. That
+is how the store surface ships:
+
+```javascript
+import { I18n } from 'sveltekit-i18n';
+import stores from '@sveltekit-i18n/extension-stores';
+
+export const { t, locale, loading } = new I18n({ ...config, extensions: [stores] });
+```
 
 ## TypeScript Support
 
 Full TypeScript support with complete type definitions for configuration and API:
 
 ```typescript
-import i18n, { type Config } from 'sveltekit-i18n';
+import { I18n, type Config } from 'sveltekit-i18n';
 
 const config: Config = {
   loaders: [
@@ -206,15 +322,44 @@ const config: Config = {
   ],
 };
 
-export const { t, locale, locales, loading, loadTranslations } = new i18n(config);
+export const i18n = new I18n(config);
 ```
 
-`Config` is generic over the payload your translations take, so
-`const config: Config<{ applicationName: string }> = { … }` has `$t` check the
-payload argument. Left bare it pins the empty default and rejects every named
-parameter.
+Annotating the config (`const config: Config = …`) widens it, which costs the
+locale completion a config literal would have given `setLocale` and `l`. Pass
+the literal straight to the constructor where you want that.
 
-**Note:** The library provides type definitions but does not automatically infer translation keys from your JSON files. You can create custom type-safe wrappers if needed (see [Best Practices](./docs/BEST_PRACTICES.md#typescript-patterns)).
+To have payloads checked, give the config a `schema` — keys autocomplete and a
+wrong payload is a type error:
+
+```typescript
+import { I18n } from 'sveltekit-i18n';
+
+const i18n = new I18n({
+  ...config,
+  schema: {} as { 'common.greeting': { name: string } },
+});
+
+i18n.t('common.greeting', { name: 'Alice' }); // ok
+i18n.t('common.greting', { name: 'Alice' });  // Error: not a key of the schema
+i18n.t('common.greeting', {});                // Error: `name` is required
+```
+
+Only the schema's **type** is read, so the slot may hold an empty value. A
+single payload type for every message is stated through the type arguments
+instead:
+
+```typescript
+import { I18n, type Config } from 'sveltekit-i18n';
+
+type Payload = { name: string };
+
+const config: Config<Payload> = { /* … */ };
+
+export const i18n = new I18n<Config<Payload>, Payload>(config);
+```
+
+**Note:** The library provides the type slots but does not generate them from your JSON files. A generator that fills `schema` from your translations is planned for 3.1 ([#234](https://github.com/sveltekit-i18n/lib/issues/234)); until then, write the schema by hand or generate it yourself (see [Best Practices](./docs/BEST_PRACTICES.md#typescript-patterns)).
 
 ## Contributing
 
@@ -235,8 +380,9 @@ See [Releases](https://github.com/sveltekit-i18n/lib/releases) for version histo
 ## Related Packages
 
 - [@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) – Core functionality with custom parser support
-- [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/tree/master/parser-default) – Default message parser
+- [@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly) – Curly Message Format parser (included here)
 - [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu) – ICU message format parser
+- [@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores) – Svelte store surface for the instance
 
 ## License
 
