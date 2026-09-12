@@ -37,7 +37,8 @@ npm install sveltekit-i18n
 
 That is the whole install. `@sveltekit-i18n/base` (the core) and
 `@sveltekit-i18n/parser-curly` (the message parser) come with it: the core's
-whole API and the parser's types are re-exported here. **Do not install them
+whole API, the parser's types and its parameter extractor are re-exported
+here. **Do not install them
 alongside** — an app that depends
 on them directly ends up with two copies of the core and two reactive graphs.
 
@@ -629,8 +630,10 @@ schema whose keys are not a closed set (`Record<string, …>`, or no keys at all
 degrades to plain `string` keys rather than rejecting every call.
 
 A schema **generator** is 3.1 work
-([#234](https://github.com/sveltekit-i18n/lib/issues/234)); v3 ships the slot,
-not the generator.
+([#234](https://github.com/sveltekit-i18n/lib/issues/234)); v3 ships the slot
+and the piece a generator reads a catalogue with —
+[`extractParamsFactory`](./README.md#extractparamsfactory) — not the generator
+itself.
 
 ### One payload type for every message
 

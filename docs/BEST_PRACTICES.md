@@ -741,10 +741,12 @@ Rules worth knowing:
   instance.
 
 **Keeping it hand-written.** Write the schema next to the translations and let
-review catch drift, or generate it from your own build step. A generator that
-fills the slot from your JSON files is 3.1 work
-([#234](https://github.com/sveltekit-i18n/lib/issues/234)) — v3 ships the slot,
-not the generator.
+review catch drift, or generate it from your own build step —
+[`extractParamsFactory`](./README.md#extractparamsfactory) reports what each
+message expects of its payload, which is what a build step needs to emit the
+schema. A generator that does it for you is 3.1 work
+([#234](https://github.com/sveltekit-i18n/lib/issues/234)) — v3 ships the slot
+and the extractor, not the generator.
 
 ### One payload type for every message
 
@@ -1117,9 +1119,9 @@ property that makes this the right mechanism on the server as well.
   including the app's loaders.
 - **Call `destroy()`** on an instance it did not create.
 - **Depend on `@sveltekit-i18n/base` or `@sveltekit-i18n/parser-curly`
-  directly** — `sveltekit-i18n` re-exports the core's whole surface and the
-  parser's types, and a direct dependency is another way to end up with two
-  copies of the core.
+  directly** — `sveltekit-i18n` re-exports the core's whole surface, the
+  parser's types and its parameter extractor, and a direct dependency is
+  another way to end up with two copies of the core.
 
 ## Dynamic Routes and Locales
 

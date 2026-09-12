@@ -61,7 +61,7 @@ implementation and its only dependency.
 It fills the core's parser slot with `parser-curly`, states the parser's report
 channel so an application need not, retypes `loadConfig` to accept the
 parser-less config, and re-exports the core's whole surface along with the
-parser's types. That is
+parser's types and its parameter extractor. That is
 all it is — roughly sixty lines of source. Every member you call afterwards is
 the core's.
 

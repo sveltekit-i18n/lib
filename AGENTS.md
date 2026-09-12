@@ -22,8 +22,8 @@ only what differs here.
 The end-user package `sveltekit-i18n`: it composes
 [`@sveltekit-i18n/base`](https://github.com/sveltekit-i18n/base) with
 [`@sveltekit-i18n/parser-curly`](https://github.com/sveltekit-i18n/parsers)
-and re-exports the core's whole surface along with the parser's types, so users
-install a single package. It also
+and re-exports the core's whole surface along with the parser's types and its
+parameter extractor, so users install a single package. It also
 hosts the ecosystem's shared issue tracker, docs, and examples for the whole
 family (`base` / `lib` / `parsers` / `extensions`).
 
@@ -63,7 +63,10 @@ family (`base` / `lib` / `parsers` / `extensions`).
   this package's own types, so base's namespaces of those names are re-exported
   as `BaseConfig` and `BaseParser`. `tests/specs/exports.spec.ts` fails if base
   gains an export this package does not carry; extend the rename map there
-  rather than letting the surface drift.
+  rather than letting the surface drift. From the parser it carries the types
+  and `extractParamsFactory` — the build-time half of the contract, which a
+  schema generator needs beside the instance it types. The parser factory stays
+  internal: this package fills the slot, so there is nothing to construct.
 - **`i18n instanceof I18n` does not hold**, and base does not guarantee it
   either whenever `config.extensions` replaces the instance. Documented, not
   fixed.

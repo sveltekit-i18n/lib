@@ -1,6 +1,7 @@
 import { createRequire } from 'node:module';
 import { describe, expect, it } from 'vitest';
 import ts from 'typescript';
+import { extractParamsFactory } from '../../src';
 import { sanitizeLocales, toDotNotation } from '../../src/utils';
 
 const require = createRequire(import.meta.url);
@@ -56,5 +57,20 @@ describe('re-export surface', () => {
   it('serves the helpers the `utils` subpath re-exports', () => {
     expect(toDotNotation({ user: { name: 'Name' } })).toEqual({ 'user.name': 'Name' });
     expect(sanitizeLocales('en-us', null)).toEqual(['en-US']);
+  });
+
+  // The parser's build-time half. A generator filling `config.schema` needs it
+  // beside the instance it types, so it has to be reachable without depending
+  // on the parser package.
+  it('serves the parameter extractor the parser contributes', () => {
+    expect(extractParamsFactory()('Hi {{name}}, you owe {{amount:number;}}.')).toEqual([
+      { name: 'name', kind: 'unknown', optional: false },
+      { name: 'amount', kind: 'number', optional: false },
+    ]);
+
+    // Built from the options the parser beside it is built from: a message is
+    // read the way the app's own parser would read it.
+    expect(extractParamsFactory({ customModifiers: { upper: ({ value }) => value } })('{{word:upper; default:none;}}'))
+      .toEqual([{ name: 'word', kind: 'unknown', optional: true }]);
   });
 });

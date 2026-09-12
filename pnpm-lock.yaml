@@ -16,8 +16,8 @@ importers:
         specifier: 3.0.0-next.3
         version: 3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       '@sveltekit-i18n/parser-curly':
-        specifier: 3.0.0-next.1
-        version: 3.0.0-next.1(@sveltekit-i18n/base@3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
+        specifier: 3.0.0-next.2
+        version: 3.0.0-next.2(@sveltekit-i18n/base@3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -1216,8 +1216,8 @@ packages:
     peerDependencies:
       svelte: '>=5'
 
-  '@sveltekit-i18n/parser-curly@3.0.0-next.1':
-    resolution: {integrity: sha512-LIgxq3edJzoLjaptxotBg/ipytG4b27WasdDZ5gmx0JDsBY3Z5XwM1Ho+ZFs4vWe5sMP32MZ4+95MyC3hYc06A==}
+  '@sveltekit-i18n/parser-curly@3.0.0-next.2':
+    resolution: {integrity: sha512-uDqeH3vMCTipdcpWIeRyw7or5HrGrQipD/8mnQygRJPBbn9w7ADZQtDf3lU2NRaxpBynyMyZRTn607Pj6DViOw==}
     engines: {node: '>=22'}
     peerDependencies:
       '@sveltekit-i18n/base': ^3.0.0-next.0
@@ -3615,7 +3615,7 @@ snapshots:
     dependencies:
       svelte: 5.57.0(@typescript-eslint/types@8.70.0)
 
-  '@sveltekit-i18n/parser-curly@3.0.0-next.1(@sveltekit-i18n/base@3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
+  '@sveltekit-i18n/parser-curly@3.0.0-next.2(@sveltekit-i18n/base@3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
     dependencies:
       '@curly-message/parser': 1.0.0
       '@sveltekit-i18n/base': 3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))

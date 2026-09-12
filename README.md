@@ -26,8 +26,8 @@ npm install sveltekit-i18n
 ```
 
 That is the whole install. `@sveltekit-i18n/base` and
-`@sveltekit-i18n/parser-curly` come with it: the core's whole API and the
-parser's types are re-exported here — **do not install them alongside**, or your
+`@sveltekit-i18n/parser-curly` come with it: the core's whole API, the parser's
+types and its parameter extractor are re-exported here — **do not install them alongside**, or your
 app ends up with two copies of the core and two reactive graphs.
 
 ## Quick Start
@@ -353,7 +353,7 @@ const config: Config<Payload> = { /* … */ };
 export const i18n = new I18n<Config<Payload>, Payload>(config);
 ```
 
-**Note:** The library provides the type slots but does not generate them from your JSON files. A generator that fills `schema` from your translations is planned for 3.1 ([#234](https://github.com/sveltekit-i18n/lib/issues/234)); until then, write the schema by hand or generate it yourself (see [Best Practices](./docs/BEST_PRACTICES.md#typescript-patterns)).
+**Note:** The library provides the type slots but does not generate them from your JSON files. A generator that fills `schema` from your translations is planned for 3.1 ([#234](https://github.com/sveltekit-i18n/lib/issues/234)); until then, write the schema by hand or generate it yourself with the re-exported [`extractParamsFactory`](./docs/README.md#extractparamsfactory), which reports what each message expects of its payload (see [Best Practices](./docs/BEST_PRACTICES.md#typescript-patterns)).
 
 ## Contributing
 

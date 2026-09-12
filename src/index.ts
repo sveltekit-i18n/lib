@@ -7,6 +7,11 @@ import type { Config } from './types';
 
 export type { Config, Modifier, Parser, Report };
 
+// The build-time half of the parser contract, which a schema generator reads a
+// catalogue with. A named export rather than a member of the parser object, so
+// a bundle that never reaches the scanner drops it.
+export { extractParamsFactory } from '@sveltekit-i18n/parser-curly';
+
 // Everything the core exports, so nothing this package builds on has to be
 // installed beside it. `Config` and `Parser` already name this package's own
 // types, so the core's namespaces of those names carry a `Base` prefix.
