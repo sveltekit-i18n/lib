@@ -2,8 +2,6 @@
 
 Thank you for your interest in contributing to `sveltekit-i18n`! We welcome contributions from the community.
 
-> **Note:** We're currently looking for maintainers to help with the project. If you're interested, please see [this issue](https://github.com/sveltekit-i18n/lib/issues/197).
-
 ## Table of Contents
 
 - [Ecosystem Overview](#ecosystem-overview)
@@ -513,10 +511,10 @@ We're actively looking for maintainers to help with:
 
 If you're interested:
 
-1. Review the [maintainer opportunity issue](https://github.com/sveltekit-i18n/lib/issues/197)
-2. Make consistent, quality contributions
-3. Demonstrate understanding of the codebase and architecture
-4. Reach out to express your interest
+1. Make consistent, quality contributions
+2. Demonstrate understanding of the codebase and architecture
+3. Open a [discussion](https://github.com/sveltekit-i18n/lib/discussions) to
+   express your interest
 
 ---
 

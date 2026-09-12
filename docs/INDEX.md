@@ -327,10 +327,6 @@ Interested in contributing to sveltekit-i18n?
 - **[Issues](https://github.com/sveltekit-i18n/lib/issues)** – report bugs, request features
 - **[Discussions](https://github.com/sveltekit-i18n/lib/discussions)** – ask questions, share ideas
 
-**Note:** We're currently looking for maintainers. If you're interested in
-helping maintain this project, please see
-[this issue](https://github.com/sveltekit-i18n/lib/issues/197).
-
 ---
 
 ## 📄 License

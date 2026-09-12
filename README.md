@@ -1,11 +1,5 @@
 [![npm version](https://badge.fury.io/js/sveltekit-i18n.svg)](https://badge.fury.io/js/sveltekit-i18n) ![](https://github.com/sveltekit-i18n/lib/workflows/Tests/badge.svg)
 
-> [!NOTE]
-> Looking for maintainers. Feel free to contact me if you want to take over the maintanance of this project.
-> 
-> https://github.com/sveltekit-i18n/lib/issues/197
-
-
 # sveltekit-i18n
 
 A lightweight, powerful internationalization (i18n) library designed specifically for [SvelteKit](https://github.com/sveltejs/kit). This package combines [@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) with [@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly) to provide the quickest way to add multilingual support to your SvelteKit applications.
@@ -370,8 +364,6 @@ We welcome contributions! Please read our [Contributing Guide](./CONTRIBUTING.md
 - Commit guidelines (atomic commits)
 - Pull request process
 - Code standards and testing
-
-**Note:** We're currently looking for maintainers. If you're interested in helping maintain this project, please reach out via [this issue](https://github.com/sveltekit-i18n/lib/issues/197).
 
 ## Changelog
 
