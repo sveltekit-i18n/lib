@@ -451,7 +451,7 @@ A `Report` carries:
 | `code` | `unknown-modifier`, `failed-modifier`, `missing-options`, `unserializable-value`, `missing-locale`, `pass-limit` or `output-limit` |
 | `origin` | who fixes it: `message` (the message as written), `payload` (what the call passed) or `limit` (a bound the parser set) |
 | `message` | a self-contained English sentence carrying nothing from the payload |
-| `key` | the message's key, where the call passed one |
+| `id` | the message's id — the translation key the core passed |
 | `limit` | the limit reached, for the two limit reports |
 | `text` | the excerpt — the placeholder, or the output that would not settle — cut to 120 code units and escaped, so it can be written anywhere |
 
