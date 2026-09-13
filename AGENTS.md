@@ -27,16 +27,20 @@ parameter extractor, so users install a single package. It also
 hosts the ecosystem's shared issue tracker, docs, and examples for the whole
 family (`base` / `lib` / `parsers` / `extensions`).
 
-## Current state: v3 on `master`
+## Current state: v3 released from `master`
 
-- **`master` is the v3 development line.** Stack: pnpm, Vitest, tsup, ESLint 10
-  flat config, ESM-only, `engines.node >=22`, peer `svelte >=5`.
+- **`master` is the v3 line.** Stack: pnpm, Vitest, tsup, ESLint 10 flat
+  config, ESM-only, `engines.node >=22`, peer `svelte >=5`.
 - **`2.x` is a frozen snapshot** of the published v2 line: critical fixes only.
-- Nothing publishes until the whole family is ready: `base`, `parsers` and
-  `extensions` release aligned at **3.0.0**, `lib` last.
-- The v3 work is tracked in
-  [#214](https://github.com/sveltekit-i18n/lib/issues/214); #230 — the examples
-  rework — is what remains for this repo.
+- **The family is published at 3.0.0** — `base`, both parsers,
+  `extension-stores` and this package — released aligned, as
+  [#214](https://github.com/sveltekit-i18n/lib/issues/214) set out. The pins on
+  `base` and `parser-curly` are exact and stay that way.
+- **`examples/` is still v2** and is the one piece v3 did not reach; the rework
+  is [#230](https://github.com/sveltekit-i18n/lib/issues/230), sequenced after
+  the release so the examples present published versions. Until it lands,
+  nothing in `examples/` is a reference for how v3 is used — `README.md` and
+  `docs/` are.
 
 ## Architecture you must respect
 
