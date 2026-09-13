@@ -73,8 +73,8 @@
     "vitest": "^4.1.10"
   },
   "dependencies": {
-    "@sveltekit-i18n/base": "3.0.0-next.3",
-    "@sveltekit-i18n/parser-curly": "3.0.0-next.2"
+    "@sveltekit-i18n/base": "3.0.0",
+    "@sveltekit-i18n/parser-curly": "3.0.0"
   },
   "svelte": "./dist/index.js",
   "simple-git-hooks": {

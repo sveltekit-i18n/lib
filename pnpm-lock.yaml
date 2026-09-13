@@ -13,11 +13,11 @@ importers:
   .:
     dependencies:
       '@sveltekit-i18n/base':
-        specifier: 3.0.0-next.3
-        version: 3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+        specifier: 3.0.0
+        version: 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       '@sveltekit-i18n/parser-curly':
-        specifier: 3.0.0-next.2
-        version: 3.0.0-next.2(@sveltekit-i18n/base@3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
+        specifier: 3.0.0
+        version: 3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -481,8 +481,8 @@ packages:
   '@cacheable/utils@2.5.0':
     resolution: {integrity: sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==}
 
-  '@curly-message/parser@1.0.0':
-    resolution: {integrity: sha512-sYbnZd04qrgGeFQS+oOyCHXAc7lFFljXyD0BwRkEDc4kheXjU4pB3nHHCqq3ai4yMmmNgDfgbC5yi4b1GGKmLw==}
+  '@curly-message/parser@1.0.1':
+    resolution: {integrity: sha512-wZ5tXDtyuWZHCjG1d3PRLJhrYLVANuieNYTJc9JV8+bq9DHnwZWkIdmphviM01LUNhdL2vyd29/t+TyMYkaNGQ==}
     engines: {node: '>=22'}
 
   '@emnapi/core@1.10.0':
@@ -1210,17 +1210,17 @@ packages:
     peerDependencies:
       svelte: '>=3.49.0'
 
-  '@sveltekit-i18n/base@3.0.0-next.3':
-    resolution: {integrity: sha512-k4L3Tz5BGw/KDbRN33jy+5Phh4ZdYqdv4tsF+J5XPv1QAMdgQQJK1ZFNwkuxtSZlWCmMyO+0W75Izn09bY2qlQ==}
+  '@sveltekit-i18n/base@3.0.0':
+    resolution: {integrity: sha512-s+hj9vROk8ZDl4R7bDE2BC4qEyteow6o7DqJVPJNYIl4Lrt93eXKPBM3f6jP4lOkZf0xQy/4BUPacgbIU6QbfA==}
     engines: {node: '>=22'}
     peerDependencies:
       svelte: '>=5'
 
-  '@sveltekit-i18n/parser-curly@3.0.0-next.2':
-    resolution: {integrity: sha512-uDqeH3vMCTipdcpWIeRyw7or5HrGrQipD/8mnQygRJPBbn9w7ADZQtDf3lU2NRaxpBynyMyZRTn607Pj6DViOw==}
+  '@sveltekit-i18n/parser-curly@3.0.0':
+    resolution: {integrity: sha512-kkljiXxAKf11UyuOxFo7nZqvwmjwKPf1GHLxlgY3QbbI4T75QCvB4owzPG4HIcYoRWiSQS5lAuBuD85o8izRNA==}
     engines: {node: '>=22'}
     peerDependencies:
-      '@sveltekit-i18n/base': ^3.0.0-next.0
+      '@sveltekit-i18n/base': ^3.0.0
 
   '@sveltekit-i18n/parser-default@1.1.1':
     resolution: {integrity: sha512-/gtzLlqm/sox7EoPKD56BxGZktK/syGc79EbJAPWY5KVitQD9SM0TP8yJCqDxTVPk7Lk0WJhrBGUE2Nn0f5M1w==}
@@ -3123,7 +3123,7 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@curly-message/parser@1.0.0': {}
+  '@curly-message/parser@1.0.1': {}
 
   '@emnapi/core@1.10.0':
     dependencies:
@@ -3611,14 +3611,14 @@ snapshots:
     dependencies:
       svelte: 5.55.10(@typescript-eslint/types@8.70.0)
 
-  '@sveltekit-i18n/base@3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))':
+  '@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))':
     dependencies:
       svelte: 5.57.0(@typescript-eslint/types@8.70.0)
 
-  '@sveltekit-i18n/parser-curly@3.0.0-next.2(@sveltekit-i18n/base@3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
+  '@sveltekit-i18n/parser-curly@3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
     dependencies:
-      '@curly-message/parser': 1.0.0
-      '@sveltekit-i18n/base': 3.0.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      '@curly-message/parser': 1.0.1
+      '@sveltekit-i18n/base': 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
 
   '@sveltekit-i18n/parser-default@1.1.1': {}
 

@@ -27,6 +27,17 @@ describe('instance', () => {
     expect(instance.translations.en).toEqual(expect.objectContaining({ 'common.no_placeholder': 'NO_PLACEHOLDER' }));
   });
 
+  it('renders a missing translation as its key', async () => {
+    const instance = new i18n(CONFIG);
+
+    await instance.loadTranslations(initLocale);
+
+    // The seam neither half's suite covers: the core answers the miss and the
+    // parser is not called, and the curly parser resolves a message it is not
+    // given to the empty string. Composed, the key has to survive.
+    expect(instance.t('common.nonexistent')).toBe('common.nonexistent');
+  });
+
   it('reads a locale the call names through `l`', async () => {
     const instance = new i18n(CONFIG);
 
