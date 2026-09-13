@@ -21,19 +21,70 @@ only what differs here.
 
 The end-user package `sveltekit-i18n`: it composes
 [`@sveltekit-i18n/base`](https://github.com/sveltekit-i18n/base) with
-[`@sveltekit-i18n/parser-default`](https://github.com/sveltekit-i18n/parsers)
-and re-exports the surface, so users install a single package. It also hosts
-the ecosystem's shared issue tracker, docs, and examples for the whole family
-(`base` / `lib` / `parsers` / `extensions`).
+[`@sveltekit-i18n/parser-curly`](https://github.com/sveltekit-i18n/parsers)
+and re-exports the core's whole surface along with the parser's types and its
+parameter extractor, so users install a single package. It also
+hosts the ecosystem's shared issue tracker, docs, and examples for the whole
+family (`base` / `lib` / `parsers` / `extensions`).
 
-## Current state: v2, frozen for the v3 rewrite
+## Current state: v3 on `master`
 
-- `master` still carries the **v2 codebase** (pnpm, Jest, tsup — see the repo
-  configs). The v2 line is frozen: critical fixes only, applied on the `2.x`
-  maintenance branch. Don't land v2 feature work.
-- The v3 rewrite is tracked in
-  [#214](https://github.com/sveltekit-i18n/lib/issues/214) and lands here
-  **last** (#228-#230), after `base`, `parsers`, and `extensions` are ready.
+- **`master` is the v3 development line.** Stack: pnpm, Vitest, tsup, ESLint 10
+  flat config, ESM-only, `engines.node >=22`, peer `svelte >=5`.
+- **`2.x` is a frozen snapshot** of the published v2 line: critical fixes only.
+- Nothing publishes until the whole family is ready: `base`, `parsers` and
+  `extensions` release aligned at **3.0.0**, `lib` last.
+- The v3 work is tracked in
+  [#214](https://github.com/sveltekit-i18n/lib/issues/214); #230 — the examples
+  rework — is what remains for this repo.
+
+## Architecture you must respect
+
+- **Composition, not inheritance.** base v3 exports a typed facade rather than
+  the raw class, so there is nothing to subclass. `new I18n(config)` builds the
+  curly parser, hands the core a config carrying it, and returns the core's own
+  instance — every member a consumer touches is base's. Never wrap the instance
+  or re-implement one of its methods.
+- **The parser is injected by an extension prepended to the consumer's pipe.**
+  It patches `loadConfig` so a reconfiguration keeps the parser, and it is
+  prepended so every later extension copies the patched method. It returns its
+  input, so it contributes nothing to the piped type and the runtime patch
+  cannot drift from the declared one.
+- **`loadConfig` is retyped by intersection, never by an `Omit` rewrite.** The
+  emitted instance type carries `#private`, so an `Omit`-based rewrite stops
+  being assignable to the core instance and every `Extension.Operator`
+  extension resolves its input to `never`.
+- **Reports are silent by default.** `parser-curly` requires `onReport` to be
+  stated, `null` included; this package states `null` and relaxes the key to
+  optional in its own `Config`. A consumer wanting reports passes
+  `parserOptions.onReport`.
+- **The re-export surface is the point of this package** (#228). Every name
+  base publishes is reachable from here — `Config` and `Parser` already name
+  this package's own types, so base's namespaces of those names are re-exported
+  as `BaseConfig` and `BaseParser`. `tests/specs/exports.spec.ts` fails if base
+  gains an export this package does not carry; extend the rename map there
+  rather than letting the surface drift. From the parser it carries the types
+  and `extractParamsFactory` — the build-time half of the contract, which a
+  schema generator needs beside the instance it types. The parser factory stays
+  internal: this package fills the slot, so there is nothing to construct.
+- **`i18n instanceof I18n` does not hold**, and base does not guarantee it
+  either whenever `config.extensions` replaces the instance. Documented, not
+  fixed.
+
+## Tests
+
+- The suite proves **this package's wiring** — the parser being present without
+  the consumer supplying one, `parserOptions` flowing through the constructor
+  and through `loadConfig`, the report channel, the extension pipe, the
+  re-export surface and the typing. It does not re-test base's behaviour
+  (base's own suite does) and it does not test the Curly Message Format's
+  grammar (the format's conformance set does, inside `parser-curly`).
+- `tests/specs/types.spec.ts` asserts by compiling: `pretest` runs
+  `tsc --noEmit` over it, so a `@ts-expect-error` that stops being an error
+  fails the run. Its closures are never invoked.
+- Vitest needs `@sveltejs/vite-plugin-svelte` **and** base inlined
+  (`test.server.deps.inline`): base ships its rune modules uncompiled for the
+  consumer's bundler, and an externalized dependency never reaches the plugin.
 
 ## Comments
 

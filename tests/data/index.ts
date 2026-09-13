@@ -1,10 +1,6 @@
 import type { Config } from '../../src/types';
-export { default as getTranslations } from './translations';
 
-export const CONFIG: Config<
-{} /* Add your payload props here */,
-{} /* Add your modifier props here */
-> = {
+export const CONFIG: Config = {
   initLocale: 'en',
   log: {
     level: 'error',
@@ -13,24 +9,18 @@ export const CONFIG: Config<
     {
       key: 'common',
       locale: 'EN',
-      loader: async () => (await import('../data/translations/en/common.json')).default,
+      loader: async () => (await import('./translations/en/common.json')).default,
     },
     {
-      key: 'route1',
+      key: 'route',
       locale: 'EN',
-      routes: [/./],
-      loader: async () => (await import('../data/translations/en/route.json')).default,
-    },
-    {
-      key: 'route2',
-      locale: 'EN',
-      routes: ['/path#hash?a=b&c=d'],
-      loader: async () => (await import('../data/translations/en/route.json')).default,
+      routes: ['/path'],
+      loader: async () => (await import('./translations/en/route.json')).default,
     },
     {
       key: 'common',
       locale: 'zh-Hans',
-      loader: async () => (await import('../data/translations/zh-Hans/common.json')).default,
+      loader: async () => (await import('./translations/zh-Hans/common.json')).default,
     },
   ],
 };

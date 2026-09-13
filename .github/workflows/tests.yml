@@ -1,6 +1,6 @@
 name: Tests
 
-on: 
+on:
   workflow_call:
   workflow_dispatch:
   pull_request:
@@ -14,7 +14,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [22]
+        # The two maintained LTS lines; engines declares >=22.
+        node-version: [22, 24]
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:

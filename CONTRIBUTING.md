@@ -2,8 +2,6 @@
 
 Thank you for your interest in contributing to `sveltekit-i18n`! We welcome contributions from the community.
 
-> **Note:** We're currently looking for maintainers to help with the project. If you're interested, please see [this issue](https://github.com/sveltekit-i18n/lib/issues/197).
-
 ## Table of Contents
 
 - [Ecosystem Overview](#ecosystem-overview)
@@ -15,47 +13,71 @@ Thank you for your interest in contributing to `sveltekit-i18n`! We welcome cont
 - [Testing](#testing)
 - [Pull Request Process](#pull-request-process)
 - [Code Standards](#code-standards)
+- [Architecture Overview](#architecture-overview)
+- [Related Repositories](#related-repositories)
 - [Release Process](#release-process-maintainers-only)
 - [Getting Help](#getting-help)
 
 ## Ecosystem Overview
 
-The `sveltekit-i18n` ecosystem consists of three separate repositories:
+The `sveltekit-i18n` ecosystem consists of four separate repositories:
 
-- **[sveltekit-i18n/lib](https://github.com/sveltekit-i18n/lib)** (this repository) – Main user-facing package that combines base with default parser
-- **[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base)** – Core i18n functionality with parser support
-- **[@sveltekit-i18n/parsers](https://github.com/sveltekit-i18n/parsers)** – Message parsers (parser-default, parser-icu)
+- **[sveltekit-i18n/lib](https://github.com/sveltekit-i18n/lib)** (this repository) – the end-user package `sveltekit-i18n`: the core wired with `@sveltekit-i18n/parser-curly`, re-exporting both surfaces so an application installs one package
+- **[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base)** – the parser-agnostic core: translation state, loading, caching, route matching and preprocessing
+- **[@sveltekit-i18n/parsers](https://github.com/sveltekit-i18n/parsers)** – the message parsers, `parser-curly` (the one this package wires) and `parser-icu`
+- **[@sveltekit-i18n/extensions](https://github.com/sveltekit-i18n/extensions)** – official extensions for the core's `config.extensions` pipe, such as `extension-stores`, which brings back the Svelte-store surface of v2 (`$t`, `$locale`, `$loading`)
 
-This repository (`lib`) is what most users install and is the main entry point for contributions.
+This repository is what most users install, and it hosts the **shared issue tracker, documentation and examples for the whole family** – issues for `base`, `parsers` and `extensions` are filed here too. Behavioural changes, however, usually belong in the repository that owns the behaviour: this package is thin wiring (see [Architecture Overview](#architecture-overview)).
+
+The **Curly Message Format** – the `{{ … }}` syntax `parser-curly` resolves – is specified outside this organization, at [curly-message/spec](https://github.com/curly-message/spec). Grammar questions and syntax proposals belong there, not in this tracker.
+
+### Current state
+
+- **`master` is the v3 development line.** Svelte 5 runes, ESM-only, Node 22+.
+- **`2.x` is a frozen snapshot** of the published v2 line and receives critical fixes only.
+- The family releases aligned: `base`, `parsers` and `extensions` first, `lib` last. Nothing publishes until all of them are ready.
 
 ## Repository Structure
 
 ```
 lib/
-├── src/              # Source code (TypeScript)
-│   ├── index.ts      # Main entry point
-│   └── types.ts      # Type definitions
-├── tests/            # Test files (Jest)
-│   ├── specs/        # Test specifications
-│   └── data/         # Test data and fixtures
-├── examples/         # Working SvelteKit example apps
-├── docs/             # User documentation
+├── .github/
+│   ├── ISSUE_TEMPLATE/   # bug report, feature request, documentation
+│   └── workflows/        # tests.yml (CI matrix), publish.yml (release)
+├── docs/                 # user documentation
 │   ├── INDEX.md
 │   ├── GETTING_STARTED.md
 │   ├── ARCHITECTURE.md
+│   ├── README.md         # API reference
 │   ├── BEST_PRACTICES.md
 │   └── TROUBLESHOOTING.md
-├── dist/             # Built files (git-ignored)
-└── package.json
+├── examples/             # standalone SvelteKit example apps (pnpm workspace)
+├── src/
+│   ├── index.ts          # entry - the I18n facade that wires the parser into the core
+│   ├── types.ts          # this package's `Config` (the core's, minus `parser`)
+│   └── utils.ts          # the `sveltekit-i18n/utils` subpath
+├── tests/
+│   ├── data/             # CONFIG + JSON fixtures
+│   └── specs/            # index.spec.ts, exports.spec.ts, types.spec.ts
+├── dist/                 # build output, generated (git-ignored)
+├── AGENTS.md             # rules for LLM coding assistants (CLAUDE.md imports it)
+├── eslint.config.js      # ESLint 10 flat config
+├── tsup.config.js        # build
+├── vitest.config.ts      # test runner
+├── tsconfig.json
+├── package.json
+└── pnpm-lock.yaml
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ (or current LTS version)
-- npm or pnpm
+- **Node.js 22+** (`.nvmrc` pins 22; CI runs 22 and 24 on Linux, macOS and Windows)
+- **pnpm 10** – the lockfile is `pnpm-lock.yaml`; npm and yarn are not supported here
 - Git
+
+The repository is **ESM-only**. There is no CommonJS build and no CommonJS test setup.
 
 ### Setup
 
@@ -64,18 +86,19 @@ lib/
 git clone https://github.com/sveltekit-i18n/lib.git
 cd lib
 
-# Install dependencies
-npm install
+# Install dependencies (also installs the git hooks via `prepare`)
+pnpm install
 ```
 
 ### Development Commands
 
-```bash
-npm run dev      # Watch mode with auto-rebuild
-npm run build    # Production build
-npm test         # Run tests
-npm run lint     # Check code style (runs automatically on commit)
-```
+| Command | Purpose |
+|---------|---------|
+| `pnpm run dev` | `tsup` build in watch mode |
+| `pnpm run build` | build `dist/` with `tsup` (ESM + `.d.ts`) |
+| `pnpm test` | the Vitest suite; `pretest` builds and typechecks first |
+| `pnpm run typecheck` | `tsc --noEmit` over `src`, `tests` and the root configs |
+| `pnpm run lint` | `eslint --fix .` (also the pre-commit hook, via `simple-git-hooks`) |
 
 ## Git Workflow
 
@@ -94,7 +117,7 @@ git checkout -b my-descriptive-branch-name
 
 # Make changes and commit atomically
 git add .
-git commit -m "Add feature X"
+git commit -m "fix: correct the loader match"
 
 # Keep your branch updated (rebase, NOT merge)
 git fetch origin
@@ -124,8 +147,10 @@ Each commit must be **self-contained and meaningful**:
 
 ### Commit Message Format
 
+Commits follow the conventional `type(scope): summary` form – the release workflow generates the release notes from them:
+
 ```
-Brief description in imperative mood (max 72 characters)
+type(scope): brief description in imperative mood (max 72 characters)
 
 Optional longer explanation if needed. Explain WHAT and WHY,
 not HOW (the code shows how).
@@ -135,14 +160,16 @@ Fixes #123
 Relates to #456
 ```
 
+Common types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`, `ci`. A breaking change is marked with `!` after the type (`feat!:`).
+
 ### Good Commit Examples
 
 ```
-Add locale switcher component
-Fix translation loading race condition
-Update API docs with TypeScript examples
-Refactor loader matching logic for clarity
-Add tests for route-based translation loading
+feat: compose the runes core with parser-curly
+fix(config): keep the parser through a reconfiguration
+docs: document the extensions pipe
+test: cover the re-export surface
+chore(deps): bump vitest to 4
 ```
 
 ### Bad Commit Examples
@@ -159,60 +186,93 @@ lots of changes
 
 ### Code Changes
 
-- All source code is in `src/`
+- All source code is in `src/` – three small files, because this package is wiring. A change to how translations load, cache or interpolate almost always belongs in [`base`](https://github.com/sveltekit-i18n/base) or [`parsers`](https://github.com/sveltekit-i18n/parsers) instead.
 - TypeScript strict mode is enforced
 - ESLint runs automatically on commit (pre-commit hook)
-- **No `any` types** – use proper typing or `unknown` if necessary
+- Keep the parser-less `Config` and the re-export surface intact – both are covered by tests
 
 ### Documentation Changes
 
-- User documentation is in `docs/`
-- All code comments must be in **English**
-- Update relevant documentation when changing APIs
+- User documentation is in `docs/`; the package front page is `README.md`
+- All code comments and documentation must be in **English**
+- Update the documentation in the **same PR** that invalidates it
 - Add examples for new features
+
+If you drive changes with an LLM coding assistant, `AGENTS.md` (imported by `CLAUDE.md`) is the authority for it and takes precedence over the assistant's own memory.
 
 ### Adding Examples
 
-- Examples are in `examples/`
-- Each example should be a complete, working SvelteKit application
+- Examples are in `examples/`, each a standalone SvelteKit application with its own toolchain, consuming the package through `workspace:*`
 - Include a README explaining the use case and how it works
+- ESLint ignores `examples/` – each example lints under its own config
 
 ## Testing
 
 ### Running Tests
 
 ```bash
-# Run all tests
-npm test
+# Build, typecheck, then run the whole suite
+pnpm test
 
-# Watch mode
-npm test -- --watch
+# Narrow the run to matching spec files
+pnpm test exports
 
-# Run specific test file
-npm test -- path/to/test.spec.ts
+# Watch mode (build `dist/` first - see below)
+pnpm exec vitest
+
+# Typecheck `src` and `tests` - how `types.spec.ts` makes its assertions
+pnpm run typecheck
 ```
+
+`pnpm test` runs `pretest` first, which builds and typechecks. Both matter: `tests/specs/exports.spec.ts` reads the **built declarations** in `dist/`, and `tests/specs/types.spec.ts` asserts by compiling. A bare `vitest` run skips that step, so build once before using watch mode.
+
+### What this suite is responsible for
+
+The suite proves **the wiring this package adds** – nothing more:
+
+- **The parser is present without the consumer supplying one.** `new I18n(config)` interpolates out of the box, and the core's `parser` slot is a type error here.
+- **`parserOptions` flow through** the constructor and through `loadConfig`, and a reconfiguration that names no parser options keeps the parser.
+- **The report channel** is silent by default and routes to `parserOptions.onReport` when the application passes one.
+- **The extension pipe** runs the consumer's extensions over a configured instance whose `loadConfig` already carries the parser.
+- **The re-export surface** (`tests/specs/exports.spec.ts`) – every name the core publishes must be reachable from here, with the core's `Config` and `Parser` namespaces carried as `BaseConfig` and `BaseParser`. A new export in the core fails this test until this package carries it; extend the rename map in that spec rather than letting the surface drift.
+- **The typing** (`tests/specs/types.spec.ts`) – the assertion *is* the compilation. Its closures are never invoked; a `@ts-expect-error` that stops being an error fails the run.
+
+It deliberately does **not**:
+
+- re-test the core's behaviour – loading, caching, route matching, preprocessing and reactivity are covered by [`base`'s own suite](https://github.com/sveltekit-i18n/base)
+- test the Curly Message Format's grammar – the format's conformance set covers that, inside [`parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)
+
+A fix for either of those belongs in that repository, together with its test.
 
 ### Writing Tests
 
-- Place tests in `tests/specs/`
-- Test data and fixtures in `tests/data/`
-- Use Jest with TypeScript
-- Test both functionality and TypeScript types
-- Aim for high coverage on core functionality
+- Place tests in `tests/specs/`, test data and fixtures in `tests/data/`
+- Use **Vitest** with TypeScript – import `describe`, `it` and `expect` from `vitest`
+- Drive behaviour through the public API: `new I18n(config)`, reactive properties, awaited method returns
+- A real instance is cheap. Inline `config.translations` need no loader, so there is nothing to await and nothing to mock
+- Where a test does need a load, await the method that started it – never a wall-clock sleep. The CI matrix has six legs and timing-based tests flake on the slow ones
+
+The test setup needs `@sveltejs/vite-plugin-svelte` **and** the core inlined (`test.server.deps.inline` in `vitest.config.ts`): the core ships its rune modules uncompiled for the consumer's bundler, and an externalized dependency never reaches the plugin.
 
 ### Test Structure
 
 ```typescript
-describe('feature name', () => {
-  it('should do something specific', () => {
-    // Arrange - set up test data
-    const input = { locale: 'en', key: 'test' };
-    
+import { describe, expect, it } from 'vitest';
+import { I18n } from '../../src';
+
+describe('parser wiring', () => {
+  it('interpolates without the consumer supplying a parser', () => {
+    // Arrange - inline translations need no loader, so nothing is awaited
+    const i18n = new I18n({
+      initLocale: 'en',
+      translations: { en: { greeting: 'Hello, {{name}}!' } },
+    });
+
     // Act - execute the code
-    const result = someFunction(input);
-    
+    const greeting = i18n.t('greeting', { name: 'Jarda' });
+
     // Assert - verify the result
-    expect(result).toBe(expected);
+    expect(greeting).toBe('Hello, Jarda!');
   });
 });
 ```
@@ -222,9 +282,9 @@ describe('feature name', () => {
 ### Before Creating a PR
 
 1. **Rebase on latest master:** `git rebase origin/master`
-2. **Run tests:** `npm test` (all tests must pass)
-3. **Run linter:** `npm run lint` (no errors)
-4. **Build successfully:** `npm run build`
+2. **Run tests:** `pnpm test` (all tests must pass)
+3. **Run linter:** `pnpm run lint` (no errors)
+4. **Build successfully:** `pnpm run build`
 5. **Update documentation** if you changed APIs
 
 ### PR Title
@@ -268,7 +328,7 @@ How you tested the changes. Include test scenarios.
 ```bash
 # Make requested changes
 git add .
-git commit -m "Address review feedback"
+git commit -m "fix: address review feedback"
 
 # Rebase and clean up commits if needed
 git rebase -i origin/master
@@ -282,16 +342,16 @@ git push origin my-branch-name --force-with-lease
 ### TypeScript
 
 - **Strict mode enabled** – all strict checks enforced
-- **No `any` types** – use proper types or `unknown` if type is truly unknown
 - **Proper type definitions** for all exports
 - Use `const` assertions where appropriate
 - Leverage TypeScript's inference when possible
+- `any` is not banned outright: the core types translation values and loader payloads as `any`, and this package passes them through, so the `no-explicit-any` and `no-unsafe-*` rules are off. Don't reach for it where a real type exists – the async correctness rules (`no-floating-promises`, `no-misused-promises`, `require-await`) stay on.
 
 ### ESLint
 
-- Airbnb TypeScript configuration
-- Auto-fixes run on commit (pre-commit hook)
-- Follow existing code style in the repository
+- **ESLint 10 flat config** (`eslint.config.js`): typescript-eslint type-checked, `@stylistic` for formatting, and `import-x/no-extraneous-dependencies` – the core and `parser-curly` are the only runtime dependencies, so any other bare import reachable from `src/` is a bug
+- Formatting contract: 2-space indent, single quotes, semicolons, trailing commas, no trailing whitespace, no double blank lines. Let `pnpm run lint` apply it rather than formatting by hand
+- Auto-fixes run on commit (pre-commit hook, installed by `pnpm install` through `simple-git-hooks`)
 - Don't disable rules without good reason (and explanation)
 
 ### Code Comments
@@ -305,47 +365,72 @@ git push origin my-branch-name --force-with-lease
 
 ```typescript
 // ✅ Good - explains why
-// Use WeakMap to avoid memory leaks when components are destroyed
-const cache = new WeakMap();
+// Null prototype: the table is indexed by user-supplied locales, and a plain
+// object would resolve a '__proto__' assignment through the setter.
+const loadedKeys = Object.create(null);
 
 // ❌ Bad - just describes what code does
-// Create a new WeakMap
-const cache = new WeakMap();
+// Create an object without a prototype
+const loadedKeys = Object.create(null);
 ```
 
 ## Architecture Overview
 
-For developers working on the codebase, here's a brief technical overview:
+For developers working on the codebase, here's a brief technical overview.
 
 ### Package Structure
 
-This package extends `@sveltekit-i18n/base` and pre-configures it with `@sveltekit-i18n/parser-default`:
+This package composes `@sveltekit-i18n/base` with `@sveltekit-i18n/parser-curly` – it does **not** extend a class:
 
 ```typescript
-import Base from '@sveltekit-i18n/base';
-import parser from '@sveltekit-i18n/parser-default';
+// src/index.ts, abridged
+import { I18n as Base } from '@sveltekit-i18n/base';
+import parser from '@sveltekit-i18n/parser-curly';
 
-class I18n extends Base {
-  constructor(config) {
-    // Normalize config to include default parser
-    super({
-      ...config,
-      parser: parser(config.parserOptions)
+const withParser = ({ parserOptions, ...config }: Config<any, any> = {}) => ({
+  ...config,
+  parser: parser({ onReport: null, ...parserOptions }),
+});
+
+// Prepended to the consumer's pipe, so a reconfiguration keeps the parser.
+const withCurlyParser: Extension.T<Base, Base> = (i18n) => {
+  const { loadConfig } = i18n;
+
+  i18n.loadConfig = (config: Config<any, any>) => loadConfig(withParser(config));
+
+  return i18n;
+};
+
+class I18nCurlyParser {
+  constructor(config?: Config<any, any>) {
+    return new Base({
+      ...withParser(config),
+      extensions: [withCurlyParser, ...(config?.extensions ?? [])],
     });
   }
 }
 ```
 
+What that means when you change something here:
+
+- **Composition, not inheritance.** The core exports a typed facade rather than the raw class, so there is nothing to subclass. The constructor returns the core's own instance – every member a consumer touches is the core's. Never wrap the instance or re-implement one of its methods.
+- **The parser is injected by an extension prepended to the consumer's pipe.** It patches `loadConfig` so a reconfiguration keeps the parser, and it runs first so every later extension copies the patched method. It returns its input, so it contributes nothing to the piped type.
+- **`loadConfig` is retyped by intersection, never by an `Omit` rewrite.** The emitted instance type carries `#private` fields; an `Omit`-based rewrite stops being assignable to the core instance and every `Extension.Operator` extension then resolves its input to `never`.
+- **Reports are silent by default.** `parser-curly` requires `onReport` to be stated, `null` included; this package states `null` and relaxes the key to optional in its own `Config`, so an application only passes `parserOptions.onReport` when it wants diagnostics.
+- **`i18n instanceof I18n` does not hold.** The constructor returns the core's instance, and `config.extensions` may replace it again. Documented, not fixed.
+
 ### Key Concepts
 
-- **Loaders** – Define how and when translations load
-- **Routes** – Match loaders to specific routes
-- **Parser** – Handles message interpolation
-- **Preprocessing** – Transforms translation data after loading
+- **Loaders** – define how and when translations load
+- **Routes** – match loaders to specific routes
+- **Parser** – handles message interpolation, and nothing else
+- **Preprocessing** – transforms translation data after loading
+- **Extensions** – a construction-time pipe that can augment or replace the instance surface
+- **Runes, not stores** – the instance is one reactive object; the v2 store surface lives in `@sveltekit-i18n/extension-stores`
 
 ### For Detailed Architecture
 
-See the [Architecture Documentation](./docs/ARCHITECTURE.md) for in-depth explanation of how everything works.
+See the [Architecture Documentation](./docs/ARCHITECTURE.md), the [API reference](./docs/README.md), and the [base API documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) for the members this package re-exports.
 
 ## Related Repositories
 
@@ -353,49 +438,36 @@ See the [Architecture Documentation](./docs/ARCHITECTURE.md) for in-depth explan
 
 **Core functionality (@sveltekit-i18n/base):**
 - Repository: https://github.com/sveltekit-i18n/base
-- Contribute here for: Core i18n logic, store management, loader system
+- Contribute here for: translation state, loading and caching, route matching, preprocessing, the extension pipe, typing of the instance
 
 **Parsers (@sveltekit-i18n/parsers):**
 - Repository: https://github.com/sveltekit-i18n/parsers
-- Contribute here for: Parser syntax changes, new parsers, modifier logic
+- Contribute here for: `parser-curly` and `parser-icu` – modifier logic, parser options, diagnostics
+- The Curly Message Format itself is specified at https://github.com/curly-message/spec – syntax changes start there
 
-Each repository has its own issues and contribution guidelines.
+**Extensions (@sveltekit-i18n/extensions):**
+- Repository: https://github.com/sveltekit-i18n/extensions
+- Contribute here for: `extension-stores` and other official extensions of the `config.extensions` pipe
+
+Each repository has its own code and CI; issues and discussions for all of them live in [this repository's tracker](https://github.com/sveltekit-i18n/lib/issues).
 
 ## Release Process (Maintainers Only)
 
 This section is for maintainers with publish access.
 
-### Version Bump
+Releases run from CI, not from a maintainer's machine. Trigger the **NPM Publish** workflow (`.github/workflows/publish.yml`) with the version choice – `next`, `patch`, `minor` or `major`. It:
 
-```bash
-# Patch release (bug fixes)
-npm version patch
+1. runs the full test matrix,
+2. bumps the version with `pnpm version` (a `next` bump can only reach the `next` dist-tag; only a released version moves `latest`),
+3. pushes the release commit and the tag atomically,
+4. publishes to npm through trusted publishing (OIDC with provenance – no token), and
+5. creates the GitHub release with notes generated from the commit history.
 
-# Minor release (new features, backwards compatible)
-npm version minor
+Because the notes are generated, commit messages are the changelog – see [Commit Guidelines](#commit-guidelines).
 
-# Major release (breaking changes)
-npm version major
-```
+### Version Alignment
 
-### Publishing
-
-```bash
-# Build the package
-npm run build
-
-# Publish to npm
-npm publish
-
-# Push tags to GitHub
-git push origin master --tags
-```
-
-### Changelog
-
-- Update `CHANGELOG.md` before releasing
-- Follow [Semantic Versioning](https://semver.org/)
-- Group changes by type: Features, Bug Fixes, Breaking Changes
+`base`, `parsers` and `extensions` release aligned on the same major; `lib` publishes **last**, once the versions it depends on are on the registry. Follow [Semantic Versioning](https://semver.org/).
 
 ## Getting Help
 
@@ -409,7 +481,7 @@ git push origin master --tags
 When reporting a bug, include:
 
 - `sveltekit-i18n` version
-- `SvelteKit` version
+- `SvelteKit` and `Svelte` versions
 - Node.js version
 - Minimal reproduction (CodeSandbox, StackBlitz, or GitHub repo)
 - Expected behavior vs. actual behavior
@@ -439,12 +511,11 @@ We're actively looking for maintainers to help with:
 
 If you're interested:
 
-1. Review the [maintainer opportunity issue](https://github.com/sveltekit-i18n/lib/issues/197)
-2. Make consistent, quality contributions
-3. Demonstrate understanding of the codebase and architecture
-4. Reach out to express your interest
+1. Make consistent, quality contributions
+2. Demonstrate understanding of the codebase and architecture
+3. Open a [discussion](https://github.com/sveltekit-i18n/lib/discussions) to
+   express your interest
 
 ---
 
 Thank you for contributing to `sveltekit-i18n`! Your efforts help make internationalization easier for the SvelteKit community. 🌍
-
