@@ -1,0 +1,23 @@
+{
+  "badge": "?lang= v URL",
+  "title": "Jazyk je parametr v query",
+  "lead": "Každá stránka má jednu adresu. Jazyk jede v query stringu, server si ho přečte před vykreslením a přepínač jazyka je obyčejný odkaz.",
+  "cards": {
+    "shareable": {
+      "title": "Dá se poslat dál",
+      "text": "Odkaz si nese svůj jazyk: /about?lang=cs se otevře česky i tomu, komu ho pošleš."
+    },
+    "server": {
+      "title": "Vyřešeno na serveru",
+      "text": "Stránka se vykreslí rovnou v požadovaném jazyce, takže neproblikne ten špatný."
+    },
+    "unknown": {
+      "title": "Neznámá hodnota propadne",
+      "text": "?lang= řídí návštěvník. Cokoliv mimo nakonfigurovanou sadu se zahodí a k instanci se to nedostane."
+    }
+  },
+  "note": {
+    "title": "Tohle není varianta pro SEO",
+    "text": "Vyhledávače berou parametr v query jako tutéž stránku. Pokud má být jazyk součástí adresy, koukni na locale-router."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "badge": "?lang= in the URL",
+  "title": "The locale is a query parameter",
+  "lead": "Every page keeps one URL. The locale rides in the query string, the server reads it before rendering, and the language switcher is an ordinary link.",
+  "cards": {
+    "shareable": {
+      "title": "Shareable",
+      "text": "A link carries its language: /about?lang=cs opens in Czech for whoever receives it."
+    },
+    "server": {
+      "title": "Resolved on the server",
+      "text": "The page is rendered in the requested language, so there is no flash of the wrong one."
+    },
+    "unknown": {
+      "title": "Unknown values fall back",
+      "text": "?lang= is visitor-controlled. Anything outside the configured set is dropped, never handed to the instance."
+    }
+  },
+  "note": {
+    "title": "Not the SEO option",
+    "text": "Search engines treat a query parameter as the same page. If the language should be part of the address, look at locale-router instead."
+  }
+}

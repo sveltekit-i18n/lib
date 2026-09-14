@@ -1,0 +1,10 @@
+{
+  "badge": "Druhá routa",
+  "title": "Parametr přežije navigaci",
+  "lead": "Každý vnitřní odkaz si aktuální ?lang= nese s sebou, takže přechod mezi stránkami drží jazyk bez cookie a bez přesměrování.",
+  "facts": {
+    "locale": "Aktivní jazyk",
+    "loaded": "Načtené jmenné prostory",
+    "url": "Aktuální URL"
+  }
+}

@@ -1,17 +1,16 @@
-import { loadTranslations, translations, defaultLocale } from '$lib/translations';
+import { I18n } from 'sveltekit-i18n';
 
-/** @type {import('@sveltejs/kit').ServerLoad} */
-export const load = async ({ url, cookies }) => {
-  const { pathname, searchParams } = url;
+import { localeOf } from '$lib/locale.js';
+import { config } from '$lib/translations';
 
-  const initLocale = searchParams.get('lang') || cookies.get('locale') || defaultLocale;
+/** @type {import('./$types').LayoutServerLoad} */
+export const load = async ({ url }) => {
+  // One instance per request. A module-level singleton here would leak one
+  // visitor's locale into another visitor's page.
+  const i18n = new I18n(config);
+  const locale = localeOf(url);
 
-  cookies.set('locale', initLocale);
+  await i18n.loadTranslations(locale, url.pathname);
 
-  await loadTranslations(initLocale, pathname); // keep this just before the `return`
-
-  return {
-    i18n: { locale: initLocale, route: pathname },
-    translations: translations.get(), // `translations` on server contain all translations loaded by different clients
-  };
+  return { locale, translations: i18n.snapshot() };
 };

@@ -1,0 +1,23 @@
+{
+  "badge": "?lang= in der URL",
+  "title": "Die Sprache ist ein Query-Parameter",
+  "lead": "Jede Seite behält eine Adresse. Die Sprache reist im Query-String mit, der Server liest sie vor dem Rendern, und die Sprachwahl ist ein gewöhnlicher Link.",
+  "cards": {
+    "shareable": {
+      "title": "Teilbar",
+      "text": "Ein Link trägt seine Sprache: /about?lang=cs öffnet auf Tschechisch, auch bei dem, der ihn bekommt."
+    },
+    "server": {
+      "title": "Auf dem Server aufgelöst",
+      "text": "Die Seite wird direkt in der gewünschten Sprache gerendert, es blitzt keine falsche auf."
+    },
+    "unknown": {
+      "title": "Unbekanntes fällt zurück",
+      "text": "?lang= bestimmt der Besucher. Alles außerhalb der konfigurierten Menge wird verworfen und erreicht die Instanz nie."
+    }
+  },
+  "note": {
+    "title": "Nicht die SEO-Variante",
+    "text": "Suchmaschinen sehen einen Query-Parameter als dieselbe Seite. Soll die Sprache Teil der Adresse sein, sieh dir locale-router an."
+  }
+}

@@ -1,33 +1,57 @@
 <script>
-  import favicon from '$lib/assets/favicon.svg';
-  import { page } from '$app/stores';
-  import { goto } from '$app/navigation';
-  import { t, locale, locales } from '$lib/translations';
+  import { setContext } from 'svelte';
 
-  let { children } = $props();
+  import '../app.css';
+  import { page } from '$app/state';
 
-  let count = $state(2);
+  import { DEFAULT_LOCALE, LOCALES } from '$lib/locale.js';
+
+  let { data, children } = $props();
+
+  // The error page has no `load` of its own, so it reads the instance here.
+  setContext('i18n', data.i18n);
+
+  const i18n = data.i18n;
+
+  // Internal links carry the current locale, and the default one is the bare
+  // URL rather than ?lang=en — the same page should not have two addresses.
+  const href = (pathname, locale = data.locale) =>
+    (locale === DEFAULT_LOCALE ? pathname : `${pathname}?lang=${locale}`);
 </script>
 
-<svelte:head>
-  <link rel="icon" href={favicon} />
-</svelte:head>
+<header>
+  <a class="brand" href={href('/')}>
+    <strong>sveltekit-i18n</strong>
+    <span>{i18n.t('example.name')}</span>
+  </a>
 
-<a href="/">{$t('menu.home')}</a>
-<a href="/about">{$t('menu.about')}</a>
-<br/>
-<br/>
-{$t('menu.notification', { count })}<br />
-<button onclick={() => {if (count) count -= 1;}}>–</button>
-<button onclick={() => {count += 1;}}>+</button>
-<hr />
-{@render children()}
-<br />
-<br />
-<br />
-<br />
-<select onchange={({ currentTarget }) => goto(new URL(`?lang=${currentTarget.value}`, `${$page.url.href}`))}>
-  {#each $locales as value}
-    <option value="{value}" selected={value === $locale}>{$t(`lang.${value}`)}</option>
-  {/each}
-</select>
+  <nav>
+    <a href={href('/')} aria-current={page.url.pathname === '/' ? 'page' : undefined}>
+      {i18n.t('nav.home')}
+    </a>
+    <a href={href('/about')} aria-current={page.url.pathname === '/about' ? 'page' : undefined}>
+      {i18n.t('nav.about')}
+    </a>
+  </nav>
+
+  <nav aria-label={i18n.t('nav.language')}>
+    {#each LOCALES as locale (locale)}
+      <a
+        href={href(page.url.pathname, locale)}
+        aria-current={locale === data.locale ? 'page' : undefined}
+      >{locale}</a>
+    {/each}
+  </nav>
+</header>
+
+<main>
+  {@render children()}
+</main>
+
+<footer>
+  <a href="https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-param">
+    {i18n.t('footer.source')}
+  </a>
+  ·
+  <a href="https://sveltekit-i18n.github.io/docs">{i18n.t('footer.docs')}</a>
+</footer>
