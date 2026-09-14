@@ -1,0 +1,23 @@
+{
+  "badge": "Výchozí jazyk bez prefixu",
+  "title": "/about anglicky, /cs/about česky",
+  "lead": "Výchozí jazyk vlastní holou cestu, ostatní mají prefix. Celé předgenerované na adapter-static, s fallback skeletem, takže i neznámá adresa dostane přeloženou stránku.",
+  "cards": {
+    "optional": {
+      "title": "Nepovinný segment",
+      "text": "[[lang=locale]] pro angličtinu nematchuje vůbec nic. Matcher bere jen prefixované jazyky, jinak by spolkl /about."
+    },
+    "fallback": {
+      "title": "Fallback skelet",
+      "text": "fallback: '404.html' zapíše jeden skelet, který hosting servíruje na každou neznámou adresu. Právě díky němu je chybová stránka tvoje."
+    },
+    "error": {
+      "title": "Chybová stránka nemá load",
+      "text": "Instanci si bere z kontextu a její texty jedou v config.translations — na nic za loaderem se spolehnout nedá."
+    }
+  },
+  "note": {
+    "title": "Vyzkoušej si to",
+    "text": "Otevři /cs/nope na postaveném webu. 404 přijde česky hned napoprvé, ne až po reloadu."
+  }
+}

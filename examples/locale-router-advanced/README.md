@@ -1,16 +1,56 @@
-# Locale-router-advanced
-This app shows how to integrate locale routing using dynamic adapters (e.g. `@sveltejs/adapter-node`). It includes two pages and three language mutations (`en`, `de`, `cs`). Error pages are included as well. The default language (`en`) has no lang prefix in URL path.
+# Advanced locale router
 
-## How to use this example
+The default locale owns the bare path and every other locale carries a prefix:
+`/about` is English, `/cs/about` is Czech. Fully prerendered on
+`@sveltejs/adapter-static`, with a fallback shell so an unknown URL still gets a
+page of this application's — translated, on the first hit.
 
-- Download this example
-- Run `npm i` to install all dependencies (or `pnpm i`, `yarn`, etc.)
-- Run `npm run dev -- --open` to preview (or `pnpm run dev -- --open`, `yarn dev --open`, etc.)
+This is the configuration the [documentation
+site](https://sveltekit-i18n.github.io/) itself runs on.
 
-## Noticeable files
+## What to look at
 
-### `./src/hooks.server.js`
-Takes care about redirects to appropriate language mutation. It fetches pages with the default language mutation on background, and serves it to the client with no lang prefix in the URL path.
+| File | Why |
+|---|---|
+| [`src/params/locale.js`](./src/params/locale.js) | matches **only** the prefixed locales — accepting the default one would give every page two addresses, accepting anything would swallow `/about` |
+| [`svelte.config.js`](./svelte.config.js) | `fallback: '404.html'`, and explicit `entries` because a prefixed locale is reachable only through the switcher |
+| [`src/routes/+layout.js`](./src/routes/+layout.js) | reads the locale off `url.pathname`, not off the route params — the fallback shell renders for URLs that matched no route |
+| [`src/routes/+layout.svelte`](./src/routes/+layout.svelte) | sets `document.documentElement.lang` after hydration, because one shell serves every unknown URL |
+| [`src/routes/+error.svelte`](./src/routes/+error.svelte) | reads the instance from context; its strings ship in `config.translations` |
 
-### `./src/params/locale.js` (`./src/routes/[...lang=locale]`)
-Allows to pass only pages starting with locale or having no `path` (dafault lang index).
+## Why the error page works here
+
+A static host answers an unknown URL with one file. If that file is a shell that
+boots the app, the app decides what to render — including which language. Two
+things have to hold:
+
+1. everything the error page needs is in `config.translations`, not behind a
+   loader, because no `load` ran and no route matched;
+2. the locale is derived from `url.pathname`, because there are no route params
+   to read it from.
+
+Get either wrong and you see raw keys until the visitor reloads.
+
+## Verified
+
+Built, served the way a static host serves (`404.html` for anything missing) and
+driven in a browser with a **fresh context per URL**, so every row is a first
+hit:
+
+| URL | `<html lang>` | renders |
+|---|---|---|
+| `/`, `/about` | `en` | English |
+| `/cs`, `/cs/about` | `cs` | Czech |
+| `/de`, `/de/about` | `de` | German |
+| `/nope` | `en` | English 404 |
+| `/cs/nope` | `cs` | Czech 404 |
+| `/de/nope` | `de` | German 404 |
+
+## Run it
+
+```bash
+npm install
+npm run dev -- --open
+```
+
+`npm run build` writes `build/`; `npm run preview` serves it.

@@ -1,10 +1,10 @@
-import { locales } from '$lib/translations';
+import { PREFIXED } from '$lib/locale.js';
 
-/** @type {import('@sveltejs/kit').ParamMatcher} */
-export function match(param) {
-  const definedLocales = locales.get();
-  const paths = [...definedLocales, ''];
-  const slashPaths = paths.map((l) => `${l}/`);
-
-  return [...paths, ...slashPaths].includes(param);
-}
+/**
+ * Only the prefixed locales match. The default locale has no segment at all,
+ * so accepting it here would give every page two addresses — and accepting
+ * anything would let the optional segment swallow `/about`.
+ *
+ * @type {import('@sveltejs/kit').ParamMatcher}
+ */
+export const match = (param) => PREFIXED.includes(param);
