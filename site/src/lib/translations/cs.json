@@ -1,6 +1,7 @@
 {
   "site.tagline": "Internacionalizace pro SvelteKit",
   "nav.docs": "Dokumentace",
+  "nav.playground": "Hřiště",
   "nav.github": "GitHub",
   "nav.language": "Jazyk",
   "lang.en": "English",

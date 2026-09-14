@@ -1,0 +1,51 @@
+{
+  "title": "Spielwiese",
+  "lead": "Jedes Panel unten steuert eine echte Instanz über die öffentliche API. Ändere eine Eingabe und die Bibliothek antwortet — nichts hier ist eine Aufzeichnung.",
+  "source": "Code anzeigen",
+  "output": "Ausgabe",
+  "parser": {
+    "title": "Nachrichtenformate",
+    "lead": "Der Kern bringt kein eigenes Nachrichtenformat mit: ein Parser füllt den Slot. Curly kommt mit diesem Paket, ICU ist die Alternative, direkt auf dem Kern.",
+    "format": "Nachrichtenformat",
+    "flavour": {
+      "curly": "Curly",
+      "icu": "ICU"
+    },
+    "message": "Nachricht",
+    "payload": "Daten",
+    "locale": "Sprache",
+    "silent": "Keine Meldungen. Eine Meldung wirft nie — der Platzhalter nimmt seinen Ersatz und der Rest der Nachricht wird aufgelöst."
+  },
+  "preprocess": {
+    "title": "Vorverarbeitung",
+    "lead": "Aus verschachtelten Übersetzungen werden die flachen Schlüssel, die t() liest. Wie weit das geht, entscheidet der Modus.",
+    "input": "Übersetzungen",
+    "note": "rawTranslations behält die Eingabe so, wie sie ankam; translations ist das, was du hier siehst."
+  },
+  "loaders": {
+    "title": "Loader",
+    "lead": "Ein Loader läuft, wenn seine Sprache passt und seine routes zur aktuellen Route passen, einmal pro Frische-Fenster. Lade dieselbe Route zweimal und sieh zu, wie der zweite Versuch nichts tut.",
+    "locale": "Sprache",
+    "route": "Route",
+    "load": "Übersetzungen laden",
+    "invalidate": "Invalidieren",
+    "reset": "Zurücksetzen",
+    "empty": "Wähle Sprache und Route, dann lade.",
+    "shape": {
+      "every": "ohne routes — jede Route",
+      "exact": "ein String — exakte Übereinstimmung",
+      "pattern": "ein Muster — ein ganzer Abschnitt"
+    },
+    "status": {
+      "ran": "lief",
+      "cached": "bereits geladen",
+      "skipped": "passt nicht"
+    }
+  },
+  "fallback": {
+    "title": "Ersatzsprache",
+    "lead": "Ein Schlüssel, den die aktive Sprache nicht trägt, wird über fallbackLocale aufgelöst, statt leer zu bleiben.",
+    "key": "Schlüssel",
+    "note": "Nur die fehlenden Schlüssel greifen auf die Ersatzsprache zurück. Was ein überall fehlender Schlüssel ergibt, bestimmt fallbackValue."
+  }
+}

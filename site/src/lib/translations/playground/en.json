@@ -1,0 +1,51 @@
+{
+  "title": "Playground",
+  "lead": "Every panel below drives a real instance through the public API. Change an input and the library answers — nothing here is a recording.",
+  "source": "Show the code",
+  "output": "Output",
+  "parser": {
+    "title": "Message formats",
+    "lead": "The core holds no message format of its own: a parser fills the slot. Curly comes with this package; ICU is the alternative, on the core directly.",
+    "format": "Message format",
+    "flavour": {
+      "curly": "Curly",
+      "icu": "ICU"
+    },
+    "message": "Message",
+    "payload": "Payload",
+    "locale": "Locale",
+    "silent": "No reports. A report never raises — the placeholder takes its fallback and the rest of the message resolves."
+  },
+  "preprocess": {
+    "title": "Preprocessing",
+    "lead": "Nested translations become the flat keys t() reads. The mode decides how far that goes.",
+    "input": "Translations",
+    "note": "rawTranslations keeps the input as it arrived; translations is what you see here."
+  },
+  "loaders": {
+    "title": "Loaders",
+    "lead": "A loader runs when its locale matches and its routes match the current route, once per freshness window. Load the same route twice and watch the second attempt do nothing.",
+    "locale": "Locale",
+    "route": "Route",
+    "load": "Load translations",
+    "invalidate": "Invalidate",
+    "reset": "Reset",
+    "empty": "Pick a locale and a route, then load.",
+    "shape": {
+      "every": "no routes — every route",
+      "exact": "a string — exact match",
+      "pattern": "a pattern — a whole section"
+    },
+    "status": {
+      "ran": "ran",
+      "cached": "already loaded",
+      "skipped": "did not match"
+    }
+  },
+  "fallback": {
+    "title": "Fallback locale",
+    "lead": "A key the active locale does not carry resolves through fallbackLocale instead of rendering empty.",
+    "key": "Key",
+    "note": "Only the missing keys fall back. What a key missing everywhere renders as is fallbackValue."
+  }
+}
