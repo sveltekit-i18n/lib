@@ -1,0 +1,87 @@
+name: Site
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened,reopened,synchronize]
+    paths:
+      - 'docs/**'
+      - 'site/**'
+      - '.github/workflows/site.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - 'docs/**'
+      - 'site/**'
+      - '.github/workflows/site.yml'
+
+jobs:
+  Site:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      # The site imports the package through its exports map, which points at
+      # `dist/`; without a fresh build it would render against a stale one.
+      - name: Build Package
+        run: pnpm run build
+
+      - name: Build Site
+        run: pnpm --filter @sveltekit-i18n/site build
+
+      # The prerenderer reports a broken page as an error page rather than as a
+      # failed build, so assert on what was written.
+      - name: Check Output
+        run: |
+          test -f site/build/.nojekyll
+          test -f site/build/404.html
+          grep -q 'Getting Started' site/build/docs/getting-started.html
+          grep -q 'Internacionalizace' site/build/cs/docs.html
+
+      # GITHUB_TOKEN is scoped to this repository, so the push to the Pages
+      # repository goes through the automation app, as the release does.
+      - name: Mint app token
+        id: app-token
+        if: github.event_name != 'pull_request'
+        uses: actions/create-github-app-token@v3
+        with:
+          app-id: ${{ secrets.AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.AUTOMATION_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: sveltekit-i18n.github.io
+
+      - name: Checkout Pages
+        if: github.event_name != 'pull_request'
+        uses: actions/checkout@v7
+        with:
+          repository: sveltekit-i18n/sveltekit-i18n.github.io
+          token: ${{ steps.app-token.outputs.token }}
+          path: pages
+
+      - name: Deploy
+        if: github.event_name != 'pull_request'
+        run: |
+          find pages -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -r site/build/. pages/
+          cd pages
+          git config user.name '${{ steps.app-token.outputs.app-slug }}[bot]'
+          git config user.email '${{ steps.app-token.outputs.app-slug }}[bot]@users.noreply.github.com'
+          git add -A
+          git diff --quiet --cached || git commit -m "Deploy ${GITHUB_REPOSITORY}@${GITHUB_SHA}"
+          git push origin HEAD
