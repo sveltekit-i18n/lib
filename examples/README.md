@@ -1,61 +1,79 @@
 # Examples
 
-These examples demonstrate how to integrate `sveltekit-i18n` into your app. Each
-one is a standalone SvelteKit application covering an **application-shaped**
-decision — an adapter, a `svelte.config.js`, a `hooks.server.js`, a route tree.
+Each directory is a standalone SvelteKit application on `sveltekit-i18n` 3.x.
+They cover the **application-shaped** decisions — an adapter, a
+`svelte.config.js`, a `hooks.server.js`, a route tree — the things that are hard
+to get right from a snippet.
 
 Everything that is really three lines of configuration lives on the
 [playground](https://sveltekit-i18n.github.io/playground) instead, where a real
-instance responds as you change it: message formats (`parser-curly`,
+instance answers as you change it: message formats (`parser-curly`,
 `parser-icu`), `config.preprocess`, `config.loaders` matching and freshness, and
 `config.fallbackLocale`.
 
-Currently, these setups are present:
+## Routing
 
-[`multi-page`](./multi-page)
-- this is the most frequent use-case – application with multiple routes
-- translations are loaded not only according to the locale, but given routes as well
-- it prevents duplicit (server and client) translation load on app enter
+[`multi-page`](./multi-page) — the common case
+- several routes, no locale in the URL
+- the locale is negotiated per request from a cookie, then `Accept-Language`
+- one namespace per route, and a translated error page
+- `@sveltejs/adapter-node`
 
-[`locale-param`](./locale-param)
-- this `multi-page` app demonstrates lang routing based on URL parameter (e.g. `https://example.com/?lang=en`)
+[`locale-param`](./locale-param) — the locale in the query string
+- `/about?lang=cs`, resolved on the server before rendering
+- internal links carry the locale; the default locale keeps the bare URL
+- not the SEO option — a query parameter is the same page to a crawler
+- `@sveltejs/adapter-node`
 
-[`locale-router-static`](./locale-router-static)
-- this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
-- this approach is great if you care about SEO
-- optimized for `@sveltejs/adapter-static`
+[`locale-router`](./locale-router) — the locale in the path, prerendered
+- `/en/about`, `/cs/about`, `/de/about`
+- `entries()` for what the crawler cannot discover on its own
+- `@sveltejs/adapter-node`, everything prerendered
 
-[`locale-router`](./locale-router)
-- this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
-- this approach is great if you care about SEO
-- optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
+[`locale-router-static`](./locale-router-static) — the same, with no server
+- one HTML file per page per locale
+- an unknown URL is the host's 404, not the app's
+- `@sveltejs/adapter-static`
 
-[`locale-router-advanced`](./locale-router-advanced)
-- this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
-- this approach is great if you care about SEO
-- optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
-- default locale routes do not have any lang prefix in path
+[`locale-router-advanced`](./locale-router-advanced) — the default locale has no prefix
+- `/about` is English, `/cs/about` is Czech
+- a `404.html` fallback shell, so the error page is **yours** and arrives
+  translated on the first hit
+- the configuration the [documentation site](https://sveltekit-i18n.github.io/)
+  itself runs on
+- `@sveltejs/adapter-static`
+
+## Component-scoped translations
 
 [`component-scoped-csr`](./component-scoped-csr)
-- this is the most complex approach, which allows you to scope your translations to components, so they can have their own lexicons
-- app translations are loaded the same way as for `multi-page` (SSR)
-- component's translations are loaded in component promise (CSR - SvelteKit does not provide server side load method for components, so translation loaders are triggered on client side only)
+- a component with its own instance and its own lexicon, loaded in the browser
+- not in the server-rendered HTML — the trade-off, shown deliberately
 
 [`component-scoped-ssr`](./component-scoped-ssr)
-- SvelteKit does not provide server side load method for components.
-- component's `load` is replaced by exported init method. This method initializes related language mutation within parent page's `load` method.
-- after the load, appropriate props are delegated back to the component instance.
+- the same component, loaded by the page and handed down through `snapshot()`
+- complete on the first render, still reactive afterwards
+
+## Content
+
+[`mdsvex`](./mdsvex)
+- a `.svx` route: `t()` in Markdown, route-scoped loading, prerendered per locale
+
 ## How to use an example
 
-- Clone or download the example you want to use
-- Navigate to the downloaded folder using Terminal (e.g. `cd ./your/example/destination/`)
-- Install dependencies using your preferred package manager:
-  - `npm i sveltekit-i18n@latest`
-  - `pnpm i sveltekit-i18n@latest`
-  - `yarn add sveltekit-i18n@latest`
-  - Or any other package manager you prefer
-- Run the dev server to preview:
-  - `npm run dev -- --open`
-  - `pnpm run dev -- --open`
-  - `yarn dev --open`
-  - Or the equivalent command for your package manager
+Copy the directory out of this repository and install:
+
+```bash
+npm install          # or pnpm install, yarn, …
+npm run dev -- --open
+```
+
+Inside this repository the examples resolve `sveltekit-i18n` through the
+workspace, so they always build against the current source. On their own they
+resolve the published package.
+
+## In CI
+
+Every example is built on each change under `examples/**`, and the build output
+is checked for a known translated string. An exit code proves nothing here: once
+`handleError` returns a well-formed error, a prerender writes an error page for
+every route and still succeeds.

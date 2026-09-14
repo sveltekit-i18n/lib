@@ -1,0 +1,86 @@
+name: Examples
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened,reopened,synchronize]
+    paths:
+      - 'examples/**'
+      - 'src/**'
+      - '.github/workflows/examples.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - 'examples/**'
+      - 'src/**'
+      - '.github/workflows/examples.yml'
+
+jobs:
+  Examples:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      # The examples import the package through its exports map, which points
+      # at `dist/`; without a fresh build they would build against a stale one.
+      - name: Build Package
+        run: pnpm run build
+
+      - name: Build Examples
+        run: pnpm --filter './examples/*' run build
+
+      # An exit code proves nothing here: once `handleError` returns a
+      # well-formed error, a prerender writes an error page for every route and
+      # still succeeds. Assert on what was written, in more than one locale.
+      - name: Check Prerendered Output
+        run: |
+          grep -q 'The language is part of the address' examples/locale-router/build/prerendered/en.html
+          grep -q 'Jazyk je součástí adresy' examples/locale-router/build/prerendered/cs.html
+          grep -q 'Die Sprache gehört zur Adresse' examples/locale-router/build/prerendered/de.html
+          grep -q 'Every page is a file on disk' examples/locale-router-static/build/en.html
+          grep -q 'Každá stránka je soubor na disku' examples/locale-router-static/build/cs.html
+          test -f examples/locale-router-advanced/build/404.html
+          grep -q 'in English' examples/locale-router-advanced/build/about.html
+          grep -q 'dva tvary adresy' examples/locale-router-advanced/build/cs/about.html
+          grep -q 'Install the package' examples/mdsvex/build/en/guide.html
+          grep -q 'Nainstaluj balíček' examples/mdsvex/build/cs/guide.html
+
+      # The server-rendered examples write no HTML at build time, so they are
+      # started and asked.
+      - name: Check Server-Rendered Output
+        run: |
+          check() {
+            PORT=4173 node "examples/$1/build/index.js" &
+            local pid=$!
+            for _ in $(seq 1 40); do
+              curl -sf -o /dev/null http://127.0.0.1:4173/ && break
+              sleep 0.25
+            done
+            local body
+            body=$(curl -sf -H "Accept-Language: $2" "http://127.0.0.1:4173$3")
+            kill "$pid"
+            echo "$body" | grep -q "$4" || { echo "missing '$4' in $1$3 ($2)"; exit 1; }
+          }
+          check multi-page en / 'Translations that arrive with the route'
+          check multi-page cs / 'Překlady, které dorazí s routou'
+          check multi-page de /about 'Diese Seite hat ihren eigenen Namensraum'
+          check locale-param en '/?lang=cs' 'Jazyk je parametr v query'
+          check component-scoped-csr en / 'A component with its own lexicon'
+          check component-scoped-ssr en / 'Shipping rates'
+          check component-scoped-ssr cs / 'Ceny dopravy'

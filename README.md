@@ -258,19 +258,20 @@ Svelte context — is in the
 
 ## Examples
 
-> [!NOTE]
-> The examples still show the v2 API. Their rework is tracked in
-> [#230](https://github.com/sveltekit-i18n/lib/issues/230); until it lands, the
-> [Getting Started guide](./docs/GETTING_STARTED.md) is the reference for v3
-> wiring.
+Each example is a standalone SvelteKit application covering a decision that is
+application-shaped — an adapter, a `svelte.config.js`, a route tree:
 
-Explore working examples for different use cases:
+- [Multi-page app](./examples/multi-page) – the common setup: cookie and `Accept-Language`, route-scoped loading
+- [Locale-based routing](./examples/locale-router) – SEO-friendly URLs (e.g. `/en/about`), prerendered
+- [Default locale without a prefix](./examples/locale-router-advanced) – `/about` and `/cs/about`, static, translated 404
+- [Component-scoped translations](./examples/component-scoped-ssr) – a component with its own lexicon
+- [Markdown routes](./examples/mdsvex) – `t()` inside `.svx`
+- [All examples](./examples) – complete list
 
-- [Multi-page app](./examples/multi-page) – Most common setup
-- [Locale-based routing](./examples/locale-router) – SEO-friendly URLs (e.g., `/en/about`)
-- [Component-scoped translations](./examples/component-scoped-ssr) – Isolated translation contexts
-- [Custom parsers](./examples/parser-icu) – Using ICU message format
-- [All examples](./examples) – Complete list of examples
+Everything that is really three lines of configuration — message formats,
+`preprocess`, `loaders`, `fallbackLocale` — is on the
+[playground](https://sveltekit-i18n.github.io/playground) instead, where a real
+instance answers as you change it.
 
 ## Advanced Usage
 
