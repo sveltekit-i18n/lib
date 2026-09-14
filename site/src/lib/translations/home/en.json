@@ -1,6 +1,6 @@
 {
   "read": "Read the documentation",
-  "requirements": "Svelte 5 and Node 22 or newer. ESM only.",
+  "requirements": "Svelte 5 and Node 22, Bun 1.2 or Deno 2 or newer. ESM only.",
   "why": "Why sveltekit-i18n",
   "start": "Quick start",
   "more": "The full getting started guide",

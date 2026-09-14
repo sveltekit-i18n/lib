@@ -51,7 +51,9 @@
   },
   "homepage": "https://github.com/sveltekit-i18n/lib#readme",
   "engines": {
-    "node": ">=22"
+    "node": ">=22",
+    "bun": ">=1.2",
+    "deno": ">=2"
   },
   "peerDependencies": {
     "svelte": ">=5"

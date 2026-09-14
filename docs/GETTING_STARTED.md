@@ -21,7 +21,8 @@ switcher and route-scoped loading. Everything here is v3.
 
 - **Svelte 5 or newer.** The instance is built on runes; there are no stores in
   it.
-- **Node 22 or newer.**
+- **Node 22, Bun 1.2 or Deno 2, or newer.** The package imports no `node:`
+  module, so every runtime that runs your SvelteKit build runs it.
 - **ESM only.** There is no CommonJS entry.
 
 The core ships its rune modules **uncompiled**, for the consumer's bundler to
@@ -33,6 +34,8 @@ externalized (in Vitest: `test.server.deps.inline`).
 
 ```bash
 npm install sveltekit-i18n
+# bun add sveltekit-i18n
+# deno add npm:sveltekit-i18n
 ```
 
 That is the whole install. `@sveltekit-i18n/base` (the core) and

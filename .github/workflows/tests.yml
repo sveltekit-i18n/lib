@@ -36,3 +36,53 @@ jobs:
       - run: pnpm run test
         env:
           tests: true
+
+  # The package declares no runtime API of its own, so these legs exist to keep
+  # that true. Dependencies still install through pnpm: the alternative runtimes
+  # run the suite, they do not manage the tree.
+  Runtimes:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          # `bun x` resolves the binary but runs it on Node; `--bun` is what
+          # puts the suite on Bun's own runtime.
+          - runtime: bun
+            test: bun --bun x vitest run
+          # Deno reaches an npm binary by path, not through `node_modules/.bin`.
+          - runtime: deno
+            test: deno run -A node_modules/vitest/vitest.mjs run
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      # `latest`, not the floor `engines` declares: Vitest needs a newer Bun
+      # than the package itself does.
+      - uses: oven-sh/setup-bun@v2
+        if: matrix.runtime == 'bun'
+        with:
+          bun-version: latest
+
+      - uses: denoland/setup-deno@v2
+        if: matrix.runtime == 'deno'
+        with:
+          deno-version: v2.x
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+
+      - run: ${{ matrix.test }}
+        env:
+          tests: true
