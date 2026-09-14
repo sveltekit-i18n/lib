@@ -1,0 +1,10 @@
+{
+  "badge": "Second route",
+  "title": "This page was written out three times",
+  "lead": "Once per locale, at build time. The about namespace was loaded during the prerender and is already in the HTML you are reading.",
+  "facts": {
+    "locale": "Active locale",
+    "loaded": "Loaded namespaces",
+    "route": "Route the loaders matched"
+  }
+}

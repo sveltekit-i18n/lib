@@ -1,0 +1,10 @@
+{
+  "badge": "Druhá routa",
+  "title": "Tahle stránka se vypsala třikrát",
+  "lead": "Jednou za jazyk, při buildu. Jmenný prostor about se načetl během prerenderu a je už v HTML, které právě čteš.",
+  "facts": {
+    "locale": "Aktivní jazyk",
+    "loaded": "Načtené jmenné prostory",
+    "route": "Routa, na kterou loadery sedly"
+  }
+}

@@ -1,19 +1,12 @@
-/* eslint-disable */
-
 import adapter from '@sveltejs/adapter-static';
-import lang from './src/lib/translations/lang.js';
-
-const supportedLocales = Object.keys(lang);
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  kit: {
-    adapter: adapter(),
-    prerender: {
-      // NOTE: You can modify your exported error pages here.
-      entries: supportedLocales.reduce((acc, locale) => [...acc, `/${locale}`, `/${locale}/401`, `/${locale}/403`, `/${locale}/404`, `/${locale}/500`], ['*']),
-    },
-  },
+  preprocess: vitePreprocess(),
+  // No fallback: every page is written out, and an unknown URL is answered by
+  // whatever serves the files. locale-router-advanced takes the other option.
+  kit: { adapter: adapter() },
 };
 
 export default config;

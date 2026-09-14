@@ -1,31 +1,24 @@
-import { dev } from '$app/environment';
-import i18n from 'sveltekit-i18n';
-import en from './en';
-import de from './de';
-import cs from './cs';
-import lang from './lang';
+import { LOCALES } from '$lib/locale.js';
+import cs from './cs.json';
+import de from './de.json';
+import en from './en.json';
+
+/**
+ * The config, not an instance: this module is evaluated once per process, so
+ * one instance here would be shared by every page being prerendered.
+ */
+export const NAMESPACES = [
+  { key: 'home', routes: ['/'] },
+  { key: 'about', routes: ['/about'] },
+];
 
 /** @type {import('sveltekit-i18n').Config} */
-const config = {
-  log: {
-    level: dev ? 'warn' : 'error',
-  },
-  translations: {
-    en: {
-      ...en,
-      lang,
-    },
-    de: {
-      ...de,
-      lang,
-    },
-    cs: {
-      ...cs,
-      lang,
-    },
-  },
+export const config = {
+  translations: { en, cs, de },
+  loaders: NAMESPACES.flatMap(({ key, routes }) => LOCALES.map((locale) => ({
+    locale,
+    key,
+    routes,
+    loader: async () => (await import(`./${key}/${locale}.json`)).default,
+  }))),
 };
-
-export const defaultLocale = 'en';
-
-export const { t, locale, locales, loading, setLocale, setRoute, translations } = new i18n(config);

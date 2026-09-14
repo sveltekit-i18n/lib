@@ -1,0 +1,23 @@
+{
+  "badge": "Za běhu žádný server",
+  "title": "Každá stránka je soubor na disku",
+  "lead": "@sveltejs/adapter-static zapíše jeden HTML soubor na stránku a jazyk. Nahraj adresář kamkoliv — do bucketu, na CDN, na GitHub Pages — a máš hotový deploy.",
+  "cards": {
+    "entries": {
+      "title": "Entries, ne náhoda",
+      "text": "Crawler začíná na / a chodí po odkazech. /cs si nevymyslí, takže si každá stránka pod [lang] určuje vlastní entries."
+    },
+    "strict": {
+      "title": "Ve výchozím stavu přísný",
+      "text": "Build spadne, když nějakou routu nejde předgenerovat, místo aby tiše vypustil web s dírami."
+    },
+    "hooks": {
+      "title": "Hooks pořád běží",
+      "text": "handle běží během prerenderu, a právě proto má každý zapsaný soubor vlastní <html lang>."
+    }
+  },
+  "note": {
+    "title": "Neznámé adresy patří hostingu",
+    "text": "Žádný fallback tu není, takže na /cokoliv-dalsiho odpovídá to, co soubory servíruje, ne tahle aplikace. Pokud má být 404 tvoje a přeložená, koukni na locale-router-advanced."
+  }
+}

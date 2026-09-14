@@ -1,0 +1,23 @@
+{
+  "badge": "Kein Server zur Laufzeit",
+  "title": "Jede Seite ist eine Datei",
+  "lead": "@sveltejs/adapter-static schreibt eine HTML-Datei pro Seite und Sprache. Lade das Verzeichnis irgendwohin — Bucket, CDN, GitHub Pages — und das ist das ganze Deployment.",
+  "cards": {
+    "entries": {
+      "title": "Entries statt Glück",
+      "text": "Der Crawler startet bei / und folgt Links. /cs kann er nicht erfinden, also nennt jede Seite unter [lang] ihre eigenen entries."
+    },
+    "strict": {
+      "title": "Standardmäßig strikt",
+      "text": "Der Build schlägt fehl, wenn eine Route nicht vorgerendert werden kann, statt stillschweigend eine lückenhafte Seite auszuliefern."
+    },
+    "hooks": {
+      "title": "Hooks laufen weiterhin",
+      "text": "handle läuft während des Prerenders — so bekommt jede geschriebene Datei ihr eigenes <html lang>."
+    }
+  },
+  "note": {
+    "title": "Unbekannte URLs gehören dem Host",
+    "text": "Hier gibt es keinen Fallback: /irgendwas-anderes beantwortet der Dienst, der die Dateien ausliefert, nicht diese App. Soll die 404 deine und übersetzt sein, sieh dir locale-router-advanced an."
+  }
+}
