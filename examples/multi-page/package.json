@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "sveltekit-i18n": "workspace:*"
+    "sveltekit-i18n": "^3.0.0"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "^5.3.4",
