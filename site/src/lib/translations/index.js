@@ -16,6 +16,7 @@ import { DEFAULT_LOCALE, LOCALES } from '$lib/docs.js';
 const NAMESPACES = [
   { key: 'docs', routes: [/^\/docs(\/|$)/] },
   { key: 'home', routes: ['/'] },
+  { key: 'playground', routes: ['/playground'] },
 ];
 
 /** @type {import('sveltekit-i18n').Config} */

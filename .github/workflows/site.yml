@@ -53,6 +53,8 @@ jobs:
           test -f site/build/404.html
           grep -q 'Getting Started' site/build/docs/getting-started.html
           grep -q 'Internacionalizace' site/build/cs/docs.html
+          grep -q 'Message formats' site/build/playground.html
+          grep -q 'Formáty zpráv' site/build/cs/playground.html
 
       # GITHUB_TOKEN is scoped to this repository, so the push to the Pages
       # repository goes through the automation app, as the release does.

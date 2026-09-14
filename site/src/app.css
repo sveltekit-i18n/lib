@@ -327,3 +327,249 @@ pre {
   font-size: 3rem;
   font-weight: 700;
 }
+
+.playground {
+  margin: 0 auto;
+  max-width: var(--measure);
+}
+
+.playground h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.playground .lead {
+  color: var(--muted);
+}
+
+.panel {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.panel h2 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.panel h2 .anchor {
+  float: left;
+  margin-left: -1.1em;
+  padding-right: 0.35em;
+  color: var(--muted);
+  opacity: 0;
+  text-decoration: none;
+}
+
+.panel h2:hover .anchor { opacity: 1; }
+
+.panel details {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.panel summary {
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.panel details pre { margin-bottom: 0; }
+
+.flavours {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.fields {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 46rem) {
+  .fields { grid-template-columns: 1fr 1fr; }
+
+  .fields .narrow { max-width: 14rem; }
+}
+
+.fields label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.fields :is(textarea, select) {
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: var(--code-bg);
+  color: var(--fg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+button {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+button.active,
+button.primary {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.label {
+  margin: 1.5rem 0 0.5rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.7rem;
+}
+
+output {
+  display: block;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--code-bg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+output.bad { color: var(--accent); }
+
+.note {
+  margin: 1rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.reports {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.reports li {
+  margin: 0.4rem 0;
+  color: var(--muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1.5rem 0 0;
+}
+
+.actions .inline {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.modes {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 46rem) {
+  .modes { grid-template-columns: repeat(3, 1fr); }
+}
+
+.modes .label {
+  margin-top: 0;
+  font-size: 0.8rem;
+  /* `preserveArrays` is an API value, so it keeps its own spelling. */
+  text-transform: none;
+}
+
+.keys {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+}
+
+.keys li { margin: 0.3rem 0; }
+
+.type {
+  margin-left: 0.4rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.log {
+  margin: 1.5rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+}
+
+.log li { margin-bottom: 1.25rem; }
+
+.trigger { margin: 0 0 0.5rem; }
+
+.statuses {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.statuses li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: baseline;
+  margin: 0.25rem 0;
+  font-size: 0.85rem;
+}
+
+.statuses span { color: var(--muted); font-size: 0.8rem; }
+
+.statuses strong { margin-left: auto; font-size: 0.8rem; }
+
+.statuses .ran strong { color: var(--accent); }
+
+.statuses :is(.cached, .skipped) strong { color: var(--muted); font-weight: 400; }
+
+.keys-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.6rem 0 0;
+}
+
+.fallback {
+  margin-top: 1.5rem;
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.fallback :is(th, td) {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+.fallback .missing td:nth-child(2) { color: var(--muted); }

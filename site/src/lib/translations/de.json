@@ -1,6 +1,7 @@
 {
   "site.tagline": "Internationalisierung für SvelteKit",
   "nav.docs": "Dokumentation",
+  "nav.playground": "Spielwiese",
   "nav.github": "GitHub",
   "nav.language": "Sprache",
   "lang.en": "English",

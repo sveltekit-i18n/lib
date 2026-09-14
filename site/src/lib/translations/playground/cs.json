@@ -1,0 +1,51 @@
+{
+  "title": "Hřiště",
+  "lead": "Každý panel níže řídí skutečnou instanci přes veřejné API. Změň vstup a knihovna odpoví — nic tady není nahrávka.",
+  "source": "Zobrazit kód",
+  "output": "Výstup",
+  "parser": {
+    "title": "Formáty zpráv",
+    "lead": "Jádro samo žádný formát zpráv nemá: slot vyplňuje parser. Curly přichází s tímto balíčkem, ICU je alternativa postavená přímo na jádře.",
+    "format": "Formát zprávy",
+    "flavour": {
+      "curly": "Curly",
+      "icu": "ICU"
+    },
+    "message": "Zpráva",
+    "payload": "Data",
+    "locale": "Jazyk",
+    "silent": "Žádná hlášení. Hlášení nikdy nevyhodí výjimku — placeholder vezme svou náhradu a zbytek zprávy se vyhodnotí."
+  },
+  "preprocess": {
+    "title": "Předzpracování",
+    "lead": "Z vnořených překladů se stávají ploché klíče, které čte t(). Jak daleko se zajde, určuje režim.",
+    "input": "Překlady",
+    "note": "rawTranslations drží vstup tak, jak přišel; translations je to, co vidíš tady."
+  },
+  "loaders": {
+    "title": "Loadery",
+    "lead": "Loader se spustí, když sedí jeho jazyk i jeho routes na aktuální route, jednou za okno čerstvosti. Načti stejnou route dvakrát a sleduj, jak druhý pokus neudělá nic.",
+    "locale": "Jazyk",
+    "route": "Route",
+    "load": "Načíst překlady",
+    "invalidate": "Invalidovat",
+    "reset": "Reset",
+    "empty": "Vyber jazyk a route, pak načti.",
+    "shape": {
+      "every": "bez routes — každá route",
+      "exact": "řetězec — přesná shoda",
+      "pattern": "vzor — celá sekce"
+    },
+    "status": {
+      "ran": "spustil se",
+      "cached": "už načteno",
+      "skipped": "neodpovídá"
+    }
+  },
+  "fallback": {
+    "title": "Záložní jazyk",
+    "lead": "Klíč, který aktivní jazyk nemá, se vyhodnotí přes fallbackLocale, místo aby zůstal prázdný.",
+    "key": "Klíč",
+    "note": "Zálohují se jen chybějící klíče. Co vykreslí klíč chybějící všude, určuje fallbackValue."
+  }
+}

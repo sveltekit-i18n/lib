@@ -45,6 +45,7 @@
 
   <nav>
     <a href="{data.prefix}/docs">{i18n.t('nav.docs')}</a>
+    <a href="{data.prefix}/playground">{i18n.t('nav.playground')}</a>
     <a href={REPO} rel="noreferrer">{i18n.t('nav.github')}</a>
   </nav>
 </header>

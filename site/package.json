@@ -8,7 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "sveltekit-i18n": "workspace:*"
+    "sveltekit-i18n": "workspace:*",
+    "@sveltekit-i18n/base": "3.0.0",
+    "@sveltekit-i18n/parser-icu": "3.0.0"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.10",
