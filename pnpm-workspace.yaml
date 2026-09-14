@@ -2,3 +2,6 @@ packages:
   - 'examples/*'
   - 'site'
 
+# The examples pin the published version so a copied-out directory installs on
+# its own; inside the repository that range resolves to the workspace package.
+linkWorkspacePackages: true
