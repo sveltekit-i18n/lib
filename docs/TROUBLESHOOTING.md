@@ -259,6 +259,7 @@ This is documented rather than fixed.
 - `ReferenceError: $state is not defined`, `$derived is not defined`
 - A syntax error pointing inside `@sveltekit-i18n/base`
 - Everything works in the SvelteKit dev server but fails in a plain Vite build, a Vitest run, or a Node script
+- A SvelteKit build whose client bundle succeeds and which then fails during SSR or prerendering, with the stack pointing inside `base`
 
 **Cause:**
 
@@ -266,7 +267,19 @@ The core ships its rune modules **uncompiled**, for the consumer's bundler to co
 
 **Solution:**
 
-In a SvelteKit application this is automatic. In a bare Vite setup, add the Svelte plugin:
+In a SvelteKit application this is automatic — but only because `vite-plugin-svelte` finds the package through the application's own `package.json` and keeps it out of the server build's externals. An application that resolves the core some other way — absent from `dependencies`, linked by hand, reached through an alias — is externalized for the server build instead, and the runes survive into it. The client bundle still compiles, so nothing fails until the server code runs, at SSR or prerender time. Declaring the dependency normally is the fix; where that is not possible, name it in `ssr.noExternal`:
+
+```javascript
+// vite.config.js
+export default defineConfig({
+  plugins: [sveltekit()],
+  ssr: {
+    noExternal: ['@sveltekit-i18n/base'],
+  },
+});
+```
+
+In a bare Vite setup, add the Svelte plugin:
 
 ```javascript
 // vite.config.js
