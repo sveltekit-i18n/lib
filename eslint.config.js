@@ -5,9 +5,9 @@ import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  // Build outputs, plus `examples/` — each example is a standalone SvelteKit
-  // project with its own toolchain, outside this config's program.
-  { ignores: ['**/dist/', '**/lib/', 'examples/'] },
+  // Build outputs, plus `examples/` and `site/` — each is a standalone
+  // SvelteKit project with its own toolchain, outside this config's program.
+  { ignores: ['**/dist/', '**/lib/', 'examples/', 'site/'] },
   js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   {
