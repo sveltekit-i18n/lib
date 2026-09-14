@@ -1305,8 +1305,14 @@ a migration:
 
 Also worth knowing:
 
-- **One install.** `@sveltekit-i18n/parser-default` is gone; remove it, and do
-  not add `@sveltekit-i18n/base` or `@sveltekit-i18n/parser-curly` either.
+- **One install.** `@sveltekit-i18n/parser-default` is gone. If it sat beside
+  this package, drop it: `parser-curly` replaces it and comes with this package,
+  so do not add `@sveltekit-i18n/base` or `@sveltekit-i18n/parser-curly` either.
+  If you built on `@sveltekit-i18n/base` directly, you are not migrating to this
+  package — keep base and swap `parser-default` for
+  [`parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)
+  or [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu),
+  passed as `config.parser`.
 - **Per-request instances on the server.** A module-level singleton leaks one
   visitor's locale into another's page — see
   [Server-Side Rendering](#server-side-rendering).
