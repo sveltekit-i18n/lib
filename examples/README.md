@@ -2,62 +2,62 @@
 
 These examples demonstrate how to integrate `sveltekit-i18n` into your app. Currently, these setups are present:
 
-[`single-load`](./single-load) – [Demo](https://single-load.netlify.app)
+[`single-load`](./single-load)
 - loads all translations for all language mutations during `i18n` initialization
 - usually this is not what you are looking for, but it can be useful if you need all your translations in place.
 
-[`one-page`](./one-page) – [Demo](https://one-page-example.netlify.app)
+[`one-page`](./one-page)
 - this approach is useful for one-page apps
 - translations are loaded dynamically according to locale
 
-[`multi-page`](./multi-page) – [Demo](https://multi-page-example.netlify.app)
+[`multi-page`](./multi-page)
 - this is the most frequent use-case – application with multiple routes
 - translations are loaded not only according to the locale, but given routes as well
 - it prevents duplicit (server and client) translation load on app enter
 
-[`locale-param`](./locale-param) – [Demo](https://locale-param.netlify.app)
+[`locale-param`](./locale-param)
 - this `multi-page` app demonstrates lang routing based on URL parameter (e.g. `https://example.com/?lang=en`)
 
-[`locale-router-static`](./locale-router-static) – [Demo](https://locale-router-static.netlify.app)
+[`locale-router-static`](./locale-router-static)
 - this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
 - this approach is great if you care about SEO
 - optimized for `@sveltejs/adapter-static`
 
-[`locale-router`](./locale-router) – [Demo](https://locale-router.netlify.app)
+[`locale-router`](./locale-router)
 - this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
 - this approach is great if you care about SEO
 - optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
 
-[`locale-router-advanced`](./locale-router-advanced) – [Demo](https://locale-router-advanced.netlify.app)
+[`locale-router-advanced`](./locale-router-advanced)
 - this `multi-page` app demonstrates locale-based routing (e.g. `https://example.com/en/about`)
 - this approach is great if you care about SEO
 - optimized for non-static adapters (e.g. `@sveltejs/adapter-node`)
 - default locale routes do not have any lang prefix in path
 
-[`component-scoped-csr`](./component-scoped-csr) – [Demo](https://component-scoped-csr.netlify.app)
+[`component-scoped-csr`](./component-scoped-csr)
 - this is the most complex approach, which allows you to scope your translations to components, so they can have their own lexicons
 - app translations are loaded the same way as for `multi-page` (SSR)
 - component's translations are loaded in component promise (CSR - SvelteKit does not provide server side load method for components, so translation loaders are triggered on client side only)
 
-[`component-scoped-ssr`](./component-scoped-ssr) – [Demo](https://component-scoped-ssr.netlify.app)
+[`component-scoped-ssr`](./component-scoped-ssr)
 - SvelteKit does not provide server side load method for components.
 - component's `load` is replaced by exported init method. This method initializes related language mutation within parent page's `load` method.
 - after the load, appropriate props are delegated back to the component instance.
 ### Parsers
-[`parser-default`](./parser-default) – [Demo](https://parser-default.netlify.app)
+[`parser-default`](./parser-default)
 - this app demonstrates features of the [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default)
 
-[`parser-icu`](./parser-icu) – [Demo](https://parser-icu.netlify.app)
+[`parser-icu`](./parser-icu)
 - this app demonstrates features of the [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/blob/master/parser-icu)
 
 ### Other
-[`loaders`](./loaders) – [Demo](https://loaders-example.netlify.app)
+[`loaders`](./loaders)
 - this app demonstrates different `config.loaders` configurations
 
-[`preprocess`](./preprocess) – [Demo](https://preprocess-example.netlify.app)
+[`preprocess`](./preprocess)
 - this app demonstrates different `config.preprocess` configurations
 
-[`fallback-locale`](./fallback-locale) – [Demo](https://fallback-locale.netlify.app)
+[`fallback-locale`](./fallback-locale)
 - this app demonstrates `config.fallbackLocale`
 
 ## How to use an example

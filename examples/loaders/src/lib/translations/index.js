@@ -5,8 +5,6 @@ import lang from './lang.json';
 
 export const defaultLocale = 'en';
 
-const API_URL = dev ? 'http://localhost:5173' : 'https://loaders-example.netlify.app';
-
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
   log: {
@@ -30,7 +28,7 @@ export const config = {
       key: 'home',
       routes: ['/'],
       /* Fetch request */
-      loader: () => fetch(`${API_URL}/?lang=en`).then((res) => res.json()),
+      loader: () => fetch('/?lang=en').then((res) => res.json()),
     },
     {
       locale: 'en',
@@ -59,7 +57,7 @@ export const config = {
       key: 'home',
       routes: ['/'],
       /* Fetch request */
-      loader: () => fetch(`${API_URL}/?lang=cs`).then((res) => res.json()),
+      loader: () => fetch('/?lang=cs').then((res) => res.json()),
     },
     {
       locale: 'cs',
