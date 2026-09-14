@@ -1,0 +1,10 @@
+{
+  "badge": "Druhá routa",
+  "title": "Tahle stránka si přinesla vlastní jmenný prostor",
+  "lead": "Loader about se spustil při příchodu sem a znovu se nespustí, dokud nevyprší okno platnosti nebo dokud invalidate() nezahodí záznam.",
+  "facts": {
+    "locale": "Aktivní jazyk",
+    "loaded": "Načtené jmenné prostory",
+    "route": "Aktuální routa"
+  }
+}

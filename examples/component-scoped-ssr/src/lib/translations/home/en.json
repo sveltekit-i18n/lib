@@ -1,0 +1,19 @@
+{
+  "badge": "Component-scoped, server-rendered",
+  "title": "The same component, in the HTML",
+  "lead": "The block below still owns its lexicon, but the page loaded it. Its strings are in the server-rendered HTML, so a crawler sees them and there is nothing to wait for.",
+  "cards": {
+    "payload": {
+      "title": "The page does the loading",
+      "text": "The component exports snapshot(locale); the page's load calls it and passes the payload down as a prop."
+    },
+    "ssr": {
+      "title": "Complete on the first render",
+      "text": "initLocale settles the locale synchronously and the snapshot's keys count as loaded, so no loader runs to produce the first paint."
+    },
+    "reactive": {
+      "title": "Still reactive",
+      "text": "Switch the language and the component loads its own lexicon for the new locale, in the browser, without the page reloading."
+    }
+  }
+}

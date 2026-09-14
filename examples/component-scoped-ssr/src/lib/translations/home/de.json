@@ -1,0 +1,19 @@
+{
+  "badge": "Komponentenbezogen, serverseitig gerendert",
+  "title": "Dieselbe Komponente, diesmal im HTML",
+  "lead": "Der Block unten besitzt weiterhin sein Lexikon, geladen hat es aber die Seite. Seine Texte stehen im servergerenderten HTML — ein Crawler sieht sie, und es gibt nichts abzuwarten.",
+  "cards": {
+    "payload": {
+      "title": "Die Seite lädt",
+      "text": "Die Komponente exportiert snapshot(locale); das load der Seite ruft es auf und reicht die Nutzlast als Prop weiter."
+    },
+    "ssr": {
+      "title": "Beim ersten Rendern vollständig",
+      "text": "initLocale setzt die Sprache synchron und die Schlüssel des Snapshots gelten als geladen, sodass für den ersten Aufbau kein Loader läuft."
+    },
+    "reactive": {
+      "title": "Trotzdem reaktiv",
+      "text": "Wechsle die Sprache und die Komponente lädt ihr eigenes Lexikon im Browser nach, ohne dass die Seite neu lädt."
+    }
+  }
+}
