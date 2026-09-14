@@ -55,7 +55,10 @@ a { color: var(--accent); }
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
+  text-decoration: none;
 }
+
+.banner:hover { text-decoration: underline; }
 
 header {
   display: flex;
@@ -112,6 +115,94 @@ footer {
   color: var(--fg);
   font: inherit;
 }
+
+.hero,
+.features,
+.start {
+  max-width: var(--measure);
+  margin: 0 auto;
+}
+
+.hero {
+  padding: 2rem 0 3rem;
+  text-align: center;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 2.6rem;
+  letter-spacing: -0.02em;
+}
+
+.tagline {
+  margin: 0.5rem 0 2rem;
+  color: var(--muted);
+  font-size: 1.15rem;
+}
+
+.hero pre {
+  display: inline-block;
+  margin: 0;
+  text-align: left;
+}
+
+.cta {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0 0;
+}
+
+.button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.4rem;
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.requirements {
+  margin: 1.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.features h2,
+.start h2 {
+  margin: 3rem 0 1.5rem;
+  font-size: 1.5rem;
+}
+
+.features ul {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 40rem) {
+  .features ul { grid-template-columns: 1fr 1fr; }
+}
+
+.features li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.features span { color: var(--muted); }
+
+.start ol {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.start li { margin-bottom: 2rem; }
+
+.start li p { margin: 0 0 0.6rem; }
 
 .doc {
   display: grid;

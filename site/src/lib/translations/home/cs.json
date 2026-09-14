@@ -1,0 +1,37 @@
+{
+  "read": "Přečíst dokumentaci",
+  "requirements": "Svelte 5 a Node 22 nebo novější. Pouze ESM.",
+  "why": "Proč sveltekit-i18n",
+  "start": "Rychlý start",
+  "more": "Kompletní průvodce prvními kroky",
+  "step": {
+    "config": "Popiš překlady, které aplikace načítá.",
+    "use": "Čti je z instance. Text se řídí aktivním jazykem."
+  },
+  "feature": {
+    "sveltekit": {
+      "title": "Stavěné pro SvelteKit",
+      "text": "Instance na každý požadavek, takže jazyk jednoho návštěvníka nikdy nedorazí na stránku druhého."
+    },
+    "install": {
+      "title": "Jedna instalace",
+      "text": "Jádro i parser Curly jsou součástí. Nic dalšího se nepřidává a reaktivní graf zůstává jeden."
+    },
+    "lazy": {
+      "title": "Načítá, co route potřebuje",
+      "text": "Loader se spustí, když sedí jeho jazyk i route — jednou za období platnosti."
+    },
+    "runes": {
+      "title": "Jedna reaktivní instance",
+      "text": "Svelte 5 runes místo stores: vlastnosti se čtou, metody se awaitují."
+    },
+    "types": {
+      "title": "Typované klíče i parametry",
+      "text": "Slot schema zúží, co t() a l() přijmou — až na parametry jednotlivých zpráv."
+    },
+    "extensions": {
+      "title": "Rozšiřitelné",
+      "text": "Pipe extensions přidává instanci další povrchy — třeba Svelte stores."
+    }
+  }
+}

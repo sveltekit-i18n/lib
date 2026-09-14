@@ -1,0 +1,37 @@
+{
+  "read": "Read the documentation",
+  "requirements": "Svelte 5 and Node 22 or newer. ESM only.",
+  "why": "Why sveltekit-i18n",
+  "start": "Quick start",
+  "more": "The full getting started guide",
+  "step": {
+    "config": "Describe the translations your app loads.",
+    "use": "Read them off the instance. The text follows the active locale."
+  },
+  "feature": {
+    "sveltekit": {
+      "title": "Built for SvelteKit",
+      "text": "Per-request instances on the server, so one visitor's language never reaches another visitor's page."
+    },
+    "install": {
+      "title": "One install",
+      "text": "The core and the Curly parser come with it. Nothing else to add, and only one reactive graph."
+    },
+    "lazy": {
+      "title": "Loads what a route needs",
+      "text": "A loader fires when both its locale and its route match, once per freshness window."
+    },
+    "runes": {
+      "title": "One reactive instance",
+      "text": "Svelte 5 runes instead of stores: properties you read, methods you await."
+    },
+    "types": {
+      "title": "Typed keys and payloads",
+      "text": "A schema slot narrows what t() and l() accept, down to each message's parameters."
+    },
+    "extensions": {
+      "title": "Extensible",
+      "text": "The extensions pipe folds further surfaces onto the instance — Svelte stores, for one."
+    }
+  }
+}
