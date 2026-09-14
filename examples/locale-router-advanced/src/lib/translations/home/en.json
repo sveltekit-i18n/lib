@@ -1,0 +1,23 @@
+{
+  "badge": "Default locale, no prefix",
+  "title": "/about in English, /cs/about in Czech",
+  "lead": "The default locale owns the bare path and the others carry a prefix. Fully prerendered on adapter-static, with a fallback shell so an unknown URL still gets a translated page.",
+  "cards": {
+    "optional": {
+      "title": "An optional segment",
+      "text": "[[lang=locale]] matches nothing at all for English. The matcher accepts only the prefixed locales, or it would swallow /about."
+    },
+    "fallback": {
+      "title": "A fallback shell",
+      "text": "fallback: '404.html' writes one shell that the host serves for every unknown URL. That shell is what makes the error page yours."
+    },
+    "error": {
+      "title": "The error page has no load",
+      "text": "It reads the instance from context, and its strings ship in config.translations — nothing behind a loader is guaranteed to be there."
+    }
+  },
+  "note": {
+    "title": "Try it",
+    "text": "Open /cs/nope on the built site. The 404 arrives in Czech on the first hit, not after a reload."
+  }
+}

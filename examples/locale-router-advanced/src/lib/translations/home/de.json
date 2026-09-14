@@ -1,0 +1,23 @@
+{
+  "badge": "Standardsprache ohne Präfix",
+  "title": "/about auf Englisch, /cs/about auf Tschechisch",
+  "lead": "Die Standardsprache besitzt den nackten Pfad, die anderen tragen ein Präfix. Vollständig vorgerendert auf adapter-static, mit einer Fallback-Hülle, damit auch eine unbekannte URL eine übersetzte Seite bekommt.",
+  "cards": {
+    "optional": {
+      "title": "Ein optionales Segment",
+      "text": "[[lang=locale]] passt für Englisch auf gar nichts. Der Matcher nimmt nur die präfixierten Sprachen, sonst verschluckt er /about."
+    },
+    "fallback": {
+      "title": "Eine Fallback-Hülle",
+      "text": "fallback: '404.html' schreibt eine Hülle, die der Host für jede unbekannte URL ausliefert. Sie ist es, die die Fehlerseite zu deiner macht."
+    },
+    "error": {
+      "title": "Die Fehlerseite hat kein load",
+      "text": "Sie liest die Instanz aus dem Kontext, und ihre Texte liegen in config.translations — auf nichts hinter einem Loader ist Verlass."
+    }
+  },
+  "note": {
+    "title": "Probier es aus",
+    "text": "Öffne /cs/nope auf der gebauten Seite. Die 404 kommt beim ersten Aufruf auf Tschechisch, nicht erst nach dem Neuladen."
+  }
+}

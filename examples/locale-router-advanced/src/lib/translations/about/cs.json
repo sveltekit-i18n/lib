@@ -1,0 +1,10 @@
+{
+  "badge": "Druhá routa",
+  "title": "Stejná stránka, dva tvary adresy",
+  "lead": "Tohle je /about anglicky a /cs/about česky. Jeden strom rout, jedna sada loaderů — liší se jenom prefix.",
+  "facts": {
+    "locale": "Aktivní jazyk",
+    "loaded": "Načtené jmenné prostory",
+    "route": "Routa, na kterou loadery sedly"
+  }
+}

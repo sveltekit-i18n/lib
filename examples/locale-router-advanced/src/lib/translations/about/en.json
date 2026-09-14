@@ -1,0 +1,10 @@
+{
+  "badge": "Second route",
+  "title": "Same page, two shapes of address",
+  "lead": "This is /about in English and /cs/about in Czech. One route tree, one set of loaders — the prefix is the only difference.",
+  "facts": {
+    "locale": "Active locale",
+    "loaded": "Loaded namespaces",
+    "route": "Route the loaders matched"
+  }
+}

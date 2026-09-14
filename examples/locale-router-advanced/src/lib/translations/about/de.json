@@ -1,0 +1,10 @@
+{
+  "badge": "Zweite Route",
+  "title": "Dieselbe Seite, zwei Adressformen",
+  "lead": "Das ist /about auf Englisch und /cs/about auf Tschechisch. Ein Routenbaum, ein Satz Loader — nur das Präfix unterscheidet sich.",
+  "facts": {
+    "locale": "Aktive Sprache",
+    "loaded": "Geladene Namensräume",
+    "route": "Route, auf die die Loader passten"
+  }
+}
