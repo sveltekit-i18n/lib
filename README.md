@@ -34,7 +34,7 @@ app ends up with two copies of the core and two reactive graphs.
 
 ### 1. Create your translation files
 
-```json
+```jsonc
 // src/lib/translations/en/common.json
 {
   "greeting": "Hello, {{name}}!",
@@ -43,7 +43,7 @@ app ends up with two copies of the core and two reactive graphs.
 }
 ```
 
-```json
+```jsonc
 // src/lib/translations/cs/common.json
 {
   "greeting": "Ahoj, {{name}}!",
