@@ -1,0 +1,23 @@
+{
+  "badge": "Načítání podle routy",
+  "title": "Překlady, které dorazí s routou",
+  "lead": "Dopředu se nenačítá nic. Texty skeletu jsou součástí konfigurace a každá stránka má vlastní loader, který se spustí, až na tu routu poprvé přijdeš.",
+  "cards": {
+    "locale": {
+      "title": "Volba jazyka",
+      "text": "Server přečte cookie, pak Accept-Language a nakonec sáhne po výchozím jazyce."
+    },
+    "route": {
+      "title": "Jmenný prostor na routu",
+      "text": "Otevření /about spustí loader about. Návrat zpět už nespustí nic — loader běží jednou za okno platnosti."
+    },
+    "ssr": {
+      "title": "Instance na požadavek",
+      "text": "Server si staví vlastní instanci a výsledek předá prohlížeči, takže nikdo neuvidí cizí jazyk."
+    }
+  },
+  "counter": {
+    "title": "Interpolace",
+    "text": "Máš {{count}} {{count; 1:nepřečtenou zprávu; 2:nepřečtené zprávy; 3:nepřečtené zprávy; 4:nepřečtené zprávy; default:nepřečtených zpráv;}}."
+  }
+}

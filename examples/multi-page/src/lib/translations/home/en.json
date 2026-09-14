@@ -1,0 +1,23 @@
+{
+  "badge": "Route-scoped loading",
+  "title": "Translations that arrive with the route",
+  "lead": "Nothing here is loaded up front. The shell strings ship with the config, and each page's namespace has its own loader that runs the first time you open that route.",
+  "cards": {
+    "locale": {
+      "title": "Locale negotiation",
+      "text": "The server reads a cookie, then Accept-Language, then falls back to the default."
+    },
+    "route": {
+      "title": "One namespace per route",
+      "text": "Opening /about runs the about loader. Coming back runs nothing — a loader fires once per freshness window."
+    },
+    "ssr": {
+      "title": "One instance per request",
+      "text": "The server builds its own instance and hands the result to the browser, so no visitor sees another's language."
+    }
+  },
+  "counter": {
+    "title": "Interpolation",
+    "text": "You have {{count}} unread {{count; 1:message; default:messages;}}."
+  }
+}
