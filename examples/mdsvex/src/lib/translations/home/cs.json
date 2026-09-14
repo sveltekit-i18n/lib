@@ -1,0 +1,23 @@
+{
+  "badge": "Routy v Markdownu",
+  "title": "Stránka napsaná v Markdownu",
+  "lead": "mdsvex zkompiluje .svx na obyčejnou Svelte komponentu, takže v ní t() funguje beze změny. Za vysvětlení stojí, jak se taková routa zapojí do loaderů a prerenderu.",
+  "cards": {
+    "component": {
+      "title": "Je to jenom komponenta",
+      "text": "Než se k +page.svx dostane router, je z něj Svelte komponenta. getContext i t() fungují přesně jako v .svelte."
+    },
+    "routes": {
+      "title": "Je to jenom routa",
+      "text": "/guide sedne na route-scoped loader jako každá jiná cesta. Jmenný prostor vůbec netuší, že je stránka v Markdownu."
+    },
+    "prerender": {
+      "title": "Předgeneruje se stejně",
+      "text": "Entries pod [lang] ji pokrývají, takže po buildu průvodce existuje v každém jazyce."
+    }
+  },
+  "note": {
+    "title": "Překlad samotné prózy je jiné rozhodnutí",
+    "text": "Tenhle příklad řeší použití na úrovni komponenty a načítání. Jestli má být Markdown v jednom souboru na jazyk, je otázka obsahu, na kterou tahle knihovna neodpovídá."
+  }
+}

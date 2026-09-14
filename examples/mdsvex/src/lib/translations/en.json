@@ -1,0 +1,15 @@
+{
+  "example.name": "mdsvex",
+  "nav.home": "Home",
+  "nav.guide": "Guide",
+  "nav.language": "Language",
+  "lang.en": "English",
+  "lang.cs": "Čeština",
+  "lang.de": "Deutsch",
+  "footer.source": "Source of this example",
+  "footer.docs": "Documentation",
+  "error.title": "Something went wrong",
+  "error.404": "This page does not exist.",
+  "error.default": "An unexpected error occurred.",
+  "error.home": "Back to the homepage"
+}

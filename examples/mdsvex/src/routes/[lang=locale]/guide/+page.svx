@@ -1,0 +1,44 @@
+<script>
+  import { getContext } from 'svelte';
+
+  import { NAMESPACES } from '$lib/translations';
+
+  // Exactly what a .svelte page would do — by the time this runs, mdsvex has
+  // already turned the file into an ordinary Svelte component.
+  const i18n = getContext('i18n');
+
+  // The shell strings sit in `config.translations` under their own flat keys;
+  // only the configured namespaces were actually loaded.
+  const loaded = $derived(NAMESPACES
+    .map(({ key }) => key)
+    .filter((key) => Object.hasOwn(i18n.rawTranslations[i18n.locale] ?? {}, key))
+    .join(', '));
+</script>
+
+<span class="badge">{i18n.t('guide.badge')}</span>
+
+# {i18n.t('guide.heading')}
+
+{i18n.t('guide.intro')}
+
+## {i18n.t('guide.step', { n: 1 })} — {i18n.t('guide.install')}
+
+```bash
+npm install sveltekit-i18n
+```
+
+## {i18n.t('guide.step', { n: 2 })} — {i18n.t('guide.configure')}
+
+```javascript
+export const config = {
+  translations: { en: { hello: 'Hello' } },
+};
+```
+
+## {i18n.t('guide.step', { n: 3 })} — {i18n.t('guide.render')}
+
+```svelte
+<h1>{i18n.t('hello')}</h1>
+```
+
+<p class="note"><strong>{i18n.t('guide.loaded')}:</strong> <code>{loaded}</code></p>

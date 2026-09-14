@@ -1,0 +1,22 @@
+{
+  "name": "mdsvex",
+  "private": true,
+  "version": "3.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "sveltekit-i18n": "workspace:*"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "^3.0.10",
+    "@sveltejs/kit": "^2.70.3",
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "mdsvex": "^0.12.6",
+    "svelte": "^5.56.9",
+    "vite": "^8.2.1"
+  }
+}
