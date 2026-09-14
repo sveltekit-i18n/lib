@@ -1,0 +1,7 @@
+{
+  "title": "Shipping rates",
+  "lead": "This block has its own instance and its own lexicon. The application's translations do not contain a single one of these keys.",
+  "standard": "Standard",
+  "express": "Express",
+  "days": "{{days}} {{days; 1:day; default:days;}}"
+}

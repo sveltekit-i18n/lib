@@ -1,0 +1,10 @@
+{
+  "badge": "Second route",
+  "title": "This page brought its own namespace",
+  "lead": "The about loader ran when you navigated here, and will not run again until the freshness window expires or invalidate() drops the record.",
+  "facts": {
+    "locale": "Active locale",
+    "loaded": "Loaded namespaces",
+    "route": "Current route"
+  }
+}

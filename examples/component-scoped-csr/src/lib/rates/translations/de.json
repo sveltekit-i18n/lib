@@ -1,0 +1,7 @@
+{
+  "title": "Versandkosten",
+  "lead": "Dieser Block hat seine eigene Instanz und sein eigenes Lexikon. Die Übersetzungen der Anwendung enthalten keinen einzigen dieser Schlüssel.",
+  "standard": "Standard",
+  "express": "Express",
+  "days": "{{days}} {{days; 1:Tag; default:Tage;}}"
+}

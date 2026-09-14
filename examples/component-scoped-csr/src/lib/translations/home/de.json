@@ -1,0 +1,19 @@
+{
+  "badge": "Komponentenbezogen, im Browser",
+  "title": "Eine Komponente mit eigenem Lexikon",
+  "lead": "Der Block unten besitzt eine eigene Instanz. Seine Schlüssel liegen bei der Komponente, sodass sie sich in eine andere Anwendung übernehmen lässt, ohne deren Übersetzungen anzufassen.",
+  "cards": {
+    "own": {
+      "title": "Eigene Instanz",
+      "text": "new I18n(config) in der Komponente. Zwei Instanzen nebeneinander — die der Seite und die der Komponente."
+    },
+    "csr": {
+      "title": "Im Browser geladen",
+      "text": "Eine Komponente hat kein eigenes load, ihre Loader laufen also nach der Hydration. Bei langsamer Verbindung sieht man den Platzhalter."
+    },
+    "destroy": {
+      "title": "Stirbt mit der Komponente",
+      "text": "Die Instanz wird beim Unmount abgeräumt, es bleibt nichts zurück."
+    }
+  }
+}
