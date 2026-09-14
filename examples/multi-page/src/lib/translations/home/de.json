@@ -1,0 +1,23 @@
+{
+  "badge": "Routenbezogenes Laden",
+  "title": "Übersetzungen, die mit der Route ankommen",
+  "lead": "Nichts wird im Voraus geladen. Die Texte der Hülle liegen in der Konfiguration, und jede Seite hat ihren eigenen Loader, der beim ersten Aufruf der Route läuft.",
+  "cards": {
+    "locale": {
+      "title": "Sprachwahl",
+      "text": "Der Server liest ein Cookie, dann Accept-Language, und greift zuletzt auf die Standardsprache zurück."
+    },
+    "route": {
+      "title": "Ein Namensraum pro Route",
+      "text": "Der Aufruf von /about startet den about-Loader. Die Rückkehr startet nichts — ein Loader läuft einmal pro Frische-Fenster."
+    },
+    "ssr": {
+      "title": "Eine Instanz pro Anfrage",
+      "text": "Der Server baut seine eigene Instanz und reicht das Ergebnis an den Browser weiter, damit niemand die Sprache eines anderen sieht."
+    }
+  },
+  "counter": {
+    "title": "Interpolation",
+    "text": "Du hast {{count}} ungelesene {{count; 1:Nachricht; default:Nachrichten;}}."
+  }
+}
