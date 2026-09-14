@@ -1324,6 +1324,8 @@ No — and you should not. `npm install sveltekit-i18n` is the whole install, an
 
 v3 replaces it with [`@sveltekit-i18n/parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly), the [Curly Message Format](https://github.com/curly-message/spec)'s adapter, and wires it in for you. Remove `parser-default` from your dependencies and move its options to `config.parserOptions`; per-call formatting options are now keyed by modifier name (`{ number: { maximumFractionDigits: 1 } }`).
 
+If you built on `@sveltekit-i18n/base` directly rather than on this package, nothing is wired in for you: keep base, install [`parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly) (or [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)) in `parser-default`'s place and pass it as `config.parser` — see [Need a different parser?](../README.md#need-a-different-parser).
+
 ### How do I get `$t` back?
 
 Add [`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores) to `config.extensions` — see [`$t` is not a store](#t-is-not-a-store).
