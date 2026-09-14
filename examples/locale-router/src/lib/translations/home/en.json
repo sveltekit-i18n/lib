@@ -1,0 +1,23 @@
+{
+  "badge": "Prerendered, every locale",
+  "title": "The language is part of the address",
+  "lead": "/en/about, /cs/about, /de/about — each one is a real page written out at build time, which is what a crawler and a search engine both want.",
+  "cards": {
+    "entries": {
+      "title": "Entries, not luck",
+      "text": "The crawler starts at / and follows links. It cannot invent /cs, so every page under [lang] names its own entries."
+    },
+    "matcher": {
+      "title": "A matcher guards the segment",
+      "text": "Without it [lang] would swallow /about and every other top-level path."
+    },
+    "build": {
+      "title": "Built once, served flat",
+      "text": "No instance is created per request — the pages already exist. The browser gets its own instance for navigation."
+    }
+  },
+  "note": {
+    "title": "If a language goes missing",
+    "text": "A prerender that exits 0 having built one language looks exactly like a successful build. Assert on the output, not on the exit code."
+  }
+}

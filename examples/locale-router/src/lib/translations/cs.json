@@ -1,0 +1,15 @@
+{
+  "example.name": "Router s jazykem",
+  "nav.home": "Domů",
+  "nav.about": "O aplikaci",
+  "nav.language": "Jazyk",
+  "lang.en": "English",
+  "lang.cs": "Čeština",
+  "lang.de": "Deutsch",
+  "footer.source": "Zdrojový kód příkladu",
+  "footer.docs": "Dokumentace",
+  "error.title": "Něco se pokazilo",
+  "error.404": "Tahle stránka neexistuje.",
+  "error.default": "Došlo k neočekávané chybě.",
+  "error.home": "Zpět na úvod"
+}

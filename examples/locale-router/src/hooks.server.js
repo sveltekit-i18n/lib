@@ -1,41 +1,19 @@
-import { defaultLocale, loadTranslations, locales } from '$lib/translations';
+import { DEFAULT_LOCALE } from '$lib/locale.js';
 
-/** @type {import('@sveltejs/kit').Handle} */
-export const handle = async ({ event, resolve }) => {
-  const { url, request } = event;
-  const { pathname } = url;
+/**
+ * Runs during the prerender as well, so every written page carries its own
+ * `<html lang>`.
+ *
+ * @type {import('@sveltejs/kit').Handle}
+ */
+export const handle = ({ event, resolve }) => resolve(event, {
+  transformPageChunk: ({ html }) => html.replace('%lang%', event.params.lang ?? DEFAULT_LOCALE),
+});
 
-  // Get defined locales
-  const supportedLocales = locales.get().map((l) => l.toLowerCase());
-
-  // Try to get locale from `pathname`.
-  let locale = supportedLocales.find((l) => l === `${pathname.match(/[^/]+?(?=\/|$)/)}`.toLowerCase());
-
-  // If route locale is not supported
-  if (!locale) {
-    // Get user preferred locale
-    locale = `${`${request.headers.get('accept-language')}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();
-
-    // Set default locale if user preferred locale does not match
-    if (!supportedLocales.includes(locale)) locale = defaultLocale;
-
-    // 301 redirect
-    return new Response(undefined, { headers: { 'location': `/${locale}${pathname}` }, status: 301 });
-  }
-
-  // Add html `lang` attribute
-  return resolve({ ...event, locals: { lang: locale } }, {
-    transformPageChunk: ({ html }) => html.replace(/<html.*>/, `<html lang="${locale}">`),
-  });
-};
-
-
-/** @type {import('@sveltejs/kit').HandleServerError} */
-export const handleError = async ({ event }) => {
-  const { locals } = event;
-  const { lang } = locals;
-
-  await loadTranslations(lang, 'error');
-
-  return locals;
-};
+/**
+ * Without a `message` SvelteKit's own fatal-error path renders `undefined`,
+ * which hides whatever actually went wrong.
+ *
+ * @type {import('@sveltejs/kit').HandleServerError}
+ */
+export const handleError = ({ message }) => ({ message });
