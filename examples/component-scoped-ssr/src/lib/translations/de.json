@@ -1,0 +1,15 @@
+{
+  "example.name": "Komponenten-Lexikon (SSR)",
+  "nav.home": "Start",
+  "nav.about": "Über",
+  "nav.language": "Sprache",
+  "lang.en": "English",
+  "lang.cs": "Čeština",
+  "lang.de": "Deutsch",
+  "footer.source": "Quellcode dieses Beispiels",
+  "footer.docs": "Dokumentation",
+  "error.title": "Etwas ist schiefgelaufen",
+  "error.404": "Diese Seite gibt es nicht.",
+  "error.default": "Ein unerwarteter Fehler ist aufgetreten.",
+  "error.home": "Zurück zur Startseite"
+}

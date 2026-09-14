@@ -1,0 +1,10 @@
+{
+  "badge": "Zweite Route",
+  "title": "Diese Seite hat ihren eigenen Namensraum mitgebracht",
+  "lead": "Der about-Loader lief beim Aufruf dieser Seite und läuft erst wieder, wenn das Frische-Fenster abläuft oder invalidate() den Eintrag verwirft.",
+  "facts": {
+    "locale": "Aktive Sprache",
+    "loaded": "Geladene Namensräume",
+    "route": "Aktuelle Route"
+  }
+}

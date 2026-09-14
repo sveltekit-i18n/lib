@@ -1,0 +1,19 @@
+{
+  "badge": "Slovník komponenty, vykresleno na serveru",
+  "title": "Stejná komponenta, tentokrát v HTML",
+  "lead": "Blok níž má pořád vlastní slovník, ale načetla ho stránka. Jeho texty jsou v HTML ze serveru, takže je uvidí i crawler a není na co čekat.",
+  "cards": {
+    "payload": {
+      "title": "Načítá stránka",
+      "text": "Komponenta exportuje snapshot(locale); load stránky ho zavolá a výsledek pošle dolů jako prop."
+    },
+    "ssr": {
+      "title": "Kompletní hned napoprvé",
+      "text": "initLocale nastaví jazyk synchronně a klíče ze snapshotu se počítají jako načtené, takže první vykreslení nepotřebuje žádný loader."
+    },
+    "reactive": {
+      "title": "A pořád reaktivní",
+      "text": "Přepni jazyk a komponenta si v prohlížeči načte vlastní slovník pro nový jazyk, bez znovunačtení stránky."
+    }
+  }
+}

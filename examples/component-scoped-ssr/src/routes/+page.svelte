@@ -1,14 +1,32 @@
 <script>
-  import Component from '$lib/component/index.svelte';
-  import { t } from '$lib/translations';
+  import { getContext } from 'svelte';
+
+  import Rates from '$lib/rates/Rates.svelte';
+
+  const i18n = getContext('i18n');
 
   let { data } = $props();
 
-  const link = 'https://kit.svelte.dev';
+  const CARDS = ['payload', 'ssr', 'reactive'];
 </script>
 
-<h1>{$t('home.title')}</h1>
-<p>{@html $t('home.text', { link })}</p>
+<svelte:head>
+  <title>{i18n.t('home.title')}</title>
+</svelte:head>
 
-<Component bind:props={data.cs}/>
-<Component bind:props={data.de} />
+<section class="hero">
+  <span class="badge">{i18n.t('home.badge')}</span>
+  <h1>{i18n.t('home.title')}</h1>
+  <p>{i18n.t('home.lead')}</p>
+</section>
+
+<ul class="cards">
+  {#each CARDS as card (card)}
+    <li>
+      <h2>{i18n.t(`home.cards.${card}.title`)}</h2>
+      <p>{i18n.t(`home.cards.${card}.text`)}</p>
+    </li>
+  {/each}
+</ul>
+
+<Rates locale={i18n.locale} translations={data.rates} />
