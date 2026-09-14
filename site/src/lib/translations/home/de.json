@@ -1,0 +1,37 @@
+{
+  "read": "Dokumentation lesen",
+  "requirements": "Svelte 5 und Node 22 oder neuer. Nur ESM.",
+  "why": "Warum sveltekit-i18n",
+  "start": "Schnellstart",
+  "more": "Der vollständige Einstiegsleitfaden",
+  "step": {
+    "config": "Beschreibe die Übersetzungen, die die App lädt.",
+    "use": "Lies sie von der Instanz. Der Text folgt der aktiven Sprache."
+  },
+  "feature": {
+    "sveltekit": {
+      "title": "Für SvelteKit gebaut",
+      "text": "Eine Instanz pro Anfrage, damit die Sprache eines Besuchers nie auf die Seite eines anderen gerät."
+    },
+    "install": {
+      "title": "Eine Installation",
+      "text": "Kern und Curly-Parser sind dabei. Nichts weiter hinzuzufügen, und nur ein reaktiver Graph."
+    },
+    "lazy": {
+      "title": "Lädt, was eine Route braucht",
+      "text": "Ein Loader läuft, wenn Sprache und Route passen — einmal pro Gültigkeitsfenster."
+    },
+    "runes": {
+      "title": "Eine reaktive Instanz",
+      "text": "Svelte-5-Runes statt Stores: Eigenschaften werden gelesen, Methoden awaited."
+    },
+    "types": {
+      "title": "Typisierte Schlüssel und Parameter",
+      "text": "Ein schema-Slot verengt, was t() und l() annehmen — bis zu den Parametern jeder Nachricht."
+    },
+    "extensions": {
+      "title": "Erweiterbar",
+      "text": "Die extensions-Pipe legt weitere Oberflächen auf die Instanz — etwa Svelte-Stores."
+    }
+  }
+}

@@ -13,6 +13,9 @@ let highlighting;
 
 const highlighter = () => (highlighting ??= createHighlighter({ themes: Object.values(THEMES), langs: LANGS }));
 
+export const highlight = async (code, lang) => (await highlighter())
+  .codeToHtml(code, { lang, themes: THEMES, defaultColor: false });
+
 export const source = (file) => {
   const found = Object.entries(sources).find(([path]) => path.endsWith(`/${file}`));
 
