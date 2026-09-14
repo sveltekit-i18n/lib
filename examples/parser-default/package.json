@@ -15,7 +15,7 @@
     "@sveltekit-i18n/parser-default": "^1.1.1"
   },
   "devDependencies": {
-    "@sveltejs/adapter-netlify": "^5.2.4",
+    "@sveltejs/adapter-auto": "^7.0.1",
     "@sveltejs/kit": "^2.61.1",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",
     "svelte": "^5.55.10",

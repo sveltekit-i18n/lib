@@ -68,9 +68,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -90,9 +90,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -112,9 +112,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -134,9 +134,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -156,9 +156,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -178,9 +178,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -200,9 +200,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -244,9 +244,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -266,9 +266,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -294,9 +294,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -334,9 +334,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -368,9 +368,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -390,9 +390,9 @@ importers:
         specifier: workspace:*
         version: link:../..
     devDependencies:
-      '@sveltejs/adapter-netlify':
-        specifier: ^5.2.4
-        version: 5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
+      '@sveltejs/adapter-auto':
+        specifier: ^7.0.1
+        version: 7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))
       '@sveltejs/kit':
         specifier: ^2.61.1
         version: 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
@@ -751,9 +751,6 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
-
-  '@iarna/toml@2.2.5':
-    resolution: {integrity: sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -1216,10 +1213,10 @@ packages:
     peerDependencies:
       acorn: ^8.9.0
 
-  '@sveltejs/adapter-netlify@5.2.4':
-    resolution: {integrity: sha512-UtPcZq1HUA43hM8uLi+nsm5Q+YjHNj7/SMFoyeLZeY/VTloVWABEZ0tJ5WodTUmy/8j5QJ7oLZjj28aQxi8y3g==}
+  '@sveltejs/adapter-auto@7.0.1':
+    resolution: {integrity: sha512-dvuPm1E7M9NI/+canIQ6KKQDU2AkEefEZ2Dp7cY6uKoPq9Z/PhOXABe526UdW2mN986gjVkuSLkOYIBnS/M2LQ==}
     peerDependencies:
-      '@sveltejs/kit': ^2.4.0
+      '@sveltejs/kit': ^2.0.0
 
   '@sveltejs/adapter-static@3.0.10':
     resolution: {integrity: sha512-7D9lYFWJmB7zxZyTE/qxjksvMqzMuYrrsyh1f4AlZqeZeACPRySjbC3aFiY55wb1tWUaKOQG9PVbm74JcN2Iew==}
@@ -2689,9 +2686,6 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  set-cookie-parser@2.7.2:
-    resolution: {integrity: sha512-oeM1lpU/UvhTxw+g3cIfxXHyJRc/uidd3yK1P242gzHds0udQBYzs3y8j4gCCW+ZJ7ad0yctld8RYO+bdurlvw==}
-
   set-cookie-parser@3.1.0:
     resolution: {integrity: sha512-kjnC1DXBHcxaOaOXBHBeRtltsDG2nUiUni+jP92M9gYdW12rsmx92UsfpH7o5tDRs7I1ZZPSQJQGv3UaRfCiuw==}
 
@@ -3488,8 +3482,6 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
-  '@iarna/toml@2.2.5': {}
-
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
@@ -3783,12 +3775,9 @@ snapshots:
     dependencies:
       acorn: 8.16.0
 
-  '@sveltejs/adapter-netlify@5.2.4(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))':
+  '@sveltejs/adapter-auto@7.0.1(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))':
     dependencies:
-      '@iarna/toml': 2.2.5
       '@sveltejs/kit': 2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0))
-      esbuild: 0.28.2
-      set-cookie-parser: 2.7.2
 
   '@sveltejs/adapter-static@3.0.10(@sveltejs/kit@2.61.1(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.55.10(@typescript-eslint/types@8.70.0))(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))(svelte@5.55.10(@typescript-eslint/types@8.70.0))(typescript@5.9.3)(vite@7.3.5(@types/node@26.5.1)(lightningcss@1.33.0)))':
     dependencies:
@@ -5470,8 +5459,6 @@ snapshots:
     optional: true
 
   semver@7.8.1: {}
-
-  set-cookie-parser@2.7.2: {}
 
   set-cookie-parser@3.1.0: {}
 
