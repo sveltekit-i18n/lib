@@ -1,0 +1,10 @@
+{
+  "badge": "Diese Seite ist .svx",
+  "heading": "Installation",
+  "intro": "Alles auf dieser Seite außer der Prosa stammt aus dem Namensraum guide, der geladen wurde, weil die Route /guide ist.",
+  "step": "Schritt {{n}}",
+  "install": "Paket installieren",
+  "configure": "Übersetzungen beschreiben",
+  "render": "Ausgeben",
+  "loaded": "Geladene Namensräume"
+}

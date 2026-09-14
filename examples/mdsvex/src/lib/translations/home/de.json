@@ -1,0 +1,23 @@
+{
+  "badge": "Markdown-Routen",
+  "title": "Eine Seite in Markdown",
+  "lead": "mdsvex kompiliert .svx zu einer gewöhnlichen Svelte-Komponente, t() funktioniert darin also unverändert. Erklärenswert ist, wie eine solche Route bei den Loadern und beim Prerender mitspielt.",
+  "cards": {
+    "component": {
+      "title": "Nur eine Komponente",
+      "text": "Wenn der Router +page.svx sieht, ist es eine Svelte-Komponente. getContext und t() verhalten sich genau wie in .svelte."
+    },
+    "routes": {
+      "title": "Nur eine Route",
+      "text": "/guide passt auf einen routenbezogenen Loader wie jeder andere Pfad. Der Namensraum weiß nichts von Markdown."
+    },
+    "prerender": {
+      "title": "Prerendert genauso",
+      "text": "Die entries unter [lang] decken sie ab, der Guide existiert nach dem Build also in jeder Sprache."
+    }
+  },
+  "note": {
+    "title": "Die Prosa zu übersetzen ist eine eigene Entscheidung",
+    "text": "Dieses Beispiel deckt die Nutzung auf Komponentenebene und das Laden ab. Ob das Markdown selbst eine Datei pro Sprache bekommt, ist eine Inhaltsfrage, die diese Bibliothek nicht beantwortet."
+  }
+}
