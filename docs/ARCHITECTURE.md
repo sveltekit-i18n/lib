@@ -467,11 +467,13 @@ import { config } from '$lib/translations';
 let client;
 
 export const load = async ({ data, url }) => {
-  const i18n = client ?? new I18n({ ...config, translations: data.translations });
+  // `data` is null when no route matched: the error page renders through this
+  // load too, and on a static host that is every unknown URL.
+  const i18n = client ?? new I18n({ ...config, translations: data?.translations });
 
   if (browser) client = i18n;
 
-  await i18n.loadTranslations(data.locale, url.pathname);
+  await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
   return { i18n };
 };

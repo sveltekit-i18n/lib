@@ -255,14 +255,16 @@ let client;
 
 /** @type {import('./$types').LayoutLoad} */
 export const load = async ({ data, url }) => {
+  // `data` is null when no route matched: the error page renders through this
+  // load too, and on a static host that is every unknown URL.
   const i18n = client ?? new I18n({
     ...config,
-    translations: { ...config.translations, ...data.translations },
+    translations: { ...config.translations, ...data?.translations },
   });
 
   if (browser) client = i18n;
 
-  await i18n.loadTranslations(data.locale, url.pathname);
+  await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
   return { i18n };
 };

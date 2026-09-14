@@ -25,6 +25,7 @@ Everything below assumes the v3 surface: **one reactive instance, no stores**. I
   - [Locale Not Changing](#locale-not-changing)
   - [Translations Never Refresh](#translations-never-refresh)
   - [A Visitor Sees Another Visitor's Language](#a-visitor-sees-another-visitors-language)
+  - [The Error Page Is Blank](#the-error-page-is-blank)
   - [Parser Complaints Go Nowhere](#parser-complaints-go-nowhere)
   - [TypeScript Errors](#typescript-errors)
   - [Tests That Mock the Translations Module](#tests-that-mock-the-translations-module)
@@ -208,7 +209,7 @@ The SSR payload is produced by [`snapshot()`](./README.md#snapshot) on the insta
 return { locale, translations: i18n.snapshot() };
 
 // client: hand it back through the config
-const i18n = new I18n({ ...config, translations: data.translations });
+const i18n = new I18n({ ...config, translations: data?.translations });
 ```
 
 `snapshot()` serializes the active locale and the `fallbackLocale`, narrowed to the current route, and its keys count as loaded on the receiving instance, so the loaders behind them do not refetch. Build the server-side instance **per request** — see [A Visitor Sees Another Visitor's Language](#a-visitor-sees-another-visitors-language) — and read the four-step wiring in [Server-Side Rendering](./README.md#server-side-rendering).
@@ -855,11 +856,13 @@ import { config } from '$lib/translations';
 let client;
 
 export const load = async ({ data, url }) => {
-  const i18n = client ?? new I18n({ ...config, translations: data.translations });
+  // `data` is null when no route matched: the error page renders through this
+  // load too, and on a static host that is every unknown URL.
+  const i18n = client ?? new I18n({ ...config, translations: data?.translations });
 
   if (browser) client = i18n;
 
-  await i18n.loadTranslations(data.locale, url.pathname);
+  await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
   return { i18n };
 };
@@ -868,6 +871,48 @@ export const load = async ({ data, url }) => {
 Then hand the instance down through Svelte context and read it in components. The four steps in full, including the context wiring, are in [Server-Side Rendering](./README.md#server-side-rendering).
 
 **A singleton is fine** when the server renders nothing visitor-specific — a client-only application (`export const ssr = false`), or one that renders a single locale. An instance with a shorter life than the application should be released with [`destroy()`](./README.md#destroy).
+
+---
+
+### The Error Page Is Blank
+
+**Symptoms:**
+- An unknown URL renders nothing at all — not even an untranslated `+error.svelte`
+- The browser console shows `TypeError: Cannot read properties of null (reading 'translations')`
+- Pages that exist are fine; only the error path is empty
+- On a statically hosted site this is every URL that was not prerendered
+
+**Cause:**
+
+When no route matches, SvelteKit renders the error page **without running any server `load`**, so the universal `+layout.js` receives `data` as `null`. A recipe that reaches straight into it — `data.translations`, `data.locale` — throws there, and because it throws in the layout's `load`, it throws *above* the error boundary: `+error.svelte` never gets to render.
+
+**Solution:**
+
+Read the server payload optionally and fall back for the locale:
+
+```javascript
+// src/routes/+layout.js
+export const load = async ({ data, url }) => {
+  // `data` is null when no route matched: the error page renders through this
+  // load too, and on a static host that is every unknown URL.
+  const i18n = client ?? new I18n({
+    ...config,
+    translations: { ...config.translations, ...data?.translations },
+  });
+
+  if (browser) client = i18n;
+
+  await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
+
+  return { i18n };
+};
+```
+
+The instance still reaches `+error.svelte` through context, so the error page translates like any other page — give its messages a loader scoped to the routes that can fail, or put them in `config.translations` so they are always present.
+
+An application that carries the locale in the path can do better than the fallback: the prefix is still in `url.pathname` even when nothing matched, so parse it there and only fall back when it is absent or unsupported.
+
+On a static host configured with `fallback` (`adapter-static`), the file the server returns for an unknown URL is an **empty shell** — the error page is rendered on the client, after hydration. That is expected for a 404 and costs nothing but a frame; it does mean the error page has no server-rendered markup for crawlers or for visitors without JavaScript.
 
 ---
 
