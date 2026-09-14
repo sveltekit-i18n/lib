@@ -1310,7 +1310,8 @@ Also worth knowing:
 - **Per-request instances on the server.** A module-level singleton leaks one
   visitor's locale into another's page — see
   [Server-Side Rendering](#server-side-rendering).
-- **ESM only, Node 22+, Svelte 5+.** There is no CJS entry, and the core's rune
+- **ESM only, Svelte 5+, on Node 22+, Bun 1.2+ or Deno 2+.** There is no CJS
+  entry, and the core's rune
   modules are compiled by your bundler.
 - **Parser reports are silent** unless `parserOptions.onReport` names a channel.
 

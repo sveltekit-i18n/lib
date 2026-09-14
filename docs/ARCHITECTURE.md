@@ -174,7 +174,8 @@ sveltekit-i18n
 └── @formatjs/icu-messageformat-parser
 ```
 
-Everything is ESM-only, `engines.node >= 22`. There is no CJS entry.
+Everything is ESM-only, and runs on Node 22+, Bun 1.2+ or Deno 2+. There is no
+CJS entry.
 
 ## The Reactive Engine
 

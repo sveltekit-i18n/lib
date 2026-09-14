@@ -30,7 +30,7 @@ family (`base` / `lib` / `parsers` / `extensions`).
 ## Current state: v3 released from `master`
 
 - **`master` is the v3 line.** Stack: pnpm, Vitest, tsup, ESLint 10 flat
-  config, ESM-only, `engines.node >=22`, peer `svelte >=5`.
+  config, ESM-only, Node 22 / Bun 1.2 / Deno 2 or newer, peer `svelte >=5`.
 - **`2.x` is a frozen snapshot** of the published v2 line: critical fixes only.
 - **The family is published at 3.0.0** — `base`, both parsers,
   `extension-stores` and this package — released aligned, as

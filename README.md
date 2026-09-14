@@ -17,12 +17,16 @@ A lightweight, powerful internationalization (i18n) library designed specificall
 
 ## Requirements
 
-Svelte 5 or newer and Node 22 or newer. The package is ESM-only.
+Svelte 5 or newer, and one of Node 22+, Bun 1.2+ or Deno 2+. The package is
+ESM-only and imports no `node:` module, so every runtime that runs your
+SvelteKit build runs it.
 
 ## Installation
 
 ```bash
 npm install sveltekit-i18n
+# bun add sveltekit-i18n
+# deno add npm:sveltekit-i18n
 ```
 
 That is the whole install. `@sveltekit-i18n/base` and

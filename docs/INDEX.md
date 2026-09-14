@@ -18,7 +18,8 @@ New to sveltekit-i18n? Start here:
 **A SvelteKit app from nothing to multilingual, in eight steps**
 
 - [Requirements](./GETTING_STARTED.md#requirements) and
-  [installation](./GETTING_STARTED.md#installation) – Svelte 5, Node 22, ESM-only
+  [installation](./GETTING_STARTED.md#installation) – Svelte 5, Node 22 / Bun 1.2 / Deno 2,
+  ESM-only
 - [Basic concepts](./GETTING_STARTED.md#basic-concepts) – locales, keys, loaders,
   namespaces, the instance
 - [Your first multilingual app](./GETTING_STARTED.md#your-first-multilingual-app) –

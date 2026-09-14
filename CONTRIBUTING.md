@@ -33,7 +33,7 @@ The **Curly Message Format** – the `{{ … }}` syntax `parser-curly` resolves 
 
 ### Current state
 
-- **`master` is the v3 development line.** Svelte 5 runes, ESM-only, Node 22+.
+- **`master` is the v3 development line.** Svelte 5 runes, ESM-only, Node 22 / Bun 1.2 / Deno 2 or newer.
 - **`2.x` is a frozen snapshot** of the published v2 line and receives critical fixes only.
 - The family releases aligned: `base`, `parsers` and `extensions` first, `lib` last. Nothing publishes until all of them are ready.
 
@@ -73,7 +73,7 @@ lib/
 
 ### Prerequisites
 
-- **Node.js 22+** (`.nvmrc` pins 22; CI runs 22 and 24 on Linux, macOS and Windows)
+- **Node.js 22+** (`.nvmrc` pins 22; CI runs 22 and 24 on Linux, macOS and Windows, plus the suite on Bun and on Deno)
 - **pnpm 10** – the lockfile is `pnpm-lock.yaml`; npm and yarn are not supported here
 - Git
 

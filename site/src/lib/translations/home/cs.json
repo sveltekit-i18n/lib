@@ -1,6 +1,6 @@
 {
   "read": "Přečíst dokumentaci",
-  "requirements": "Svelte 5 a Node 22 nebo novější. Pouze ESM.",
+  "requirements": "Svelte 5 a Node 22, Bun 1.2 nebo Deno 2 a novější. Pouze ESM.",
   "why": "Proč sveltekit-i18n",
   "start": "Rychlý start",
   "more": "Kompletní průvodce prvními kroky",
