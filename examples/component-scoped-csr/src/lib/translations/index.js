@@ -1,52 +1,28 @@
-import i18n from 'sveltekit-i18n';
-import lang from './lang.json';
+import { LOCALES } from '$lib/locale.js';
+import cs from './cs.json';
+import de from './de.json';
+import en from './en.json';
 
-export const defaultLocale = 'en';
+/**
+ * The config, not an instance: this module is evaluated once per process, so
+ * an instance here would be shared by every request the server handles.
+ *
+ * The shell strings are inline rather than loaded — the error page renders
+ * without any `load` having run, so whatever it needs has to be there from
+ * construction. The namespaces below are route-scoped to show the other half.
+ */
+export const NAMESPACES = [
+  { key: 'home', routes: ['/'] },
+  { key: 'about', routes: ['/about'] },
+];
 
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
-  translations: {
-    en: { lang },
-    cs: { lang },
-  },
-  loaders: [
-    {
-      locale: 'en',
-      key: 'menu',
-      loader: async () => (await import('./en/menu.json')).default,
-    },
-    {
-      locale: 'en',
-      key: 'about',
-      routes: ['/about'],
-      loader: async () => (await import('./en/about.json')).default,
-    },
-    {
-      locale: 'en',
-      key: 'home',
-      routes: ['/'],
-      loader: async () => (await import('./en/home.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'menu',
-      loader: async () => (await import('./cs/menu.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'about',
-      routes: ['/about'],
-      loader: async () => (await import('./cs/about.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'home',
-      routes: ['/'],
-      loader: async () => (await import('./cs/home.json')).default,
-    },
-  ],
+  translations: { en, cs, de },
+  loaders: NAMESPACES.flatMap(({ key, routes }) => LOCALES.map((locale) => ({
+    locale,
+    key,
+    routes,
+    loader: async () => (await import(`./${key}/${locale}.json`)).default,
+  }))),
 };
-
-export const { t, loading, locales, locale, translations, loadTranslations, addTranslations, setLocale, setRoute } = new i18n(config);
-
-loading.subscribe(($loading) => $loading && console.log('Loading translations...'));

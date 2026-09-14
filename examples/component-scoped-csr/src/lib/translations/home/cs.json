@@ -1,0 +1,19 @@
+{
+  "badge": "Vlastní slovník komponenty, v prohlížeči",
+  "title": "Komponenta s vlastním slovníkem",
+  "lead": "Blok níž má vlastní instanci. Jeho klíče leží u komponenty, takže se dá přenést do jiné aplikace, aniž bys sahal na její překlady.",
+  "cards": {
+    "own": {
+      "title": "Vlastní instance",
+      "text": "new I18n(config) uvnitř komponenty. Vedle sebe žijí dvě instance — stránky a komponenty."
+    },
+    "csr": {
+      "title": "Načteno v prohlížeči",
+      "text": "Komponenta nemá vlastní load, takže její loadery běží až po hydrataci. Na pomalém připojení uvidíš zástupný obsah."
+    },
+    "destroy": {
+      "title": "Zanikne s komponentou",
+      "text": "Instance se při odmountování zruší, takže po ní nic nezůstane."
+    }
+  }
+}

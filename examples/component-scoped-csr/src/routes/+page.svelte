@@ -1,29 +1,30 @@
 <script>
-  import { t } from '$lib/translations';
-  import Component from '$lib/component/index.svelte';
+  import { getContext } from 'svelte';
 
-  const link = 'https://kit.svelte.dev';
+  import Rates from '$lib/rates/Rates.svelte';
 
-  let props = $state([
-    {
-      initLocale: 'cs',
-      initTranslations: {},
-    },
-    {
-      initLocale: 'de',
-      initTranslations: {},
-    },
-  ]);
+  const i18n = getContext('i18n');
 
-  /** @type {import('./$types').Snapshot} */
-  export const snapshot = {
-    capture: () => $state.snapshot(props),
-    restore: (value) => { props = value; },
-  };
+  const CARDS = ['own', 'csr', 'destroy'];
 </script>
 
-<h1>{$t('home.title')}</h1>
-<p>{@html $t('home.text', { link })}</p>
+<svelte:head>
+  <title>{i18n.t('home.title')}</title>
+</svelte:head>
 
-<Component bind:initLocale={props[0].initLocale} bind:initTranslations={props[0].initTranslations} />
-<Component bind:initLocale={props[1].initLocale} bind:initTranslations={props[1].initTranslations} />
+<section class="hero">
+  <span class="badge">{i18n.t('home.badge')}</span>
+  <h1>{i18n.t('home.title')}</h1>
+  <p>{i18n.t('home.lead')}</p>
+</section>
+
+<ul class="cards">
+  {#each CARDS as card (card)}
+    <li>
+      <h2>{i18n.t(`home.cards.${card}.title`)}</h2>
+      <p>{i18n.t(`home.cards.${card}.text`)}</p>
+    </li>
+  {/each}
+</ul>
+
+<Rates locale={i18n.locale} />

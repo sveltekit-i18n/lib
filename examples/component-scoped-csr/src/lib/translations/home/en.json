@@ -1,0 +1,19 @@
+{
+  "badge": "Component-scoped, in the browser",
+  "title": "A component with its own lexicon",
+  "lead": "The block below owns an instance of its own. Its keys live beside the component, so it can be dropped into another application without touching that application's translations.",
+  "cards": {
+    "own": {
+      "title": "Its own instance",
+      "text": "new I18n(config) inside the component. Two instances coexist — the page's and the component's."
+    },
+    "csr": {
+      "title": "Loaded in the browser",
+      "text": "A component has no load of its own, so its loaders run after hydration. Watch the placeholder on a slow connection."
+    },
+    "destroy": {
+      "title": "Destroyed with the component",
+      "text": "The instance is torn down when the component unmounts, so nothing is left behind."
+    }
+  }
+}

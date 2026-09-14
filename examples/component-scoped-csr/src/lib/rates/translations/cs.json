@@ -1,0 +1,7 @@
+{
+  "title": "Ceny dopravy",
+  "lead": "Tenhle blok má vlastní instanci a vlastní slovník. Překlady aplikace neobsahují ani jeden z těchhle klíčů.",
+  "standard": "Standardní",
+  "express": "Expresní",
+  "days": "{{days}} {{days; 1:den; 2:dny; 3:dny; 4:dny; default:dnů;}}"
+}

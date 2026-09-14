@@ -1,29 +1,14 @@
-import { locales, loadTranslations, translations, defaultLocale } from '$lib/translations';
+import { I18n } from 'sveltekit-i18n';
 
-/** @type {import('@sveltejs/kit').ServerLoad} */
-export const load = async ({ url, cookies, request }) => {
-  const { pathname } = url;
+import { config } from '$lib/translations';
 
-  // Try to get the locale from cookie
-  let locale = (cookies.get('lang') || '').toLowerCase();
+/** @type {import('./$types').LayoutServerLoad} */
+export const load = async ({ url, locals }) => {
+  // One instance per request. A module-level singleton here would leak one
+  // visitor's locale into another visitor's page.
+  const i18n = new I18n(config);
 
-  // Get user preferred locale
-  if (!locale) {
-    locale = `${`${request.headers.get('accept-language')}`.match(/[a-zA-Z]+?(?=-|_|,|;)/)}`.toLowerCase();
-  }
+  await i18n.loadTranslations(locals.locale, url.pathname);
 
-  // Get defined locales
-  const supportedLocales = locales.get().map((l) => l.toLowerCase());
-
-  // Use default locale if current locale is not supported
-  if (!supportedLocales.includes(locale)) {
-    locale = defaultLocale;
-  }
-
-  await loadTranslations(locale, pathname); // keep this just before the `return`
-
-  return {
-    i18n: { locale, route: pathname },
-    translations: translations.get(), // `translations` on server contain all translations loaded by different clients
-  };
+  return { locale: locals.locale, translations: i18n.snapshot() };
 };
