@@ -1,0 +1,23 @@
+{
+  "badge": "Předgenerováno, všechny jazyky",
+  "title": "Jazyk je součástí adresy",
+  "lead": "/en/about, /cs/about, /de/about — každá z nich je skutečná stránka vygenerovaná při buildu, přesně to, co chce crawler i vyhledávač.",
+  "cards": {
+    "entries": {
+      "title": "Entries, ne náhoda",
+      "text": "Crawler začíná na / a chodí po odkazech. /cs si nevymyslí, takže si každá stránka pod [lang] určuje vlastní entries."
+    },
+    "matcher": {
+      "title": "Segment hlídá matcher",
+      "text": "Bez něj by [lang] spolkl /about i každou další cestu na první úrovni."
+    },
+    "build": {
+      "title": "Postaveno jednou, servírováno naplocho",
+      "text": "Žádná instance na požadavek — stránky už existují. Prohlížeč dostane vlastní instanci pro navigaci."
+    }
+  },
+  "note": {
+    "title": "Když jazyk zmizí",
+    "text": "Prerender, který skončí nulou a postaví jediný jazyk, vypadá úplně stejně jako úspěšný build. Kontroluj výstup, ne návratový kód."
+  }
+}

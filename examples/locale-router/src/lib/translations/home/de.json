@@ -1,0 +1,23 @@
+{
+  "badge": "Vorgerendert, jede Sprache",
+  "title": "Die Sprache gehört zur Adresse",
+  "lead": "/en/about, /cs/about, /de/about — jede davon ist eine echte Seite, beim Build geschrieben, genau das, was Crawler und Suchmaschine wollen.",
+  "cards": {
+    "entries": {
+      "title": "Entries statt Glück",
+      "text": "Der Crawler startet bei / und folgt Links. /cs kann er nicht erfinden, also nennt jede Seite unter [lang] ihre eigenen entries."
+    },
+    "matcher": {
+      "title": "Ein Matcher schützt das Segment",
+      "text": "Ohne ihn würde [lang] auch /about und jeden anderen Pfad der ersten Ebene verschlucken."
+    },
+    "build": {
+      "title": "Einmal gebaut, flach ausgeliefert",
+      "text": "Keine Instanz pro Anfrage — die Seiten existieren bereits. Der Browser bekommt für die Navigation seine eigene."
+    }
+  },
+  "note": {
+    "title": "Wenn eine Sprache fehlt",
+    "text": "Ein Prerender, der mit 0 endet und nur eine Sprache gebaut hat, sieht aus wie ein erfolgreicher Build. Prüfe die Ausgabe, nicht den Exit-Code."
+  }
+}
