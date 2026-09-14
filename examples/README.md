@@ -1,14 +1,16 @@
 # Examples
 
-These examples demonstrate how to integrate `sveltekit-i18n` into your app. Currently, these setups are present:
+These examples demonstrate how to integrate `sveltekit-i18n` into your app. Each
+one is a standalone SvelteKit application covering an **application-shaped**
+decision — an adapter, a `svelte.config.js`, a `hooks.server.js`, a route tree.
 
-[`single-load`](./single-load)
-- loads all translations for all language mutations during `i18n` initialization
-- usually this is not what you are looking for, but it can be useful if you need all your translations in place.
+Everything that is really three lines of configuration lives on the
+[playground](https://sveltekit-i18n.github.io/playground) instead, where a real
+instance responds as you change it: message formats (`parser-curly`,
+`parser-icu`), `config.preprocess`, `config.loaders` matching and freshness, and
+`config.fallbackLocale`.
 
-[`one-page`](./one-page)
-- this approach is useful for one-page apps
-- translations are loaded dynamically according to locale
+Currently, these setups are present:
 
 [`multi-page`](./multi-page)
 - this is the most frequent use-case – application with multiple routes
@@ -43,29 +45,12 @@ These examples demonstrate how to integrate `sveltekit-i18n` into your app. Curr
 - SvelteKit does not provide server side load method for components.
 - component's `load` is replaced by exported init method. This method initializes related language mutation within parent page's `load` method.
 - after the load, appropriate props are delegated back to the component instance.
-### Parsers
-[`parser-default`](./parser-default)
-- this app demonstrates features of the [@sveltekit-i18n/parser-default](https://github.com/sveltekit-i18n/parsers/blob/master/parser-default)
-
-[`parser-icu`](./parser-icu)
-- this app demonstrates features of the [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/blob/master/parser-icu)
-
-### Other
-[`loaders`](./loaders)
-- this app demonstrates different `config.loaders` configurations
-
-[`preprocess`](./preprocess)
-- this app demonstrates different `config.preprocess` configurations
-
-[`fallback-locale`](./fallback-locale)
-- this app demonstrates `config.fallbackLocale`
-
 ## How to use an example
 
 - Clone or download the example you want to use
 - Navigate to the downloaded folder using Terminal (e.g. `cd ./your/example/destination/`)
 - Install dependencies using your preferred package manager:
-  - `npm i sveltekit-i18n@latest` (or `npm i @sveltekit-i18n/PACKAGE_NAME@latest` for parser examples - see related dependencies)
+  - `npm i sveltekit-i18n@latest`
   - `pnpm i sveltekit-i18n@latest`
   - `yarn add sveltekit-i18n@latest`
   - Or any other package manager you prefer
