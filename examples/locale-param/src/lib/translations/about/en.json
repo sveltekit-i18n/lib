@@ -1,0 +1,10 @@
+{
+  "badge": "Second route",
+  "title": "The parameter survives navigation",
+  "lead": "Every internal link carries the current ?lang= along, so moving between pages keeps the language without a cookie and without a redirect.",
+  "facts": {
+    "locale": "Active locale",
+    "loaded": "Loaded namespaces",
+    "url": "Current URL"
+  }
+}

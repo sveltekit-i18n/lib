@@ -1,0 +1,10 @@
+{
+  "badge": "Zweite Route",
+  "title": "Der Parameter überlebt die Navigation",
+  "lead": "Jeder interne Link nimmt das aktuelle ?lang= mit, sodass der Wechsel zwischen Seiten die Sprache ohne Cookie und ohne Weiterleitung behält.",
+  "facts": {
+    "locale": "Aktive Sprache",
+    "loaded": "Geladene Namensräume",
+    "url": "Aktuelle URL"
+  }
+}
