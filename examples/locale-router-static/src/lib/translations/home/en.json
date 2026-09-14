@@ -1,0 +1,23 @@
+{
+  "badge": "No server at runtime",
+  "title": "Every page is a file on disk",
+  "lead": "@sveltejs/adapter-static writes one HTML file per page per locale. Upload the directory anywhere — a bucket, a CDN, GitHub Pages — and that is the whole deployment.",
+  "cards": {
+    "entries": {
+      "title": "Entries, not luck",
+      "text": "The crawler starts at / and follows links. It cannot invent /cs, so every page under [lang] names its own entries."
+    },
+    "strict": {
+      "title": "Strict by default",
+      "text": "The build fails if a route cannot be prerendered, rather than quietly shipping a site with holes in it."
+    },
+    "hooks": {
+      "title": "Hooks still run",
+      "text": "handle runs during the prerender, which is how each written file gets its own <html lang>."
+    }
+  },
+  "note": {
+    "title": "Unknown URLs belong to the host",
+    "text": "There is no fallback here, so /anything-else is answered by whatever serves the files, not by this app. If the 404 has to be yours and translated, see locale-router-advanced."
+  }
+}

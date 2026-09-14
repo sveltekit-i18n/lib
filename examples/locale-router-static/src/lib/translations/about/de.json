@@ -1,0 +1,10 @@
+{
+  "badge": "Zweite Route",
+  "title": "Diese Seite wurde dreimal geschrieben",
+  "lead": "Einmal pro Sprache, beim Build. Der about-Namensraum wurde während des Prerenders geladen und steckt schon in dem HTML, das du liest.",
+  "facts": {
+    "locale": "Aktive Sprache",
+    "loaded": "Geladene Namensräume",
+    "route": "Route, auf die die Loader passten"
+  }
+}
