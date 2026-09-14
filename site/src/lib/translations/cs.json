@@ -1,0 +1,14 @@
+{
+  "site.tagline": "Internacionalizace pro SvelteKit",
+  "nav.docs": "Dokumentace",
+  "nav.github": "GitHub",
+  "nav.language": "Jazyk",
+  "lang.en": "English",
+  "lang.cs": "Čeština",
+  "lang.de": "Deutsch",
+  "banner.v3": "Toto je dokumentace k v3. Pro řadu v2 se podívej na větev {{branch}}.",
+  "error.title": "Něco se pokazilo",
+  "error.404": "Tato stránka neexistuje.",
+  "error.default": "Došlo k neočekávané chybě.",
+  "error.home": "Zpět na úvodní stránku"
+}

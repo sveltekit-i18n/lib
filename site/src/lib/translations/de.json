@@ -1,0 +1,14 @@
+{
+  "site.tagline": "Internationalisierung für SvelteKit",
+  "nav.docs": "Dokumentation",
+  "nav.github": "GitHub",
+  "nav.language": "Sprache",
+  "lang.en": "English",
+  "lang.cs": "Čeština",
+  "lang.de": "Deutsch",
+  "banner.v3": "Dies ist die Dokumentation für v3. Für die v2-Reihe siehe den Branch {{branch}}.",
+  "error.title": "Etwas ist schiefgelaufen",
+  "error.404": "Diese Seite existiert nicht.",
+  "error.default": "Ein unerwarteter Fehler ist aufgetreten.",
+  "error.home": "Zurück zur Startseite"
+}

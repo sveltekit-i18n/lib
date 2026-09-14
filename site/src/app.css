@@ -1,0 +1,238 @@
+:root {
+  --bg: #fff;
+  --fg: #1b1b1f;
+  --muted: #5c5f66;
+  --line: #e3e4e8;
+  --accent: #c2410c;
+  --code-bg: #f6f7f9;
+  --measure: 46rem;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17171a;
+    --fg: #e8e8ea;
+    --muted: #9a9ca3;
+    --line: #2b2c31;
+    --accent: #fb923c;
+    --code-bg: #1e1f23;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-padding-top: 5rem; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 16px/1.65 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+a { color: var(--accent); }
+
+.skip {
+  position: absolute;
+  left: -9999px;
+}
+
+.skip:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 10;
+  background: var(--bg);
+  padding: 0.5rem 0.75rem;
+}
+
+.banner {
+  display: block;
+  padding: 0.6rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--code-bg);
+  color: var(--muted);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+main { padding: 2rem 1.5rem 4rem; }
+
+footer {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.language {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-left: auto;
+}
+
+.language select {
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: var(--bg);
+  color: var(--fg);
+  font: inherit;
+}
+
+.doc {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2.5rem;
+  margin: 0 auto;
+  max-width: calc(var(--measure) + 16rem);
+}
+
+@media (min-width: 60rem) {
+  .doc { grid-template-columns: minmax(0, 1fr) 14rem; }
+
+  .doc aside {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+  }
+}
+
+.doc aside {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.doc aside ul {
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.doc aside li { margin: 0.4rem 0; }
+
+.doc aside .label {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.7rem;
+}
+
+.prose {
+  max-width: var(--measure);
+  overflow-wrap: break-word;
+}
+
+.prose h1 { font-size: 2rem; line-height: 1.2; }
+
+.prose h2 {
+  margin-top: 2.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--line);
+  font-size: 1.4rem;
+}
+
+.prose h3 { margin-top: 2rem; font-size: 1.1rem; }
+
+.prose :is(h1, h2, h3, h4, h5, h6) .anchor {
+  float: left;
+  margin-left: -1.1em;
+  padding-right: 0.35em;
+  color: var(--muted);
+  opacity: 0;
+  text-decoration: none;
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6):hover .anchor { opacity: 1; }
+
+.prose table {
+  display: block;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.prose :is(th, td) {
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--line);
+  text-align: left;
+}
+
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--line);
+  color: var(--muted);
+}
+
+.prose :not(pre) > code {
+  padding: 0.15em 0.35em;
+  border-radius: 3px;
+  background: var(--code-bg);
+  font-size: 0.875em;
+}
+
+pre {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--code-bg) !important;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.shiki, .shiki span { color: var(--shiki-light); }
+
+@media (prefers-color-scheme: dark) {
+  .shiki, .shiki span { color: var(--shiki-dark); }
+}
+
+.error {
+  margin: 4rem auto;
+  max-width: var(--measure);
+  text-align: center;
+}
+
+.error .status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 3rem;
+  font-weight: 700;
+}
