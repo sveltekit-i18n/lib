@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "svelte-kit sync || echo ''"
   },
   "dependencies": {
     "sveltekit-i18n": "^3.0.0"
