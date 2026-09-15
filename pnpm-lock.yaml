@@ -83,6 +83,10 @@ importers:
       vite:
         specifier: ^8.2.1
         version: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
+    optionalDependencies:
+      '@rolldown/binding-wasm32-wasi':
+        specifier: ^1.2.8
+        version: 1.2.8
 
   examples/component-scoped-ssr:
     dependencies:
@@ -105,6 +109,10 @@ importers:
       vite:
         specifier: ^8.2.1
         version: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
+    optionalDependencies:
+      '@rolldown/binding-wasm32-wasi':
+        specifier: ^1.2.8
+        version: 1.2.8
 
   examples/locale-param:
     dependencies:
@@ -127,6 +135,10 @@ importers:
       vite:
         specifier: ^8.2.1
         version: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
+    optionalDependencies:
+      '@rolldown/binding-wasm32-wasi':
+        specifier: ^1.2.8
+        version: 1.2.8
 
   examples/locale-router:
     dependencies:
@@ -149,6 +161,10 @@ importers:
       vite:
         specifier: ^8.2.1
         version: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
+    optionalDependencies:
+      '@rolldown/binding-wasm32-wasi':
+        specifier: ^1.2.8
+        version: 1.2.8
 
   examples/locale-router-advanced:
     dependencies:
@@ -171,6 +187,10 @@ importers:
       vite:
         specifier: ^8.2.1
         version: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
+    optionalDependencies:
+      '@rolldown/binding-wasm32-wasi':
+        specifier: ^1.2.8
+        version: 1.2.8
 
   examples/locale-router-static:
     dependencies:
@@ -193,6 +213,10 @@ importers:
       vite:
         specifier: ^8.2.1
         version: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
+    optionalDependencies:
+      '@rolldown/binding-wasm32-wasi':
+        specifier: ^1.2.8
+        version: 1.2.8
 
   examples/mdsvex:
     dependencies:
@@ -218,6 +242,10 @@ importers:
       vite:
         specifier: ^8.2.1
         version: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
+    optionalDependencies:
+      '@rolldown/binding-wasm32-wasi':
+        specifier: ^1.2.8
+        version: 1.2.8
 
   examples/multi-page:
     dependencies:
@@ -240,6 +268,10 @@ importers:
       vite:
         specifier: ^8.2.1
         version: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
+    optionalDependencies:
+      '@rolldown/binding-wasm32-wasi':
+        specifier: ^1.2.8
+        version: 1.2.8
 
   site:
     dependencies:
@@ -290,11 +322,20 @@ packages:
   '@emnapi/core@1.10.0':
     resolution: {integrity: sha512-yq6OkJ4p82CAfPl0u9mQebQHKPJkY7WrIuk205cTYnYe+k2Z8YBh11FrbRG/H6ihirqcacOgl2BIO8oyMQLeXw==}
 
+  '@emnapi/core@2.0.0-alpha.4':
+    resolution: {integrity: sha512-KjoUR6mNvjT+z5bKMy+a5QDI+kTNTiMZi6uPKzWuWjwZGNa0UPwIVduTfeBRdf6v8Ws5fmHDh7Usf15w/ANfkg==}
+
   '@emnapi/runtime@1.10.0':
     resolution: {integrity: sha512-ewvYlk86xUoGI0zQRNq/mC+16R1QeDlKQy21Ki3oSYXNgLb45GV1P6A0M+/s6nyCuNDqe5VpaY84BzXGwVbwFA==}
 
+  '@emnapi/runtime@2.0.0-alpha.4':
+    resolution: {integrity: sha512-Wy1TQ99obRP3Ah7cf/OOtK1zD9t3pYTWz+G/SpAwTFMhG5hoMdlvfzBpYoHUigS/izu3q+VhYMKhJd7Ii/trpg==}
+
   '@emnapi/wasi-threads@1.2.1':
     resolution: {integrity: sha512-uTII7OYF+/Mes/MrcIOYp5yOtSMLBWSIoLPpcgwipoiKbli6k322tcoFsxoIIxPDqW01SQGAgko4EzZi2BNv2w==}
+
+  '@emnapi/wasi-threads@2.0.1':
+    resolution: {integrity: sha512-9DsSk+o5NBX0CCJT8s0EROGSGxjR/tKu6aBTaVyq+SjAEQH4XcdcRxPBRzsBLizTTJ49MJjF+jgu3qnO9GLQcQ==}
 
   '@esbuild/aix-ppc64@0.28.2':
     resolution: {integrity: sha512-XExcO+dvLKvVtNTibSTBej1NCAbaGhWn9Ww1ZPx80qsahhPFe/8jgWP0IchNe0F3HwkU7n8ejhH8bjonqht8mQ==}
@@ -641,6 +682,10 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     cpu: [arm64]
     os: [openharmony]
+
+  '@rolldown/binding-wasm32-wasi@1.2.8':
+    resolution: {integrity: sha512-9kLsZQDi/yz2HyH+X/wydWJXyNAHrYt0Al4RMHfaSddGyWGk0HjJe/wcgOJVCmg6CkP/cNXfCnEZqb6qPJhw8A==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=23.5.0}
 
   '@rolldown/binding-win32-arm64-msvc@1.2.8':
     resolution: {integrity: sha512-xWBkPOF1Q9k/Gv1nQXnVdLxKu74jXppuOM4Z3mnypVUJJJwLsMl7hNJGRAUJoG8A5MgOI1ACKM+wBFxSJzKy4A==}
@@ -2719,12 +2764,28 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
+  '@emnapi/core@2.0.0-alpha.4':
+    dependencies:
+      '@emnapi/wasi-threads': 2.0.1
+      tslib: 2.8.1
+    optional: true
+
   '@emnapi/runtime@1.10.0':
     dependencies:
       tslib: 2.8.1
     optional: true
 
+  '@emnapi/runtime@2.0.0-alpha.4':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
   '@emnapi/wasi-threads@1.2.1':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
+  '@emnapi/wasi-threads@2.0.1':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -2899,6 +2960,13 @@ snapshots:
       '@tybys/wasm-util': 0.10.3
     optional: true
 
+  '@napi-rs/wasm-runtime@1.2.4(@emnapi/core@2.0.0-alpha.4)(@emnapi/runtime@2.0.0-alpha.4)':
+    dependencies:
+      '@emnapi/core': 2.0.0-alpha.4
+      '@emnapi/runtime': 2.0.0-alpha.4
+      '@tybys/wasm-util': 0.10.3
+    optional: true
+
   '@oxc-project/types@0.149.0': {}
 
   '@polka/url@1.0.0-next.29': {}
@@ -2940,6 +3008,13 @@ snapshots:
     optional: true
 
   '@rolldown/binding-openharmony-arm64@1.2.8':
+    optional: true
+
+  '@rolldown/binding-wasm32-wasi@1.2.8':
+    dependencies:
+      '@emnapi/core': 2.0.0-alpha.4
+      '@emnapi/runtime': 2.0.0-alpha.4
+      '@napi-rs/wasm-runtime': 1.2.4(@emnapi/core@2.0.0-alpha.4)(@emnapi/runtime@2.0.0-alpha.4)
     optional: true
 
   '@rolldown/binding-win32-arm64-msvc@1.2.8':

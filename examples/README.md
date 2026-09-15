@@ -16,6 +16,12 @@ Each **run it** below opens that directory in
 the browser tab and lands on the example's `config`. Nothing is installed, and
 nothing is deployed that could drift from what is in this repository.
 
+The `@rolldown/binding-wasm32-wasi` entry in each example's
+`optionalDependencies` is what lets that work. Vite 8 builds with rolldown,
+which loads a native binding no browser sandbox can execute; rolldown ships a
+WebAssembly fallback but stopped declaring it in 1.2.2, so nothing installs it
+on its own. Drop the entry once rolldown declares it again.
+
 ## Routing
 
 [`multi-page`](./multi-page) — the common case · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/multi-page?startScript=dev&file=src/lib/translations/index.js)

@@ -19,5 +19,8 @@
     "mdsvex": "^0.12.6",
     "svelte": "^5.56.9",
     "vite": "^8.2.1"
+  },
+  "optionalDependencies": {
+    "@rolldown/binding-wasm32-wasi": "^1.2.8"
   }
 }
