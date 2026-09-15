@@ -49,7 +49,7 @@
   "bugs": {
     "url": "https://github.com/sveltekit-i18n/lib/issues"
   },
-  "homepage": "https://github.com/sveltekit-i18n/lib#readme",
+  "homepage": "https://sveltekit-i18n.github.io",
   "engines": {
     "node": ">=22",
     "bun": ">=1.2",

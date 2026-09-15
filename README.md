@@ -246,6 +246,8 @@ Svelte context — is in the
 
 ## Documentation
 
+**🌐 [sveltekit-i18n.github.io](https://sveltekit-i18n.github.io)** – The documentation site, with a live playground
+
 **📖 [Complete Documentation Index](./docs/INDEX.md)** – Find everything in one place
 
 ### Quick Links
