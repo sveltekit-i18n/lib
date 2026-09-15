@@ -50,6 +50,7 @@
     "url": "https://github.com/sveltekit-i18n/lib/issues"
   },
   "homepage": "https://sveltekit-i18n.github.io",
+  "funding": "https://github.com/sponsors/sveltekit-i18n",
   "engines": {
     "node": ">=22",
     "bun": ">=1.2",
