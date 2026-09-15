@@ -21,7 +21,10 @@ export const load = async ({ data, url }) => {
 
   if (browser) client = i18n;
 
-  await i18n.loadTranslations(data?.locale ?? DEFAULT_LOCALE, url.pathname);
+  // The instance owns the locale once it exists: the server negotiates the
+  // first request and nothing after it, so a cookie that never persisted —
+  // a cross-site iframe, blocked third-party cookies — cannot reset the tab.
+  await i18n.loadTranslations(i18n.locale ?? data?.locale ?? DEFAULT_LOCALE, url.pathname);
 
   return { i18n };
 };
