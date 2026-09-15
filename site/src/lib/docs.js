@@ -21,4 +21,6 @@ export const ROUTE_OF_FILE = {
 
 export const REPO = 'https://github.com/sveltekit-i18n/lib';
 
+export const NPM = 'https://www.npmjs.com/package/sveltekit-i18n';
+
 export const SPONSOR = 'https://github.com/sponsors/sveltekit-i18n';

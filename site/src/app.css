@@ -89,6 +89,13 @@ header nav {
   font-size: 0.9rem;
 }
 
+.mark {
+  display: flex;
+  color: var(--muted);
+}
+
+.mark:hover { color: var(--accent); }
+
 main { padding: 2rem 1.5rem 4rem; }
 
 footer {

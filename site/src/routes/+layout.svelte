@@ -5,9 +5,12 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
 
-  import { DEFAULT_LOCALE, LOCALES, REPO, SPONSOR } from '$lib/docs.js';
+  import { DEFAULT_LOCALE, LOCALES, NPM, REPO, SPONSOR } from '$lib/docs.js';
+  import { ICONS } from '$lib/icons.js';
 
   let { data, children } = $props();
+
+  const EXTERNAL = [{ key: 'github', url: REPO }, { key: 'npm', url: NPM }];
 
   setContext('i18n', data.i18n);
 
@@ -48,7 +51,14 @@
     <a href="{data.prefix}/docs">{i18n.t('nav.docs')}</a>
     <a href="{data.prefix}/examples">{i18n.t('nav.examples')}</a>
     <a href="{data.prefix}/playground">{i18n.t('nav.playground')}</a>
-    <a href={REPO} rel="noreferrer">{i18n.t('nav.github')}</a>
+
+    {#each EXTERNAL as { key, url } (key)}
+      <a class="mark" href={url} target="_blank" rel="noreferrer" aria-label={i18n.t(`nav.${key}`)}>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d={ICONS[key]} />
+        </svg>
+      </a>
+    {/each}
   </nav>
 </header>
 
