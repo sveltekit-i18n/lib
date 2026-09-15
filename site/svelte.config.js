@@ -3,7 +3,7 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 import { DEFAULT_LOCALE, LOCALES, PAGES } from './src/lib/docs.js';
 
-const paths = ['', '/playground', '/docs', ...Object.keys(PAGES).map((slug) => `/docs/${slug}`)];
+const paths = ['', '/examples', '/playground', '/docs', ...Object.keys(PAGES).map((slug) => `/docs/${slug}`)];
 
 // Explicit entries rather than crawling: a prefixed locale is reachable only
 // through the language switcher, and a crawler that misses one link silently

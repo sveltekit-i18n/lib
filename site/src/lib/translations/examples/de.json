@@ -1,0 +1,45 @@
+{
+  "title": "Beispiele",
+  "lead": "Acht eigenständige Anwendungen, jede zu einer Entscheidung, die man einmal trifft und dann behält. Alle laufen im Browser — Node und der Dev-Server starten im Tab, ohne lokale Installation.",
+  "run": "Ausführen",
+  "source": "Quellcode",
+  "app": {
+    "multi-page": {
+      "title": "Mehrere Seiten",
+      "text": "Mehrere Routen, die Sprache steht nicht in der URL. Sie wird pro Anfrage aus einem Cookie und dann aus Accept-Language ermittelt."
+    },
+    "locale-param": {
+      "title": "Sprache im Query-Parameter",
+      "text": "/about?lang=cs, auf dem Server vor dem Rendern aufgelöst. Nicht die SEO-Variante, und das Beispiel sagt es deutlich."
+    },
+    "locale-router": {
+      "title": "Sprache im Pfad",
+      "text": "/en/about, /cs/about, /de/about, alles vorgerendert, mit entries() für das, was der Crawler nicht erreicht."
+    },
+    "locale-router-static": {
+      "title": "Sprache im Pfad ohne Server",
+      "text": "Dasselbe Routing ganz ohne Server: eine HTML-Datei pro Seite und Sprache."
+    },
+    "locale-router-advanced": {
+      "title": "Standardsprache ohne Präfix",
+      "text": "Die Standardsprache behält die nackte URL, und die Fehlerseite ist deine eigene, schon beim ersten Aufruf übersetzt. Darauf läuft diese Website."
+    },
+    "component-scoped-csr": {
+      "title": "Übersetzungen an der Komponente (CSR)",
+      "text": "Eine Komponente mit eigener Instanz und eigenem Wortschatz, im Browser geladen."
+    },
+    "component-scoped-ssr": {
+      "title": "Übersetzungen an der Komponente (SSR)",
+      "text": "Dieselbe Komponente, von der Seite geladen und über snapshot() weitergereicht: schon beim ersten Rendern vollständig."
+    },
+    "mdsvex": {
+      "title": "mdsvex",
+      "text": "Eine in Markdown geschriebene Route: t() innerhalb von .svx, routenbezogenes Laden, pro Sprache vorgerendert."
+    }
+  },
+  "group": {
+    "routing": "Routing",
+    "component": "Übersetzungen an der Komponente",
+    "content": "Inhalt"
+  }
+}

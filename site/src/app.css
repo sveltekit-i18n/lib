@@ -204,6 +204,62 @@ footer {
 
 .start li p { margin: 0 0 0.6rem; }
 
+.examples {
+  margin: 0 auto;
+  max-width: var(--measure);
+}
+
+.examples h1 {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.examples .lead {
+  color: var(--muted);
+}
+
+.examples h2 {
+  margin: 3rem 0 1.5rem;
+  font-size: 1.5rem;
+}
+
+.examples ul {
+  display: grid;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 40rem) {
+  .examples ul { grid-template-columns: 1fr 1fr; }
+}
+
+.examples li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.examples li span { color: var(--muted); }
+
+.examples .links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+  margin: 0.8rem 0 0;
+}
+
+.examples .links .button { padding: 0.35rem 0.9rem; }
+
+.examples .links code {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
 .doc {
   display: grid;
   grid-template-columns: minmax(0, 1fr);

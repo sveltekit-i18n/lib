@@ -1,0 +1,45 @@
+{
+  "title": "Příklady",
+  "lead": "Osm samostatných aplikací, každá k jednomu rozhodnutí, které uděláš jednou a pak s ním žiješ. Všechny běží přímo v prohlížeči — Node i vývojový server se spustí v záložce a nic se neinstaluje.",
+  "run": "Spustit",
+  "source": "Zdroj",
+  "app": {
+    "multi-page": {
+      "title": "Více stránek",
+      "text": "Několik rout, jazyk není v URL. Určuje se pro každý požadavek z cookie, pak z Accept-Language."
+    },
+    "locale-param": {
+      "title": "Jazyk v query parametru",
+      "text": "/about?lang=cs, vyřešeno na serveru před vykreslením. Není to varianta pro SEO a příklad to říká nahlas."
+    },
+    "locale-router": {
+      "title": "Jazyk v cestě",
+      "text": "/en/about, /cs/about, /de/about, vše předgenerované, s entries() pro to, kam crawler nedosáhne."
+    },
+    "locale-router-static": {
+      "title": "Jazyk v cestě bez serveru",
+      "text": "Stejné routování úplně bez serveru: jeden HTML soubor na stránku a jazyk."
+    },
+    "locale-router-advanced": {
+      "title": "Výchozí jazyk bez prefixu",
+      "text": "Výchozí jazyk si nechává holou URL a chybová stránka je tvoje, přeložená hned napoprvé. Na tomhle běží tenhle web."
+    },
+    "component-scoped-csr": {
+      "title": "Překlady u komponenty (CSR)",
+      "text": "Komponenta s vlastní instancí a vlastní slovní zásobou, načtenou v prohlížeči."
+    },
+    "component-scoped-ssr": {
+      "title": "Překlady u komponenty (SSR)",
+      "text": "Stejná komponenta, načtená stránkou a předaná přes snapshot(): kompletní už při prvním vykreslení."
+    },
+    "mdsvex": {
+      "title": "mdsvex",
+      "text": "Routa psaná v Markdownu: t() uvnitř .svx, načítání podle routy, předgenerováno pro každý jazyk."
+    }
+  },
+  "group": {
+    "routing": "Routování",
+    "component": "Překlady u komponenty",
+    "content": "Obsah"
+  }
+}

@@ -2,6 +2,7 @@
   "site.tagline": "Internationalisierung für SvelteKit",
   "nav.home": "Startseite",
   "nav.docs": "Dokumentation",
+  "nav.examples": "Beispiele",
   "nav.playground": "Spielwiese",
   "nav.github": "GitHub",
   "nav.language": "Sprache",

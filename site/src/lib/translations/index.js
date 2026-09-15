@@ -15,6 +15,7 @@ import { DEFAULT_LOCALE, LOCALES } from '$lib/docs.js';
  *  the landing page is the one route that can be spelled out. */
 const NAMESPACES = [
   { key: 'docs', routes: [/^\/docs(\/|$)/] },
+  { key: 'examples', routes: ['/examples'] },
   { key: 'home', routes: ['/'] },
   { key: 'playground', routes: ['/playground'] },
 ];

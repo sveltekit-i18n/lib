@@ -2,6 +2,7 @@
   "site.tagline": "Internacionalizace pro SvelteKit",
   "nav.home": "Domů",
   "nav.docs": "Dokumentace",
+  "nav.examples": "Příklady",
   "nav.playground": "Hřiště",
   "nav.github": "GitHub",
   "nav.language": "Jazyk",

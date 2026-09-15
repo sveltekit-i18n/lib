@@ -1,0 +1,45 @@
+{
+  "title": "Examples",
+  "lead": "Eight standalone applications, each covering one decision you make once and live with. Every one of them runs in the browser — Node and the dev server boot inside the tab, with nothing installed locally.",
+  "run": "Run it",
+  "source": "Source",
+  "app": {
+    "multi-page": {
+      "title": "Multi-page",
+      "text": "Several routes, no locale in the URL. The locale is negotiated per request from a cookie, then Accept-Language."
+    },
+    "locale-param": {
+      "title": "Locale in the query",
+      "text": "/about?lang=cs, resolved on the server before rendering. Not the SEO option, and it says so."
+    },
+    "locale-router": {
+      "title": "Locale router",
+      "text": "/en/about, /cs/about, /de/about, everything prerendered, with entries() for what the crawler cannot reach."
+    },
+    "locale-router-static": {
+      "title": "Static locale router",
+      "text": "The same routing with no server at all: one HTML file per page per locale."
+    },
+    "locale-router-advanced": {
+      "title": "Advanced locale router",
+      "text": "The default locale keeps the bare URL and the error page is yours, translated on the first hit. What this site runs on."
+    },
+    "component-scoped-csr": {
+      "title": "Component-scoped (CSR)",
+      "text": "A component carrying its own instance and its own lexicon, loaded in the browser."
+    },
+    "component-scoped-ssr": {
+      "title": "Component-scoped (SSR)",
+      "text": "The same component, loaded by the page and handed down through snapshot(): complete on the first render."
+    },
+    "mdsvex": {
+      "title": "mdsvex",
+      "text": "A route written in Markdown: t() inside .svx, route-scoped loading, prerendered per locale."
+    }
+  },
+  "group": {
+    "routing": "Routing",
+    "component": "Component-scoped translations",
+    "content": "Content"
+  }
+}
