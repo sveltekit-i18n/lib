@@ -4,12 +4,17 @@ contact_links:
     url: https://github.com/sveltekit-i18n/lib/discussions
     about: Ask questions, share ideas, or discuss the project
   - name: 📖 Documentation
-    url: https://github.com/sveltekit-i18n/lib/tree/master/docs
-    about: Read the complete documentation
+    url: https://sveltekit-i18n.github.io/docs
+    about: Guides, the API reference, architecture and best practices
   - name: 🔧 Troubleshooting Guide
-    url: https://github.com/sveltekit-i18n/lib/blob/master/docs/TROUBLESHOOTING.md
-    about: Common issues and solutions
+    url: https://sveltekit-i18n.github.io/docs/troubleshooting
+    about: Common issues, and what changed when upgrading from v2
+  - name: 🧪 Playground
+    url: https://sveltekit-i18n.github.io/playground
+    about: Message formats, preprocessing, loaders and fallbacks, live
   - name: 💡 Examples
-    url: https://github.com/sveltekit-i18n/lib/tree/master/examples
-    about: Working example applications
-
+    url: https://sveltekit-i18n.github.io/examples
+    about: Eight applications you can open and run in the browser
+  - name: 🔤 Curly Message Format
+    url: https://curlymessage.dev
+    about: The message syntax itself — grammar questions and syntax proposals go here

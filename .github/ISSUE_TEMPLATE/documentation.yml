@@ -28,8 +28,9 @@ body:
     id: location
     attributes:
       label: Documentation location
-      description: Which documentation page or file is this about?
-      placeholder: "docs/GETTING_STARTED.md, README.md, etc."
+      description: |
+        Which page or file is this about? The [site](https://sveltekit-i18n.github.io/docs) renders `docs/` from this repository, so a site URL is as good as a file path.
+      placeholder: "https://sveltekit-i18n.github.io/docs/getting-started, docs/README.md, …"
     validations:
       required: true
 

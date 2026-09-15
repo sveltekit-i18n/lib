@@ -6,7 +6,33 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a bug! Please fill out the information below to help us investigate.
+        This tracker covers the whole family — `sveltekit-i18n`, `@sveltekit-i18n/base`, the parsers and the extensions.
+
+        Syntax questions about the **Curly Message Format** itself belong at [curlymessage.dev](https://curlymessage.dev), not here.
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      description: Which package does the bug appear in?
+      options:
+        - "sveltekit-i18n"
+        - "@sveltekit-i18n/base"
+        - "@sveltekit-i18n/parser-curly"
+        - "@sveltekit-i18n/parser-icu"
+        - "@sveltekit-i18n/extension-stores"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      description: The version of the package you selected above.
+      placeholder: "3.0.0"
+    validations:
+      required: true
 
   - type: textarea
     id: description
@@ -21,9 +47,10 @@ body:
     id: reproduction
     attributes:
       label: Reproduction
-      description: Steps to reproduce the behavior, or a link to a minimal reproduction (CodeSandbox, StackBlitz, GitHub repo).
+      description: |
+        Steps to reproduce, or a link to a minimal reproduction. The [examples](https://sveltekit-i18n.github.io/examples) each open in StackBlitz — forking the closest one is usually the fastest way to show the problem.
       placeholder: |
-        1. Configure i18n with...
+        1. Configure the instance with...
         2. Navigate to...
         3. See error...
     validations:
@@ -48,11 +75,11 @@ body:
       required: true
 
   - type: input
-    id: sveltekit-i18n-version
+    id: svelte-version
     attributes:
-      label: sveltekit-i18n version
-      description: What version of sveltekit-i18n are you using?
-      placeholder: "2.4.2"
+      label: Svelte version
+      description: v3 needs Svelte 5 — the core is built on runes.
+      placeholder: "5.56.9"
     validations:
       required: true
 
@@ -60,26 +87,38 @@ body:
     id: sveltekit-version
     attributes:
       label: SvelteKit version
-      description: What version of SvelteKit are you using?
-      placeholder: "2.0.0"
+      description: Leave empty if you are not using SvelteKit.
+      placeholder: "2.70.3"
+
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Runtime
+      description: Where does the code run? v3 targets Node 22+, Bun 1.2+ and Deno 2+.
+      options:
+        - "Node.js"
+        - "Bun"
+        - "Deno"
+        - "Browser only"
+        - "Other (specify in additional context)"
     validations:
       required: true
 
   - type: input
-    id: node-version
+    id: runtime-version
     attributes:
-      label: Node.js version
-      description: What version of Node.js are you using?
-      placeholder: "20.10.0"
+      label: Runtime version
+      placeholder: "22.14.0"
     validations:
       required: true
 
   - type: dropdown
     id: adapter
     attributes:
-      label: SvelteKit Adapter
-      description: Which SvelteKit adapter are you using?
+      label: SvelteKit adapter
+      description: Which adapter are you using?
       options:
+        - "Not applicable"
         - "@sveltejs/adapter-auto"
         - "@sveltejs/adapter-node"
         - "@sveltejs/adapter-static"
@@ -94,7 +133,7 @@ body:
     id: logs
     attributes:
       label: Error logs
-      description: Please paste any relevant error messages or console logs.
+      description: Any relevant error messages or console output. Setting `config.log.level` to `'debug'` makes the instance report what it loads and why.
       render: shell
       placeholder: Paste error logs here
 
@@ -102,7 +141,7 @@ body:
     id: additional
     attributes:
       label: Additional context
-      description: Add any other context about the problem here (browser, operating system, etc.).
+      description: Anything else that might help — browser, operating system, bundler, a link to your repository.
       placeholder: Any additional information that might help
 
   - type: checkboxes
@@ -113,8 +152,9 @@ body:
       options:
         - label: I have searched existing issues to avoid duplicates
           required: true
+        - label: I am on v3 — or the bug is a critical one on the frozen 2.x line
+          required: true
         - label: I have provided a minimal reproduction (if possible)
           required: false
-        - label: I have checked the [Troubleshooting Guide](https://github.com/sveltekit-i18n/lib/blob/master/docs/TROUBLESHOOTING.md)
+        - label: I have checked the [Troubleshooting Guide](https://sveltekit-i18n.github.io/docs/troubleshooting)
           required: false
-

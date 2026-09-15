@@ -476,25 +476,11 @@ Because the notes are generated, commit messages are the changelog – see [Comm
 - **GitHub Discussions:** https://github.com/sveltekit-i18n/lib/discussions
 - **Issues:** https://github.com/sveltekit-i18n/lib/issues
 
-### Reporting Bugs
+### Bugs and Feature Requests
 
-When reporting a bug, include:
+Open an [issue](https://github.com/sveltekit-i18n/lib/issues/new/choose) and fill in the form. The forms ask for everything a report needs, so this file does not repeat the list – whatever they mark required is required.
 
-- `sveltekit-i18n` version
-- `SvelteKit` and `Svelte` versions
-- Node.js version
-- Minimal reproduction (CodeSandbox, StackBlitz, or GitHub repo)
-- Expected behavior vs. actual behavior
-- Error messages and stack traces
-
-### Feature Requests
-
-When requesting a feature, include:
-
-- **Use case description** – What are you trying to achieve?
-- **Proposed API** (if you have ideas)
-- **Why current features don't work** – Have you tried existing approaches?
-- **Alternatives considered** – What other solutions did you consider?
+The tracker covers the whole family: `lib`, `base`, the parsers and the extensions. The **Curly Message Format** itself is specified outside this organization, so grammar questions and syntax proposals go to [curlymessage.dev](https://curlymessage.dev).
 
 ### Discussions
 

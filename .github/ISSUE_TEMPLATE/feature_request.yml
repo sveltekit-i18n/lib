@@ -8,6 +8,8 @@ body:
       value: |
         Thanks for suggesting a new feature! Please provide as much detail as possible.
 
+        Proposals for the **Curly Message Format** syntax belong at [curlymessage.dev](https://curlymessage.dev) — the format is specified outside this organization, and a parser here only implements it.
+
   - type: textarea
     id: problem
     attributes:
@@ -34,7 +36,7 @@ body:
       placeholder: |
         ```javascript
         const config = {
-          newFeature: { ... }
+          newFeature: { ... },
         };
         ```
       render: markdown
@@ -63,9 +65,10 @@ body:
       options:
         - "sveltekit-i18n (main lib)"
         - "@sveltekit-i18n/base"
-        - "@sveltekit-i18n/parser-default"
+        - "@sveltekit-i18n/parser-curly"
         - "@sveltekit-i18n/parser-icu"
-        - "New parser"
+        - "@sveltekit-i18n/extension-stores"
+        - "A new parser or extension"
         - "Not sure"
     validations:
       required: true
@@ -85,7 +88,7 @@ body:
       options:
         - label: I have searched existing issues and discussions to avoid duplicates
           required: true
-        - label: I have checked the [documentation](https://github.com/sveltekit-i18n/lib/tree/master/docs) and [examples](https://github.com/sveltekit-i18n/lib/tree/master/examples)
+        - label: I have checked the [documentation](https://sveltekit-i18n.github.io/docs) and [examples](https://sveltekit-i18n.github.io/examples)
           required: true
         - label: This feature cannot be achieved with current functionality
           required: true
