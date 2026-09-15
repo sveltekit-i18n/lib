@@ -22,6 +22,10 @@ which loads a native binding no browser sandbox can execute; rolldown ships a
 WebAssembly fallback but stopped declaring it in 1.2.2, so nothing installs it
 on its own. Drop the entry once rolldown declares it again.
 
+`multi-page` and both `component-scoped-*` negotiate the locale from a cookie,
+which a cross-site preview frame drops. They say so when it happens — open the
+preview in its own browser tab to see them whole.
+
 ## Routing
 
 [`multi-page`](./multi-page) — the common case · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/multi-page?startScript=dev&file=src/lib/translations/index.js)

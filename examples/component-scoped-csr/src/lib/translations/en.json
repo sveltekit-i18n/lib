@@ -6,6 +6,7 @@
   "lang.en": "English",
   "lang.cs": "Čeština",
   "lang.de": "Deutsch",
+  "notice.cookie": "The language cookie was blocked, so a reload negotiates the language again. Open this page in its own browser tab.",
   "footer.source": "Source of this example",
   "footer.docs": "Documentation",
   "error.title": "Something went wrong",
