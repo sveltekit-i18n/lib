@@ -170,7 +170,7 @@ any parser that satisfies
 - Modifiers (`number`, `date`, `currency`, `ago`, …) and comparisons
 - Custom modifiers, modifier defaults and the report channel — all reachable
   here through [`parserOptions`](./README.md#parser-options)
-- Implements the [Curly Message Format](https://github.com/curly-message/spec)
+- Implements the [Curly Message Format](https://curlymessage.dev)
 
 ### [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)
 **ICU message format**
@@ -214,7 +214,7 @@ the client and seeded through `snapshot()`, and `t()` inside Markdown routes.
   adapters for the `config.extensions` pipe, including
   **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)**
   (the `$t` / `$locale` / `$loading` surface)
-- **[Curly Message Format](https://github.com/curly-message/spec)** – the message
+- **[Curly Message Format](https://curlymessage.dev)** – the message
   format specification
 
 `base`, `parsers` and `extensions` release aligned at 3.0.0; `sveltekit-i18n`

@@ -283,7 +283,7 @@ Adapter functions the constructed instance is piped through, left to right, so
 
 `config.parserOptions` is handed to `parser-curly`, which resolves every message
 through [`@curly-message/parser`](https://github.com/curly-message/parsers), the
-[Curly Message Format](https://github.com/curly-message/spec)'s reference
+[Curly Message Format](https://curlymessage.dev)'s reference
 implementation.
 
 ```javascript
@@ -753,7 +753,7 @@ The method is idempotent.
 
 ## Message format
 
-Messages are written in the [Curly Message Format](https://github.com/curly-message/spec).
+Messages are written in the [Curly Message Format](https://curlymessage.dev).
 A placeholder names a payload key and may carry a modifier, options and a
 default: `{{key:modifier; optionKey:value; default:fallback;}}`.
 
@@ -791,7 +791,7 @@ i18n.t('stock', { count: 0 })                // → "Out of stock"
 
 **📖 Complete syntax guide, payload wrappers and resolution limits:**
 [parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly#readme)
-and the [format specification](https://github.com/curly-message/spec).
+and the [format specification](https://curlymessage.dev).
 
 ## Exported types
 
@@ -1335,7 +1335,7 @@ Also worth knowing:
 
 - **[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md)** – The core, and the canonical reference for every shared member
 - **[@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)** – The message parser wired here
-- **[Curly Message Format](https://github.com/curly-message/spec)** – The format specification
+- **[Curly Message Format](https://curlymessage.dev)** – The format specification
 - **[@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)** – ICU message format, for an application built on the core directly
 - **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)** – The Svelte store surface, as an extension
 

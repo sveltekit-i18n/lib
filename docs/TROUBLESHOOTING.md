@@ -1322,7 +1322,7 @@ No — and you should not. `npm install sveltekit-i18n` is the whole install, an
 
 ### Where did `@sveltekit-i18n/parser-default` go?
 
-v3 replaces it with [`@sveltekit-i18n/parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly), the [Curly Message Format](https://github.com/curly-message/spec)'s adapter, and wires it in for you. Remove `parser-default` from your dependencies and move its options to [`config.parserOptions`](./README.md#parser-options); per-call formatting options are now keyed by modifier name (`{ number: { maximumFractionDigits: 1 } }`).
+v3 replaces it with [`@sveltekit-i18n/parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly), the [Curly Message Format](https://curlymessage.dev)'s adapter, and wires it in for you. Remove `parser-default` from your dependencies and move its options to [`config.parserOptions`](./README.md#parser-options); per-call formatting options are now keyed by modifier name (`{ number: { maximumFractionDigits: 1 } }`).
 
 That is the answer for `sveltekit-i18n`. If you built on `@sveltekit-i18n/base` directly, nothing is wired in for you: keep base, install `parser-curly` (or [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)) in `parser-default`'s place and pass it as `config.parser`.
 

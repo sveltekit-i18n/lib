@@ -539,7 +539,7 @@ await i18n.setLocale('cs');
 
 ## Placeholders and Modifiers
 
-Messages use the [Curly Message Format](https://github.com/curly-message/spec).
+Messages use the [Curly Message Format](https://curlymessage.dev).
 
 ```json
 {

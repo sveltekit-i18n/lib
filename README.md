@@ -202,7 +202,7 @@ Use dynamic values in your translations:
 <p>{i18n.t('items', { count: 5 })}</p>
 ```
 
-The syntax is the [Curly Message Format](https://github.com/curly-message/spec).
+The syntax is the [Curly Message Format](https://curlymessage.dev).
 Its parser options — custom modifiers, modifier defaults and a report channel —
 go under `config.parserOptions`:
 

@@ -29,7 +29,7 @@ The `sveltekit-i18n` ecosystem consists of four separate repositories:
 
 This repository is what most users install, and it hosts the **shared issue tracker, documentation and examples for the whole family** – issues for `base`, `parsers` and `extensions` are filed here too. Behavioural changes, however, usually belong in the repository that owns the behaviour: this package is thin wiring (see [Architecture Overview](#architecture-overview)).
 
-The **Curly Message Format** – the `{{ … }}` syntax `parser-curly` resolves – is specified outside this organization, at [curly-message/spec](https://github.com/curly-message/spec). Grammar questions and syntax proposals belong there, not in this tracker.
+The **Curly Message Format** – the `{{ … }}` syntax `parser-curly` resolves – is specified outside this organization, at [curlymessage.dev](https://curlymessage.dev). Grammar questions and syntax proposals belong there, not in this tracker.
 
 ### Current state
 
@@ -443,7 +443,7 @@ See the [Architecture Documentation](./docs/ARCHITECTURE.md), the [API reference
 **Parsers (@sveltekit-i18n/parsers):**
 - Repository: https://github.com/sveltekit-i18n/parsers
 - Contribute here for: `parser-curly` and `parser-icu` – modifier logic, parser options, diagnostics
-- The Curly Message Format itself is specified at https://github.com/curly-message/spec – syntax changes start there
+- The Curly Message Format itself is specified at https://curlymessage.dev – syntax changes start there
 
 **Extensions (@sveltekit-i18n/extensions):**
 - Repository: https://github.com/sveltekit-i18n/extensions
