@@ -728,7 +728,6 @@ cases — the same property that makes per-request instances right on the server
 
 - **[Troubleshooting Guide](./TROUBLESHOOTING.md)** – common issues
 - **[GitHub Issues](https://github.com/sveltekit-i18n/lib/issues)** – report bugs or ask questions
-- **[Examples](../examples)** – working code; the examples are being reworked for
-  v3 in [#230](https://github.com/sveltekit-i18n/lib/issues/230)
+- **[Examples](../examples)** – eight standalone applications on v3
 
 Happy translating! 🌍

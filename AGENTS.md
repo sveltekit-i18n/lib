@@ -36,11 +36,12 @@ family (`base` / `lib` / `parsers` / `extensions`).
   `extension-stores` and this package — released aligned, as
   [#214](https://github.com/sveltekit-i18n/lib/issues/214) set out. The pins on
   `base` and `parser-curly` are exact and stay that way.
-- **`examples/` is still v2** and is the one piece v3 did not reach; the rework
-  is [#230](https://github.com/sveltekit-i18n/lib/issues/230), sequenced after
-  the release so the examples present published versions. Until it lands,
-  nothing in `examples/` is a reference for how v3 is used — `README.md` and
-  `docs/` are.
+- **`examples/` is on v3** — eight standalone applications, each with a real
+  adapter and route tree and a shared design, pinning the published package so
+  a copied-out directory installs on its own. `.github/workflows/examples.yml`
+  builds all eight on any change under `examples/**` or `src/**` and asserts on
+  the rendered output. They are a reference for how v3 is used, alongside
+  `README.md` and `docs/`.
 
 ## Architecture you must respect
 

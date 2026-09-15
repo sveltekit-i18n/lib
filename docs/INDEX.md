@@ -189,14 +189,10 @@ package fills the `parser` slot itself and cannot take another parser.
 ### [All Examples](../examples)
 **Working code you can learn from**
 
-Covers single-load, one-page and multi-page setups, locale routing (URL
-parameter, path prefix, static adapter), component-scoped translations,
-fallback locales, loaders and preprocessing.
-
-**Note:** the examples still show the v2 API. Their rework is tracked in
-[#230](https://github.com/sveltekit-i18n/lib/issues/230); until it lands, use
-the [Getting Started guide](./GETTING_STARTED.md) as the reference for v3
-wiring.
+Eight standalone applications on v3: locale routing (URL parameter, path
+prefix, static adapter, default locale unprefixed), per-request negotiation
+from a cookie and `Accept-Language`, component-scoped translations rendered on
+the client and seeded through `snapshot()`, and `t()` inside Markdown routes.
 
 ---
 
@@ -258,7 +254,7 @@ last.
 → [Troubleshooting Guide](./TROUBLESHOOTING.md)
 
 #### See working code
-→ [Examples](../examples) (v2 until [#230](https://github.com/sveltekit-i18n/lib/issues/230))
+→ [Examples](../examples)
 
 #### Write a custom modifier or open the report channel
 → [API Docs: Parser options](./README.md#parser-options) or
