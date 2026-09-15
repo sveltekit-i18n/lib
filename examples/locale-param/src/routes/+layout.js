@@ -21,7 +21,9 @@ export const load = async ({ data, url }) => {
 
   if (browser) client = i18n;
 
-  await i18n.loadTranslations(data?.locale ?? DEFAULT_LOCALE, url.pathname);
+  const locale = data?.locale ?? DEFAULT_LOCALE;
 
-  return { i18n };
+  await i18n.loadTranslations(locale, url.pathname);
+
+  return { i18n, locale };
 };
