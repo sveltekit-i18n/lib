@@ -12,11 +12,11 @@ export const PANELS = ['parser', 'preprocess', 'loaders', 'fallback'];
 export const FLAVOURS = ['curly', 'icu'];
 
 export const MESSAGES = {
-  curly: 'You have {{count}} {{count; 1:message; default:messages;}}.',
+  curly: 'You have {{count:number;}} {{count; 1:message; default:messages;}}.',
   icu: 'You have {count, plural, one {# message} other {# messages}}.',
 };
 
-export const PAYLOAD = '{\n  "count": 3\n}';
+export const PAYLOAD = '{\n  "count": 1234\n}';
 
 /** The key every panel resolves, so the panels read as one example. */
 export const KEY = 'inbox';
