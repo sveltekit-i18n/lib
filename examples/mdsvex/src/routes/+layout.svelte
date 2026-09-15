@@ -33,7 +33,9 @@
     </a>
   </nav>
 
-  <nav aria-label={i18n.t('nav.language')}>
+  <!-- Preloading these would run their load and switch this page's locale
+       without a navigation ever happening. -->
+  <nav aria-label={i18n.t('nav.language')} data-sveltekit-preload-data="off">
     {#each LOCALES as locale (locale)}
       <a
         href={href(route, locale)}
