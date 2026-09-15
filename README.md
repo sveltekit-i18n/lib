@@ -383,6 +383,11 @@ See [Releases](https://github.com/sveltekit-i18n/lib/releases) for version histo
 - [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu) – ICU message format parser
 - [@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores) – Svelte store surface for the instance
 
+## Sponsor
+
+You can support the maintenance of this package through
+[GitHub Sponsors](https://github.com/sponsors/sveltekit-i18n).
+
 ## License
 
 MIT

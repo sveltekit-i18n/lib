@@ -5,7 +5,7 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
 
-  import { DEFAULT_LOCALE, LOCALES, REPO } from '$lib/docs.js';
+  import { DEFAULT_LOCALE, LOCALES, REPO, SPONSOR } from '$lib/docs.js';
 
   let { data, children } = $props();
 
@@ -59,6 +59,7 @@
 <footer>
   <a href="{REPO}/blob/master/LICENSE" rel="noreferrer">MIT</a>
   <a href="{REPO}/issues" rel="noreferrer">Issues</a>
+  <a href={SPONSOR} rel="noreferrer">Sponsor</a>
 
   <label class="language">
     {i18n.t('nav.language')}

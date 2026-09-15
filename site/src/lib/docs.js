@@ -20,3 +20,5 @@ export const ROUTE_OF_FILE = {
 };
 
 export const REPO = 'https://github.com/sveltekit-i18n/lib';
+
+export const SPONSOR = 'https://github.com/sponsors/sveltekit-i18n';
