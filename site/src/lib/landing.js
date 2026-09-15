@@ -1,4 +1,7 @@
-export const INSTALL = 'npm install sveltekit-i18n';
+export const INSTALL = `npm install sveltekit-i18n
+
+# bun add sveltekit-i18n
+# deno add npm:sveltekit-i18n`;
 
 export const CONFIG = `// src/lib/translations/index.js
 import { I18n } from 'sveltekit-i18n';
