@@ -5,6 +5,9 @@ The same URLs as [`locale-router`](../locale-router) — `/en/about`, `/cs/about
 build writes one HTML file per page per locale and the deployment is that
 directory.
 
+[Run this example in StackBlitz](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-static?startScript=dev&file=src/lib/translations/index.js) — Node and the dev server boot inside
+the browser tab, with nothing installed locally.
+
 ## What to look at
 
 | File | Why |

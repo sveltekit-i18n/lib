@@ -8,6 +8,9 @@ page of this application's — translated, on the first hit.
 This is the configuration the [documentation
 site](https://sveltekit-i18n.github.io/) itself runs on.
 
+[Run this example in StackBlitz](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced?startScript=dev&file=src/lib/translations/index.js) — Node and the dev server boot inside
+the browser tab, with nothing installed locally.
+
 ## What to look at
 
 | File | Why |

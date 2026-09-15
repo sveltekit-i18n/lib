@@ -6,6 +6,9 @@ one path and the language switcher is an ordinary link.
 Runs on `@sveltejs/adapter-node`: the server reads `?lang=` before rendering, so
 the page arrives in the right language instead of flipping after hydration.
 
+[Run this example in StackBlitz](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-param?startScript=dev&file=src/lib/translations/index.js) — Node and the dev server boot inside
+the browser tab, with nothing installed locally.
+
 ## What to look at
 
 | File | Why |

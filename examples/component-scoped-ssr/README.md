@@ -3,6 +3,9 @@
 The same component as [`component-scoped-csr`](../component-scoped-csr) — its own
 instance, its own lexicon — but its strings are in the server-rendered HTML.
 
+[Run this example in StackBlitz](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/component-scoped-ssr?startScript=dev&file=src/lib/translations/index.js) — Node and the dev server boot inside
+the browser tab, with nothing installed locally.
+
 ## What to look at
 
 | File | Why |

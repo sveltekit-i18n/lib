@@ -6,6 +6,9 @@ such a route joins the route-scoped loaders and the prerender.
 
 Asked in [discussion #67](https://github.com/sveltekit-i18n/lib/discussions/67).
 
+[Run this example in StackBlitz](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/mdsvex?startScript=dev&file=src/lib/translations/index.js) — Node and the dev server boot inside
+the browser tab, with nothing installed locally.
+
 ## What to look at
 
 | File | Why |

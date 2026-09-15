@@ -5,6 +5,9 @@ a `lang` cookie, falling back to `Accept-Language` and then to the default.
 
 Runs on `@sveltejs/adapter-node`, because that negotiation needs a server.
 
+[Run this example in StackBlitz](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/multi-page?startScript=dev&file=src/lib/translations/index.js) — Node and the dev server boot inside
+the browser tab, with nothing installed locally.
+
 ## What to look at
 
 | File | Why |

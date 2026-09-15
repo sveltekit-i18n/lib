@@ -11,31 +11,36 @@ instance answers as you change it: message formats (`parser-curly`,
 `parser-icu`), `config.preprocess`, `config.loaders` matching and freshness, and
 `config.fallbackLocale`.
 
+Each **run it** below opens that directory in
+[StackBlitz](https://stackblitz.com), which boots Node and the dev server inside
+the browser tab and lands on the example's `config`. Nothing is installed, and
+nothing is deployed that could drift from what is in this repository.
+
 ## Routing
 
-[`multi-page`](./multi-page) — the common case
+[`multi-page`](./multi-page) — the common case · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/multi-page?startScript=dev&file=src/lib/translations/index.js)
 - several routes, no locale in the URL
 - the locale is negotiated per request from a cookie, then `Accept-Language`
 - one namespace per route, and a translated error page
 - `@sveltejs/adapter-node`
 
-[`locale-param`](./locale-param) — the locale in the query string
+[`locale-param`](./locale-param) — the locale in the query string · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-param?startScript=dev&file=src/lib/translations/index.js)
 - `/about?lang=cs`, resolved on the server before rendering
 - internal links carry the locale; the default locale keeps the bare URL
 - not the SEO option — a query parameter is the same page to a crawler
 - `@sveltejs/adapter-node`
 
-[`locale-router`](./locale-router) — the locale in the path, prerendered
+[`locale-router`](./locale-router) — the locale in the path, prerendered · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router?startScript=dev&file=src/lib/translations/index.js)
 - `/en/about`, `/cs/about`, `/de/about`
 - `entries()` for what the crawler cannot discover on its own
 - `@sveltejs/adapter-node`, everything prerendered
 
-[`locale-router-static`](./locale-router-static) — the same, with no server
+[`locale-router-static`](./locale-router-static) — the same, with no server · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-static?startScript=dev&file=src/lib/translations/index.js)
 - one HTML file per page per locale
 - an unknown URL is the host's 404, not the app's
 - `@sveltejs/adapter-static`
 
-[`locale-router-advanced`](./locale-router-advanced) — the default locale has no prefix
+[`locale-router-advanced`](./locale-router-advanced) — the default locale has no prefix · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced?startScript=dev&file=src/lib/translations/index.js)
 - `/about` is English, `/cs/about` is Czech
 - a `404.html` fallback shell, so the error page is **yours** and arrives
   translated on the first hit
@@ -45,17 +50,17 @@ instance answers as you change it: message formats (`parser-curly`,
 
 ## Component-scoped translations
 
-[`component-scoped-csr`](./component-scoped-csr)
+[`component-scoped-csr`](./component-scoped-csr) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/component-scoped-csr?startScript=dev&file=src/lib/translations/index.js)
 - a component with its own instance and its own lexicon, loaded in the browser
 - not in the server-rendered HTML — the trade-off, shown deliberately
 
-[`component-scoped-ssr`](./component-scoped-ssr)
+[`component-scoped-ssr`](./component-scoped-ssr) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/component-scoped-ssr?startScript=dev&file=src/lib/translations/index.js)
 - the same component, loaded by the page and handed down through `snapshot()`
 - complete on the first render, still reactive afterwards
 
 ## Content
 
-[`mdsvex`](./mdsvex)
+[`mdsvex`](./mdsvex) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/mdsvex?startScript=dev&file=src/lib/translations/index.js)
 - a `.svx` route: `t()` in Markdown, route-scoped loading, prerendered per locale
 
 ## How to use an example
