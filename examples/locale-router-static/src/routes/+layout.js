@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { I18n } from 'sveltekit-i18n';
 
-import { DEFAULT_LOCALE, LOCALES, routeOf } from '$lib/locale.js';
+import { localeOf, routeOf } from '$lib/locale.js';
 import { config } from '$lib/translations';
 
 export const prerender = true;
@@ -16,8 +16,7 @@ export const load = async ({ url }) => {
 
   if (browser) client = i18n;
 
-  const [segment] = url.pathname.split('/').slice(1);
-  const locale = LOCALES.includes(segment) ? segment : DEFAULT_LOCALE;
+  const locale = localeOf(url.pathname);
 
   await i18n.loadTranslations(locale, routeOf(url.pathname));
 

@@ -1,13 +1,14 @@
-import { DEFAULT_LOCALE } from '$lib/locale.js';
+import { localeOf } from '$lib/locale.js';
 
 /**
  * Runs during the prerender as well, so every written page carries its own
- * `<html lang>`.
+ * `<html lang>`. Read off the path rather than `params`, which an error
+ * response has none of.
  *
  * @type {import('@sveltejs/kit').Handle}
  */
 export const handle = ({ event, resolve }) => resolve(event, {
-  transformPageChunk: ({ html }) => html.replace('%lang%', event.params.lang ?? DEFAULT_LOCALE),
+  transformPageChunk: ({ html }) => html.replace('%lang%', localeOf(event.url.pathname)),
 });
 
 /**

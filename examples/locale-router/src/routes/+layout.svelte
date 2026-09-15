@@ -15,6 +15,12 @@
 
   const route = $derived(routeOf(page.url.pathname));
 
+  // A navigation between locales never reaches the server hook that wrote
+  // `<html lang>`, so the switch is repeated here.
+  $effect(() => {
+    document.documentElement.lang = i18n.locale;
+  });
+
   const href = (path, locale = data.locale) => `/${locale}${path === '/' ? '' : path}`;
 </script>
 
