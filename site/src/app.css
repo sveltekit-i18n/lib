@@ -93,11 +93,18 @@ main { padding: 2rem 1.5rem 4rem; }
 
 footer {
   display: flex;
+  flex-wrap: wrap;
   gap: 1.25rem;
+  align-items: center;
   padding: 1.5rem;
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+.sponsor {
+  border: 0;
+  border-radius: 6px;
 }
 
 .language {
