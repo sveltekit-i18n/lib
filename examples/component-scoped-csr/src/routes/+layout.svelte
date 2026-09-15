@@ -13,17 +13,11 @@
 
   const i18n = data.i18n;
 
-  let cookieBlocked = $state(false);
-
   const select = async ({ currentTarget }) => {
     const locale = currentTarget.value;
 
     // Persisted for the next request; the switch itself happens right here.
     document.cookie = `lang=${locale}; path=/; max-age=31536000; samesite=lax`;
-
-    // A `SameSite=Lax` cookie never lands in a cross-site frame, so the next
-    // full load would negotiate the old locale again.
-    cookieBlocked = !document.cookie.includes(`lang=${locale}`);
 
     await i18n.setLocale(locale);
 
@@ -53,10 +47,6 @@
   </select>
 </header>
 
-{#if cookieBlocked}
-  <p class="notice" role="status">{i18n.t('notice.cookie')}</p>
-{/if}
-
 <main>
   {@render children()}
 </main>
@@ -68,14 +58,3 @@
   ·
   <a href="https://sveltekit-i18n.github.io/docs">{i18n.t('footer.docs')}</a>
 </footer>
-
-<style>
-  .notice {
-    margin: 0;
-    padding: 0.85rem 1.5rem;
-    border-bottom: 1px solid var(--line);
-    background: var(--accent-soft);
-    color: var(--accent);
-    font-size: 0.9rem;
-  }
-</style>
