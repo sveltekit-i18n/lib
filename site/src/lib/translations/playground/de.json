@@ -20,6 +20,7 @@
     "title": "Vorverarbeitung",
     "lead": "Aus verschachtelten Übersetzungen werden die flachen Schlüssel, die t() liest. Wie weit das geht, entscheidet der Modus.",
     "input": "Übersetzungen",
+    "mode": "Modus",
     "note": "rawTranslations behält die Eingabe so, wie sie ankam; translations ist das, was du hier siehst."
   },
   "loaders": {

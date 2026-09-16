@@ -81,11 +81,11 @@ const i18n = new I18n({
 
 i18n.t('${KEY}', payload);`,
   },
-  preprocess: `const i18n = new I18n({ initLocale: 'en', preprocess: mode });
+  preprocess: Object.fromEntries(PREPROCESS_MODES.map((mode) => [mode, `const i18n = new I18n({ initLocale: 'en', preprocess: '${mode}' });
 
 i18n.addTranslations({ en: input });
 
-Object.keys(i18n.translations.en);`,
+Object.keys(i18n.translations.en);`])),
   loaders: `const i18n = new I18n({
   initLocale: 'en',
   loaders: [

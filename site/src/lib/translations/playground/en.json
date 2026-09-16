@@ -20,6 +20,7 @@
     "title": "Preprocessing",
     "lead": "Nested translations become the flat keys t() reads. The mode decides how far that goes.",
     "input": "Translations",
+    "mode": "Mode",
     "note": "rawTranslations keeps the input as it arrived; translations is what you see here."
   },
   "loaders": {

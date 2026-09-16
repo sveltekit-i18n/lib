@@ -569,23 +569,6 @@ output.bad { color: var(--accent); }
   font-size: 0.9rem;
 }
 
-.modes {
-  display: grid;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-@media (min-width: 46rem) {
-  .modes { grid-template-columns: repeat(3, 1fr); }
-}
-
-.modes .label {
-  margin-top: 0;
-  font-size: 0.8rem;
-  /* `preserveArrays` is an API value, so it keeps its own spelling. */
-  text-transform: none;
-}
-
 .keys {
   margin: 0;
   padding: 0;

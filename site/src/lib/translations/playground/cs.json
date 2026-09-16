@@ -20,6 +20,7 @@
     "title": "Předzpracování",
     "lead": "Z vnořených překladů se stávají ploché klíče, které čte t(). Jak daleko se zajde, určuje režim.",
     "input": "Překlady",
+    "mode": "Režim",
     "note": "rawTranslations drží vstup tak, jak přišel; translations je to, co vidíš tady."
   },
   "loaders": {

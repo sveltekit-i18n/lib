@@ -9,6 +9,7 @@
 
   let { code } = $props();
 
+  let mode = $state('full');
   let input = $state(TRANSLATIONS);
 
   const result = $derived.by(() => {
@@ -16,19 +17,29 @@
 
     if (error) return { error };
 
-    return {
-      modes: PREPROCESS_MODES.map((mode) => {
-        const instance = new I18n({ initLocale: 'en', preprocess: mode });
+    const instance = new I18n({ initLocale: 'en', preprocess: mode });
 
-        instance.addTranslations({ en: value ?? {} });
+    instance.addTranslations({ en: value ?? {} });
 
-        return { mode, keys: shapeOf(instance.translations.en ?? {}) };
-      }),
-    };
+    return { keys: shapeOf(instance.translations.en ?? {}) };
   });
 </script>
 
-<Panel name="preprocess" {code}>
+<Panel name="preprocess" code={code[mode]}>
+  <!-- The modes are config values, so they keep their own spelling. -->
+  <div class="flavours" role="group" aria-label={i18n.t('playground.preprocess.mode')}>
+    {#each PREPROCESS_MODES as name (name)}
+      <button
+        type="button"
+        class:active={mode === name}
+        aria-pressed={mode === name}
+        onclick={() => { mode = name; }}
+      >
+        {name}
+      </button>
+    {/each}
+  </div>
+
   <div class="fields">
     <label>
       {i18n.t('playground.preprocess.input')}
@@ -36,24 +47,19 @@
     </label>
   </div>
 
+  <p class="label">{i18n.t('playground.output')}</p>
+
   {#if result.error}
     <output class="bad">{result.error}</output>
   {:else}
-    <div class="modes">
-      {#each result.modes as { mode, keys } (mode)}
-        <div>
-          <p class="label"><code>{mode}</code></p>
-          <ul class="keys">
-            {#each keys as { key, type } (key)}
-              <li>
-                <code>{key}</code>
-                {#if type !== 'string'}<span class="type">{type}</span>{/if}
-              </li>
-            {/each}
-          </ul>
-        </div>
+    <ul class="keys">
+      {#each result.keys as { key, type } (key)}
+        <li>
+          <code>{key}</code>
+          {#if type !== 'string'}<span class="type">{type}</span>{/if}
+        </li>
       {/each}
-    </div>
+    </ul>
 
     <p class="note">{i18n.t('playground.preprocess.note')}</p>
   {/if}
