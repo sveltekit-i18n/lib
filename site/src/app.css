@@ -459,6 +459,8 @@ pre {
 
 .panel details pre { margin-bottom: 0; }
 
+.panel .label + pre { margin-top: 0; }
+
 .flavours {
   display: flex;
   gap: 0.5rem;
@@ -567,21 +569,6 @@ output.bad { color: var(--accent); }
   gap: 0.5rem;
   align-items: center;
   font-size: 0.9rem;
-}
-
-.keys {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: 0.85rem;
-}
-
-.keys li { margin: 0.3rem 0; }
-
-.type {
-  margin-left: 0.4rem;
-  color: var(--muted);
-  font-size: 0.75rem;
 }
 
 .log {

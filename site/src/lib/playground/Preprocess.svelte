@@ -2,7 +2,8 @@
   import { getContext } from 'svelte';
   import { I18n } from 'sveltekit-i18n';
 
-  import { PREPROCESS_MODES, TRANSLATIONS, parsePayload, shapeOf } from '$lib/playground.js';
+  import { highlightJson } from '$lib/highlight.js';
+  import { PREPROCESS_MODES, TRANSLATIONS, parsePayload } from '$lib/playground.js';
   import Panel from './Panel.svelte';
 
   const i18n = getContext('i18n');
@@ -21,7 +22,7 @@
 
     instance.addTranslations({ en: value ?? {} });
 
-    return { keys: shapeOf(instance.translations.en ?? {}) };
+    return { html: highlightJson(instance.translations.en ?? {}) };
   });
 </script>
 
@@ -52,14 +53,7 @@
   {#if result.error}
     <output class="bad">{result.error}</output>
   {:else}
-    <ul class="keys">
-      {#each result.keys as { key, type } (key)}
-        <li>
-          <code>{key}</code>
-          {#if type !== 'string'}<span class="type">{type}</span>{/if}
-        </li>
-      {/each}
-    </ul>
+    {@html result.html}
 
     <p class="note">{i18n.t('playground.preprocess.note')}</p>
   {/if}

@@ -85,7 +85,7 @@ i18n.t('${KEY}', payload);`,
 
 i18n.addTranslations({ en: input });
 
-Object.keys(i18n.translations.en);`])),
+i18n.translations.en;`])),
   loaders: `const i18n = new I18n({
   initLocale: 'en',
   loaders: [
@@ -118,9 +118,3 @@ export const parsePayload = (text) => {
     return { error: error.message };
   }
 };
-
-/** The keys a preprocess mode leaves behind, with the leaf that is not a string marked. */
-export const shapeOf = (table) => Object.entries(table).map(([key, value]) => ({
-  key,
-  type: Array.isArray(value) ? 'array' : typeof value,
-}));
