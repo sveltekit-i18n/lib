@@ -5,11 +5,13 @@
   "output": "Ausgabe",
   "parser": {
     "title": "Nachrichtenformate",
-    "lead": "Der Kern bringt kein eigenes Nachrichtenformat mit: ein Parser füllt den Slot. Curly kommt mit diesem Paket, ICU ist die Alternative, direkt auf dem Kern.",
+    "lead": "Der Kern bringt kein eigenes Nachrichtenformat mit: ein Parser füllt den Slot. Curly kommt mit diesem Paket; ICU, MessageFormat 2 und i18next sind die Alternativen, direkt auf dem Kern.",
     "format": "Nachrichtenformat",
     "flavour": {
       "curly": "Curly",
-      "icu": "ICU"
+      "icu": "ICU",
+      "mf2": "MessageFormat 2",
+      "i18next": "i18next"
     },
     "message": "Nachricht",
     "payload": "Daten",

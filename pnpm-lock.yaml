@@ -278,7 +278,13 @@ importers:
       '@sveltekit-i18n/base':
         specifier: 3.0.0
         version: 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      '@sveltekit-i18n/parser-i18next':
+        specifier: 3.0.0
+        version: 3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))(typescript@5.9.3)
       '@sveltekit-i18n/parser-icu':
+        specifier: 3.0.0
+        version: 3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
+      '@sveltekit-i18n/parser-mf2':
         specifier: 3.0.0
         version: 3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
       sveltekit-i18n:
@@ -1113,9 +1119,21 @@ packages:
     peerDependencies:
       '@sveltekit-i18n/base': ^3.0.0
 
+  '@sveltekit-i18n/parser-i18next@3.0.0':
+    resolution: {integrity: sha512-l042yIqqKiinXcXJXRSF+JBNB95Wgj1aXIvuIlM4jhwWfyQCi8GBYY+Xy4ry0j/lYIBYhZptBWOEDXsiUp++nw==}
+    engines: {bun: '>=1.2', deno: '>=2', node: '>=22'}
+    peerDependencies:
+      '@sveltekit-i18n/base': ^3.0.0
+
   '@sveltekit-i18n/parser-icu@3.0.0':
     resolution: {integrity: sha512-7ydDn6MqvaKRg6hPXgIVroEzJuPj4KvPkv7z9Ne/MFbOMOfUl+0Kyy1YjUdcUhpbYDjsQyu9acZ0y+AbL/6qng==}
     engines: {node: '>=22'}
+    peerDependencies:
+      '@sveltekit-i18n/base': ^3.0.0
+
+  '@sveltekit-i18n/parser-mf2@3.0.0':
+    resolution: {integrity: sha512-zFRTU2JXdIkxEgbpnksXBKVGyeCgK5sWSLLqSw++IsMOe6XS8hPXXONHeQ8Zo38aE7ErchnKpP90U9NF/4eYoA==}
+    engines: {bun: '>=1.2', deno: '>=2', node: '>=22.12'}
     peerDependencies:
       '@sveltekit-i18n/base': ^3.0.0
 
@@ -1834,6 +1852,14 @@ packages:
   html-void-elements@3.0.0:
     resolution: {integrity: sha512-bEqo66MRXsUGxWHV5IP0PUiAWwoEjba4VCzg0LjFJBpchPaTfyfCKTG6bc5F8ucKec3q5y6qOdGyYTSBEvhCrg==}
 
+  i18next@26.4.2:
+    resolution: {integrity: sha512-RX+R0VLg13IbvRuJSxnqykUFS9vQZTl8wYpWPCIUDWVrSGjsQywB5Y+pjzrkboxGAuYfJZVH1InFTdgBdxq6ug==}
+    peerDependencies:
+      typescript: ^5 || ^6 || ^7
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -2099,6 +2125,10 @@ packages:
     resolution: {integrity: sha512-v2sbRA9QWf0tpYWfREI5Kq7OqqrqoUzfmMKbgdOoWGfPDLc1JYU4EgDDF0N9WFhmjFW5agKrYwo/mDVutBKWKw==}
     peerDependencies:
       svelte: ^3.56.0 || ^4.0.0 || ^5.0.0-next.120
+
+  messageformat@4.0.0:
+    resolution: {integrity: sha512-XKmJ/ffTWToWOlHJzt85ZChQgVGC0LHzNWuNK8zuYpNySsB0nIEmytOdSAOW9ETKtkajAUJf520m5gFHHnrTYg==}
+    engines: {node: ^20.19 || ^22.12 || >=24}
 
   micromark-util-character@2.1.1:
     resolution: {integrity: sha512-wv8tdUTJ3thSFFFJKtpYKOYiGP2+v96Hvk4Tu8KpCAsTMs6yi+nVmGh1syvSCsaxz45J6Jbw+9DD6g97+NV67Q==}
@@ -3325,11 +3355,23 @@ snapshots:
       '@curly-message/parser': 1.0.1
       '@sveltekit-i18n/base': 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
 
+  '@sveltekit-i18n/parser-i18next@3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))(typescript@5.9.3)':
+    dependencies:
+      '@sveltekit-i18n/base': 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      i18next: 26.4.2(typescript@5.9.3)
+    transitivePeerDependencies:
+      - typescript
+
   '@sveltekit-i18n/parser-icu@3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.18
       '@sveltekit-i18n/base': 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       intl-messageformat: 11.2.15
+
+  '@sveltekit-i18n/parser-mf2@3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
+    dependencies:
+      '@sveltekit-i18n/base': 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      messageformat: 4.0.0
 
   '@tybys/wasm-util@0.10.3':
     dependencies:
@@ -4176,6 +4218,10 @@ snapshots:
 
   html-void-elements@3.0.0: {}
 
+  i18next@26.4.2(typescript@5.9.3):
+    optionalDependencies:
+      typescript: 5.9.3
+
   ignore@5.3.2: {}
 
   ignore@7.0.9: {}
@@ -4448,6 +4494,8 @@ snapshots:
       svelte: 5.57.0(@typescript-eslint/types@8.70.0)
       unist-util-visit: 2.0.3
       vfile-message: 2.0.4
+
+  messageformat@4.0.0: {}
 
   micromark-util-character@2.1.1:
     dependencies:

@@ -19,14 +19,20 @@
   let payload = $state(PAYLOAD);
   let locale = $state('en');
 
-  // ICU brings `intl-messageformat`, which nothing else on this site needs, so
-  // it arrives only once a visitor asks for that flavour.
-  let icu = $state(null);
+  // Each alternative brings its own engine, which nothing else on this site
+  // needs, so a parser arrives only once a visitor asks for that flavour.
+  const LOADERS = {
+    icu: () => import('@sveltekit-i18n/parser-icu'),
+    mf2: () => import('@sveltekit-i18n/parser-mf2'),
+    i18next: () => import('@sveltekit-i18n/parser-i18next'),
+  };
+
+  let parsers = $state({});
 
   $effect(() => {
-    if (flavour !== 'icu' || icu) return;
+    if (flavour === 'curly' || parsers[flavour]) return;
 
-    import('@sveltekit-i18n/parser-icu').then((module) => { icu = module.default; });
+    LOADERS[flavour]().then((module) => { parsers = { ...parsers, [flavour]: module.default }; });
   });
 
   const choose = (next) => {
@@ -38,7 +44,7 @@
     const { value, error } = parsePayload(payload);
 
     if (error) return { error };
-    if (flavour === 'icu' && !icu) return {};
+    if (flavour !== 'curly' && !parsers[flavour]) return {};
 
     const reports = [];
     const onReport = (report) => reports.push(report);
@@ -46,7 +52,7 @@
 
     const instance = flavour === 'curly'
       ? new I18n({ initLocale: locale, translations, parserOptions: { onReport } })
-      : new Core({ initLocale: locale, translations, parser: icu({ onReport }) });
+      : new Core({ initLocale: locale, translations, parser: parsers[flavour]({ onReport }) });
 
     return { text: instance.t(KEY, value), reports };
   });
@@ -69,7 +75,7 @@
   <div class="fields">
     <label>
       {i18n.t('playground.parser.message')}
-      <textarea bind:value={message} rows="3" spellcheck="false"></textarea>
+      <textarea bind:value={message} rows="4" spellcheck="false"></textarea>
     </label>
 
     <label>

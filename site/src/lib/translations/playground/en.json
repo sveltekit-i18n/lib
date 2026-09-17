@@ -5,11 +5,13 @@
   "output": "Output",
   "parser": {
     "title": "Message formats",
-    "lead": "The core holds no message format of its own: a parser fills the slot. Curly comes with this package; ICU is the alternative, on the core directly.",
+    "lead": "The core holds no message format of its own: a parser fills the slot. Curly comes with this package; ICU, MessageFormat 2 and i18next are the alternatives, on the core directly.",
     "format": "Message format",
     "flavour": {
       "curly": "Curly",
-      "icu": "ICU"
+      "icu": "ICU",
+      "mf2": "MessageFormat 2",
+      "i18next": "i18next"
     },
     "message": "Message",
     "payload": "Payload",

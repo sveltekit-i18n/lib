@@ -5,11 +5,13 @@
   "output": "Výstup",
   "parser": {
     "title": "Formáty zpráv",
-    "lead": "Jádro samo žádný formát zpráv nemá: slot vyplňuje parser. Curly přichází s tímto balíčkem, ICU je alternativa postavená přímo na jádře.",
+    "lead": "Jádro samo žádný formát zpráv nemá: slot vyplňuje parser. Curly přichází s tímto balíčkem; ICU, MessageFormat 2 a i18next jsou alternativy postavené přímo na jádře.",
     "format": "Formát zprávy",
     "flavour": {
       "curly": "Curly",
-      "icu": "ICU"
+      "icu": "ICU",
+      "mf2": "MessageFormat 2",
+      "i18next": "i18next"
     },
     "message": "Zpráva",
     "payload": "Data",

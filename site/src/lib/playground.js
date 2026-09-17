@@ -9,11 +9,14 @@
 export const PANELS = ['parser', 'preprocess', 'loaders', 'fallback'];
 
 /** Which message format the parser panel is resolving. */
-export const FLAVOURS = ['curly', 'icu'];
+export const FLAVOURS = ['curly', 'icu', 'mf2', 'i18next'];
 
 export const MESSAGES = {
   curly: 'You have {{count:number;}} {{count; 1:message; default:messages;}}.',
   icu: 'You have {count, plural, one {# message} other {# messages}}.',
+  mf2: '.input {$count :number}\n.match $count\none {{You have {$count} message.}}\n* {{You have {$count} messages.}}',
+  // i18next selects a plural form by key suffix, which a single message cannot carry.
+  i18next: 'You have {{count, number}} messages.',
 };
 
 export const PAYLOAD = '{\n  "count": 1234\n}';
@@ -70,8 +73,8 @@ const i18n = new I18n({
 });
 
 i18n.t('${KEY}', payload);`,
-    icu: `import { I18n } from '@sveltekit-i18n/base';
-import parser from '@sveltekit-i18n/parser-icu';
+    ...Object.fromEntries(FLAVOURS.filter((name) => name !== 'curly').map((name) => [name, `import { I18n } from '@sveltekit-i18n/base';
+import parser from '@sveltekit-i18n/parser-${name}';
 
 const i18n = new I18n({
   initLocale: locale,
@@ -79,7 +82,7 @@ const i18n = new I18n({
   parser: parser({ onReport: (report) => reports.push(report) }),
 });
 
-i18n.t('${KEY}', payload);`,
+i18n.t('${KEY}', payload);`])),
   },
   preprocess: Object.fromEntries(PREPROCESS_MODES.map((mode) => [mode, `const i18n = new I18n({ initLocale: 'en', preprocess: '${mode}' });
 
