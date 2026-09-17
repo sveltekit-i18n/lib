@@ -179,6 +179,18 @@ For an application that wants ICU syntax, built on
 [@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) directly — this
 package fills the `parser` slot itself and cannot take another parser.
 
+### [@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)
+**Unicode MessageFormat 2**
+
+The Unicode standard's successor to ICU MessageFormat, on the core directly in
+the same way.
+
+### [@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)
+**The i18next syntax**
+
+For translation files that already exist in i18next's syntax, interpolated by
+i18next's own engine — on the core directly in the same way.
+
 ### [Parsers Overview](https://github.com/sveltekit-i18n/parsers)
 **The parser monorepo, and writing your own**
 
@@ -207,8 +219,10 @@ the client and seeded through `snapshot()`, and `t()` inside Markdown routes.
 - **[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base)** – the core;
   state, loading, caching, route matching, preprocessing
   ([releases](https://github.com/sveltekit-i18n/base/releases))
-- **[@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)**
-  and **[@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)**
+- **[@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)**,
+  **[@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)**,
+  **[@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)**
+  and **[@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)**
   ([releases](https://github.com/sveltekit-i18n/parsers/releases))
 - **[Extensions](https://github.com/sveltekit-i18n/extensions)** – official
   adapters for the `config.extensions` pipe, including

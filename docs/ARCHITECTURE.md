@@ -52,7 +52,10 @@ default values, modifiers and comparisons in double curly braces. It resolves
 every message through `@curly-message/parser`, the format's reference
 implementation and its only dependency.
 
-`@sveltekit-i18n/parser-icu` is the alternative, wrapping `intl-messageformat`.
+The alternatives are `@sveltekit-i18n/parser-icu`, wrapping
+`intl-messageformat`; `@sveltekit-i18n/parser-mf2`, wrapping `messageformat`
+(Unicode MessageFormat 2); and `@sveltekit-i18n/parser-i18next`, wrapping
+`i18next` for catalogues written in its syntax.
 
 ### 3. sveltekit-i18n (this package)
 
@@ -172,6 +175,12 @@ sveltekit-i18n
 @sveltekit-i18n/parser-icu        (an alternative to parser-curly)
 ├── intl-messageformat
 └── @formatjs/icu-messageformat-parser
+
+@sveltekit-i18n/parser-mf2        (an alternative to parser-curly)
+└── messageformat
+
+@sveltekit-i18n/parser-i18next    (an alternative to parser-curly)
+└── i18next
 ```
 
 Everything is ESM-only, and runs on Node 22+, Bun 1.2+ or Deno 2+. There is no
@@ -639,7 +648,8 @@ export const i18n = new I18n({
 ```
 
 **When:**
-- you need ICU message format, or a parser of your own
+- you need ICU, Unicode MessageFormat 2 or the i18next syntax, or a parser of
+  your own
 - you are porting messages from another library and must keep their syntax
 
 **Best for:** projects whose message format is already decided.

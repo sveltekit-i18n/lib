@@ -67,6 +67,8 @@ body:
         - "@sveltekit-i18n/base"
         - "@sveltekit-i18n/parser-curly"
         - "@sveltekit-i18n/parser-icu"
+        - "@sveltekit-i18n/parser-mf2"
+        - "@sveltekit-i18n/parser-i18next"
         - "@sveltekit-i18n/extension-stores"
         - "A new parser or extension"
         - "Not sure"

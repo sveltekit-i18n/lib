@@ -24,7 +24,7 @@ The `sveltekit-i18n` ecosystem consists of four separate repositories:
 
 - **[sveltekit-i18n/lib](https://github.com/sveltekit-i18n/lib)** (this repository) – the end-user package `sveltekit-i18n`: the core wired with `@sveltekit-i18n/parser-curly`, re-exporting both surfaces so an application installs one package
 - **[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base)** – the parser-agnostic core: translation state, loading, caching, route matching and preprocessing
-- **[@sveltekit-i18n/parsers](https://github.com/sveltekit-i18n/parsers)** – the message parsers, `parser-curly` (the one this package wires) and `parser-icu`
+- **[@sveltekit-i18n/parsers](https://github.com/sveltekit-i18n/parsers)** – the message parsers, `parser-curly` (the one this package wires), `parser-icu`, `parser-mf2` and `parser-i18next`
 - **[@sveltekit-i18n/extensions](https://github.com/sveltekit-i18n/extensions)** – official extensions for the core's `config.extensions` pipe, such as `extension-stores`, which brings back the Svelte-store surface of v2 (`$t`, `$locale`, `$loading`)
 
 This repository is what most users install, and it hosts the **shared issue tracker, documentation and examples for the whole family** – issues for `base`, `parsers` and `extensions` are filed here too. Behavioural changes, however, usually belong in the repository that owns the behaviour: this package is thin wiring (see [Architecture Overview](#architecture-overview)).
@@ -442,7 +442,7 @@ See the [Architecture Documentation](./docs/ARCHITECTURE.md), the [API reference
 
 **Parsers (@sveltekit-i18n/parsers):**
 - Repository: https://github.com/sveltekit-i18n/parsers
-- Contribute here for: `parser-curly` and `parser-icu` – modifier logic, parser options, diagnostics
+- Contribute here for: `parser-curly`, `parser-icu`, `parser-mf2` and `parser-i18next` – modifier logic, parser options, diagnostics
 - The Curly Message Format itself is specified at https://curlymessage.dev – syntax changes start there
 
 **Extensions (@sveltekit-i18n/extensions):**

@@ -32,7 +32,7 @@ family (`base` / `lib` / `parsers` / `extensions`).
 - **`master` is the v3 line.** Stack: pnpm, Vitest, tsup, ESLint 10 flat
   config, ESM-only, Node 22 / Bun 1.2 / Deno 2 or newer, peer `svelte >=5`.
 - **`2.x` is a frozen snapshot** of the published v2 line: critical fixes only.
-- **The family is published at 3.0.0** — `base`, both parsers,
+- **The family is published at 3.0.0** — `base`, the parsers,
   `extension-stores` and this package — released aligned, as
   [#214](https://github.com/sveltekit-i18n/lib/issues/214) set out. The pins on
   `base` and `parser-curly` are exact and stay that way.

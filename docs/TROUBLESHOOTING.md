@@ -1324,7 +1324,7 @@ No — and you should not. `npm install sveltekit-i18n` is the whole install, an
 
 v3 replaces it with [`@sveltekit-i18n/parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly), the [Curly Message Format](https://curlymessage.dev)'s adapter, and wires it in for you. Remove `parser-default` from your dependencies and move its options to [`config.parserOptions`](./README.md#parser-options); per-call formatting options are now keyed by modifier name (`{ number: { maximumFractionDigits: 1 } }`).
 
-That is the answer for `sveltekit-i18n`. If you built on `@sveltekit-i18n/base` directly, nothing is wired in for you: keep base, install `parser-curly` (or [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)) in `parser-default`'s place and pass it as `config.parser`.
+That is the answer for `sveltekit-i18n`. If you built on `@sveltekit-i18n/base` directly, nothing is wired in for you: keep base, install `parser-curly` (or [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu), [`parser-mf2`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2) or [`parser-i18next`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)) in `parser-default`'s place and pass it as `config.parser`.
 
 ### How do I get `$t` back?
 
@@ -1356,7 +1356,7 @@ i18n.t('items', { count: 1 });  // → "You have 1 item."
 i18n.t('items', { count: 5 });  // → "You have 5 items."
 ```
 
-A placeholder with options and no modifier compares with `eq`; `lt`, `lte`, `gt` and `gte` select by range. For CLDR plural categories, build on `@sveltekit-i18n/base` with [`@sveltekit-i18n/parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu) instead of using this package.
+A placeholder with options and no modifier compares with `eq`; `lt`, `lte`, `gt` and `gte` select by range. For CLDR plural categories, build on `@sveltekit-i18n/base` with [`@sveltekit-i18n/parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu) or [`@sveltekit-i18n/parser-mf2`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2) instead of using this package.
 
 ### Can I change the parser?
 

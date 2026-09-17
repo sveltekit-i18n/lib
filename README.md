@@ -294,7 +294,11 @@ const config = {
 ```
 
 That is the one case where installing the core directly is right — you are then
-not using this package at all. Learn more about
+not using this package at all. The same goes for
+[`parser-mf2`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)
+(Unicode MessageFormat 2) and
+[`parser-i18next`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)
+(the i18next syntax). Learn more about
 [parsers](https://github.com/sveltekit-i18n/parsers).
 
 ### Extensions
@@ -381,6 +385,8 @@ See [Releases](https://github.com/sveltekit-i18n/lib/releases) for version histo
 - [@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base) – Core functionality with custom parser support
 - [@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly) – Curly Message Format parser (included here)
 - [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu) – ICU message format parser
+- [@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2) – Unicode MessageFormat 2 parser
+- [@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next) – i18next syntax parser
 - [@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores) – Svelte store surface for the instance
 
 ## Sponsor

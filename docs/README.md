@@ -1310,8 +1310,10 @@ Also worth knowing:
   so do not add `@sveltekit-i18n/base` or `@sveltekit-i18n/parser-curly` either.
   If you built on `@sveltekit-i18n/base` directly, you are not migrating to this
   package — keep base and swap `parser-default` for
-  [`parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)
-  or [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu),
+  [`parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly),
+  [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu),
+  [`parser-mf2`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)
+  or [`parser-i18next`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next),
   passed as `config.parser`.
 - **Per-request instances on the server.** A module-level singleton leaks one
   visitor's locale into another's page — see
@@ -1337,6 +1339,8 @@ Also worth knowing:
 - **[@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)** – The message parser wired here
 - **[Curly Message Format](https://curlymessage.dev)** – The format specification
 - **[@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)** – ICU message format, for an application built on the core directly
+- **[@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)** – Unicode MessageFormat 2, likewise
+- **[@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)** – The i18next syntax, likewise
 - **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)** – The Svelte store surface, as an extension
 
 ### Examples
