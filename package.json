@@ -82,11 +82,5 @@
   "svelte": "./dist/index.js",
   "simple-git-hooks": {
     "pre-commit": "pnpm run lint"
-  },
-  "pnpm": {
-    "overrides": {
-      "esbuild": "^0.28.2",
-      "minimatch": "^10.2.6"
-    }
   }
 }
