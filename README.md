@@ -1,4 +1,4 @@
-[![npm version](https://badge.fury.io/js/sveltekit-i18n.svg)](https://badge.fury.io/js/sveltekit-i18n) ![](https://github.com/sveltekit-i18n/lib/workflows/Tests/badge.svg)
+[![npm version](https://badge.fury.io/js/sveltekit-i18n.svg)](https://badge.fury.io/js/sveltekit-i18n) [![Tests](https://github.com/sveltekit-i18n/lib/actions/workflows/tests.yml/badge.svg)](https://github.com/sveltekit-i18n/lib/actions/workflows/tests.yml)
 
 # sveltekit-i18n
 
