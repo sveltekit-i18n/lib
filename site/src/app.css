@@ -461,11 +461,19 @@ pre {
 
 .panel .label + pre { margin-top: 0; }
 
+/* The labels are format and mode names, which are never broken across lines.
+   The row scrolls instead, the way the header's nav does. */
 .flavours {
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+
+.flavours::-webkit-scrollbar { display: none; }
+
+.flavours > * { flex: none; }
 
 .fields {
   display: grid;
@@ -505,6 +513,7 @@ button {
   color: var(--fg);
   font: inherit;
   font-size: 0.9rem;
+  white-space: nowrap;
   cursor: pointer;
 }
 
