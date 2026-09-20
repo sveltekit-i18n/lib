@@ -77,7 +77,7 @@
   },
   "dependencies": {
     "@sveltekit-i18n/base": "3.0.0",
-    "@sveltekit-i18n/parser-curly": "3.0.0"
+    "@sveltekit-i18n/parser-curly": "3.1.0"
   },
   "svelte": "./dist/index.js",
   "simple-git-hooks": {

@@ -16,8 +16,8 @@ importers:
         specifier: 3.0.0
         version: 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       '@sveltekit-i18n/parser-curly':
-        specifier: 3.0.0
-        version: 3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
+        specifier: 3.1.0
+        version: 3.1.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -321,8 +321,8 @@ packages:
   '@cacheable/utils@2.5.0':
     resolution: {integrity: sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==}
 
-  '@curly-message/parser@1.0.1':
-    resolution: {integrity: sha512-wZ5tXDtyuWZHCjG1d3PRLJhrYLVANuieNYTJc9JV8+bq9DHnwZWkIdmphviM01LUNhdL2vyd29/t+TyMYkaNGQ==}
+  '@curly-message/parser@3.0.0':
+    resolution: {integrity: sha512-cNbGWqgK5lt1OnxJJU5HvHXaXqajDunL44kdsddSd5N3hQ9vp778B+0n2R3fVpfy/F9t7LcQqjoaoO95Dlwc4A==}
     engines: {node: '>=22'}
 
   '@emnapi/core@1.10.0':
@@ -1113,9 +1113,9 @@ packages:
     peerDependencies:
       svelte: '>=5'
 
-  '@sveltekit-i18n/parser-curly@3.0.0':
-    resolution: {integrity: sha512-kkljiXxAKf11UyuOxFo7nZqvwmjwKPf1GHLxlgY3QbbI4T75QCvB4owzPG4HIcYoRWiSQS5lAuBuD85o8izRNA==}
-    engines: {node: '>=22'}
+  '@sveltekit-i18n/parser-curly@3.1.0':
+    resolution: {integrity: sha512-WGzdr34UgikFI2KuMQ5NrqbRiBTXD5RPdGgqLgbLy6RWeY6gmONo0xwXr8CPBsrN8iTXKidT+4kyzB14NUXGlg==}
+    engines: {bun: '>=1.2', deno: '>=2', node: '>=22'}
     peerDependencies:
       '@sveltekit-i18n/base': ^3.0.0
 
@@ -2798,7 +2798,7 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@curly-message/parser@1.0.1': {}
+  '@curly-message/parser@3.0.0': {}
 
   '@emnapi/core@1.10.0':
     dependencies:
@@ -3362,9 +3362,9 @@ snapshots:
     dependencies:
       svelte: 5.57.0(@typescript-eslint/types@8.70.0)
 
-  '@sveltekit-i18n/parser-curly@3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
+  '@sveltekit-i18n/parser-curly@3.1.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
     dependencies:
-      '@curly-message/parser': 1.0.1
+      '@curly-message/parser': 3.0.0
       '@sveltekit-i18n/base': 3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0))
 
   '@sveltekit-i18n/parser-i18next@3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))(typescript@5.9.3)':

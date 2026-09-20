@@ -292,6 +292,8 @@ const config = {
     modifierDefaults: { number: { maximumFractionDigits: 2 } },
     customModifiers: { upper: ({ value }) => value.toUpperCase() },
     onReport: (report) => console.warn(report.message, report),
+    recognizeWrappers: true,
+    onSuspectValue: null,
   },
 };
 ```
@@ -448,12 +450,36 @@ A `Report` carries:
 
 | Field | Meaning |
 | --- | --- |
-| `code` | `unknown-modifier`, `failed-modifier`, `missing-options`, `unserializable-value`, `missing-locale`, `pass-limit` or `output-limit` |
+| `code` | `unknown-modifier`, `failed-modifier`, `missing-options`, `unserializable-value`, `missing-locale`, `output-limit`, `read-limit` or `nesting-limit` |
 | `origin` | who fixes it: `message` (the message as written), `payload` (what the call passed) or `limit` (a bound the parser set) |
 | `message` | a self-contained English sentence carrying nothing from the payload |
 | `id` | the message's id — the translation key the core passed |
-| `limit` | the limit reached, for the two limit reports |
-| `text` | the excerpt — the placeholder, or the output that would not settle — cut to 120 code units and escaped, so it can be written anywhere |
+| `limit` | the limit reached, for the three limit reports |
+| `text` | the excerpt — the placeholder that named the trouble, or the message as it was passed — message text throughout and never a payload value, cut to 120 code units and escaped, so it can be written anywhere |
+
+### `parserOptions.recognizeWrappers`
+
+**Type:** `boolean`
+
+**Default:** `true`
+
+Whether a payload entry shaped like a wrapper — a plain object owning at least
+one of `value`, `default` and `props` and nothing else — configures its value
+rather than being the value. Set it to `false` where the payload carries data
+the application did not write, so an object arriving from an API cannot be read
+as configuration by accident.
+
+### `parserOptions.onSuspectValue`
+
+**Type:** `((suspect: Parser.Suspect) => void) | null`
+
+**Default:** `null`
+
+A migration aid. A payload value is data, so a value holding what version 1 of
+the format read as syntax — a placeholder, an escape — now reaches the output as
+it stands. This announces such a value, for a catalogue that composed messages
+through its payload; nothing is looked for while it is unset, and it is not a
+report: the placeholder resolved to exactly the text the payload holds.
 
 **📖 Full parser reference:**
 [parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly#readme).
@@ -781,11 +807,15 @@ i18n.t('stock', { count: 0 })                // → "Out of stock"
   options; the first option whose key satisfies the comparison wins, and none
   selected takes the fallback. A placeholder with options and no modifier
   compares with `eq`.
-- **Nesting.** An option's value may contain placeholders of its own — nesting
-  is resolved by interpolating the output again.
+- **Nesting.** An option's value may hold placeholders of its own, and only the
+  selected option's are resolved — the branch the comparison passes over reads
+  no payload entry.
 - **Escaping.** A backslash cancels the structural meaning of `:`, `;`, `{`,
   `}`, whitespace and the backslash itself; before any other character it is
   plain text, so `\d+` and `C:\\temp` survive as typed.
+- **A payload value is data.** It is never read back as syntax: its backslashes
+  and its braces reach the output as they stand, and no placeholder is found in
+  it.
 - **Every value reaches the output as text.** A plain object or an array becomes
   JSON; anything else becomes what `String()` makes of it.
 
@@ -803,7 +833,7 @@ import type { BaseConfig, BaseParser, Extension, Loader, Logger, Schema, Transla
 | Export | Origin | What it holds |
 | --- | --- | --- |
 | `Config<Payload, Props>` | this package | the config above — the core's, minus `parser`, plus `parserOptions` |
-| `Parser` | parser-curly | `Parser.Options`, `Parser.OnReport`, `Parser.Params`, `Parser.Payload` |
+| `Parser` | parser-curly | `Parser.Options`, `Parser.OnReport`, `Parser.OnSuspectValue`, `Parser.Suspect`, `Parser.Params`, `Parser.Payload` |
 | `Modifier` | parser-curly | `Modifier.T`, `Modifier.Props`, `Modifier.Wrapper` |
 | `Report` | parser-curly | what [`onReport`](#parseroptionsonreport) receives |
 | `BaseConfig` | core, renamed | the core's `Config` namespace: `Config.T`, `Config.LocaleInput`, `Config.LocalesFromConfig`, … |

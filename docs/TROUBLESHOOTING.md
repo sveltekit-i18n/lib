@@ -950,7 +950,7 @@ const config = {
 };
 ```
 
-A `Report` carries a `code` (`unknown-modifier`, `failed-modifier`, `missing-options`, `unserializable-value`, `missing-locale`, `pass-limit`, `output-limit`), an `origin` saying who fixes it (`message`, `payload` or `limit`), a self-contained English `message`, the `id` of the message — the translation key the core passed — and a `text` excerpt of the placeholder. See [`parserOptions.onReport`](./README.md#parseroptionsonreport).
+A `Report` carries a `code` (`unknown-modifier`, `failed-modifier`, `missing-options`, `unserializable-value`, `missing-locale`, `output-limit`, `read-limit`, `nesting-limit`), an `origin` saying who fixes it (`message`, `payload` or `limit`), a self-contained English `message`, the `id` of the message — the translation key the core passed — and a `text` excerpt of the placeholder. See [`parserOptions.onReport`](./README.md#parseroptionsonreport).
 
 Common findings once the channel is open:
 
