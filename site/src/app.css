@@ -125,8 +125,11 @@ footer {
 }
 
 /* The button is a frame of a fixed size, so on a narrow footer it takes a row
-   of its own rather than crowding the links beside it. */
-.sponsor { flex: 0 0 100%; }
+   of its own, under everything it would otherwise crowd. */
+.sponsor {
+  order: 1;
+  flex: 0 0 100%;
+}
 
 .sponsor iframe {
   display: block;
@@ -135,7 +138,10 @@ footer {
 }
 
 @media (min-width: 40rem) {
-  .sponsor { flex: none; }
+  .sponsor {
+    order: 0;
+    flex: none;
+  }
 }
 
 .language {
