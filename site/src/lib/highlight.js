@@ -1,9 +1,10 @@
 /**
- * JSON drawn the way the snippets are. Those are highlighted by Shiki on the
- * server; this is for a value computed in the browser from what the visitor
- * typed, so it emits the same markup with the same palette instead of
- * shipping the highlighter.
+ * The drawings this site makes in the browser. The snippets are highlighted by
+ * Shiki on the server; these are for text a visitor typed, so they emit the
+ * same markup with the same palette instead of shipping a highlighter.
  */
+
+import { cst } from 'sveltekit-i18n';
 
 /** GitHub's theme, light then dark, as Shiki emits it. */
 const PALETTE = {
@@ -11,50 +12,94 @@ const PALETTE = {
   // Property names and literals share one blue in that theme.
   key: ['#005CC5', '#79B8FF'],
   string: ['#032F62', '#9ECBFF'],
+  punctuation: ['#D73A49', '#F97583'],
+  modifier: ['#6F42C1', '#B392F0'],
+  option: ['#E36209', '#FFAB70'],
+  escape: ['#22863A', '#85E89D'],
 };
-
-const TOKEN = /("(?:[^"\\]|\\.)*")(?=\s*:)|("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|\btrue\b|\bfalse\b|\bnull\b)|([\s\S])/g;
 
 const escape = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-const span = (kind, text) => {
+const span = ({ kind, text }) => {
   const [light, dark] = PALETTE[kind];
 
   return `<span style="--shiki-light:${light};--shiki-dark:${dark}">${escape(text)}</span>`;
 };
 
-const line = (text) => {
-  let html = '';
-  let plain = '';
+/**
+ * Pieces of coloured text, as Shiki lays them out: one `.line` span per line,
+ * and inside it one span per run of a single colour.
+ */
+const draw = (pieces) => {
+  const lines = [[]];
 
-  // Anything outside a string or a literal is punctuation and whitespace, and
-  // one span per run of it keeps the markup close to Shiki's.
-  const flush = () => {
-    if (plain) html += span('plain', plain);
-    plain = '';
-  };
+  pieces.forEach(({ kind, text }) => {
+    text.split('\n').forEach((part, index) => {
+      if (index) lines.push([]);
+      if (!part) return;
 
-  for (const [, key, string, literal, other] of text.matchAll(TOKEN)) {
-    if (other !== undefined) {
-      plain += other;
-      continue;
-    }
+      const previous = lines.at(-1).at(-1);
 
-    flush();
-    html += key !== undefined ? span('key', key) : string !== undefined ? span('string', string) : span('key', literal);
-  }
+      if (previous?.kind === kind) previous.text += part;
+      else lines.at(-1).push({ kind, text: part });
+    });
+  });
 
-  flush();
-
-  return `<span class="line">${html}</span>`;
+  return lines.map((runs) => `<span class="line">${runs.map(span).join('')}</span>`).join('\n');
 };
 
-const lines = (text) => text.split('\n').map(line).join('\n');
+const TOKEN = /("(?:[^"\\]|\\.)*")(?=\s*:)|("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|\btrue\b|\bfalse\b|\bnull\b)|([\s\S])/g;
+
+// Anything outside a string or a literal is punctuation and whitespace, which
+// that theme leaves plain.
+const json = (text) => [...text.matchAll(TOKEN)].map(([, key, string, literal, other]) => ({
+  kind: other === undefined ? (string === undefined ? 'key' : 'string') : 'plain',
+  text: key ?? string ?? literal ?? other,
+}));
 
 /**
- * The same drawing for text a visitor is still typing, which need not parse.
- * It is the inner markup alone: an editor supplies the element it lies under.
+ * What each part of a message is drawn as. A part named here paints over what
+ * encloses it, and one left out keeps that colour: the text spelling a name is
+ * the name, a placeholder is only its parts, and an option's value is message
+ * text until a placeholder in it says otherwise.
  */
-export const highlightJsonText = (text) => lines(text);
+const CURLY = {
+  space: 'plain',
+  'option-value': 'plain',
+  open: 'punctuation',
+  close: 'punctuation',
+  separator: 'punctuation',
+  key: 'key',
+  modifier: 'modifier',
+  'option-key': 'option',
+  escape: 'escape',
+};
 
-export const highlightJson = (value) => `<pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0"><code>${lines(JSON.stringify(value, null, 2))}</code></pre>`;
+const paint = (node, kinds) => {
+  const kind = CURLY[node.type];
+
+  if (kind) kinds.fill(kind, node.start, node.end);
+
+  node.nodes?.forEach((child) => paint(child, kinds));
+};
+
+// The spans are in UTF-16 code units, so the text is cut the same way.
+const curly = (text) => {
+  const kinds = new Array(text.length).fill('plain');
+
+  paint(cst(text), kinds);
+
+  return text.split('').map((unit, index) => ({ kind: kinds[index], text: unit }));
+};
+
+/**
+ * The drawings for text a visitor is still typing, which need not parse. Each
+ * is the inner markup alone: an editor supplies the element it lies under.
+ */
+export const highlightJsonText = (text) => draw(json(text));
+
+export const highlightCurly = (text) => draw(curly(text));
+
+export const highlightPlain = (text) => draw([{ kind: 'plain', text }]);
+
+export const highlightJson = (value) => `<pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0"><code>${draw(json(JSON.stringify(value, null, 2)))}</code></pre>`;

@@ -7,7 +7,7 @@
   import { I18n as Core } from '@sveltekit-i18n/base';
 
   import { LOCALES } from '$lib/docs.js';
-  import { highlightJsonText } from '$lib/highlight.js';
+  import { highlightCurly, highlightJsonText, highlightPlain } from '$lib/highlight.js';
   import { FLAVOURS, KEY, MESSAGES, PAYLOAD, parsePayload } from '$lib/playground.js';
   import Editor from './Editor.svelte';
   import Panel from './Panel.svelte';
@@ -41,6 +41,11 @@
     flavour = next;
     message = MESSAGES[next];
   };
+
+  // Only Curly is described here: the alternatives are engines this site wraps,
+  // and a drawing that is not the format's own would show what the message does
+  // not do.
+  const describe = $derived(flavour === 'curly' ? highlightCurly : highlightPlain);
 
   const result = $derived.by(() => {
     const { value, error } = parsePayload(payload);
@@ -77,7 +82,7 @@
   <div class="fields">
     <label>
       {i18n.t('playground.parser.message')}
-      <textarea bind:value={message} rows="4" spellcheck="false"></textarea>
+      <Editor bind:value={message} highlight={describe} rows={4} />
     </label>
 
     <label>
