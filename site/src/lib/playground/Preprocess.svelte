@@ -2,8 +2,9 @@
   import { getContext } from 'svelte';
   import { I18n } from 'sveltekit-i18n';
 
-  import { highlightJson } from '$lib/highlight.js';
+  import { highlightJson, highlightJsonText } from '$lib/highlight.js';
   import { PREPROCESS_MODES, TRANSLATIONS, parsePayload } from '$lib/playground.js';
+  import Editor from './Editor.svelte';
   import Panel from './Panel.svelte';
 
   const i18n = getContext('i18n');
@@ -44,7 +45,7 @@
   <div class="fields">
     <label>
       {i18n.t('playground.preprocess.input')}
-      <textarea bind:value={input} rows="5" spellcheck="false"></textarea>
+      <Editor bind:value={input} highlight={highlightJsonText} rows={6} />
     </label>
   </div>
 

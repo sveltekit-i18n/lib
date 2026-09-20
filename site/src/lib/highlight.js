@@ -49,8 +49,12 @@ const line = (text) => {
   return `<span class="line">${html}</span>`;
 };
 
-export const highlightJson = (value) => {
-  const lines = JSON.stringify(value, null, 2).split('\n').map(line).join('\n');
+const lines = (text) => text.split('\n').map(line).join('\n');
 
-  return `<pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0"><code>${lines}</code></pre>`;
-};
+/**
+ * The same drawing for text a visitor is still typing, which need not parse.
+ * It is the inner markup alone: an editor supplies the element it lies under.
+ */
+export const highlightJsonText = (text) => lines(text);
+
+export const highlightJson = (value) => `<pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0"><code>${lines(JSON.stringify(value, null, 2))}</code></pre>`;

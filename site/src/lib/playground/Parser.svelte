@@ -7,7 +7,9 @@
   import { I18n as Core } from '@sveltekit-i18n/base';
 
   import { LOCALES } from '$lib/docs.js';
+  import { highlightJsonText } from '$lib/highlight.js';
   import { FLAVOURS, KEY, MESSAGES, PAYLOAD, parsePayload } from '$lib/playground.js';
+  import Editor from './Editor.svelte';
   import Panel from './Panel.svelte';
 
   const i18n = getContext('i18n');
@@ -80,7 +82,7 @@
 
     <label>
       {i18n.t('playground.parser.payload')}
-      <textarea bind:value={payload} rows="3" spellcheck="false"></textarea>
+      <Editor bind:value={payload} highlight={highlightJsonText} rows={4} />
     </label>
 
     <label class="narrow">

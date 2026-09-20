@@ -494,7 +494,8 @@ pre {
   font-size: 0.85rem;
 }
 
-.fields :is(textarea, select) {
+/* The bare controls only: an editor styles the textarea it wraps itself. */
+.fields > label > :is(textarea, select) {
   padding: 0.5rem 0.6rem;
   border: 1px solid var(--line);
   border-radius: 0.3rem;
@@ -504,6 +505,47 @@ pre {
   font-size: 0.85rem;
   resize: vertical;
 }
+
+.editor {
+  display: grid;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: var(--code-bg);
+}
+
+/* The drawing and the textarea share one grid cell, so every metric that
+   places a glyph has to be stated once for both. */
+.editor > * {
+  grid-area: 1 / 1;
+  overflow: hidden;
+  margin: 0;
+  padding: 0.5rem 0.6rem;
+  border: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.editor pre {
+  --shiki-light: #24292e;
+  --shiki-dark: #e1e4e8;
+
+  min-height: calc(var(--rows) * 1.55em + 1rem);
+  background: none !important;
+  pointer-events: none;
+}
+
+.editor textarea {
+  background: transparent;
+  color: transparent;
+  caret-color: var(--fg);
+  resize: none;
+}
+
+/* The text is transparent, so an opaque selection would hide what it selects. */
+.editor textarea::selection { background: color-mix(in srgb, var(--accent) 25%, transparent); }
 
 button {
   padding: 0.4rem 0.8rem;
