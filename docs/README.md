@@ -87,9 +87,9 @@ components reading the other. Every name the core publishes is reachable from
 here — [`tests/specs/exports.spec.ts`](../tests/specs/exports.spec.ts) fails if
 one stops being — so nothing this package builds on has to be installed beside
 it. Of the parser this package re-exports its types (`Parser`, `Modifier`,
-`Report`) and its build-time
-[`extractParamsFactory`](#extractparamsfactory); the parser factory itself is
-wired internally, so there is nothing to construct.
+`Report`, `Cst`) and its build-time [`extractParamsFactory`](#extractparamsfactory)
+and [`cst`](#cst); the parser factory itself is wired internally, so there is
+nothing to construct.
 
 | Aspect | Requirement |
 | --- | --- |
@@ -826,7 +826,7 @@ and the [format specification](https://curlymessage.dev).
 ## Exported types
 
 ```typescript
-import type { Config, Modifier, Parser, Report } from 'sveltekit-i18n';
+import type { Config, Cst, Modifier, Parser, Report } from 'sveltekit-i18n';
 import type { BaseConfig, BaseParser, Extension, Loader, Logger, Schema, Translations } from 'sveltekit-i18n';
 ```
 
@@ -836,6 +836,7 @@ import type { BaseConfig, BaseParser, Extension, Loader, Logger, Schema, Transla
 | `Parser` | parser-curly | `Parser.Options`, `Parser.OnReport`, `Parser.OnSuspectValue`, `Parser.Suspect`, `Parser.Params`, `Parser.Payload` |
 | `Modifier` | parser-curly | `Modifier.T`, `Modifier.Props`, `Modifier.Wrapper` |
 | `Report` | parser-curly | what [`onReport`](#parseroptionsonreport) receives |
+| `Cst` | parser-curly | the node types [`cst`](#cst) returns: `Cst.Message`, `Cst.Placeholder`, `Cst.Node`, … |
 | `BaseConfig` | core, renamed | the core's `Config` namespace: `Config.T`, `Config.LocaleInput`, `Config.LocalesFromConfig`, … |
 | `BaseParser` | core, renamed | the core's `Parser` namespace — the parser **contract**: `Parser.T`, `Parser.Parse`, `Parser.ExtractParams`, `Parser.ParamSpec`, … |
 | `Extension` | core | `Extension.T`, `Extension.Operator`, `Extension.Generic`, `Extension.Piped` |
@@ -851,7 +852,8 @@ exports keeps its name. The rename is the only difference between the core's
 entry and this one — a consumer never needs to install the core to reach a type.
 
 The parser factory is **not** re-exported: it is wired internally and there is
-nothing to construct. One parser value is — the parameter extractor below.
+nothing to construct. The two parser values below are — neither runs while a
+message renders.
 
 ### `extractParamsFactory`
 
@@ -882,6 +884,33 @@ nothing.
 It is a separate export rather than a member of the parser object on purpose: a
 message scanner is of no use while rendering, and a bundle that never reaches it
 drops it.
+
+### `cst`
+
+**Type:** `(message: string) => Cst.Message`
+
+The format's own describer: it reports a message as the parts it is written
+from, so an editor, a linter or a syntax highlighter reads a message the way the
+parser beside it does.
+
+```javascript
+import { cst } from 'sveltekit-i18n';
+
+cst('Hello, {{name; default:Guest;}}!');
+// → { type: 'message', start: 0, end: 32, nodes: [
+//     { type: 'text', start: 0, end: 7 },
+//     { type: 'placeholder', start: 7, end: 31, nodes: [/* ... */] },
+//     { type: 'text', start: 31, end: 32 },
+//   ] }
+```
+
+The tree is concrete: every node carries its `[start, end)` span in UTF-16 code
+units, the leaves come in the order the message writes them, and concatenating
+them spells the message back. It reads no options — a name is a name whether or
+not a modifier answers to it — so nothing [`parserOptions`](#parser-options)
+registers changes what it reports. The node types are the `Cst` namespace.
+
+Like the extractor, it is a separate export because resolution never calls it.
 
 ## Utilities
 

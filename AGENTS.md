@@ -69,9 +69,12 @@ family (`base` / `lib` / `parsers` / `extensions`).
   as `BaseConfig` and `BaseParser`. `tests/specs/exports.spec.ts` fails if base
   gains an export this package does not carry; extend the rename map there
   rather than letting the surface drift. From the parser it carries the types
-  and `extractParamsFactory` — the build-time half of the contract, which a
-  schema generator needs beside the instance it types. The parser factory stays
-  internal: this package fills the slot, so there is nothing to construct.
+  and the two values no render reaches: `extractParamsFactory`, which a schema
+  generator needs beside the instance it types, and `cst`, which an editor
+  describes a message with. Only base's surface is diffed automatically, so the
+  parser's contribution is asserted by hand in that spec. The parser factory
+  stays internal: this package fills the slot, so there is nothing to
+  construct.
 - **`i18n instanceof I18n` does not hold**, and base does not guarantee it
   either whenever `config.extensions` replaces the instance. Documented, not
   fixed.

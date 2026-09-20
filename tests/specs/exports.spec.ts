@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module';
 import { describe, expect, it } from 'vitest';
 import ts from 'typescript';
-import { extractParamsFactory } from '../../src';
+import { cst, extractParamsFactory } from '../../src';
 import { sanitizeLocales, toDotNotation } from '../../src/utils';
 
 const require = createRequire(import.meta.url);
@@ -72,5 +72,17 @@ describe('re-export surface', () => {
     // read the way the app's own parser would read it.
     expect(extractParamsFactory({ customModifiers: { upper: ({ value }) => value } })('{{word:upper; default:none;}}'))
       .toEqual([{ name: 'word', kind: 'unknown', optional: true }]);
+  });
+
+  // The parser's other build-time half, for an editor describing a message.
+  it('serves the describer the parser contributes', () => {
+    const { type, start, end, nodes } = cst('Hi {{name}}!');
+
+    expect({ type, start, end }).toEqual({ type: 'message', start: 0, end: 12 });
+    expect(nodes.map((node) => [node.type, node.start, node.end])).toEqual([
+      ['text', 0, 3],
+      ['placeholder', 3, 11],
+      ['text', 11, 12],
+    ]);
   });
 });

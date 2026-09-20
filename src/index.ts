@@ -2,15 +2,17 @@ import { I18n as Base } from '@sveltekit-i18n/base';
 import parser from '@sveltekit-i18n/parser-curly';
 
 import type { Config as BaseConfig, Extension, Schema } from '@sveltekit-i18n/base';
-import type { Modifier, Parser, Report } from '@sveltekit-i18n/parser-curly';
+import type { Cst, Modifier, Parser, Report } from '@sveltekit-i18n/parser-curly';
 import type { Config } from './types';
 
-export type { Config, Modifier, Parser, Report };
+export type { Config, Cst, Modifier, Parser, Report };
 
-// The build-time half of the parser contract, which a schema generator reads a
-// catalogue with. A named export rather than a member of the parser object, so
-// a bundle that never reaches the scanner drops it.
-export { extractParamsFactory } from '@sveltekit-i18n/parser-curly';
+// The parser contract's build-time halves, which no render reaches:
+// `extractParamsFactory` reports the parameters a message names, for a schema
+// generator reading a catalogue; `cst` describes a message's syntax, for an
+// editor drawing or checking one. Named exports rather than members of the
+// parser object, so a bundle that reaches neither drops both.
+export { cst, extractParamsFactory } from '@sveltekit-i18n/parser-curly';
 
 // Everything the core exports, so nothing this package builds on has to be
 // installed beside it. `Config` and `Parser` already name this package's own
