@@ -32,7 +32,16 @@ body {
   font: 16px/1.65 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-a { color: var(--accent); }
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover { text-decoration: underline; }
+
+/* Underlining is the hover affordance for a link in prose. The brand, the
+   call to action and a heading's anchor read as something else already. */
+:is(.brand, .button, .anchor):hover { text-decoration: none; }
 
 .skip {
   position: absolute;
@@ -55,10 +64,7 @@ a { color: var(--accent); }
   color: var(--muted);
   font-size: 0.85rem;
   text-align: center;
-  text-decoration: none;
 }
-
-.banner:hover { text-decoration: underline; }
 
 header {
   display: flex;
@@ -70,10 +76,7 @@ header {
   border-bottom: 1px solid var(--line);
 }
 
-.brand {
-  color: inherit;
-  text-decoration: none;
-}
+.brand { color: inherit; }
 
 .brand span {
   display: block;
@@ -186,7 +189,6 @@ footer {
   background: var(--accent);
   color: var(--bg);
   font-weight: 600;
-  text-decoration: none;
 }
 
 .requirements {
@@ -348,7 +350,6 @@ footer {
   padding-right: 0.35em;
   color: var(--muted);
   opacity: 0;
-  text-decoration: none;
 }
 
 .prose :is(h1, h2, h3, h4, h5, h6):hover .anchor { opacity: 1; }
@@ -442,7 +443,6 @@ pre {
   padding-right: 0.35em;
   color: var(--muted);
   opacity: 0;
-  text-decoration: none;
 }
 
 .panel h2:hover .anchor { opacity: 1; }
