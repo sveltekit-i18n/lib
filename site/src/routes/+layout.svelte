@@ -69,14 +69,15 @@
 <footer>
   <a href="{REPO}/blob/master/LICENSE" rel="noreferrer">MIT</a>
   <a href="{REPO}/issues" rel="noreferrer">Issues</a>
-  <iframe
-    class="sponsor"
-    src="{SPONSOR}/button"
-    title="Sponsor sveltekit-i18n"
-    height="32"
-    width="114"
-    loading="lazy"
-  ></iframe>
+  <div class="sponsor">
+    <iframe
+      src="{SPONSOR}/button"
+      title="Sponsor sveltekit-i18n"
+      height="32"
+      width="114"
+      loading="lazy"
+    ></iframe>
+  </div>
 
   <label class="language">
     {i18n.t('nav.language')}
