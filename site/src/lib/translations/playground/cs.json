@@ -10,7 +10,7 @@
     "flavour": {
       "curly": "Curly",
       "icu": "ICU",
-      "mf2": "MessageFormat 2",
+      "mf2": "MF2",
       "i18next": "i18next"
     },
     "message": "Zpráva",
