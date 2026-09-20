@@ -338,7 +338,7 @@ One install is the whole install:
 npm install sveltekit-i18n
 ```
 
-Everything both packages export is re-exported here, so there is never a reason to add them. Base's `Config` and `Parser` namespaces arrive under the names [`BaseConfig` and `BaseParser`](./README.md#exported-types), because `Config` and `Parser` already name this package's own types.
+Every name the core publishes is re-exported here, and with it the parser's build-time half — its types, `extractParamsFactory` and `cst` — so there is never a reason to add them. Base's `Config` and `Parser` namespaces arrive under the names [`BaseConfig` and `BaseParser`](./README.md#exported-types), because `Config` and `Parser` already name this package's own types.
 
 ---
 
@@ -1318,7 +1318,7 @@ Yes, in any Svelte 5 application — the package imports nothing from `$app`, an
 
 ### Do I need to install `@sveltekit-i18n/base` or a parser?
 
-No — and you should not. `npm install sveltekit-i18n` is the whole install, and every name both packages export is re-exported here. See [Two copies of the core](#two-copies-of-the-core).
+No — and you should not. `npm install sveltekit-i18n` is the whole install: every name the core publishes is re-exported here, and with it the parser's build-time half. See [Two copies of the core](#two-copies-of-the-core).
 
 ### Where did `@sveltekit-i18n/parser-default` go?
 

@@ -40,10 +40,10 @@ npm install sveltekit-i18n
 
 That is the whole install. `@sveltekit-i18n/base` (the core) and
 `@sveltekit-i18n/parser-curly` (the message parser) come with it: the core's
-whole API, the parser's types and its parameter extractor are re-exported
-here. **Do not install them
-alongside** — an app that depends
-on them directly ends up with two copies of the core and two reactive graphs.
+whole API, the parser's types and its build-time `extractParamsFactory` and
+`cst` are re-exported here. **Do not install them alongside** — an app that
+depends on them directly ends up with two copies of the core and two reactive
+graphs.
 
 ## Basic Concepts
 
@@ -185,7 +185,7 @@ config is inert data — each request builds its own instance from it.
 
 There is **no `parser` slot**: this package fills it with the Curly Message
 Format parser. Its options live under
-[`parserOptions`](#parser-options-custom-modifiers-defaults-and-reports).
+[`parserOptions`](#parser-options).
 
 ### Step 3: Resolve the visitor's locale
 
@@ -566,7 +566,7 @@ modifiers are `number`, `date`, `ago` and `currency`, plus the comparisons `eq`,
 `ne`, `lt`, `lte`, `gt` and `gte`. The full syntax is in the
 [parser's README](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly).
 
-### Parser options: custom modifiers, defaults and reports
+### Parser options
 
 ```javascript
 /** @type {import('sveltekit-i18n').Config} */
@@ -591,6 +591,11 @@ export const config = {
 Reports never raise: a placeholder that cannot resolve takes its fallback and
 the rest of the message renders. `onReport` is optional here and defaults to
 `null` — nothing is written anywhere unless you pass a channel.
+
+Two more options govern how a payload's values are read —
+[`recognizeWrappers`](./README.md#parseroptionsrecognizewrappers) and
+[`onSuspectValue`](./README.md#parseroptionsonsuspectvalue). All five are in
+the [reference](./README.md#parser-options).
 
 ## TypeScript
 

@@ -31,8 +31,9 @@ npm install sveltekit-i18n
 
 That is the whole install. `@sveltekit-i18n/base` and
 `@sveltekit-i18n/parser-curly` come with it: the core's whole API, the parser's
-types and its parameter extractor are re-exported here — **do not install them alongside**, or your
-app ends up with two copies of the core and two reactive graphs.
+types and its build-time `extractParamsFactory` and `cst` are re-exported here
+— **do not install them alongside**, or your app ends up with two copies of the
+core and two reactive graphs.
 
 ## Quick Start
 
@@ -203,8 +204,8 @@ Use dynamic values in your translations:
 ```
 
 The syntax is the [Curly Message Format](https://curlymessage.dev).
-Its parser options — custom modifiers, modifier defaults and a report channel —
-go under `config.parserOptions`:
+Its parser options — custom modifiers, modifier defaults, a report channel and
+how payload values are read — go under `config.parserOptions`:
 
 ```javascript
 const config = {

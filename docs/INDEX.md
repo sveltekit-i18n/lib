@@ -67,7 +67,7 @@ Perfect for: understanding internals, making architecture decisions
   `initLocale`, `fallbackLocale`, `fallbackValue`, `preprocess`,
   `sanitizeLocales`, `cache`, `log`, `schema`, `extensions`
 - [Parser options](./README.md#parser-options) – `modifierDefaults`,
-  `customModifiers`, `onReport`
+  `customModifiers`, `onReport`, `recognizeWrappers`, `onSuspectValue`
 - [The instance](./README.md#the-instance) – reactive properties, reactive
   functions, promise-returning methods, synchronous methods
 - [Message format](./README.md#message-format),
@@ -168,8 +168,9 @@ any parser that satisfies
 
 - Placeholders `{{name}}`, default values, nested placeholders, escaping
 - Modifiers (`number`, `date`, `currency`, `ago`, …) and comparisons
-- Custom modifiers, modifier defaults and the report channel — all reachable
-  here through [`parserOptions`](./README.md#parser-options)
+- Custom modifiers, modifier defaults, the report channel and how payload
+  values are read — all reachable here through
+  [`parserOptions`](./README.md#parser-options)
 - Implements the [Curly Message Format](https://curlymessage.dev)
 
 ### [@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)
@@ -231,8 +232,8 @@ the client and seeded through `snapshot()`, and `t()` inside Markdown routes.
 - **[Curly Message Format](https://curlymessage.dev)** – the message
   format specification
 
-`base`, `parsers` and `extensions` release aligned at 3.0.0; `sveltekit-i18n`
-last.
+`base`, `parsers` and `extensions` release first; `sveltekit-i18n` last, since
+it pins them exactly. Read a package's current version off npm.
 
 ---
 

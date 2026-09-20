@@ -22,20 +22,22 @@ only what differs here.
 The end-user package `sveltekit-i18n`: it composes
 [`@sveltekit-i18n/base`](https://github.com/sveltekit-i18n/base) with
 [`@sveltekit-i18n/parser-curly`](https://github.com/sveltekit-i18n/parsers)
-and re-exports the core's whole surface along with the parser's types and its
-parameter extractor, so users install a single package. It also
-hosts the ecosystem's shared issue tracker, docs, and examples for the whole
-family (`base` / `lib` / `parsers` / `extensions`).
+and re-exports the core's whole surface along with the parser's build-time
+half, so users install a single package. It also hosts the ecosystem's shared
+issue tracker, docs, and examples for the whole family
+(`base` / `lib` / `parsers` / `extensions`).
 
 ## Current state: v3 released from `master`
 
 - **`master` is the v3 line.** Stack: pnpm, Vitest, tsup, ESLint 10 flat
   config, ESM-only, Node 22 / Bun 1.2 / Deno 2 or newer, peer `svelte >=5`.
 - **`2.x` is a frozen snapshot** of the published v2 line: critical fixes only.
-- **The family is published at 3.0.0** — `base`, the parsers,
-  `extension-stores` and this package — released aligned, as
-  [#214](https://github.com/sveltekit-i18n/lib/issues/214) set out. The pins on
-  `base` and `parser-curly` are exact and stay that way.
+- **The family released aligned at 3.0.0** — `base`, the parsers,
+  `extension-stores` and this package — as
+  [#214](https://github.com/sveltekit-i18n/lib/issues/214) set out. Each
+  package moves on its own from there, so read a version off npm rather than
+  off this file. The pins on `base` and `parser-curly` are exact and stay that
+  way.
 - **`examples/` is on v3** — eight standalone applications, each with a real
   adapter and route tree and a shared design, pinning the published package so
   a copied-out directory installs on its own. `.github/workflows/examples.yml`

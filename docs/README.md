@@ -877,9 +877,9 @@ extractParams('Hi {{name}}, you owe {{amount:number;}}.');
 Pass it the same `parserOptions` the application passes the instance: a custom
 modifier registered under a name the format defines changes what a message
 naming it says about its value, so an extractor built without them reads the
-catalogue differently from the parser that renders it. `onReport` and
-`modifierDefaults` reach nothing here — extraction formats nothing and reports
-nothing.
+catalogue differently from the parser that renders it. `onReport`,
+`modifierDefaults`, `recognizeWrappers` and `onSuspectValue` reach nothing here
+— extraction formats nothing, reports nothing and reads no payload.
 
 It is a separate export rather than a member of the parser object on purpose: a
 message scanner is of no use while rendering, and a bundle that never reaches it

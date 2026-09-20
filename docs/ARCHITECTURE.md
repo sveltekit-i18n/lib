@@ -64,7 +64,7 @@ The alternatives are `@sveltekit-i18n/parser-icu`, wrapping
 It fills the core's parser slot with `parser-curly`, states the parser's report
 channel so an application need not, retypes `loadConfig` to accept the
 parser-less config, and re-exports the core's whole surface along with the
-parser's types and its parameter extractor. That is
+parser's build-time half — its types, `extractParamsFactory` and `cst`. That is
 all it is — roughly sixty lines of source. Every member you call afterwards is
 the core's.
 
@@ -94,7 +94,7 @@ another module reads.
 │                                                              │
 │  • builds parser-curly from `config.parserOptions`           │
 │  • prepends the parser extension to `config.extensions`      │
-│  • re-exports everything base and the parser publish         │
+│  • re-exports all of base, and the parser's build-time half  │
 └──────────┬─────────────────────────────────┬─────────────────┘
            │ config.parser                   │ the instance
 ┌──────────▼──────────────────┐   ┌──────────▼─────────────────┐

@@ -795,7 +795,7 @@ i18n.t('greeting', { name: 'Jarda' }, { truncate: { maxLength: 20 } });
 
 ### The exported types
 
-From the package root: `Config`, `Parser`, `Modifier` and `Report` (this
+From the package root: `Config`, `Parser`, `Modifier`, `Report` and `Cst` (this
 package's parser surface), plus everything the core publishes — `Extension`,
 `Loader`, `Logger`, `Schema`, `Translations`, and the core's own `Config` and
 `Parser` namespaces under the names `BaseConfig` and `BaseParser` (the plain
@@ -1121,9 +1121,9 @@ property that makes this the right mechanism on the server as well.
   including the app's loaders.
 - **Call `destroy()`** on an instance it did not create.
 - **Depend on `@sveltekit-i18n/base` or `@sveltekit-i18n/parser-curly`
-  directly** — `sveltekit-i18n` re-exports the core's whole surface, the
-  parser's types and its parameter extractor, and a direct dependency is
-  another way to end up with two copies of the core.
+  directly** — `sveltekit-i18n` re-exports the core's whole surface and the
+  parser's build-time half, and a direct dependency is another way to end up
+  with two copies of the core.
 
 ## Dynamic Routes and Locales
 
