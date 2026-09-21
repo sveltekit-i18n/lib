@@ -81,6 +81,6 @@
   },
   "svelte": "./dist/index.js",
   "simple-git-hooks": {
-    "pre-commit": "pnpm run lint"
+    "pre-commit": "pnpm -r --include-workspace-root run lint"
   }
 }

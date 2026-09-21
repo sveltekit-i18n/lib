@@ -20,7 +20,7 @@ export const i18n = new I18n(config);`;
 
 export const USE = `<script>
   import { i18n } from '$lib/translations';
-<\/script>
+</script>
 
 <h1>{i18n.t('common.greeting', { name: 'World' })}</h1>
 

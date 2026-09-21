@@ -43,6 +43,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
+      # `eslint` rather than the package's `lint`, which fixes in place: a job
+      # that repairs the checkout reports only what it could not repair.
+      - name: Lint Site
+        run: pnpm --filter @sveltekit-i18n/site exec eslint .
+
       # The site imports the package through its exports map, which points at
       # `dist/`; without a fresh build it would render against a stale one.
       - name: Build Package
