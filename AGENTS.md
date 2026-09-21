@@ -68,15 +68,16 @@ issue tracker, docs, and examples for the whole family
 - **The re-export surface is the point of this package** (#228). Every name
   base publishes is reachable from here — `Config` and `Parser` already name
   this package's own types, so base's namespaces of those names are re-exported
-  as `BaseConfig` and `BaseParser`. `tests/specs/exports.spec.ts` fails if base
-  gains an export this package does not carry; extend the rename map there
-  rather than letting the surface drift. From the parser it carries the types
-  and the two values no render reaches: `extractParamsFactory`, which a schema
+  as `BaseConfig` and `BaseParser`. From the parser it carries the types and
+  the two values no render reaches: `extractParamsFactory`, which a schema
   generator needs beside the instance it types, and `cst`, which an editor
-  describes a message with. Only base's surface is diffed automatically, so the
-  parser's contribution is asserted by hand in that spec. The parser factory
-  stays internal: this package fills the slot, so there is nothing to
-  construct.
+  describes a message with. The parser factory stays internal: this package
+  fills the slot, so there is nothing to construct.
+  `tests/specs/exports.spec.ts` diffs both surfaces and fails if either gains
+  an export this package does not carry; extend the rename map (base's `Config`
+  and `Parser`) or the excluded names (the parser's `default` and its own
+  `Config`, which this package exports for something else) rather than letting
+  the surface drift.
 - **`i18n instanceof I18n` does not hold**, and base does not guarantee it
   either whenever `config.extensions` replaces the instance. Documented, not
   fixed.

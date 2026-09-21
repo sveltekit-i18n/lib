@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import i18n from '../../src';
 import { CONFIG } from '../data';
 
-import type { Extension, Report } from '../../src';
+import type { Extension, Parser, Report } from '../../src';
 
 const { initLocale = 'en' } = CONFIG;
 
@@ -131,6 +131,24 @@ describe('parser wiring', () => {
     instance.t('common.modifier_unknown', { value: 'TEST' });
 
     expect(reports).toEqual([expect.objectContaining({ code: 'unknown-modifier' })]);
+  });
+
+  // This package states `onReport` and nothing else, so every other option the
+  // parser takes has to reach it exactly as the consumer spelled it.
+  it('hands the payload-reading options on untouched', async () => {
+    const suspects: Parser.Suspect[] = [];
+    const instance = new i18n({
+      ...CONFIG,
+      parserOptions: { recognizeWrappers: false, onSuspectValue: (suspect) => { suspects.push(suspect); } },
+    });
+
+    await instance.loadTranslations(initLocale);
+
+    // Wrappers off, a wrapper-shaped entry is data like any other and converts as one.
+    expect(instance.t('common.placeholder', { value: { default: 'WRAPPED' } })).toBe('VALUE: {"default":"WRAPPED"}');
+    // A value holding what version 1 read as syntax reaches the output as it stands.
+    expect(instance.t('common.placeholder', { value: '{{value}}' })).toBe('VALUE: {{value}}');
+    expect(suspects).toEqual([{ found: ['placeholder'], placeholder: '{{value}}', id: 'common.placeholder', text: '{{value}}' }]);
   });
 });
 

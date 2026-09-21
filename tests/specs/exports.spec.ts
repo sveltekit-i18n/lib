@@ -13,6 +13,12 @@ const RENAMED: Record<string, string> = {
   Parser: 'BaseParser',
 };
 
+// The parser's exports this package deliberately does not carry: `default` is
+// the factory it fills the slot with, so a consumer has nothing to construct,
+// and `Config` names this package's own type. Both names are exported here and
+// mean something else, so a diff would pass them without proving anything.
+const PARSER_OWN = ['Config', 'default'];
+
 const declarationsOf = (specifier: string) => require.resolve(specifier).replace(/\.js$/, '.d.ts');
 
 const exportsOf = (entry: string) => {
@@ -52,6 +58,17 @@ describe('re-export surface', () => {
     exportsOf(declarationsOf('@sveltekit-i18n/base/utils')).forEach((name) => {
       expect(reexported).toContain(RENAMED[name] ?? name);
     });
+  });
+
+  // The parser is the other half of this package, and nothing diffs it from the
+  // outside: a name it gains and this package forgets would leave a consumer
+  // installing it beside this one, which is the thing #228 rules out.
+  it('carries every export of the parser', () => {
+    const reexported = exportsOf(`${import.meta.dirname}/../../dist/index.d.ts`);
+
+    exportsOf(declarationsOf('@sveltekit-i18n/parser-curly'))
+      .filter((name) => !PARSER_OWN.includes(name))
+      .forEach((name) => expect(reexported).toContain(name));
   });
 
   it('serves the helpers the `utils` subpath re-exports', () => {
