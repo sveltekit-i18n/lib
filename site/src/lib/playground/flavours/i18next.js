@@ -12,7 +12,7 @@ import { drawSpans } from '$lib/highlight.js';
 export { default as parser } from '@sveltekit-i18n/parser-i18next';
 
 /** What the `.` of those regexes does not match, so a placeholder never spans one. */
-const BREAK = new Set(['\n', '\r', ' ', ' ']);
+const BREAK = new Set(['\n', '\r', '\u2028', '\u2029']);
 
 /**
  * For every offset, where the `}}` closing a placeholder that opens there
