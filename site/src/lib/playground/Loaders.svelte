@@ -18,19 +18,19 @@
   let ran = [];
 
   const build = (record) => new I18n({
-    loaders: LOADERS.flatMap(({ key, routes }) => LOADER_LOCALES.map((name) => ({
+    loaders: LOADERS.flatMap(({ namespace, routes }) => LOADER_LOCALES.map((name) => ({
       locale: name,
-      key,
+      namespace,
       routes,
       loader: () => {
-        record(key);
+        record(namespace);
 
-        return LOADED[key][name];
+        return LOADED[namespace][name];
       },
     }))),
   });
 
-  let instance = $state.raw(build((key) => ran.push(key)));
+  let instance = $state.raw(build((namespace) => ran.push(namespace)));
 
   const load = async () => {
     ran = [];
@@ -39,7 +39,7 @@
     // so a throwaway one tells the panel which loaders the route selects —
     // observed the same way, rather than by restating the matching rule here.
     const matched = [];
-    const probe = build((key) => matched.push(key));
+    const probe = build((namespace) => matched.push(namespace));
 
     await Promise.all([
       instance.loadTranslations(locale, route),
@@ -53,10 +53,10 @@
     log = [...log, {
       locale,
       route,
-      loaders: LOADERS.map(({ key, shape }) => ({
-        key,
+      loaders: LOADERS.map(({ namespace, shape }) => ({
+        namespace,
         shape,
-        status: fired.includes(key) ? 'ran' : matched.includes(key) ? 'cached' : 'skipped',
+        status: fired.includes(namespace) ? 'ran' : matched.includes(namespace) ? 'cached' : 'skipped',
       })),
       keys: Object.keys(instance.translations[locale] ?? {}),
     }];
@@ -114,9 +114,9 @@
 
           {#if entry.loaders}
             <ul class="statuses">
-              {#each entry.loaders as { key, shape, status } (key)}
+              {#each entry.loaders as { namespace, shape, status } (namespace)}
                 <li class={status}>
-                  <code>{key}</code>
+                  <code>{namespace}</code>
                   <span>{i18n.t(`playground.loaders.shape.${shape}`)}</span>
                   <strong>{i18n.t(`playground.loaders.status.${status}`)}</strong>
                 </li>

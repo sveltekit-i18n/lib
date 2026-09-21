@@ -68,12 +68,12 @@ export const config = {
   loaders: [
     {
       locale: 'en',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./en/common.json')).default,
     },
     {
       locale: 'cs',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./cs/common.json')).default,
     },
   ],
@@ -169,13 +169,13 @@ const config = {
   loaders: [
     {
       locale: 'en',
-      key: 'home',
+      namespace: 'home',
       routes: ['/'], // Load only on homepage
       loader: async () => (await import('./en/home.json')).default,
     },
     {
       locale: 'en',
-      key: 'about',
+      namespace: 'about',
       routes: ['/about'], // Load only on about page
       loader: async () => (await import('./en/about.json')).default,
     },

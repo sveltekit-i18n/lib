@@ -292,7 +292,7 @@ export const load = async ({ url }) => {
 3. a load already in flight for this locale AND route?
    ↓  → return its promise, fetch nothing
 4. select loaders: locale matches, routes match (or the loader declares none),
-   ↓  key not already loaded  → nothing left? activate the locale and resolve
+   ↓  namespace not loaded    → nothing left? activate the locale and resolve
 5. run them in parallel; a loader that throws is logged on its own and does
    ↓  not fail the batch
 6. merge into `rawTranslations`, preprocess into `translations`, record the
@@ -347,7 +347,7 @@ request superseded it. Last request wins.
 
 ### Route-based loading
 
-A loader declares the locale it serves, the namespace `key` it fills, and
+A loader declares the locale it serves, the `namespace` it fills, and
 optionally the `routes` it is needed on:
 
 ```javascript
@@ -356,20 +356,20 @@ const config = {
     // No routes → needed everywhere
     {
       locale: 'en',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./en/common.json')).default,
     },
     // Exact match → only on '/'
     {
       locale: 'en',
-      key: 'home',
+      namespace: 'home',
       routes: ['/'],
       loader: async () => (await import('./en/home.json')).default,
     },
     // Regular expression → every matching route
     {
       locale: 'en',
-      key: 'products',
+      namespace: 'products',
       routes: [/^\/products/],
       loader: async () => (await import('./en/products.json')).default,
     },
@@ -383,11 +383,11 @@ keep them simple.
 
 ### Loaded once per freshness window
 
-The core records which `key`s a locale has loaded. A key already recorded is not
-fetched again, whatever triggers the next load — which is why one namespace must
-not be split into several route-scoped loaders: as soon as one of them has
-supplied the key, the others are skipped, including ones that never had the
-chance to run. Give each route group a key of its own.
+The core records which namespaces a locale has loaded. One already recorded is
+not fetched again, whatever triggers the next load — which is why one namespace
+must not be split into several route-scoped loaders: as soon as one of them has
+supplied it, the others are skipped, including ones that never had the chance to
+run. Give each route group a namespace of its own.
 
 `addTranslations()` records its keys the same way, so a namespace handed over
 statically (or hydrated from a snapshot) keeps the matching loaders from
@@ -588,8 +588,8 @@ there.
 
 ### Namespaces
 
-A loader's `key` is a namespace, and it prefixes every key it contributes:
-`{ key: 'common' }` loading `{ greeting: '…' }` is read as
+A loader's `namespace` prefixes every key it contributes:
+`{ namespace: 'common' }` loading `{ greeting: '…' }` is read as
 `i18n.t('common.greeting')`. Namespaces are what makes route-scoped loading
 possible, keep the first payload small, and let teams own separate files. Keys
 must not contain dots — the dot is the separator.

@@ -68,16 +68,16 @@ inside the file.
 ### Loaders
 
 A **loader** says how and when a chunk of translations is fetched. It names a
-`locale`, a namespace `key`, an async `loader` function and optionally `routes`.
+`locale`, a `namespace`, an async `loader` function and optionally `routes`.
 A loader runs at most once per locale (per freshness window), lazily, and only
 when the current route matches its `routes`.
 
 ### Namespaces
 
-The loader's `key` is the **namespace** — a prefix for everything that loader
-returns (`common`, `home`, `about`). Namespaces are what make lazy loading
-possible: one namespace per page, plus a shared one for navigation and errors.
-Keys must not contain dots.
+The loader's `namespace` is a prefix for everything that loader returns
+(`common`, `home`, `about`). Namespaces are what make lazy loading possible:
+one namespace per page, plus a shared one for navigation and errors. A
+namespace must not contain dots.
 
 ### The instance
 
@@ -164,12 +164,12 @@ export const config = {
   loaders: [
     {
       locale: 'en',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./en/common.json')).default,
     },
     {
       locale: 'cs',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./cs/common.json')).default,
     },
   ],
@@ -404,25 +404,25 @@ export const config = {
     // No `routes` → loaded on every page
     {
       locale: 'en',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./en/common.json')).default,
     },
     {
       locale: 'cs',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./cs/common.json')).default,
     },
 
     // Homepage only
     {
       locale: 'en',
-      key: 'home',
+      namespace: 'home',
       routes: ['/'],
       loader: async () => (await import('./en/home.json')).default,
     },
     {
       locale: 'cs',
-      key: 'home',
+      namespace: 'home',
       routes: ['/'],
       loader: async () => (await import('./cs/home.json')).default,
     },
@@ -430,13 +430,13 @@ export const config = {
     // About page only
     {
       locale: 'en',
-      key: 'about',
+      namespace: 'about',
       routes: ['/about'],
       loader: async () => (await import('./en/about.json')).default,
     },
     {
       locale: 'cs',
-      key: 'about',
+      namespace: 'about',
       routes: ['/about'],
       loader: async () => (await import('./cs/about.json')).default,
     },
@@ -465,7 +465,7 @@ or anything with a `test(route)` method. The wiring from
 soon as one loader has supplied `common`, every other `common` loader is
 skipped, including one whose `routes` never matched. Splitting a single
 namespace across routes therefore loses the halves the visitor did not land on —
-give each route group a key of its own, as above.
+give each route group a namespace of its own, as above.
 
 ## Switching Locales
 

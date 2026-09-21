@@ -11,7 +11,7 @@ export const config = {
   fallbackLocale: 'en',
   loaders: LOCALES.map((locale) => ({
     locale,
-    key: 'rates',
+    namespace: 'rates',
     loader: async () => (await import(`./translations/${locale}.json`)).default,
   })),
 };

@@ -252,9 +252,9 @@ constructor and the loaders behind it do not run again.
 - **Other locales are left out.** Spreading `config.translations` underneath the
   snapshot (as above) keeps the immediately-available strings for the languages
   the visitor is *not* using — the language names a switcher renders.
-- **Off-route keys are left out.** A key claimed only by loaders whose `routes`
-  do not match is fetched when the visitor navigates there. A key no loader
-  claims (added through `addTranslations`) is always kept.
+- **Off-route namespaces are left out.** A namespace claimed only by loaders
+  whose `routes` do not match is fetched when the visitor navigates there. A
+  namespace no loader claims (added through `addTranslations`) is always kept.
 - **The data is pre-preprocess**, so the receiving instance applies its own
   `config.preprocess`.
 - **Freshness is not transferred.** A hydrated locale's [`cache`](#caching)
@@ -342,9 +342,9 @@ src/lib/translations/
 
 ### Namespace Strategy
 
-A loader's `key` is the namespace: it prefixes every key the loader returns, so
-`{ "greeting": "…" }` loaded under `key: 'common'` is read as
-`t('common.greeting')`. A loader `key` must not contain a `.` — the dot is the
+A loader's `namespace` prefixes every key the loader returns, so
+`{ "greeting": "…" }` loaded under `namespace: 'common'` is read as
+`t('common.greeting')`. A `namespace` must not contain a `.` — the dot is the
 separator the flattened tables are keyed by.
 
 #### Common namespace
@@ -374,12 +374,12 @@ Give each major page or section its own namespace and scope it with `routes`:
 export const config = {
   loaders: [
     // Common (every page)
-    { locale: 'en', key: 'common', loader: async () => (await import('./en/common.json')).default },
+    { locale: 'en', namespace: 'common', loader: async () => (await import('./en/common.json')).default },
 
     // Page-specific
-    { locale: 'en', key: 'home', routes: ['/'], loader: async () => (await import('./en/home.json')).default },
-    { locale: 'en', key: 'about', routes: ['/about'], loader: async () => (await import('./en/about.json')).default },
-    { locale: 'en', key: 'products', routes: [/^\/products/], loader: async () => (await import('./en/products.json')).default },
+    { locale: 'en', namespace: 'home', routes: ['/'], loader: async () => (await import('./en/home.json')).default },
+    { locale: 'en', namespace: 'about', routes: ['/about'], loader: async () => (await import('./en/about.json')).default },
+    { locale: 'en', namespace: 'products', routes: [/^\/products/], loader: async () => (await import('./en/products.json')).default },
   ],
 };
 ```
@@ -388,7 +388,7 @@ export const config = {
 soon as one loader has supplied `products`, every other `products` loader is
 skipped — including one whose `routes` never matched. Splitting a single
 namespace across routes therefore loses the halves the visitor did not land on.
-Give each route group a key of its own.
+Give each route group a namespace of its own.
 
 #### Feature-based organization
 
@@ -406,8 +406,8 @@ translations/
 
 ```javascript
 const loaders = [
-  { locale: 'en', key: 'auth', routes: ['/login', '/register', '/reset-password'], loader: async () => (await import('./en/auth.json')).default },
-  { locale: 'en', key: 'checkout', routes: [/^\/cart/, /^\/checkout/], loader: async () => (await import('./en/checkout.json')).default },
+  { locale: 'en', namespace: 'auth', routes: ['/login', '/register', '/reset-password'], loader: async () => (await import('./en/auth.json')).default },
+  { locale: 'en', namespace: 'checkout', routes: [/^\/cart/, /^\/checkout/], loader: async () => (await import('./en/checkout.json')).default },
 ];
 ```
 
@@ -416,7 +416,7 @@ const loaders = [
 **Target sizes:**
 - `common.json`: < 5 KB (essential shared content)
 - Page-specific: < 20 KB per file
-- If larger, split into sub-namespaces — each with its own loader `key`
+- If larger, split into sub-namespaces — each with its own loader `namespace`
 
 ```
 products/
@@ -448,8 +448,8 @@ JSON, which the default `preprocess: 'full'` flattens to the same thing:
 }
 ```
 
-Both are read as `t('<key>.user.profile.name')`, where `<key>` is the loader's
-namespace. Arrays flatten too (`items.0`, `items.1`); `preprocess:
+Both are read as `t('<namespace>.user.profile.name')`, where `<namespace>` is
+the loader's. Arrays flatten too (`items.0`, `items.1`); `preprocess:
 'preserveArrays'` keeps them as arrays.
 
 ### Descriptive names
@@ -501,7 +501,7 @@ Establish naming patterns and stick to them:
 { "profile.privacy.public": "Public" }
 ```
 
-**Rule of thumb:** max 3–4 levels deep, the loader `key` included.
+**Rule of thumb:** max 3–4 levels deep, the loader `namespace` included.
 
 ### Context in keys
 
@@ -538,10 +538,10 @@ Load a namespace only where it is used:
 ```javascript
 const loaders = [
   // Always loaded
-  { locale: 'en', key: 'common', loader: async () => (await import('./en/common.json')).default },
+  { locale: 'en', namespace: 'common', loader: async () => (await import('./en/common.json')).default },
 
   // Loaded on /admin and below
-  { locale: 'en', key: 'admin', routes: [/^\/admin/], loader: async () => (await import('./en/admin.json')).default },
+  { locale: 'en', namespace: 'admin', routes: [/^\/admin/], loader: async () => (await import('./en/admin.json')).default },
 ];
 ```
 
@@ -615,7 +615,7 @@ translations are complete.
 
 `config.cache` is how long a locale's loaded translations stay **fresh**, in
 milliseconds. The default is `Number.POSITIVE_INFINITY`: loaders run once per
-locale and key, which is right when translation files ship with the app and
+locale and namespace, which is right when translation files ship with the app and
 change only with a deploy.
 
 ```javascript
@@ -669,7 +669,7 @@ const config: Config = {
   loaders: [
     {
       locale: 'en',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./en/common.json')).default,
     },
   ],
@@ -692,7 +692,7 @@ import { I18n, type Config } from 'sveltekit-i18n';
 
 export const config = {
   initLocale: 'en',
-  loaders: [{ locale: 'cs', key: 'common', loader: async () => ({}) }],
+  loaders: [{ locale: 'cs', namespace: 'common', loader: async () => ({}) }],
 } as const satisfies Config;
 
 const i18n = new I18n(config);
@@ -878,8 +878,8 @@ documented, not fixed.
 ## Component-Scoped Translations
 
 **Prefer one instance.** A reusable component with text of its own does not need
-an instance of its own — it needs a namespace of its own. Give it a loader `key`
-nobody else uses, scope it with `routes` if it only appears on some pages, and
+an instance of its own — it needs a namespace of its own. Give it a
+`namespace` nobody else uses, scope it with `routes` if it only appears on some pages, and
 read the app's instance from context:
 
 ```javascript
@@ -887,9 +887,9 @@ read the app's instance from context:
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
   loaders: [
-    { locale: 'en', key: 'common', loader: async () => (await import('./en/common.json')).default },
-    { locale: 'en', key: 'dataTable', loader: async () => (await import('./en/data-table.json')).default },
-    { locale: 'cs', key: 'dataTable', loader: async () => (await import('./cs/data-table.json')).default },
+    { locale: 'en', namespace: 'common', loader: async () => (await import('./en/common.json')).default },
+    { locale: 'en', namespace: 'dataTable', loader: async () => (await import('./en/data-table.json')).default },
+    { locale: 'cs', namespace: 'dataTable', loader: async () => (await import('./cs/data-table.json')).default },
   ],
 };
 ```
@@ -986,12 +986,12 @@ export const tableLoaders = (locales) => locales
   .filter((locale) => Object.hasOwn(FILES, locale))
   .map((locale) => ({
     locale,
-    key: 'acmeTable',
+    namespace: 'acmeTable',
     loader: async () => (await FILES[locale]()).default,
   }));
 ```
 
-- The `key` is the library's namespace — one nobody else is likely to claim, and
+- The `namespace` is the library's — one nobody else is likely to claim, and
   free of `.` characters. Every message is then read as `t('acmeTable.…')`.
 - The app says which locales it supports; the library contributes the ones it
   has. Locales it does not translate fall back through the app's
@@ -1011,8 +1011,8 @@ const locales = ['en', 'cs', 'de'];
 export const config = {
   fallbackLocale: 'en',
   loaders: [
-    { locale: 'en', key: 'common', loader: async () => (await import('./en/common.json')).default },
-    { locale: 'cs', key: 'common', loader: async () => (await import('./cs/common.json')).default },
+    { locale: 'en', namespace: 'common', loader: async () => (await import('./en/common.json')).default },
+    { locale: 'cs', namespace: 'common', loader: async () => (await import('./cs/common.json')).default },
     ...tableLoaders(locales),
   ],
 };
@@ -1216,7 +1216,7 @@ export const config = {
   loaders: [
     {
       locale: 'en',
-      key: 'content',
+      namespace: 'content',
       loader: async ({ locale }) => {
         const response = await fetch(`https://api.cms.example/translations/${locale}`);
 
@@ -1253,7 +1253,7 @@ export const GET = async ({ params }) => json(await db.translations.find({ local
 ```javascript
 {
   locale: 'en',
-  key: 'dynamic',
+  namespace: 'dynamic',
   loader: async ({ locale }) => (await fetch(`/api/translations/${locale}`)).json(),
 }
 ```
@@ -1263,10 +1263,10 @@ export const GET = async ({ params }) => json(await db.translations.find({ local
 ```javascript
 const loaders = [
   // Static: fast, versioned with the code
-  { locale: 'en', key: 'common', loader: async () => (await import('./en/common.json')).default },
+  { locale: 'en', namespace: 'common', loader: async () => (await import('./en/common.json')).default },
 
   // Dynamic: updates without a deployment
-  { locale: 'en', key: 'content', loader: async () => (await fetch('/api/translations/en/content')).json() },
+  { locale: 'en', namespace: 'content', loader: async () => (await fetch('/api/translations/en/content')).json() },
 ];
 ```
 
@@ -1425,7 +1425,7 @@ still lands. Where a namespace is critical, degrade explicitly instead:
 ```javascript
 {
   locale: 'en',
-  key: 'common',
+  namespace: 'common',
   loader: async () => {
     try {
       return (await fetch('https://cdn.example.com/translations/en/common.json')).json();
@@ -1441,7 +1441,7 @@ still lands. Where a namespace is critical, degrade explicitly instead:
 ```javascript
 {
   locale: 'en',
-  key: 'common',
+  namespace: 'common',
   loader: async ({ locale }) => (await fetch(`https://cdn.example.com/translations/${locale}/common.json`)).json(),
 }
 ```
@@ -1456,7 +1456,7 @@ Measure inside the loader — that is the boundary the network crosses:
 ```javascript
 {
   locale: 'en',
-  key: 'common',
+  namespace: 'common',
   loader: async ({ locale, route }) => {
     const start = performance.now();
     const translations = await (await fetch(`/api/translations/${locale}`)).json();
@@ -1476,7 +1476,7 @@ Measure inside the loader — that is the boundary the network crosses:
    one per app in the browser, reached through context.
 2. **Awaiting** – await the promise the trigger returned; `loading` is for UI,
    never for coordination.
-3. **Organization** – one loader `key` per route group, scoped with `routes`,
+3. **Organization** – one loader `namespace` per route group, scoped with `routes`,
    loaded through dynamic imports.
 4. **Caching** – keep the infinite default for files that ship with the app;
    `invalidate()` for event-driven refreshes; cache the fetch, not the instance,

@@ -14,20 +14,20 @@ import { DEFAULT_LOCALE, LOCALES } from '$lib/docs.js';
 /** A string route is an exact match, so a whole section needs a pattern while
  *  the landing page is the one route that can be spelled out. */
 const NAMESPACES = [
-  { key: 'docs', routes: [/^\/docs(\/|$)/] },
-  { key: 'examples', routes: ['/examples'] },
-  { key: 'home', routes: ['/'] },
-  { key: 'playground', routes: ['/playground'] },
+  { namespace: 'docs', routes: [/^\/docs(\/|$)/] },
+  { namespace: 'examples', routes: ['/examples'] },
+  { namespace: 'home', routes: ['/'] },
+  { namespace: 'playground', routes: ['/playground'] },
 ];
 
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
   fallbackLocale: DEFAULT_LOCALE,
   translations: { en, cs, de },
-  loaders: NAMESPACES.flatMap(({ key, routes }) => LOCALES.map((locale) => ({
+  loaders: NAMESPACES.flatMap(({ namespace, routes }) => LOCALES.map((locale) => ({
     locale,
-    key,
+    namespace,
     routes,
-    loader: async () => (await import(`./${key}/${locale}.json`)).default,
+    loader: async () => (await import(`./${namespace}/${locale}.json`)).default,
   }))),
 };

@@ -12,17 +12,17 @@ import en from './en.json';
  * nothing special to do for it here.
  */
 export const NAMESPACES = [
-  { key: 'home', routes: ['/'] },
-  { key: 'guide', routes: ['/guide'] },
+  { namespace: 'home', routes: ['/'] },
+  { namespace: 'guide', routes: ['/guide'] },
 ];
 
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
   translations: { en, cs, de },
-  loaders: NAMESPACES.flatMap(({ key, routes }) => LOCALES.map((locale) => ({
+  loaders: NAMESPACES.flatMap(({ namespace, routes }) => LOCALES.map((locale) => ({
     locale,
-    key,
+    namespace,
     routes,
-    loader: async () => (await import(`./${key}/${locale}.json`)).default,
+    loader: async () => (await import(`./${namespace}/${locale}.json`)).default,
   }))),
 };

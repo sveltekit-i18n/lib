@@ -8,17 +8,17 @@ import en from './en.json';
  * one instance here would be shared by every page being prerendered.
  */
 export const NAMESPACES = [
-  { key: 'home', routes: ['/'] },
-  { key: 'about', routes: ['/about'] },
+  { namespace: 'home', routes: ['/'] },
+  { namespace: 'about', routes: ['/about'] },
 ];
 
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
   translations: { en, cs, de },
-  loaders: NAMESPACES.flatMap(({ key, routes }) => LOCALES.map((locale) => ({
+  loaders: NAMESPACES.flatMap(({ namespace, routes }) => LOCALES.map((locale) => ({
     locale,
-    key,
+    namespace,
     routes,
-    loader: async () => (await import(`./${key}/${locale}.json`)).default,
+    loader: async () => (await import(`./${namespace}/${locale}.json`)).default,
   }))),
 };

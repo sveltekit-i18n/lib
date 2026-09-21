@@ -417,7 +417,7 @@ export const load = async ({ url }) => {
 // ❌ Loader doesn't return anything
 {
   locale: 'en',
-  key: 'common',
+  namespace: 'common',
   loader: async () => {
     await import('./en/common.json');  // Missing .default and return
   },
@@ -430,7 +430,7 @@ export const load = async ({ url }) => {
 // ✅ Return the translation data
 {
   locale: 'en',
-  key: 'common',
+  namespace: 'common',
   loader: async () => (await import('./en/common.json')).default,
 }
 ```
@@ -509,12 +509,12 @@ A [`schema`](./README.md#typing-keys-and-payloads-with-schema) turns this class 
 
 #### 2. Namespace not included in key
 
-The loader `key` is the namespace every key in that file sits under.
+The loader `namespace` is what every key in that file sits under.
 
 ```javascript
 {
   locale: 'en',
-  key: 'home',  // ← Namespace
+  namespace: 'home',  // ← Namespace
   loader: async () => (await import('./en/home.json')).default,
 }
 ```
@@ -540,7 +540,7 @@ The loader `key` is the namespace every key in that file sits under.
 // home translations only load on '/'
 {
   locale: 'en',
-  key: 'home',
+  namespace: 'home',
   routes: ['/'],
   loader: async () => (await import('./en/home.json')).default,
 }
@@ -557,7 +557,7 @@ The loader `key` is the namespace every key in that file sits under.
 
 #### 4. Preprocessing
 
-A lookup is a single own-property read of the locale's table, not a walk down a path. With `preprocess: 'none'` — or a custom function that does not flatten — only the **top level** resolves, and for loaded data that top level is the loader `key`:
+A lookup is a single own-property read of the locale's table, not a walk down a path. With `preprocess: 'none'` — or a custom function that does not flatten — only the **top level** resolves, and for loaded data that top level is the loader `namespace`:
 
 ```javascript
 const config = {
@@ -656,7 +656,7 @@ A `load` function that awaits the load blocks the render until translations are 
 ```javascript
 {
   locale: 'en',
-  key: 'home',
+  namespace: 'home',
   routes: [],  // ❌ Matches nothing
   loader: async () => (await import('./en/home.json')).default,
 }
@@ -708,19 +708,19 @@ await i18n.loadTranslations(locale, pathname);
 
 #### 4. Expecting the route to re-run a loader
 
-A loader runs **once per locale per freshness window**: once its `key` is recorded as loaded, every other loader for that key is skipped — including one whose `routes` match a route you navigate to later. So `route` is context for the loader, not a cache key:
+A loader runs **once per locale per freshness window**: once its `namespace` is recorded as loaded, every other loader for that namespace is skipped — including one whose `routes` match a route you navigate to later. So `route` is context for the loader, not a cache key:
 
 ```javascript
 // ❌ One loader that tries to serve every route
 {
   locale: 'en',
-  key: 'page',
+  namespace: 'page',
   loader: async ({ route }) => (await fetch(`/api/page?route=${route}`)).json(),
 }
 
-// ✅ One loader per route group, each with its own key
-{ locale: 'en', key: 'home', routes: ['/'], loader: /* ... */ },
-{ locale: 'en', key: 'products', routes: [/^\/products/], loader: /* ... */ },
+// ✅ One loader per route group, each with its own namespace
+{ locale: 'en', namespace: 'home', routes: ['/'], loader: /* ... */ },
+{ locale: 'en', namespace: 'products', routes: [/^\/products/], loader: /* ... */ },
 ```
 
 ---
@@ -740,9 +740,9 @@ A loader runs **once per locale per freshness window**: once its `key` is record
 ```javascript
 const config = {
   loaders: [
-    { locale: 'en', key: 'common', loader: async () => (await import('./en/common.json')).default },
+    { locale: 'en', namespace: 'common', loader: async () => (await import('./en/common.json')).default },
     // ✅ add the other locales
-    { locale: 'cs', key: 'common', loader: async () => (await import('./cs/common.json')).default },
+    { locale: 'cs', namespace: 'common', loader: async () => (await import('./cs/common.json')).default },
   ],
 };
 ```
@@ -1167,12 +1167,12 @@ If the run fails with `$state is not defined`, the test runner is missing the Sv
 
 ```javascript
 // ❌ Before: everything loads always
-{ locale: 'en', key: 'everything', loader: async () => (await import('./en/everything.json')).default }
+{ locale: 'en', namespace: 'everything', loader: async () => (await import('./en/everything.json')).default }
 
 // ✅ After: split by route
-{ locale: 'en', key: 'common', loader: async () => (await import('./en/common.json')).default },
-{ locale: 'en', key: 'home', routes: ['/'], loader: async () => (await import('./en/home.json')).default },
-{ locale: 'en', key: 'products', routes: [/^\/products/], loader: async () => (await import('./en/products.json')).default },
+{ locale: 'en', namespace: 'common', loader: async () => (await import('./en/common.json')).default },
+{ locale: 'en', namespace: 'home', routes: ['/'], loader: async () => (await import('./en/home.json')).default },
+{ locale: 'en', namespace: 'products', routes: [/^\/products/], loader: async () => (await import('./en/products.json')).default },
 ```
 
 **2. Split large files:**
@@ -1197,7 +1197,7 @@ en/
 ```javascript
 {
   locale: 'en',
-  key: 'common',
+  namespace: 'common',
   loader: async () => {
     const start = performance.now();
     const data = (await import('./en/common.json')).default;
@@ -1423,7 +1423,7 @@ Yes — a loader is any async function, and it receives the load context:
 ```javascript
 {
   locale: 'en',
-  key: 'dynamic',
+  namespace: 'dynamic',
   loader: async ({ locale }) => (await fetch(`/api/translations/${locale}`)).json(),
 }
 ```
@@ -1485,15 +1485,15 @@ When an instance has a shorter life than the process that holds it: a per-reques
 
 ## Known Limitations
 
-### 1. No dots in loader keys
+### 1. No dots in loader namespaces
 
 ```javascript
 // ❌ Won't work correctly (and is reported at config time)
-{ key: 'pages.home' }
+{ namespace: 'pages.home' }
 
 // ✅
-{ key: 'pages_home' }
-{ key: 'home' }
+{ namespace: 'pages_home' }
+{ namespace: 'home' }
 ```
 
 ### 2. Translation keys are case-sensitive

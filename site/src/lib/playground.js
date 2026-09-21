@@ -37,9 +37,9 @@ export const TRANSLATIONS = `{
  * section needs a pattern.
  */
 export const LOADERS = [
-  { key: 'common', routes: undefined, shape: 'every' },
-  { key: 'home', routes: ['/'], shape: 'exact' },
-  { key: 'docs', routes: [/^\/docs(\/|$)/], shape: 'pattern' },
+  { namespace: 'common', routes: undefined, shape: 'every' },
+  { namespace: 'home', routes: ['/'], shape: 'exact' },
+  { namespace: 'docs', routes: [/^\/docs(\/|$)/], shape: 'pattern' },
 ];
 
 export const ROUTES = ['/', '/docs', '/docs/getting-started', '/about'];
@@ -47,7 +47,7 @@ export const ROUTES = ['/', '/docs', '/docs/getting-started', '/about'];
 /** The locales the loader fixtures below carry. */
 export const LOADER_LOCALES = ['en', 'cs'];
 
-/** What each loader resolves to, keyed by loader and locale. */
+/** What each loader resolves to, keyed by namespace and locale. */
 export const LOADED = {
   common: { en: { brand: 'sveltekit-i18n' }, cs: { brand: 'sveltekit-i18n' } },
   home: { en: { title: 'Home' }, cs: { title: 'Domů' } },
@@ -93,11 +93,11 @@ i18n.translations.en;`])),
   initLocale: 'en',
   loaders: [
     // No routes: every route, so it loads once and never again.
-    { locale, key: 'common', loader },
+    { locale, namespace: 'common', loader },
     // A string route is an exact match.
-    { locale, key: 'home', routes: ['/'], loader },
+    { locale, namespace: 'home', routes: ['/'], loader },
     // A whole section needs a pattern.
-    { locale, key: 'docs', routes: [/^\\/docs(\\/|$)/], loader },
+    { locale, namespace: 'docs', routes: [/^\\/docs(\\/|$)/], loader },
   ],
 });
 

@@ -50,12 +50,12 @@ export const config = {
   loaders: [
     {
       locale: 'en',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./en/common.json')).default,
     },
     {
       locale: 'cs',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./cs/common.json')).default,
     },
   ],
@@ -139,7 +139,7 @@ renders nothing until [`loadConfig()`](#loadconfigconfig) gives it one.
 
 ### `loaders`
 
-Each entry declares a `locale`, a `key` (the namespace the data is stored
+Each entry declares a `locale`, a `namespace` (the prefix the data is stored
 under — no dots) and an async `loader`. An optional `routes` array scopes it:
 a string, a `RegExp`, or anything with a `test` method, matched against the
 route path.
@@ -150,33 +150,37 @@ const config = {
     // Every page
     {
       locale: 'en',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./en/common.json')).default,
     },
     // Product pages only
     {
       locale: 'en',
-      key: 'products',
+      namespace: 'products',
       routes: [/^\/products/],
       loader: async () => (await import('./en/products.json')).default,
     },
     // The load context is passed in
     {
       locale: 'en',
-      key: 'dynamic',
+      namespace: 'dynamic',
       loader: async ({ locale }) => (await fetch(`/api/translations/${locale}`)).json(),
     },
   ],
 };
 ```
 
-A loader runs **once per locale per freshness window**: its key is recorded as
-loaded and it is skipped afterwards. So `route` is context for the loader, not
-a cache key — scope route-varying data with `routes`, one entry per route
-group, rather than reading `route` inside a global loader. A loader that throws
+A loader runs **once per locale per freshness window**: its namespace is
+recorded as loaded and it is skipped afterwards. So `route` is context for the
+loader, not a cache key — scope route-varying data with `routes`, one entry per
+route group, rather than reading `route` inside a global loader. A loader that throws
 is caught and logged individually, so one broken loader does not fail the batch.
 
-**📖 Full detail** (sharing a key, route matchers, the loader lifecycle):
+`key` is the deprecated spelling of `namespace`. It is still honored and
+reported once at `warn`; naming both is a type error. It is removed no earlier
+than 4.0.
+
+**📖 Full detail** (sharing a namespace, route matchers, the loader lifecycle):
 [base — `loaders`](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#loaders).
 
 ### `translations`
@@ -740,9 +744,9 @@ bookkeeping derived from it keeps the matching loaders from fetching the same
 data again. This is the payload the server hands the client; see
 [Server-Side Rendering](#server-side-rendering).
 
-What it leaves out: every other locale, and any key claimed *only* by loaders
-whose `routes` do not match the current route (the client loads those when it
-navigates there). A key no loader claims — one added through
+What it leaves out: every other locale, and any namespace claimed *only* by
+loaders whose `routes` do not match the current route (the client loads those
+when it navigates there). A namespace no loader claims — one added through
 `addTranslations()` — is always kept. The data is **pre-preprocess**, so the
 receiving instance applies its own `config.preprocess`, and freshness is not
 transferred: a hydrated locale's [`cache`](#cache) window starts when the client
@@ -1088,7 +1092,7 @@ const i18n = new I18n({
   initLocale: 'en',
   fallbackLocale: 'de',
   translations: { cs: { greeting: 'Ahoj' } },
-  loaders: [{ locale: 'sk', key: 'common', loader: async () => ({}) }],
+  loaders: [{ locale: 'sk', namespace: 'common', loader: async () => ({}) }],
 });
 
 i18n.locale;  // 'en' | 'de' | 'cs' | 'sk' | (string & {}) | undefined
@@ -1202,7 +1206,7 @@ export const config = {
   loaders: [
     {
       locale: 'en',
-      key: 'common',
+      namespace: 'common',
       loader: async () => (await import('./en/common.json')).default,
     },
   ],

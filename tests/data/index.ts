@@ -7,18 +7,18 @@ export const CONFIG: Config = {
   },
   loaders: [
     {
-      key: 'common',
+      namespace: 'common',
       locale: 'EN',
       loader: async () => (await import('./translations/en/common.json')).default,
     },
     {
-      key: 'route',
+      namespace: 'route',
       locale: 'EN',
       routes: ['/path'],
       loader: async () => (await import('./translations/en/route.json')).default,
     },
     {
-      key: 'common',
+      namespace: 'common',
       locale: 'zh-Hans',
       loader: async () => (await import('./translations/zh-Hans/common.json')).default,
     },
