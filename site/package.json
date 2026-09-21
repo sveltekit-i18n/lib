@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "pretest": "pnpm --filter sveltekit-i18n run build",
+    "test": "vitest run"
   },
   "dependencies": {
     "sveltekit-i18n": "workspace:*",
@@ -22,6 +24,7 @@
     "marked": "^18.0.13",
     "shiki": "^4.4.3",
     "svelte": "^5.56.9",
-    "vite": "^8.2.1"
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
   }
 }
