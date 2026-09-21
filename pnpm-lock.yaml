@@ -287,6 +287,9 @@ importers:
       '@sveltekit-i18n/parser-mf2':
         specifier: 3.0.0
         version: 3.0.0(@sveltekit-i18n/base@3.0.0(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
+      messageformat:
+        specifier: ^4.0.0
+        version: 4.0.0
       sveltekit-i18n:
         specifier: workspace:*
         version: link:..

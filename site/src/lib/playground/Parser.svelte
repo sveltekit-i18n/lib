@@ -21,20 +21,21 @@
   let payload = $state(PAYLOAD);
   let locale = $state('en');
 
-  // Each alternative brings its own engine, which nothing else on this site
-  // needs, so a parser arrives only once a visitor asks for that flavour.
+  // Each alternative brings its own engine and its own drawing, which nothing
+  // else on this site needs, so a flavour arrives only once a visitor asks for
+  // it.
   const LOADERS = {
-    icu: () => import('@sveltekit-i18n/parser-icu'),
-    mf2: () => import('@sveltekit-i18n/parser-mf2'),
-    i18next: () => import('@sveltekit-i18n/parser-i18next'),
+    icu: () => import('./flavours/icu.js'),
+    mf2: () => import('./flavours/mf2.js'),
+    i18next: () => import('./flavours/i18next.js'),
   };
 
-  let parsers = $state({});
+  let flavours = $state({});
 
   $effect(() => {
-    if (flavour === 'curly' || parsers[flavour]) return;
+    if (flavour === 'curly' || flavours[flavour]) return;
 
-    LOADERS[flavour]().then((module) => { parsers = { ...parsers, [flavour]: module.default }; });
+    LOADERS[flavour]().then((module) => { flavours = { ...flavours, [flavour]: module }; });
   });
 
   const choose = (next) => {
@@ -42,16 +43,15 @@
     message = MESSAGES[next];
   };
 
-  // Only Curly is described here: the alternatives are engines this site wraps,
-  // and a drawing that is not the format's own would show what the message does
-  // not do.
-  const describe = $derived(flavour === 'curly' ? highlightCurly : highlightPlain);
+  // A message is drawn by the reading its own format gives it, and stands as
+  // plain text for the moment before that format has arrived.
+  const describe = $derived(flavour === 'curly' ? highlightCurly : (flavours[flavour]?.highlight ?? highlightPlain));
 
   const result = $derived.by(() => {
     const { value, error } = parsePayload(payload);
 
     if (error) return { error };
-    if (flavour !== 'curly' && !parsers[flavour]) return {};
+    if (flavour !== 'curly' && !flavours[flavour]) return {};
 
     const reports = [];
     const onReport = (report) => reports.push(report);
@@ -59,7 +59,7 @@
 
     const instance = flavour === 'curly'
       ? new I18n({ initLocale: locale, translations, parserOptions: { onReport } })
-      : new Core({ initLocale: locale, translations, parser: parsers[flavour]({ onReport }) });
+      : new Core({ initLocale: locale, translations, parser: flavours[flavour].parser({ onReport }) });
 
     return { text: instance.t(KEY, value), reports };
   });

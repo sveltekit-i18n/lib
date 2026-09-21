@@ -6,7 +6,13 @@
 
 import { cst } from 'sveltekit-i18n';
 
-/** GitHub's theme, light then dark, as Shiki emits it. */
+/**
+ * GitHub's theme, light then dark, as Shiki emits it, and what each colour is
+ * for across the formats drawn here: `key` is the value being substituted,
+ * `modifier` the function that formats it, `option` whatever configures or
+ * selects, `string` a run the format quotes, `escape` an escape sequence, and
+ * `punctuation` the braces, separators and sigils that hold a message together.
+ */
 const PALETTE = {
   plain: ['#24292E', '#E1E4E8'],
   // Property names and literals share one blue in that theme.
@@ -48,6 +54,18 @@ const draw = (pieces) => {
   return lines.map((runs) => `<span class="line">${runs.map(span).join('')}</span>`).join('\n');
 };
 
+/**
+ * A drawing built by painting over the text: a painter fills one kind per code
+ * unit, which is the unit every format here counts a span in.
+ */
+export const drawSpans = (text, painter) => {
+  const kinds = new Array(text.length).fill('plain');
+
+  painter(text, kinds);
+
+  return draw(text.split('').map((unit, index) => ({ kind: kinds[index], text: unit })));
+};
+
 const TOKEN = /("(?:[^"\\]|\\.)*")(?=\s*:)|("(?:[^"\\]|\\.)*")|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?|\btrue\b|\bfalse\b|\bnull\b)|([\s\S])/g;
 
 // Anything outside a string or a literal is punctuation and whitespace, which
@@ -83,14 +101,7 @@ const paint = (node, kinds) => {
   node.nodes?.forEach((child) => paint(child, kinds));
 };
 
-// The spans are in UTF-16 code units, so the text is cut the same way.
-const curly = (text) => {
-  const kinds = new Array(text.length).fill('plain');
-
-  paint(cst(text), kinds);
-
-  return text.split('').map((unit, index) => ({ kind: kinds[index], text: unit }));
-};
+const curly = (text, kinds) => paint(cst(text), kinds);
 
 /**
  * The drawings for text a visitor is still typing, which need not parse. Each
@@ -98,7 +109,7 @@ const curly = (text) => {
  */
 export const highlightJsonText = (text) => draw(json(text));
 
-export const highlightCurly = (text) => draw(curly(text));
+export const highlightCurly = (text) => drawSpans(text, curly);
 
 export const highlightPlain = (text) => draw([{ kind: 'plain', text }]);
 
