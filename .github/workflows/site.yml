@@ -7,6 +7,8 @@ on:
     paths:
       - 'docs/**'
       - 'site/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
       - '.github/workflows/site.yml'
   push:
     branches:
@@ -14,6 +16,8 @@ on:
     paths:
       - 'docs/**'
       - 'site/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
       - '.github/workflows/site.yml'
 
 jobs:
