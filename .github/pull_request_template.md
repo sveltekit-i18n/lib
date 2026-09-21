@@ -21,9 +21,9 @@ Relates to #
 
 Before submitting this PR, please ensure:
 
-- [ ] **Tests pass locally** (`npm test`)
-- [ ] **Linter passes** (`npm run lint`)
-- [ ] **Build succeeds** (`npm run build`)
+- [ ] **Tests pass locally** (`pnpm test`)
+- [ ] **Linter passes** (`pnpm lint`)
+- [ ] **Build succeeds** (`pnpm build`)
 - [ ] **All commits are atomic** (each commit works independently)
 - [ ] **Commits have clear messages** (imperative mood, descriptive)
 - [ ] **Branch rebased on latest master** (`git rebase origin/master`)
