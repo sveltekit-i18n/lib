@@ -15,8 +15,9 @@
 
   // Internal links carry the current locale, and the default one is the bare
   // URL rather than ?lang=en — the same page should not have two addresses.
-  const href = (pathname, locale = data.locale) =>
-    (locale === DEFAULT_LOCALE ? pathname : `${pathname}?lang=${locale}`);
+  const href = (pathname, locale = data.locale) => {
+    return locale === DEFAULT_LOCALE ? pathname : `${pathname}?lang=${locale}`;
+  };
 </script>
 
 <header>
