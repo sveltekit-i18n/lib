@@ -479,9 +479,15 @@ let client;
 export const load = async ({ data, url }) => {
   // `data` is null when no route matched: the error page renders through this
   // load too, and on a static host that is every unknown URL.
-  const i18n = client ?? new I18n({ ...config, translations: data?.translations });
+  let i18n = client;
 
-  if (browser) client = i18n;
+  if (!i18n) {
+    i18n = new I18n(config);
+
+    i18n.addTranslations(data?.translations);
+
+    if (browser) client = i18n;
+  }
 
   await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
@@ -502,10 +508,12 @@ for every request.
 
 `snapshot()` serializes the **active locale** and the **`fallbackLocale`**,
 narrowed to the current route, in the pre-preprocess shape. The receiving
-instance hands it to `config.translations`, which both fills its tables and
+instance applies it with `addTranslations()`, which both fills its tables and
 records those keys as loaded — so the same data is not fetched twice. What the
 payload leaves out is deliberate: other locales, and keys claimed only by
-loaders whose routes do not match. Freshness is not transferred either; a
+loaders whose routes do not match. That is why it is applied on top of the
+config rather than assigned to `config.translations`: assigned, it would drop
+the config's own data for everything it leaves out. Freshness is not transferred either; a
 hydrated locale's cache window starts when the client receives the data.
 
 ### `destroy()`

@@ -213,12 +213,15 @@ let client;
 export const load = async ({ data, url }) => {
   // `data` is null when no route matched: the error page renders through this
   // load too, and on a static host that is every unknown URL.
-  const i18n = client ?? new I18n({
-    ...config,
-    translations: { ...config.translations, ...data?.translations },
-  });
+  let i18n = client;
 
-  if (browser) client = i18n;
+  if (!i18n) {
+    i18n = new I18n(config);
+
+    i18n.addTranslations(data?.translations);
+
+    if (browser) client = i18n;
+  }
 
   await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
@@ -246,15 +249,19 @@ nothing can share it between visitors.
 
 `snapshot()` serializes what the instance holds for the **active locale** and
 the **`fallbackLocale`**, narrowed to the current route. It is shaped like
-`config.translations`, so the client hydrates by handing it straight back to a
-constructor and the loaders behind it do not run again.
+`config.translations`, so the client hydrates by passing it to
+`addTranslations()` and the loaders behind it do not run again. The payload is
+applied **on top of** the config rather than assigned to `config.translations`,
+because it is a subset of what the server held:
 
-- **Other locales are left out.** Spreading `config.translations` underneath the
-  snapshot (as above) keeps the immediately-available strings for the languages
-  the visitor is *not* using — the language names a switcher renders.
+- **Other locales are left out.** Applying the snapshot to an instance built
+  from the config (as above) keeps the immediately-available strings for the
+  languages the visitor is *not* using — the language names a switcher renders.
 - **Off-route keys are left out.** A key claimed only by loaders whose `routes`
   do not match is fetched when the visitor navigates there. A key no loader
-  claims (added through `addTranslations`) is always kept.
+  claims (added through `addTranslations`) is always kept. A key some loader
+  claims is dropped whole, including whatever `config.translations` contributed
+  to it — which is why assigning the payload to the config would lose data.
 - **The data is pre-preprocess**, so the receiving instance applies its own
   `config.preprocess`.
 - **Freshness is not transferred.** A hydrated locale's [`cache`](#caching)

@@ -200,7 +200,7 @@ await i18n.loadConfig(config);
 
 **Cause:**
 
-The SSR payload is produced by [`snapshot()`](./README.md#snapshot) on the instance, and consumed through `config.translations` on the receiving side.
+The SSR payload is produced by [`snapshot()`](./README.md#snapshot) on the instance, and applied with `addTranslations()` on the receiving side.
 
 **Solution:**
 
@@ -208,11 +208,13 @@ The SSR payload is produced by [`snapshot()`](./README.md#snapshot) on the insta
 // server: serialize what this request loaded
 return { locale, translations: i18n.snapshot() };
 
-// client: hand it back through the config
-const i18n = new I18n({ ...config, translations: data?.translations });
+// client: apply it on top of the config
+const i18n = new I18n(config);
+
+i18n.addTranslations(data?.translations);
 ```
 
-`snapshot()` serializes the active locale and the `fallbackLocale`, narrowed to the current route, and its keys count as loaded on the receiving instance, so the loaders behind them do not refetch. Build the server-side instance **per request** — see [A Visitor Sees Another Visitor's Language](#a-visitor-sees-another-visitors-language) — and read the four-step wiring in [Server-Side Rendering](./README.md#server-side-rendering).
+`snapshot()` serializes the active locale and the `fallbackLocale`, narrowed to the current route, and its keys count as loaded on the receiving instance, so the loaders behind them do not refetch. Apply it rather than assigning it to `config.translations`: it is a subset of what the server held, so assigning it would drop the config's own data for everything it leaves out. Build the server-side instance **per request** — see [A Visitor Sees Another Visitor's Language](#a-visitor-sees-another-visitors-language) — and read the four-step wiring in [Server-Side Rendering](./README.md#server-side-rendering).
 
 ---
 
@@ -871,9 +873,15 @@ let client;
 export const load = async ({ data, url }) => {
   // `data` is null when no route matched: the error page renders through this
   // load too, and on a static host that is every unknown URL.
-  const i18n = client ?? new I18n({ ...config, translations: data?.translations });
+  let i18n = client;
 
-  if (browser) client = i18n;
+  if (!i18n) {
+    i18n = new I18n(config);
+
+    i18n.addTranslations(data?.translations);
+
+    if (browser) client = i18n;
+  }
 
   await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
@@ -908,12 +916,15 @@ Read the server payload optionally and fall back for the locale:
 export const load = async ({ data, url }) => {
   // `data` is null when no route matched: the error page renders through this
   // load too, and on a static host that is every unknown URL.
-  const i18n = client ?? new I18n({
-    ...config,
-    translations: { ...config.translations, ...data?.translations },
-  });
+  let i18n = client;
 
-  if (browser) client = i18n;
+  if (!i18n) {
+    i18n = new I18n(config);
+
+    i18n.addTranslations(data?.translations);
+
+    if (browser) client = i18n;
+  }
 
   await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
@@ -1209,7 +1220,7 @@ en/
 }
 ```
 
-**5. Hydrate instead of refetching.** `snapshot()` on the server plus `config.translations` on the client keeps the browser from fetching what the server already had — the keys arriving that way count as loaded.
+**5. Hydrate instead of refetching.** `snapshot()` on the server plus `addTranslations()` on the client keeps the browser from fetching what the server already had — the keys arriving that way count as loaded.
 
 #### Growing memory on the server
 

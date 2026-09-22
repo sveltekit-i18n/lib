@@ -735,9 +735,9 @@ trigger starts a fresh fetch instead of joining it.
 Serializes what the instance holds for the **active locale** and the
 **`fallbackLocale`**, narrowed to the current route. The result is shaped like
 [`translations`](#translations--rawtranslations), so a receiving instance
-hydrates by handing it straight to [`config.translations`](#translations) — the
-bookkeeping derived from it keeps the matching loaders from fetching the same
-data again. This is the payload the server hands the client; see
+hydrates by passing it to [`addTranslations()`](#addtranslationstranslations) —
+the bookkeeping derived from it keeps the matching loaders from fetching the
+same data again. This is the payload the server hands the client; see
 [Server-Side Rendering](#server-side-rendering).
 
 What it leaves out: every other locale, and any key claimed *only* by loaders
@@ -1244,12 +1244,15 @@ let client;
 export const load = async ({ data, url }) => {
   // `data` is null when no route matched: the error page renders through this
   // load too, and on a static host that is every unknown URL.
-  const i18n = client ?? new I18n({
-    ...config,
-    translations: { ...config.translations, ...data?.translations },
-  });
+  let i18n = client;
 
-  if (browser) client = i18n;
+  if (!i18n) {
+    i18n = new I18n(config);
+
+    i18n.addTranslations(data?.translations);
+
+    if (browser) client = i18n;
+  }
 
   await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
@@ -1263,11 +1266,14 @@ not run a second time; only what the snapshot left out — the route-scoped
 translations of pages the visitor has not opened — is fetched. Every later
 client-side navigation reuses the same instance, so its cache survives.
 
-The snapshot is merged **over** the config's own `translations` rather than
-replacing them, because it carries only the active locale and the fallback.
-Overwriting the slot would drop every other locale's inline entries — the
-language names a switcher renders in each language, typically — and those have
-no loader to fetch them back.
+The snapshot is **applied on top of** the config rather than assigned to
+`config.translations`, because it is a subset of what the server held. It
+carries only the active locale and the fallback, so assigning it would drop
+every other locale's inline entries — the language names a switcher renders in
+each language, typically — and those have no loader to fetch them back. It also
+leaves out a key claimed only by another route's loaders, whole, including
+whatever the config contributed to it, so even merging it into
+`config.translations` loses that part.
 
 ### 4. Pass it down through context
 
@@ -1356,7 +1362,7 @@ a migration:
 | `export const { t, locale } = new i18n(config)` | `export const i18n = new I18n(config)`; destructure through `$derived(i18n)` inside a component |
 | `locale.set('cs')`, `locale.subscribe(…)` | `await i18n.setLocale('cs')`, or `i18n.locale = 'cs'` fire-and-forget |
 | `await loading.toPromise()` | `await i18n.loadTranslations(locale, route)` — the load method returns the promise of the matching load |
-| `getTranslationProps()` on the server | `i18n.snapshot()` on a per-request instance, handed back through `config.translations` |
+| `getTranslationProps()` on the server | `i18n.snapshot()` on a per-request instance, applied on the client with `addTranslations()` |
 | `parserOptions` for `@sveltekit-i18n/parser-default` | `parserOptions` for `parser-curly`, built in; per-call props are keyed by modifier name (`{ number: { … } }`) |
 | Stores anywhere (`import { get } from 'svelte/store'`) | plain reads; add [`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores) to `config.extensions` for the `$t` form |
 | `new i18n<Parser.Params<Payload>>(config)` | `new I18n<Config<Payload>, Payload>(config)`, or `config.schema` for per-key payloads |

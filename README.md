@@ -239,8 +239,8 @@ export const load = async ({ url, locals }) => {
 };
 ```
 
-The client hydrates by handing that payload back through
-`config.translations`, so the loaders behind it do not run a second time. The
+The client hydrates by applying that payload with `addTranslations()`, so the
+loaders behind it do not run a second time. The
 full wiring — including the browser-side instance and passing it down through
 Svelte context — is in the
 [Getting Started guide](./docs/GETTING_STARTED.md).

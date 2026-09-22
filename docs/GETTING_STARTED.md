@@ -237,8 +237,8 @@ export const load = async ({ url, locals }) => {
 
 `snapshot()` serializes what the instance holds for the **active locale** and
 the **`fallbackLocale`**, narrowed to the current route. It is shaped like
-`config.translations`, so the client hydrates by handing it straight back to a
-constructor.
+`config.translations`, so the client hydrates by passing it to
+`addTranslations()`.
 
 An instance that outlives its work should be released with `destroy()`; after an
 awaited `loadTranslations` this one has nothing left in flight, so the `load`
@@ -260,12 +260,15 @@ let client;
 export const load = async ({ data, url }) => {
   // `data` is null when no route matched: the error page renders through this
   // load too, and on a static host that is every unknown URL.
-  const i18n = client ?? new I18n({
-    ...config,
-    translations: { ...config.translations, ...data?.translations },
-  });
+  let i18n = client;
 
-  if (browser) client = i18n;
+  if (!i18n) {
+    i18n = new I18n(config);
+
+    i18n.addTranslations(data?.translations);
+
+    if (browser) client = i18n;
+  }
 
   await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
 
@@ -279,9 +282,12 @@ not run a second time; only what the snapshot left out — the namespaces of pag
 the visitor has not opened yet — is fetched. Every later client-side navigation
 reuses the same instance, so its cache survives.
 
-The snapshot covers the active locale and the fallback, so the config's own
-`translations` are merged underneath it: that keeps the language names of the
-locales the visitor is *not* using, which the switcher renders.
+The payload is **applied on top of** the config rather than assigned to
+`config.translations`: it covers only the active locale and the fallback, and
+leaves out a namespace claimed only by another route's loaders — including what
+the config contributed to it. Applied, it keeps the config's own translations,
+such as the language names of the locales the visitor is *not* using, which the
+switcher renders.
 
 ### Step 6: Pass it down through context
 
