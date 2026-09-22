@@ -12,14 +12,19 @@ let client;
 export const load = async ({ data, url }) => {
   // `data` is null when no route matched: the error page renders through this
   // load too.
-  const i18n = client ?? new I18n({
-    ...config,
-    // The server's snapshot arrives as ordinary translations, so the loaders
-    // behind it do not run a second time in the browser.
-    translations: { ...config.translations, ...data?.translations },
-  });
+  let i18n = client;
 
-  if (browser) client = i18n;
+  if (!i18n) {
+    i18n = new I18n(config);
+
+    // The server's snapshot arrives as ordinary translations, so the loaders
+    // behind it do not run a second time in the browser. It is applied on top
+    // of the config rather than assigned to it: the payload is a subset of
+    // what the server held, so the config's own translations survive.
+    i18n.addTranslations(data?.translations);
+
+    if (browser) client = i18n;
+  }
 
   // The instance owns the locale once it exists: the server negotiates the
   // first request and nothing after it, so a cookie that never persisted —
