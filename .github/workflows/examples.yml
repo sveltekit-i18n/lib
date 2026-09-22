@@ -9,6 +9,7 @@ on:
       - 'src/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'eslint.config.js'
       - '.github/workflows/examples.yml'
   push:
     branches:
@@ -18,6 +19,7 @@ on:
       - 'src/**'
       - 'package.json'
       - 'pnpm-lock.yaml'
+      - 'eslint.config.js'
       - '.github/workflows/examples.yml'
 
 jobs:
@@ -40,6 +42,11 @@ jobs:
 
       - name: Install Dependencies
         run: pnpm install
+
+      # `eslint` rather than the package's `lint`, which fixes in place: a job
+      # that rewrites files and passes proves nothing.
+      - name: Lint Examples
+        run: pnpm exec eslint examples
 
       # The examples import the package through its exports map, which points
       # at `dist/`; without a fresh build they would build against a stale one.

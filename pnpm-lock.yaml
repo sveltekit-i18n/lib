@@ -37,6 +37,9 @@ importers:
       eslint-plugin-import-x:
         specifier: ^4.17.1
         version: 4.17.1(@typescript-eslint/utils@8.70.0(eslint@10.10.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10)(eslint@10.10.0)
+      eslint-plugin-svelte:
+        specifier: ^3.23.0
+        version: 3.23.0(eslint@10.10.0)(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       globals:
         specifier: ^17.11.0
         version: 17.12.0

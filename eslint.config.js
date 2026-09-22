@@ -1,15 +1,18 @@
 import js from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
 import { importX } from 'eslint-plugin-import-x';
+import svelte from 'eslint-plugin-svelte';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
-  // Build outputs, plus `examples/` and `site/` — each is a standalone
-  // SvelteKit project with its own toolchain, outside this config's program.
-  { ignores: ['**/dist/', '**/lib/', 'examples/', 'site/'] },
+  // Build outputs, plus `site/` — a standalone SvelteKit project with its own
+  // toolchain and its own ESLint config.
+  { ignores: ['**/dist/', '/lib/', '**/build/', '**/.svelte-kit/', 'site/'] },
   js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
+  // Self-scoped to `**/*.svelte`, which only the examples carry here.
+  ...svelte.configs.recommended,
   {
     languageOptions: {
       parserOptions: {
@@ -57,6 +60,35 @@ export default tseslint.config(
       '@stylistic/object-curly-spacing': ['error', 'always'],
       '@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
       '@stylistic/semi': ['error', 'always'],
+    },
+  },
+  {
+    // The examples are standalone SvelteKit apps, each with its own toolchain
+    // and its own dependencies, so they are linted for the shared formatting
+    // contract alone: untyped, and without the dependency rule the root
+    // package's own source is held to.
+    files: ['examples/**'],
+    extends: [tseslint.configs.disableTypeChecked],
+    languageOptions: {
+      globals: { ...globals.browser, ...globals.node },
+    },
+    rules: {
+      'import-x/no-extraneous-dependencies': 'off',
+    },
+  },
+  {
+    files: ['**/*.svelte'],
+    rules: {
+      // The core rule reads a component's script as if it began at column 0, so
+      // it sees neither a top-level statement's indentation nor the markup. The
+      // Svelte one carries the same two spaces over both.
+      '@stylistic/indent': 'off',
+      'svelte/indent': ['error', { indent: 2 }],
+
+      // No example sets `paths.base`, and none is type-checked, so `resolve()`
+      // would hand back the href it was given — at the price of an import in
+      // every link of code whose subject is translation, not routing.
+      'svelte/no-navigation-without-resolve': 'off',
     },
   },
   {
