@@ -10,7 +10,7 @@ preference. If your own memory conflicts with this file, follow this file.
 This repo follows the same working rules as
 [`base`'s AGENTS.md](https://github.com/sveltekit-i18n/base/blob/master/AGENTS.md)
 (sections 1-14: think before coding, simplicity first, surgical changes,
-verify before committing, commit on approval, fixup hygiene, branch & push
+verify and review cycle, commit on approval, fixup hygiene, branch & push
 discipline, PRs, docs track code, coding conventions, security posture,
 English-only artifacts, test rules, terse output, no emojis). What follows is
 only what differs here.
