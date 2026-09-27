@@ -9,7 +9,7 @@
     },
     "ssr": {
       "title": "Complete on the first render",
-      "text": "initLocale settles the locale synchronously and the snapshot's keys count as loaded, so no loader runs to produce the first paint."
+      "text": "hydrate() makes the snapshot's locale active at once and its records mark the loaders as run, so no loader runs to produce the first paint."
     },
     "reactive": {
       "title": "Still reactive",

@@ -13,7 +13,7 @@ describe('instance', () => {
     [
       'loading', 'initialized', 'locale', 'locales', 'translations', 'rawTranslations',
       't', 'l', 'loadConfig', 'loadTranslations', 'addTranslations', 'setLocale',
-      'setRoute', 'invalidate', 'snapshot', 'destroy',
+      'setRoute', 'loadNamespace', 'invalidate', 'snapshot', 'hydrate', 'destroy',
     ].forEach((member) => expect(instance).toHaveProperty(member));
   });
 

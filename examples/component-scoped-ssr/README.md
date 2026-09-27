@@ -12,21 +12,23 @@ the browser tab, with nothing installed locally.
 |---|---|
 | [`src/lib/rates/translations.js`](./src/lib/rates/translations.js) | exports `snapshot(locale)` — the component's stand-in for a `load` |
 | [`src/routes/+page.server.js`](./src/routes/+page.server.js) | the page calls it and passes the payload down as a prop |
-| [`src/lib/rates/Rates.svelte`](./src/lib/rates/Rates.svelte) | seeds its instance from that payload, then stays reactive |
+| [`src/lib/rates/Rates.svelte`](./src/lib/rates/Rates.svelte) | hydrates its instance from that payload, then stays reactive |
 
 ## Why the first render is complete
 
 A component cannot load anything on the server by itself, so the page does it.
-The payload is an ordinary `snapshot()`, and the component hands it straight to
-its own instance:
+The payload is a `snapshot({ records: true })`, and the component hands it
+straight to its own instance:
 
 ```javascript
-const i18n = new I18n({ ...config, initLocale: locale, translations });
+const i18n = new I18n(config);
+
+i18n.hydrate(snapshot);
 ```
 
-`initLocale` settles the locale synchronously, and the snapshot's keys count as
-loaded, so nothing has to resolve before the first paint — and no loader refetches
-what the server already produced.
+`hydrate()` makes the snapshot's locale active at once, and its records mark the
+loaders that delivered it as run, so nothing has to resolve before the first
+paint — and no loader refetches what the server already produced.
 
 After that an effect keeps it in step with the application's locale, so
 switching the language in the browser loads the component's own lexicon for the

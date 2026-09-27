@@ -17,11 +17,11 @@ export const load = async ({ data, url }) => {
   if (!i18n) {
     i18n = new I18n(config);
 
-    // The server's snapshot arrives as ordinary translations, so the loaders
-    // behind it do not run a second time in the browser. It is applied on top
-    // of the config rather than assigned to it: the payload is a subset of
-    // what the server held, so the config's own translations survive.
-    i18n.addTranslations(data?.translations);
+    // The server's snapshot is handed over rather than seeded: `hydrate()`
+    // records the namespaces it names, so the loaders behind it do not run a
+    // second time in the browser. It lands on top of the config's own
+    // translations, which the payload, a subset of the server's, leaves alone.
+    if (data) i18n.hydrate({ translations: data.translations });
 
     if (browser) client = i18n;
   }

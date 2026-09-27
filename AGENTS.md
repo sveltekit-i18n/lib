@@ -38,6 +38,14 @@ issue tracker, docs, and examples for the whole family
   package moves on its own from there, so read a version off npm rather than
   off this file. The pins on `base` and `parser-curly` are exact and stay that
   way.
+- **3.1 is on `next`.** The package pins base's `3.1.0-next` line and publishes
+  its own `3.1.0-next.N`; `latest` stays 3.0.0 until the stable release. The
+  site deploys from `master` on every push (`site.yml`), so the docs, `site/`
+  and the examples' move onto 3.1's recipes wait for that release: until then
+  the docs describe what `npm install sveltekit-i18n` installs. The site and
+  the examples run the workspace package, so each change of behaviour the core
+  brings lands in them with the bump that carries it. The examples' range is
+  `^3.1.0-0`, which links the workspace package at its `3.1.0-0` seed.
 - **`examples/` is on v3** — eight standalone applications, each with a real
   adapter and route tree and a shared design, pinning the published package so
   a copied-out directory installs on its own. `.github/workflows/examples.yml`
@@ -96,6 +104,10 @@ issue tracker, docs, and examples for the whole family
 - Vitest needs `@sveltejs/vite-plugin-svelte` **and** base inlined
   (`test.server.deps.inline`): base ships its rune modules uncompiled for the
   consumer's bundler, and an externalized dependency never reaches the plugin.
+  Every spec runs in two projects, as base's do: `server` compiles the rune
+  modules for the server, `client` for the browser and resolves with the
+  `browser` condition, which also picks the browser half of base's `#kit-*`
+  imports.
 
 ## Comments
 

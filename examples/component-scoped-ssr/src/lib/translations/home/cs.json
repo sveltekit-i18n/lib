@@ -9,7 +9,7 @@
     },
     "ssr": {
       "title": "Kompletní hned napoprvé",
-      "text": "initLocale nastaví jazyk synchronně a klíče ze snapshotu se počítají jako načtené, takže první vykreslení nepotřebuje žádný loader."
+      "text": "hydrate() hned aktivuje jazyk ze snapshotu a jeho záznamy označí loadery jako proběhlé, takže první vykreslení nepotřebuje žádný loader."
     },
     "reactive": {
       "title": "A pořád reaktivní",

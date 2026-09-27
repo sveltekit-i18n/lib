@@ -2,7 +2,7 @@ import { createRequire } from 'node:module';
 import { describe, expect, it } from 'vitest';
 import ts from 'typescript';
 import { cst, extractParamsFactory } from '../../src';
-import { sanitizeLocales, toDotNotation } from '../../src/utils';
+import { matchLocale, resolveLoaders, sanitizeLocales, textDirection, toDotNotation } from '../../src/utils';
 
 const require = createRequire(import.meta.url);
 
@@ -74,6 +74,10 @@ describe('re-export surface', () => {
   it('serves the helpers the `utils` subpath re-exports', () => {
     expect(toDotNotation({ user: { name: 'Name' } })).toEqual({ 'user.name': 'Name' });
     expect(sanitizeLocales('en-us', null)).toEqual(['en-US']);
+    expect(matchLocale('en-GB', ['cs', 'en'])).toBe('en');
+    expect(textDirection('ar')).toBe('rtl');
+    expect(resolveLoaders([{ namespace: 'common', locale: ['en', 'cs'], loader: () => Promise.resolve({}) }]).map(({ locale }) => locale))
+      .toEqual(['en', 'cs']);
   });
 
   // The parser's build-time half. A generator filling `config.schema` needs it

@@ -93,5 +93,7 @@ jobs:
           check multi-page de /about 'Diese Seite hat ihren eigenen Namensraum'
           check locale-param en '/?lang=cs' 'Jazyk je parametr v query'
           check component-scoped-csr en / 'A component with its own lexicon'
-          check component-scoped-ssr en / 'Shipping rates'
-          check component-scoped-ssr cs / 'Ceny dopravy'
+          # The rendered plural, not the title: the serialized payload carries
+          # the title even when the block renders nothing.
+          check component-scoped-ssr en / '4 days'
+          check component-scoped-ssr cs / '4 dny'
