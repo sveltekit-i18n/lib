@@ -68,7 +68,7 @@ importers:
   examples/component-scoped-csr:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.0.0
+        specifier: ^3.1.0-0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -94,7 +94,7 @@ importers:
   examples/component-scoped-ssr:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.0.0
+        specifier: ^3.1.0-0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -120,7 +120,7 @@ importers:
   examples/locale-param:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.0.0
+        specifier: ^3.1.0-0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -146,7 +146,7 @@ importers:
   examples/locale-router:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.0.0
+        specifier: ^3.1.0-0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -172,7 +172,7 @@ importers:
   examples/locale-router-advanced:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.0.0
+        specifier: ^3.1.0-0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-static':
@@ -198,7 +198,7 @@ importers:
   examples/locale-router-static:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.0.0
+        specifier: ^3.1.0-0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-static':
@@ -224,7 +224,7 @@ importers:
   examples/mdsvex:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.0.0
+        specifier: ^3.1.0-0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-static':
@@ -253,7 +253,7 @@ importers:
   examples/multi-page:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.0.0
+        specifier: ^3.1.0-0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
