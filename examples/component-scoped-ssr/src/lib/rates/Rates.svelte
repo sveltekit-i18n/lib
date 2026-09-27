@@ -3,12 +3,14 @@
 
   import { config } from './translations.js';
 
-  let { locale, translations } = $props();
+  let { locale, snapshot } = $props();
 
-  // Seeded with the payload the page's `load` produced: `initLocale` settles
-  // the locale synchronously and the snapshot's keys count as loaded, so the
-  // first render is complete and no loader runs to produce it.
-  const i18n = new I18n({ ...config, initLocale: locale, translations });
+  // Hydrated with the payload the page's `load` produced: the snapshot's locale
+  // is active at once and its records mark its loaders as run, so the first
+  // render is complete and no loader runs to produce it.
+  const i18n = new I18n(config);
+
+  i18n.hydrate(snapshot);
 
   const ROWS = [
     { key: 'standard', days: 4 },

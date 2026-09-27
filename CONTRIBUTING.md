@@ -252,7 +252,7 @@ A fix for either of those belongs in that repository, together with its test.
 - A real instance is cheap. Inline `config.translations` need no loader, so there is nothing to await and nothing to mock
 - Where a test does need a load, await the method that started it – never a wall-clock sleep. The CI matrix has six legs and timing-based tests flake on the slow ones
 
-The test setup needs `@sveltejs/vite-plugin-svelte` **and** the core inlined (`test.server.deps.inline` in `vitest.config.ts`): the core ships its rune modules uncompiled for the consumer's bundler, and an externalized dependency never reaches the plugin.
+The test setup needs `@sveltejs/vite-plugin-svelte` **and** the core inlined (`test.server.deps.inline` in `vitest.config.ts`): the core ships its rune modules uncompiled for the consumer's bundler, and an externalized dependency never reaches the plugin. Every spec runs twice, as the `server` and the `client` project: the core compiled for the server, and compiled for the browser and resolved with the `browser` condition, where `svelte` is the runtime that runs effects.
 
 ### Test Structure
 

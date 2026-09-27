@@ -9,7 +9,7 @@
     },
     "ssr": {
       "title": "Beim ersten Rendern vollständig",
-      "text": "initLocale setzt die Sprache synchron und die Schlüssel des Snapshots gelten als geladen, sodass für den ersten Aufbau kein Loader läuft."
+      "text": "hydrate() aktiviert die Sprache des Snapshots sofort, und seine Einträge markieren die Loader als gelaufen, sodass für den ersten Aufbau kein Loader läuft."
     },
     "reactive": {
       "title": "Trotzdem reaktiv",

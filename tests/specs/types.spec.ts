@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import i18n from '../../src';
 
-import type { Config, Extension } from '../../src';
+import type { Config, Extension, Schema } from '../../src';
 
 const TRANSLATIONS = { en: { greeting: 'Hi {{name}}!' }, cs: { greeting: 'Ahoj {{name}}!' } };
 
@@ -65,6 +65,21 @@ describe('schema typing', () => {
 
       // @ts-expect-error - the schema requires `name`
       return instance.t('greeting', {});
+    });
+  });
+
+  // A helper typed against the instance rather than the config: the schema
+  // reads back off this package's instance as it does off the core's.
+  it('reads the schema back off an instance', () => {
+    compiles(() => {
+      const instance = new i18n({ schema: {} as { greeting: { name: string } } });
+
+      const schema: Schema.FromInstance<typeof instance> = { greeting: { name: 'Jarda' } };
+
+      // @ts-expect-error - the schema carries no such key
+      const wrong: Schema.FromInstance<typeof instance> = { nosuch: {} };
+
+      return [instance, schema, wrong];
     });
   });
 });

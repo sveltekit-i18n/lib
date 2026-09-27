@@ -20,11 +20,13 @@ export const config = {
  * A component has no `load` of its own, so it exports this instead and the
  * parent page calls it. A throwaway instance per request, the same way the
  * application builds one — the result is the payload the component is handed.
+ * The records name the loaders that delivered it, so the component's instance
+ * does not run them again.
  */
 export const snapshot = async (locale) => {
   const i18n = new I18n(config);
 
   await i18n.loadTranslations(locale);
 
-  return i18n.snapshot();
+  return i18n.snapshot({ records: true });
 };

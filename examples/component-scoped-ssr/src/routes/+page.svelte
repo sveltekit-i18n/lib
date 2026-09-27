@@ -29,4 +29,4 @@
   {/each}
 </ul>
 
-<Rates locale={i18n.locale} translations={data.rates} />
+<Rates locale={i18n.locale} snapshot={data.rates} />

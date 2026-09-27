@@ -17,7 +17,7 @@ export { cst, extractParamsFactory } from '@sveltekit-i18n/parser-curly';
 // Everything the core exports, so nothing this package builds on has to be
 // installed beside it. `Config` and `Parser` already name this package's own
 // types, so the core's namespaces of those names carry a `Base` prefix.
-export type { Config as BaseConfig, Parser as BaseParser, Extension, Loader, Logger, Schema, Translations } from '@sveltekit-i18n/base';
+export type { Config as BaseConfig, Parser as BaseParser, Extension, Loader, Logger, Schema, Snapshot, Translations } from '@sveltekit-i18n/base';
 
 /**
  * The base instance, with `loadConfig` also taking the parser-less config this
