@@ -16,6 +16,11 @@
       "svelte": "./dist/utils.js",
       "default": "./dist/utils.js"
     },
+    "./kit": {
+      "types": "./dist/kit.d.ts",
+      "svelte": "./dist/kit.js",
+      "default": "./dist/kit.js"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {

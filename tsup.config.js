@@ -6,7 +6,7 @@ export default defineConfig(
     clean: true,
     dts: true,
     format: ['esm'],
-    entry: ['src/index.ts', 'src/utils.ts'],
+    entry: ['src/index.ts', 'src/utils.ts', 'src/kit.ts'],
     minify: !options.watch,
     sourcemap: options.watch,
     splitting: true,
