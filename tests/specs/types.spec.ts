@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import i18n from '../../src';
+import { defineI18n } from '../../src/kit';
 
 import type { Config, Extension, Schema } from '../../src';
 
@@ -118,5 +119,25 @@ describe('the retyped `loadConfig`', () => {
 
       return instance.marked;
     });
+  });
+});
+
+describe('/kit typing', () => {
+  it('hands out this package\'s instance, typed by the config', () => {
+    compiles(() => {
+      const { get } = defineI18n({ schema: {} as { greeting: { name: string } } });
+
+      get().t('greeting', { name: 'Jarda' });
+
+      // @ts-expect-error - the schema does not carry this key
+      return get().t('nosuch');
+    });
+  });
+
+  it('rejects the core parser slot, which this package fills', () => {
+    compiles(() => defineI18n({
+      // @ts-expect-error - the parser is this package's to supply
+      parser: { parse: (value: unknown) => value },
+    }));
   });
 });

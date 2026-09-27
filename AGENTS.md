@@ -65,6 +65,13 @@ issue tracker, docs, and examples for the whole family
   prepended so every later extension copies the patched method. It returns its
   input, so it contributes nothing to the piped type and the runtime patch
   cannot drift from the declared one.
+- **`/kit` wraps base's `defineI18n`, never re-implements it.** The wrapper
+  hands the core's factory a config that carries the parser and leads its
+  pipe with the same prepended extension, so every instance the core builds
+  per request and per tab interpolates, and a reconfiguration through one keeps
+  the parser. The core resolves its server half by the `browser` condition
+  from its own `imports` map; this package adds no map of its own, and tsup
+  keeps base external so the consumer's bundler does that resolution.
 - **`loadConfig` is retyped by intersection, never by an `Omit` rewrite.** The
   emitted instance type carries `#private`, so an `Omit`-based rewrite stops
   being assignable to the core instance and every `Extension.Operator`
@@ -81,11 +88,11 @@ issue tracker, docs, and examples for the whole family
   generator needs beside the instance it types, and `cst`, which an editor
   describes a message with. The parser factory stays internal: this package
   fills the slot, so there is nothing to construct.
-  `tests/specs/exports.spec.ts` diffs both surfaces and fails if either gains
-  an export this package does not carry; extend the rename map (base's `Config`
-  and `Parser`) or the excluded names (the parser's `default` and its own
-  `Config`, which this package exports for something else) rather than letting
-  the surface drift.
+  `tests/specs/exports.spec.ts` diffs the core's entry, `/utils` and `/kit` and
+  the parser's surface, and fails if any of them gains an export this package
+  does not carry; extend the rename map (base's `Config` and `Parser`) or the
+  excluded names (the parser's `default` and its own `Config`, which this
+  package exports for something else) rather than letting the surface drift.
 - **`i18n instanceof I18n` does not hold**, and base does not guarantee it
   either whenever `config.extensions` replaces the instance. Documented, not
   fixed.
@@ -94,10 +101,10 @@ issue tracker, docs, and examples for the whole family
 
 - The suite proves **this package's wiring** — the parser being present without
   the consumer supplying one, `parserOptions` flowing through the constructor
-  and through `loadConfig`, the report channel, the extension pipe, the
-  re-export surface and the typing. It does not re-test base's behaviour
-  (base's own suite does) and it does not test the Curly Message Format's
-  grammar (the format's conformance set does, inside `parser-curly`).
+  and through `loadConfig`, the report channel, the extension pipe, the `/kit`
+  wiring, the re-export surface and the typing. It does not re-test base's
+  behaviour (base's own suite does) and it does not test the Curly Message
+  Format's grammar (the format's conformance set does, inside `parser-curly`).
 - `tests/specs/types.spec.ts` asserts by compiling: `pretest` runs
   `tsc --noEmit` over it, so a `@ts-expect-error` that stops being an error
   fails the run. Its closures are never invoked.

@@ -54,11 +54,13 @@ lib/
 ├── examples/             # standalone SvelteKit example apps (pnpm workspace)
 ├── src/
 │   ├── index.ts          # entry - the I18n facade that wires the parser into the core
+│   ├── curly.ts          # the parser wiring the entry and `/kit` share
+│   ├── kit.ts            # the `sveltekit-i18n/kit` subpath
 │   ├── types.ts          # this package's `Config` (the core's, minus `parser`)
 │   └── utils.ts          # the `sveltekit-i18n/utils` subpath
 ├── tests/
 │   ├── data/             # CONFIG + JSON fixtures
-│   └── specs/            # index.spec.ts, exports.spec.ts, types.spec.ts
+│   └── specs/            # index.spec.ts, kit.spec.ts, exports.spec.ts, types.spec.ts
 ├── dist/                 # build output, generated (git-ignored)
 ├── AGENTS.md             # rules for LLM coding assistants (CLAUDE.md imports it)
 ├── eslint.config.js      # ESLint 10 flat config
@@ -234,6 +236,7 @@ The suite proves **the wiring this package adds** – nothing more:
 - **`parserOptions` flow through** the constructor and through `loadConfig`, and a reconfiguration that names no parser options keeps the parser.
 - **The report channel** is silent by default and routes to `parserOptions.onReport` when the application passes one.
 - **The extension pipe** runs the consumer's extensions over a configured instance whose `loadConfig` already carries the parser.
+- **The `/kit` wiring** (`tests/specs/kit.spec.ts`) – every instance the core's `defineI18n` builds through this package carries the parser, and the server half runs in the server compile only.
 - **The re-export surface** (`tests/specs/exports.spec.ts`) – every name the core publishes must be reachable from here, with the core's `Config` and `Parser` namespaces carried as `BaseConfig` and `BaseParser`. A new export in the core fails this test until this package carries it; extend the rename map in that spec rather than letting the surface drift.
 - **The typing** (`tests/specs/types.spec.ts`) – the assertion *is* the compilation. Its closures are never invoked; a `@ts-expect-error` that stops being an error fails the run.
 

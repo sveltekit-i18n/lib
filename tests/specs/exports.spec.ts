@@ -60,6 +60,14 @@ describe('re-export surface', () => {
     });
   });
 
+  it('carries every export of the core `kit` subpath', () => {
+    const reexported = exportsOf(`${import.meta.dirname}/../../dist/kit.d.ts`);
+
+    exportsOf(declarationsOf('@sveltekit-i18n/base/kit')).forEach((name) => {
+      expect(reexported).toContain(name);
+    });
+  });
+
   // The parser is the other half of this package, and nothing diffs it from the
   // outside: a name it gains and this package forgets would leave a consumer
   // installing it beside this one, which is the thing #228 rules out.
