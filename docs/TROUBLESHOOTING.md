@@ -277,7 +277,21 @@ This is documented rather than fixed.
 
 ## Upgrading from 3.0
 
-A 3.0 config loads in 3.1 as it is. The whole list of changes is in [base's upgrade notes](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30); these are the ones that show up as symptoms.
+A 3.0 config loads in 3.1 as it is. The whole list of changes is in [base's upgrade notes](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30) and, for the messages, [parser-curly's changelog](https://github.com/sveltekit-i18n/parsers/blob/master/parser-curly/CHANGELOG.md#310); these are the ones that show up as symptoms.
+
+### A payload value shows up as `{{…}}` or with its backslashes
+
+**Symptoms:**
+- A message that composed text through its payload renders the placeholder itself: `t('x', { v: '{{count}}', count: 2 })` shows `{{count}}` where 3.0 showed `2`
+- A value with doubled backslashes keeps both of them
+
+**Cause:**
+
+3.1 moves the messages to version 3 of the Curly Message Format. Version 1 read a payload value back as message source; version 3 treats it as data and renders it as it stands.
+
+**Solution:**
+
+Write the composition into the message instead of the payload, and set [`parserOptions.onSuspectValue`](./README.md#parseroptionsonsuspectvalue) while migrating: it announces every value version 1 would have read as syntax. Unset it once the catalogue is migrated.
 
 ### Everything is fetched again after hydration
 

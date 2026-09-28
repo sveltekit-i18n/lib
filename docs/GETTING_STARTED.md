@@ -685,10 +685,12 @@ export const { handle, load, use, get } = defineI18n(config, {
 });
 ```
 
-With an older typegen, or a 3.0 core, point the slot at it instead:
-`schema: /** @type {TranslationSchema} */ ({})`, in TypeScript
-`schema: {} as TranslationSchema`. JavaScript files need `// @ts-check` (or
-`checkJs`) for the types to be checked at all. Add `src/i18n-schema.d.ts` to
+With an older typegen, or sveltekit-i18n before 3.1.0-next.2, point the slot
+at it instead: `schema: /** @type {TranslationSchema} */ ({})`, in TypeScript
+`schema: {} as TranslationSchema`. sveltekit-i18n 3.0 has neither `/kit` nor
+the registry: there the cast goes on the config handed to `new I18n()`.
+JavaScript files need `// @ts-check` (or `checkJs`) for the types to be
+checked at all. Add `src/i18n-schema.d.ts` to
 `.gitignore`: it is reproducible from your translations. The file does not
 exist until Vite first runs the plugin: `vite dev` or `vite build` writes an
 empty placeholder first, under which `t()` takes plain strings, then the

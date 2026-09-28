@@ -1623,9 +1623,11 @@ matches, [`en-GB` falling back to `en`](#matchlocalerequested-available):
 
 `preferredLocale` runs on every navigation and every preload, and in an app
 without a server `load` in the universal one, whose event has no `cookies`
-(hence `cookies?.`). With a server `load` it never runs in the browser: a
-navigation to a prerendered page takes the locale `preferredLocale` gave at
-build time, and otherwise keeps the tab's. It must only read the event. A value no configured locale
+(hence `cookies?.`). With a server `load` it runs in the browser only on a
+root error page SvelteKit renders without the server's data, such as an
+unknown URL a static host answers with its fallback page, and there too the
+event has no `cookies`. A navigation to a prerendered page takes the locale
+`preferredLocale` gave at build time, and otherwise keeps the tab's. It must only read the event. A value no configured locale
 matches is skipped, and one that throws is logged once and skipped.
 
 The server's answer rules. `i18n.setLocale('cs')` in the browser switches the
@@ -1938,9 +1940,18 @@ Also worth knowing:
 
 ## Upgrading from 3.0
 
-A 3.0 config loads in 3.1 as it is, and nothing public was removed. What
-changes:
+A 3.0 config loads in 3.1 as it is. What changes:
 
+- **Messages follow version 3 of the Curly Message Format**, which 3.1 brings
+  in with `@sveltekit-i18n/parser-curly` 3.1. A payload value is data and is
+  never read as syntax, so a catalogue that composed messages through its
+  payload (a value holding `{{count}}`), or that doubled backslashes in values,
+  renders differently. Set
+  [`parserOptions.onSuspectValue`](#parseroptionsonsuspectvalue) while
+  migrating: it announces every value version 1 would have read as syntax.
+- **`pass-limit` is gone from `Report['code']`**, replaced by `read-limit` and
+  `nesting-limit`, so an [`onReport`](#parseroptionsonreport) handler that
+  names it stops compiling.
 - **Seeds no longer count as loaded.** Data passed to `config.translations` or
   `addTranslations()` records nothing, so the loaders of its namespaces still
   run. A client that applied the server's `snapshot()` with
@@ -1965,7 +1976,9 @@ changes:
   [`matchLocale()`, `textDirection()` and `resolveLoaders()`](#utilities).
 
 The whole list, with every behaviour change and type change:
-[base — Upgrading from 3.0](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30).
+[base — Upgrading from 3.0](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30),
+and the format's move in
+[parser-curly's changelog](https://github.com/sveltekit-i18n/parsers/blob/master/parser-curly/CHANGELOG.md#310).
 
 ## See Also
 

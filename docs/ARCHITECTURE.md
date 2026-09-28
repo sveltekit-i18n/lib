@@ -740,10 +740,10 @@ loaders that delivered it, so `hydrate()` keeps those loaders from fetching the
 same data twice.
 
 **Bundle.** The core has no runtime dependencies; `parser-curly`'s only
-dependency is the format's reference implementation. Everything is ESM with
-`sideEffects: false`, so what an app does not import is dropped, and the
-parser's build-time surface never reaches the browser (see
-[The parser contract](#the-parser-contract)).
+dependency is the format's reference implementation. Everything is ESM, and
+this package and the parsers declare `sideEffects: false`, so what an app does
+not import from them is dropped, and the parser's build-time surface never
+reaches the browser (see [The parser contract](#the-parser-contract)).
 
 ## See Also
 
