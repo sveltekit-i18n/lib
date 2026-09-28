@@ -1,8 +1,8 @@
 # Getting Started with sveltekit-i18n
 
 This guide walks a SvelteKit app from nothing to a working multilingual site:
-translation files, one instance per request, server-side rendering, a language
-switcher and route-scoped loading. Everything here is v3.
+translation files, the SvelteKit wiring, server-side rendering, a language
+switcher, route-scoped loading and generated types. Everything here is 3.1.
 
 ## Table of Contents
 
@@ -12,6 +12,7 @@ switcher and route-scoped loading. Everything here is v3.
 - [Your First Multilingual App](#your-first-multilingual-app)
 - [Route-based Loading](#route-based-loading)
 - [Switching Locales](#switching-locales)
+- [Locale-based Routing](#locale-based-routing)
 - [Placeholders and Modifiers](#placeholders-and-modifiers)
 - [TypeScript](#typescript)
 - [Testing Components That Translate](#testing-components-that-translate)
@@ -40,10 +41,11 @@ npm install sveltekit-i18n
 
 That is the whole install. `@sveltekit-i18n/base` (the core) and
 `@sveltekit-i18n/parser-curly` (the message parser) come with it: the core's
-whole API, the parser's types and its build-time `extractParamsFactory` and
-`cst` are re-exported here. **Do not install them alongside** — an app that
-depends on them directly ends up with two copies of the core and two reactive
-graphs.
+whole API, its SvelteKit wiring (`sveltekit-i18n/kit`), its helpers
+(`sveltekit-i18n/utils`), the parser's types and its build-time
+`extractParamsFactory` and `cst` are re-exported here. **Do not install them
+alongside** — an app that depends on them directly ends up with two copies of
+the core and two reactive graphs.
 
 ## Basic Concepts
 
@@ -68,16 +70,19 @@ inside the file.
 ### Loaders
 
 A **loader** says how and when a chunk of translations is fetched. It names a
-`locale`, a namespace `key`, an async `loader` function and optionally `routes`.
-A loader runs at most once per locale (per freshness window), lazily, and only
-when the current route matches its `routes`.
+`locale`, a `namespace`, an async `loader` function and optionally `routes`.
+`locale` and `namespace` may be lists: the loader is then called once per
+locale and namespace pair, with the pair in its props. A loader runs lazily,
+only when the current route matches its `routes`, and at most once per
+freshness window and route params.
 
 ### Namespaces
 
-The loader's `key` is the **namespace** — a prefix for everything that loader
-returns (`common`, `home`, `about`). Namespaces are what make lazy loading
-possible: one namespace per page, plus a shared one for navigation and errors.
-Keys must not contain dots.
+A loader's `namespace` is a prefix for everything that loader returns
+(`common`, `home`, `about`). Namespaces are what make lazy loading possible:
+one per page, plus a shared one for navigation and errors. A namespace must not
+contain dots. (3.0 called it `key`; that spelling still works and logs a
+deprecation warning.)
 
 ### The instance
 
@@ -89,12 +94,12 @@ Everything lives on one reactive object:
 | `l(locale, key, payload?, props?)` | translates for a locale the call names |
 | `locale` | the active locale; assigning it is a fire-and-forget `setLocale()` |
 | `locales` | the locales the config knows |
-| `loading` | `true` while any load is in flight |
+| `loading` | `true` while any activating load is in flight |
 | `initialized` | `true` once a locale and a route are set and translations are present |
 | `translations` / `rawTranslations` | the tables, after and before preprocessing |
-| `loadTranslations`, `setLocale`, `setRoute` | return the promise of the matching load |
+| `loadTranslations`, `loadNamespace`, `setLocale`, `setRoute` | return the promise of the matching load |
 | `loadConfig` | returns the promise of the config load |
-| `addTranslations`, `invalidate`, `snapshot`, `destroy` | synchronous |
+| `addTranslations`, `invalidate`, `snapshot`, `hydrate`, `destroy` | synchronous |
 
 Reading a property is reactive wherever reads are tracked — a component
 template, `$derived`, `$effect`. There are no stores, no `$t`, no `.get()` and
@@ -113,18 +118,21 @@ locals in a component, destructure through `$derived`:
 
 ## Your First Multilingual App
 
-We will build an English/Czech app that renders the right language on the
-server, hands its data to the client, and switches language without a reload.
+We will build an English/Czech app that renders the visitor's language on the
+server, hands its state to the browser, and switches language without a
+reload. `sveltekit-i18n/kit` does the wiring: one instance per request on the
+server, one per tab in the browser.
 
 ### Step 1: Create translation files
 
 ```
-src/lib/translations/
-├── en/
-│   └── common.json
-├── cs/
-│   └── common.json
-└── index.js
+src/lib/
+├── i18n.js
+└── translations/
+    ├── en/
+    │   └── common.json
+    └── cs/
+        └── common.json
 ```
 
 ```json
@@ -147,12 +155,12 @@ src/lib/translations/
 }
 ```
 
-### Step 2: Export the config, not an instance
+### Step 2: Define the config and wire it
 
 ```javascript
-// src/lib/translations/index.js
+// src/lib/i18n.js
+import { defineI18n } from 'sveltekit-i18n/kit';
 
-/** @type {import('sveltekit-i18n').Config} */
 export const config = {
   fallbackLocale: 'en',
   // Available immediately, in every locale — the language switcher renders
@@ -163,143 +171,78 @@ export const config = {
   },
   loaders: [
     {
-      locale: 'en',
-      key: 'common',
-      loader: async () => (await import('./en/common.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'common',
-      loader: async () => (await import('./cs/common.json')).default,
+      locale: ['en', 'cs'],
+      namespace: 'common',
+      loader: async ({ locale, namespace }) => (await import(`./translations/${locale}/${namespace}.json`)).default,
     },
   ],
 };
+
+export const { handle, load, use, get } = defineI18n(config, {
+  preferredLocale: (event) => event.cookies?.get('lang'),
+});
 ```
 
-**Why the config and not the instance?** A module that creates an instance is
-evaluated **once per process** on the server, not once per request. A
-module-level instance is therefore shared by every visitor being rendered at the
-same time: two requests for different languages overwrite each other's `locale`
-and tables, and one visitor's language ends up in another visitor's HTML. The
-config is inert data — each request builds its own instance from it.
+**Why no instance here?** A module that creates an instance is evaluated
+**once per process** on the server, not once per request, so a module-level
+instance would be shared by every visitor rendered at the same time — one
+visitor's language would end up in another visitor's HTML. `defineI18n` builds
+an instance per request on the server and one per tab in the browser; the
+module exports the config and the four functions that do that.
+
+**Which locale.** Each request takes the first of these that matches a locale
+the config serves: `preferredLocale(event)` (here the `lang` cookie the
+switcher below writes), the `Accept-Language` header, `initLocale`, then
+`fallbackLocale`. A visitor asking for `en-GB` gets `en`.
 
 There is **no `parser` slot**: this package fills it with the Curly Message
 Format parser. Its options live under
 [`parserOptions`](#parser-options).
 
-### Step 3: Resolve the visitor's locale
+### Step 3: Hook the server
 
 ```javascript
 // src/hooks.server.js
-import { sanitizeLocales } from 'sveltekit-i18n/utils';
-
-const supported = ['en', 'cs'];
-
-/** @type {import('@sveltejs/kit').Handle} */
-export const handle = async ({ event, resolve }) => {
-  const [preferred = ''] = sanitizeLocales(
-    event.cookies.get('locale')
-      ?? event.request.headers.get('accept-language')?.split(',')[0],
-  );
-
-  const [language] = preferred.split('-');
-
-  event.locals.locale = supported.includes(language) ? language : 'en';
-
-  return resolve(event);
-};
+export { handle } from '$lib/i18n';
 ```
 
-`sanitizeLocales` is the same normalization the instance applies, so a cookie
-holding `EN` and one holding `en` end up at the same entry the tables are keyed
-by. It canonicalizes spelling, not granularity: `en-us` becomes `en-US` and
-stays region-tagged, so an `Accept-Language` header is matched here on its
-language subtag — a list of bare `en` and `cs` would otherwise never see a
-visitor sending `en-US` or `cs-CZ`. An app that ships region-specific
-translations lists the region-tagged locales instead and drops the `split`.
+```html
+<!-- src/app.html -->
+<html lang="%lang%" dir="%dir%">
+```
 
-### Step 4: Load on the server, one instance per request
+`handle` fills `%lang%` with the negotiated locale and `%dir%` with its
+direction (`ltr` or `rtl`), in the `<html>` tag.
+
+### Step 4: Load in the root layout
 
 ```javascript
 // src/routes/+layout.server.js
-import { I18n } from 'sveltekit-i18n';
-import { config } from '$lib/translations';
-
-/** @type {import('./$types').LayoutServerLoad} */
-export const load = async ({ url, locals }) => {
-  const i18n = new I18n(config);
-
-  await i18n.loadTranslations(locals.locale, url.pathname);
-
-  return { locale: locals.locale, translations: i18n.snapshot() };
-};
+export { load } from '$lib/i18n';
 ```
-
-`snapshot()` serializes what the instance holds for the **active locale** and
-the **`fallbackLocale`**, narrowed to the current route. It is shaped like
-`config.translations`, so the client hydrates by passing it to
-`addTranslations()`.
-
-An instance that outlives its work should be released with `destroy()`; after an
-awaited `loadTranslations` this one has nothing left in flight, so the `load`
-above does not need the call.
-
-### Step 5: Build the instance the app renders with
 
 ```javascript
 // src/routes/+layout.js
-import { browser } from '$app/environment';
-import { I18n } from 'sveltekit-i18n';
-import { config } from '$lib/translations';
-
-// Assigned in the browser only — on the server this module-level binding
-// would be the shared state we are avoiding.
-let client;
-
-/** @type {import('./$types').LayoutLoad} */
-export const load = async ({ data, url }) => {
-  // `data` is null when no route matched: the error page renders through this
-  // load too, and on a static host that is every unknown URL.
-  let i18n = client;
-
-  if (!i18n) {
-    i18n = new I18n(config);
-
-    i18n.addTranslations(data?.translations);
-
-    if (browser) client = i18n;
-  }
-
-  await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
-
-  return { i18n };
-};
+export { load } from '$lib/i18n';
 ```
 
-This `load` runs on the server for the SSR pass and again in the browser on
-hydration. Both start from the server's snapshot, so the loaders behind it do
-not run a second time; only what the snapshot left out — the namespaces of pages
-the visitor has not opened yet — is fetched. Every later client-side navigation
-reuses the same instance, so its cache survives.
+One `load` serves both files. On the server it negotiates the locale, loads it
+for the route into a fresh instance and returns that instance's state. The
+universal half builds the instance the app renders with from that state, so
+the loaders the server ran do not run again in the browser, and returns it as
+`data.i18n`.
 
-The payload is **applied on top of** the config rather than assigned to
-`config.translations`: it covers only the active locale and the fallback, and
-leaves out a namespace claimed only by another route's loaders — including what
-the config contributed to it. Applied, it keeps the config's own translations,
-such as the language names of the locales the visitor is *not* using, which the
-switcher renders.
-
-### Step 6: Pass it down through context
+### Step 5: Provide the instance
 
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
-  import { setContext } from 'svelte';
+  import { use } from '$lib/i18n';
   import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 
   let { data, children } = $props();
 
-  setContext('i18n', data.i18n);
+  use(() => data);
 </script>
 
 <header>
@@ -309,7 +252,11 @@ switcher renders.
 {@render children()}
 ```
 
-The children render unconditionally: [Step 4](#step-4-load-on-the-server-one-instance-per-request)
+`use()` provides the instance to every component below, switches the locale
+and follows the route as each navigation commits, and keeps
+`<html lang>` and `dir` in sync. Call it once, here.
+
+The children render unconditionally: [Step 4](#step-4-load-in-the-root-layout)
 already awaited the load, so the markup the server sends is translated, and
 gating the whole tree on `loading` would blank text that is already on the page
 — on the first paint and again on every locale switch. Where a switch is worth
@@ -322,17 +269,14 @@ signalling, show the hint beside the content rather than instead of it:
 </header>
 ```
 
-Context is what keeps a per-request instance per-request: nothing imports it, so
-nothing can share it between visitors.
-
-### Step 7: Use translations in components
+### Step 6: Use translations in components
 
 ```svelte
 <!-- src/routes/+page.svelte -->
 <script>
-  import { getContext } from 'svelte';
+  import { get } from '$lib/i18n';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   const userName = 'World';
 </script>
@@ -347,17 +291,20 @@ nothing can share it between visitors.
 </nav>
 ```
 
-`t()` reads the reactive translation table and the reactive locale, so the
-rendered text updates when either changes — no subscription, no `$` prefix.
+`get()` returns the instance `use()` provided, in any component below the root
+layout — the error page included. `t()` reads the reactive translation table
+and the reactive locale, so the rendered text updates when either changes — no
+subscription, no `$` prefix. Translate in markup, not in `load`: a string built
+in `load` stays in the locale of that pass.
 
-### Step 8: Run it
+### Step 7: Run it
 
 ```bash
 npm run dev
 ```
 
-Visit `http://localhost:5173`. View the page source: the translated text is in
-the HTML the server sent, not filled in afterwards.
+Visit `http://localhost:5173`. View the page source: the translated text and
+`<html lang>` are in the HTML the server sent, not filled in afterwards.
 
 ## Route-based Loading
 
@@ -371,11 +318,10 @@ src/lib/translations/
 │   ├── common.json
 │   ├── home.json
 │   └── about.json
-├── cs/
-│   ├── common.json
-│   ├── home.json
-│   └── about.json
-└── index.js
+└── cs/
+    ├── common.json
+    ├── home.json
+    └── about.json
 ```
 
 ```json
@@ -397,9 +343,9 @@ src/lib/translations/
 ### Scope the loaders with `routes`
 
 ```javascript
-// src/lib/translations/index.js
+// src/lib/i18n.js
+const fromFile = async ({ locale, namespace }) => (await import(`./translations/${locale}/${namespace}.json`)).default;
 
-/** @type {import('sveltekit-i18n').Config} */
 export const config = {
   fallbackLocale: 'en',
   translations: {
@@ -408,86 +354,72 @@ export const config = {
   },
   loaders: [
     // No `routes` → loaded on every page
-    {
-      locale: 'en',
-      key: 'common',
-      loader: async () => (await import('./en/common.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'common',
-      loader: async () => (await import('./cs/common.json')).default,
-    },
+    { locale: ['en', 'cs'], namespace: 'common', loader: fromFile },
 
     // Homepage only
-    {
-      locale: 'en',
-      key: 'home',
-      routes: ['/'],
-      loader: async () => (await import('./en/home.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'home',
-      routes: ['/'],
-      loader: async () => (await import('./cs/home.json')).default,
-    },
+    { locale: ['en', 'cs'], namespace: 'home', routes: ['/'], loader: fromFile },
 
     // About page only
-    {
-      locale: 'en',
-      key: 'about',
-      routes: ['/about'],
-      loader: async () => (await import('./en/about.json')).default,
-    },
-    {
-      locale: 'cs',
-      key: 'about',
-      routes: ['/about'],
-      loader: async () => (await import('./cs/about.json')).default,
-    },
+    { locale: ['en', 'cs'], namespace: 'about', routes: ['/about'], loader: fromFile },
   ],
 };
 ```
 
 `routes` entries may be exact strings, regular expressions (`[/^\/products/]`)
-or anything with a `test(route)` method. The wiring from
-[Step 5](#step-5-build-the-instance-the-app-renders-with) already passes
-`url.pathname` on every navigation, so nothing else has to change.
+or anything with a `test(route)` method. The wiring hands every navigation's
+`url.pathname` to the instance, so nothing else has to change.
 
 ```svelte
 <!-- src/routes/about/+page.svelte -->
 <script>
-  import { getContext } from 'svelte';
+  import { get } from '$lib/i18n';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 </script>
 
 <h1>{i18n.t('about.title')}</h1>
 <p>{i18n.t('about.content')}</p>
 ```
 
-**One namespace per route group.** A namespace is loaded once per locale: as
-soon as one loader has supplied `common`, every other `common` loader is
-skipped, including one whose `routes` never matched. Splitting a single
-namespace across routes therefore loses the halves the visitor did not land on —
-give each route group a key of its own, as above.
+**A namespace may be split.** Each loader is recorded on its own, so several
+loaders can fill one namespace from different routes — each part loads where
+its route matches and merges into what the others delivered.
+
+**Route params.** A named capture group in a route `RegExp` reaches the loader
+as `params`, and the loader runs again when the params change, replacing what
+it delivered for the previous ones:
+
+```javascript
+import { PUBLIC_API_ORIGIN } from '$env/static/public';
+
+{
+  locale: ['en', 'cs'],
+  namespace: 'article',
+  routes: [/^\/article\/(?<slug>[^/]+)/],
+  loader: async ({ locale, params }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/articles/${params.slug}/i18n/${locale}`)).json(),
+}
+```
+
+A loader runs on the server too, where `fetch` takes only an absolute URL
+(the core hands a loader no `fetch` of its own), so build the URL from an
+origin, as `PUBLIC_API_ORIGIN` does here, or back the loader with a remote
+`query`.
+
+A loader receives `{ locale, namespace, route, params }`. `route` is context,
+not a cache key: a loader runs once per freshness window and route params, so
+data that varies by route belongs in a param or in `routes`.
 
 ## Switching Locales
-
-Assigning `locale` is a fire-and-forget `setLocale()`: the new language's
-translations are fetched, and the property advances once they resolved, so the
-UI never shows a locale whose text is not there yet.
 
 ```svelte
 <!-- src/lib/components/LanguageSwitcher.svelte -->
 <script>
-  import { getContext } from 'svelte';
+  import { get } from '$lib/i18n';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   const switchTo = (next) => {
-    document.cookie = `locale=${next}; path=/; max-age=31536000; samesite=lax`;
+    document.cookie = `lang=${next}; path=/; max-age=31536000; samesite=lax`;
     i18n.locale = next;
   };
 </script>
@@ -526,22 +458,54 @@ one — which is how each button reads in its own language: `l('cs', 'lang.cs')`
 is `Čeština` even while the app is in English. (`t('lang.cs')` would give
 `Czech`, the name in the active language.)
 
-The cookie is what the [`handle` hook](#step-3-resolve-the-visitors-locale)
-reads on the next full page load, so the choice survives a reload and the server
-renders it directly.
+**The server's answer rules.** A switch in the browser stands across
+navigations until the server answers differently. The cookie is what
+`preferredLocale` reads, so the server's next answer is the new locale: the
+choice survives a reload, and the server renders it directly. Without the
+cookie, the switch lasts until a reload.
 
 **What happens on a click:**
 
 1. The cookie is written, and `i18n.locale = next` starts the load.
 2. Missing namespaces for the new locale are fetched; ones already held are not.
 3. `loading` is `true` while that runs.
-4. `locale` advances, and every `t()` and `l()` read re-renders.
+4. `locale` advances, every `t()` and `l()` read re-renders, and `use()`
+   updates `<html lang>` and `dir`.
 
 To know when the switch finished, await it instead:
 
 ```javascript
 await i18n.setLocale('cs');
 ```
+
+## Locale-based Routing
+
+For `/en/about` and `/cs/about`, put the routes under a `[lang]` parameter and
+let `preferredLocale` read it:
+
+```
+src/routes/
+├── +layout.js
+├── +layout.server.js
+├── +layout.svelte
+└── [lang]/
+    ├── +page.svelte
+    └── about/
+        └── +page.svelte
+```
+
+```javascript
+// src/lib/i18n.js
+export const { handle, load, use, get } = defineI18n(config, {
+  preferredLocale: (event) => event.params.lang,
+});
+```
+
+The locale then comes from the URL — which is also what a prerendered page
+needs, since it has no visitor to read a cookie from. A link to another
+locale's URL switches the tab when the navigation commits. Loader `routes` see
+the locale segment, since they match `url.pathname`: scope them with a pattern
+such as `/^\/[^/]+\/about$/`.
 
 ## Placeholders and Modifiers
 
@@ -608,32 +572,36 @@ the [reference](./README.md#parser-options).
 The config type is exported as `Config`:
 
 ```typescript
-import { I18n, type Config } from 'sveltekit-i18n';
+import { type Config } from 'sveltekit-i18n';
+import { defineI18n } from 'sveltekit-i18n/kit';
 
-const config: Config = { loaders: [/* … */] };
+export const config = { loaders: [/* … */] } as const satisfies Config;
 
-export const i18n = new I18n(config);
+export const { handle, load, use, get } = defineI18n(config);
 ```
 
-Annotating the config **widens** it, which costs the locale completion a config
-literal would have given `setLocale()`, `l()`, `invalidate()` and `locale`. Pass
-the literal straight to the constructor where you want that — the locales a
-config names then complete those members. The completion is a hint, never a
-constraint: a locale can arrive from a URL, a cookie or an `Accept-Language`
-header, so any string still compiles.
+`satisfies` checks the config, and `as const` keeps its locales as literals:
+`satisfies Config` alone widens them to `string`, since `Config` types a locale
+as a `string`. Annotating it instead (`const config: Config = …`) makes the
+annotation, not the literal, the type `defineI18n` sees. Either way costs the
+locale completion the literal would have given `setLocale()`, `l()`,
+`invalidate()` and `locale`; passing the literal straight to `defineI18n`
+keeps it too. The completion is a
+hint, never a constraint: a locale can arrive from a URL, a cookie or an
+`Accept-Language` header, so any string still compiles.
 
 ### Typing keys and payloads with `schema`
 
 ```typescript
-import { I18n } from 'sveltekit-i18n';
-
-export const i18n = new I18n({
+export const { handle, load, use, get } = defineI18n({
   ...config,
   schema: {} as {
     'common.greeting': { name: string };
     'common.nav.home': never;
   },
 });
+
+const i18n = get();
 
 i18n.t('common.greeting', { name: 'Alice' }); // ok
 i18n.t('common.nav.home');                    // ok — takes no payload
@@ -643,13 +611,63 @@ i18n.t('common.greeting', {});                // Error: `name` is required
 
 Only the schema's **type** is read, which is why `{} as …` is the idiom. A
 schema whose keys are not a closed set (`Record<string, …>`, or no keys at all)
-degrades to plain `string` keys rather than rejecting every call.
+degrades to plain `string` keys rather than rejecting every call. The schema
+in the config handed to `defineI18n` types `get()`, `use()` and `data.i18n`;
+`new I18n({ ...config, schema })` works the same way.
 
-A schema **generator** is 3.1 work
-([#234](https://github.com/sveltekit-i18n/lib/issues/234)); v3 ships the slot
-and the piece a generator reads a catalogue with —
-[`extractParamsFactory`](./README.md#extractparamsfactory) — not the generator
-itself.
+### Generating the schema
+
+Writing the schema by hand does not scale.
+[`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen) is a
+Vite plugin that writes it from your translations:
+
+```bash
+npm install -D @sveltekit-i18n/typegen
+```
+
+```javascript
+// vite.config.js
+import { sveltekit } from '@sveltejs/kit/vite';
+import { typegen } from '@sveltekit-i18n/typegen';
+
+export default {
+  plugins: [
+    sveltekit(),
+    typegen({
+      config: 'src/lib/i18n.js',
+      extractParams: { from: 'sveltekit-i18n' },
+    }),
+  ],
+};
+```
+
+It evaluates `src/lib/i18n.js` the way `vite dev` would, reads its `config`
+export, runs the loaders, and writes `src/i18n-schema.d.ts` on `vite build` and
+whenever a translation changes under `vite dev`. The payloads come from this
+package's `extractParamsFactory`, which `extractParams: { from: 'sveltekit-i18n' }`
+points at. The file declares a global `TranslationSchema`:
+
+```javascript
+// src/lib/i18n.js
+// @ts-check
+import { defineI18n } from 'sveltekit-i18n/kit';
+
+export const config = {/* as in Step 2 */};
+
+export const { handle, load, use, get } = defineI18n(
+  { ...config, schema: /** @type {TranslationSchema} */ ({}) },
+  { preferredLocale: (event) => event.cookies?.get('lang') },
+);
+```
+
+In TypeScript, `schema: {} as TranslationSchema`. JavaScript files need
+`// @ts-check` (or `checkJs`) for the types to be checked at all. Add
+`src/i18n-schema.d.ts` to `.gitignore`: it is reproducible from your
+translations. The file does not exist until Vite first runs the plugin: `vite
+dev` or `vite build` writes an empty placeholder first, under which `t()` takes
+plain strings, then the generated schema. A type check that runs before any
+Vite run — a fresh clone, or CI running only `svelte-kit sync && svelte-check`
+— fails on the missing `TranslationSchema`, so run `vite build` first.
 
 ### One payload type for every message
 
@@ -677,16 +695,36 @@ A real instance is cheap and synchronous: `translations` are available before
 any loader runs, so a test needs no loader, no `await` and no mock.
 
 ```javascript
-import { render } from '@testing-library/svelte';
 import { I18n } from 'sveltekit-i18n';
-import Greeting from '$lib/components/Greeting.svelte';
 
 const i18n = new I18n({
   initLocale: 'en',
   translations: { en: { 'common.greeting': 'Hello, {{name}}!' } },
 });
 
-render(Greeting, { context: new Map([['i18n', i18n]]) });
+i18n.t('common.greeting', { name: 'Alice' }); // → "Hello, Alice!"
+```
+
+A component that reads the instance through `get()` finds it where `use()` put
+it, which a test renders without. Hand it a real instance by mocking your
+module's `get`:
+
+```javascript
+import { render } from '@testing-library/svelte';
+import { vi } from 'vitest';
+import Greeting from '$lib/components/Greeting.svelte';
+
+vi.mock('$lib/i18n', async () => {
+  const { I18n } = await import('sveltekit-i18n');
+  const i18n = new I18n({
+    initLocale: 'en',
+    translations: { en: { 'common.greeting': 'Hello, {{name}}!' } },
+  });
+
+  return { get: () => i18n };
+});
+
+render(Greeting);
 ```
 
 Where a stub is enough, `t` is a plain function on a plain object:
@@ -710,11 +748,16 @@ cases — the same property that makes per-request instances right on the server
 
 ### 🔧 Where to go from here
 
-- **Locale-based routing** – `/en/about`, `/cs/about`; resolve the locale from
-  the route parameter in the `handle` hook instead of the cookie.
+- **What `/kit` does, and its pitfalls** – prerendering, caching negotiated
+  responses, combining `handle` and `load` with your own:
+  [SvelteKit](./README.md#sveltekit).
 - **Loading translations from an API or a CMS** – a loader is just an async
   function; pair a finite `cache` (or `invalidate()`) with a source that changes
-  while the app runs.
+  while the app runs, or set `cache: false` on a loader whose source caches on
+  its own.
+- **Namespaces on demand** – `loadNamespace('editor')` loads one namespace for
+  a modal or a panel, whatever the route.
+- **An app under a base path** – set `config.basePath` to `kit.paths.base`.
 - **`preprocess`** – how loaded payloads are flattened (`'full'`,
   `'preserveArrays'`, `'none'`, or your own function).
 - **Extensions** – `config.extensions` pipes the constructed instance through
@@ -727,12 +770,12 @@ cases — the same property that makes per-request instances right on the server
 
 ### 💡 Tips
 
-1. **Export the config, build the instance.** One instance per request on the
-   server, handed down through context.
+1. **Export the config, let `/kit` build the instances.** One per request on
+   the server, one per tab in the browser, reached through `get()`.
 2. **Start with one namespace** (`common`) and split by route when it grows.
 3. **Await the load methods** instead of polling `loading` —
-   `loadTranslations`, `setLocale` and `setRoute` each return the promise of
-   the matching load.
+   `loadTranslations`, `loadNamespace`, `setLocale` and `setRoute` each return
+   the promise of the matching load.
 4. **Consistent keys** – dot notation, clear naming (`page.section.item`).
 
 ## Need Help?

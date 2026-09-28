@@ -31,9 +31,12 @@ Three packages, one concern each.
 **Owns:**
 - translation state — the locale, the tables, the loading flag
 - loading, deduplication, caching and invalidation
-- route matching
+- route matching and route params
 - preprocessing (nested payloads to dot notation)
+- the SSR hand-off (`snapshot()` and `hydrate()`)
 - the extension pipe and the whole public typing
+- the SvelteKit wiring (`@sveltekit-i18n/base/kit`) and the pure helpers
+  (`@sveltekit-i18n/base/utils`)
 
 **Does not own:** message interpolation. The core never imports a parser; it
 calls the one `config.parser` hands it.
@@ -64,9 +67,11 @@ The alternatives are `@sveltekit-i18n/parser-icu`, wrapping
 It fills the core's parser slot with `parser-curly`, states the parser's report
 channel so an application need not, retypes `loadConfig` to accept the
 parser-less config, and re-exports the core's whole surface along with the
-parser's build-time half — its types, `extractParamsFactory` and `cst`. That is
-all it is — roughly sixty lines of source. Every member you call afterwards is
-the core's.
+parser's build-time half — its types, `extractParamsFactory` and `cst`. Its
+`/kit` hands the core's `defineI18n` a config carrying the parser, so every
+instance the wiring builds interpolates; its `/utils` re-exports the core's
+helpers. That is all it is — roughly a hundred lines of source. Every member
+you call afterwards is the core's.
 
 **One install:**
 
@@ -85,7 +90,7 @@ another module reads.
 ┌──────────────────────────────────────────────────────────────┐
 │                      Your SvelteKit App                      │
 │                                                              │
-│   import { I18n } from 'sveltekit-i18n';                     │
+│   import { defineI18n } from 'sveltekit-i18n/kit';           │
 │   export const config = { loaders: [...] };                  │
 └───────────────────────────┬──────────────────────────────────┘
                             │
@@ -94,6 +99,7 @@ another module reads.
 │                                                              │
 │  • builds parser-curly from `config.parserOptions`           │
 │  • prepends the parser extension to `config.extensions`      │
+│  • /kit: base's defineI18n, the parser in every instance     │
 │  • re-exports all of base, and the parser's build-time half  │
 └──────────┬─────────────────────────────────┬─────────────────┘
            │ config.parser                   │ the instance
@@ -198,8 +204,8 @@ export const i18n = new I18n(config);
 - reactive properties: `locale` (assignable), `locales`, `loading`,
   `initialized`, `translations`, `rawTranslations`
 - reactive functions: `t(key, payload?, props?)`, `l(locale, key, payload?, props?)`
-- promise-returning methods: `loadTranslations`, `loadConfig`, `setLocale`, `setRoute`
-- synchronous methods: `addTranslations`, `invalidate`, `snapshot`, `destroy`
+- promise-returning methods: `loadTranslations`, `loadNamespace`, `loadConfig`, `setLocale`, `setRoute`
+- synchronous methods: `addTranslations`, `invalidate`, `snapshot`, `hydrate`, `destroy`
 
 There are **no stores anywhere**: no `$t` / `$locale` / `$loading`
 auto-subscription, no `.get()`, `.set()` or `.subscribe()`, no
@@ -214,7 +220,7 @@ component, destructure through `$derived`:
 
 ```svelte
 <script>
-  import { i18n } from '$lib/translations';
+  import { i18n } from '$lib/i18n';
 
   const { loading, locale } = $derived(i18n);
 </script>
@@ -251,11 +257,11 @@ export default defineConfig({
 ### 1. Construction
 
 ```javascript
-// src/lib/translations/index.js
+// src/lib/i18n.js
 import { I18n } from 'sveltekit-i18n';
 
 export const config = {
-  loaders: [/* one entry per locale and namespace — see below */],
+  loaders: [/* descriptors naming locales and namespaces — see below */],
 };
 
 export const i18n = new I18n(config);
@@ -277,7 +283,7 @@ No loader has run. Loaders are lazy: they fire on the first load trigger.
 
 ```javascript
 // +layout.js
-import { i18n } from '$lib/translations';
+import { i18n } from '$lib/i18n';
 
 export const load = async ({ url }) => {
   await i18n.loadTranslations('en', url.pathname);
@@ -287,23 +293,37 @@ export const load = async ({ url }) => {
 ```
 1. loadTranslations('en', '/')          setLocale and setRoute compose the
    ↓                                    same locale + route pair and enter here
-2. normalize the locale ('EN' → 'en'), drop the bookkeeping of every locale
-   ↓  whose `cache` window elapsed
-3. a load already in flight for this locale AND route?
-   ↓  → return its promise, fetch nothing
-4. select loaders: locale matches, routes match (or the loader declares none),
-   ↓  key not already loaded  → nothing left? activate the locale and resolve
-5. run them in parallel; a loader that throws is logged on its own and does
-   ↓  not fail the batch
-6. merge into `rawTranslations`, preprocess into `translations`, record the
-   ↓  keys as loaded, stamp the locale's freshness
-7. activate the locale — unless a later request superseded it meanwhile
+2. normalize the locale ('EN' → 'en'), strip `basePath` from the route, drop
+   ↓  the bookkeeping of every locale whose `cache` window elapsed
+3. select loaders: locale matches, routes match (or the loader declares none);
+   ↓  a named group in the matching route RegExp gives the loader its params
+4. drop the loaders already recorded for those params (a `cache: false` one
+   ↓  always runs)  → nothing left? activate the locale and resolve
+5. a load in flight for this locale, route and selection?
+   ↓  → join it and receive its promise; otherwise share, per loader, a fetch
+   ↓    in flight for the same params
+6. run the rest in parallel; a loader that throws is logged on its own and
+   ↓  does not fail the batch — SvelteKit's redirect() and error() below 500
+   ↓  reject the load once the others settled
+7. merge into `rawTranslations`, preprocess into `translations`, record each
+   ↓  loader with its params, stamp the locale's freshness
+8. activate the locale — unless a later request superseded it meanwhile
 ```
 
 The returned promise is the promise of the **matching** load, so awaiting it
-means "the translations I asked for are in place". A load that fails rejects it;
-a result you discard is reported through the logger instead and never becomes an
-unhandled rejection.
+means "the translations I asked for are in place". A load that fails rejects it
+— and a call rejected by a loader's control flow is undone, so the locale does
+not advance; a result you discard is reported through the logger instead and
+never becomes an unhandled rejection.
+
+`loadTranslations(locale, route, { activate: false })` and `loadNamespace()`
+are warm loads: they only fill the tables. They run the same pipeline without
+step 8 and without the expiry in step 2 — only an activating trigger evaluates
+the `cache` window — and `loadNamespace()` selects in step 3 by namespace
+rather than by route, ignoring the loaders' `routes`. Data a warm load fetches
+for other route params than the current route asks for is kept aside, and the
+trigger that asks for those params applies it — which is how a preload lands
+without a second fetch.
 
 The instance imported above is a module-level singleton, which on the server is
 shared by every request in the process — see
@@ -347,92 +367,113 @@ request superseded it. Last request wins.
 
 ### Route-based loading
 
-A loader declares the locale it serves, the namespace `key` it fills, and
+A loader declares the locales it serves, the `namespace` it fills, and
 optionally the `routes` it is needed on:
 
 ```javascript
+import { PUBLIC_API_ORIGIN } from '$env/static/public';
+
 const config = {
   loaders: [
-    // No routes → needed everywhere
+    // No routes → needed everywhere; one call per locale
     {
-      locale: 'en',
-      key: 'common',
-      loader: async () => (await import('./en/common.json')).default,
+      locale: ['en', 'cs'],
+      namespace: 'common',
+      loader: async ({ locale }) => (await import(`./${locale}/common.json`)).default,
     },
     // Exact match → only on '/'
     {
       locale: 'en',
-      key: 'home',
+      namespace: 'home',
       routes: ['/'],
       loader: async () => (await import('./en/home.json')).default,
     },
-    // Regular expression → every matching route
+    // Regular expression with a named group → every product page, with params
     {
       locale: 'en',
-      key: 'products',
-      routes: [/^\/products/],
-      loader: async () => (await import('./en/products.json')).default,
+      namespace: 'product',
+      routes: [/^\/products\/(?<id>[^/]+)/],
+      loader: async ({ params }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/products/${params.id}/i18n/en`)).json(),
     },
   ],
 };
 ```
 
-A route matches when it equals a string entry or satisfies a `RegExp` entry.
-Route patterns are matched against `url.pathname`, which is visitor-controlled —
-keep them simple.
+A route matches when it equals a string entry, satisfies a `RegExp` entry or
+passes a matcher's `test`, after [`basePath`](./README.md#basepath) is
+stripped. Route patterns are matched against `url.pathname`, which is
+visitor-controlled — keep them simple.
 
-### Loaded once per freshness window
+### Loaded once per freshness window and route params
 
-The core records which `key`s a locale has loaded. A key already recorded is not
-fetched again, whatever triggers the next load — which is why one namespace must
-not be split into several route-scoped loaders: as soon as one of them has
-supplied the key, the others are skipped, including ones that never had the
-chance to run. Give each route group a key of its own.
+The core records each loader that delivered, under the params its routes
+captured. A loader recorded for those params is not fetched again, whatever
+triggers the next load; new params run it again, and its new data replaces
+what it delivered for the old ones, while its siblings keep their part. The
+record is per loader, not per namespace, so one namespace may be split into
+several route-scoped loaders: each part loads on its own route and merges into
+the rest.
 
-`addTranslations()` records its keys the same way, so a namespace handed over
-statically (or hydrated from a snapshot) keeps the matching loaders from
-refetching it.
+A loader that throws records nothing and runs again on the next trigger.
+Seeds — `config.translations` and `addTranslations()` — record nothing either:
+the loaders of their namespaces still run and merge over them. Only a hand-off
+from a server, through `hydrate()`, marks loaders as loaded without running
+them.
 
 ### Deduplication, and what `loading` means
 
-The in-flight load is keyed by locale **and** route. Concurrent triggers for the
-same pair — a layout `load` and a component effect firing together, say — join
-the load already running and receive its promise; only one fetch happens.
+The in-flight load is keyed by what a trigger selected — the locale, and each
+loader with its params — and the route it came from. Concurrent triggers with
+the same key — a layout `load` and a component effect firing together, say —
+join the load already running and receive its promise; only one fetch
+happens. A trigger that joins no load still shares, per loader, a fetch in
+flight for the same params and route. A load of another route fetches for its
+own, since a loader receives the route.
 
-`loading` is derived from the set of loads currently in flight: `true` while any
-of them runs, `false` once the last settles. A trigger that finds nothing to
-fetch registers no load at all, so a cache-served navigation does not flicker
-the flag. To wait for one specific load, await the promise the method returned —
-never poll `loading`.
+`loading` is derived from the set of **activating** loads currently in flight:
+`true` while any of them runs, `false` once the last settles. A warm load
+(`{ activate: false }`, `loadNamespace()`) counts only once an activating
+trigger joins it, and a trigger that finds nothing to fetch registers no load
+at all, so a cache-served navigation does not flicker the flag. To wait for one
+specific load, await the promise the method returned — never poll `loading`.
 
 ### Cache and invalidation
 
 Freshness is stamped per locale. `config.cache` (milliseconds, default
-`Number.POSITIVE_INFINITY`) says how long that stamp holds; `invalidate(locale?)`
-drops it on demand:
+`Number.POSITIVE_INFINITY`) says how long that stamp holds, and the next
+activating trigger after it elapses runs the loaders again;
+`invalidate(locale?, namespace?)` drops the records on demand, for a locale, a
+namespace, or both:
 
 ```javascript
 const config = {
   cache: 3600000, // translations older than an hour refetch on the next trigger
 };
 
-i18n.invalidate('en'); // or invalidate() for every locale
+i18n.invalidate('en');             // every English namespace
+i18n.invalidate(undefined, 'cms'); // one namespace, in every locale
 ```
 
 Both do exactly one thing: drop the bookkeeping that prevents a refetch. Neither
 starts a load, and neither removes anything that is on screen — the next load
-trigger refetches and the fresh data merges over the old. A load already in
-flight when `invalidate()` runs is **severed**: it settles, but its data is
-discarded, because it predates the invalidation and applying it would resurrect
-the bookkeeping the call just dropped.
+trigger refetches and the fresh data merges over the old. A loader already in
+flight for what was invalidated is **severed**: its data is discarded, because
+it predates the invalidation, while the rest of its load lands. An activating
+trigger still in flight fetches the severed part again before it activates, so
+its promise keeps meaning "loaded".
+
+A loader with `cache: false` keeps no freshness of its own: its source caches
+(a remote `query`, an SWR layer), so it runs on every trigger that selects it,
+starts no window and is outside expiry.
 
 ### Server and client
 
 Both run the same code; what differs is the lifetime of the instance — one per
-request on the server (see below), one per session in the browser. The client
-instance starts from the server's snapshot, so its loaders fetch only what the
-snapshot left out: the route-scoped namespaces of pages the visitor has not
-opened yet, and the locales they switch to.
+request on the server, one per tab in the browser. The client instance starts
+from the server's state through `hydrate()`, so its loaders fetch only what the
+server did not load: the route-scoped namespaces of pages the visitor has not
+opened yet, the locales they switch to, and the few namespaces the snapshot
+cannot hand over.
 
 ## Instance Lifetime
 
@@ -443,78 +484,66 @@ server, not once per request. A module-level instance is therefore shared by
 every visitor rendered concurrently, and one visitor's locale ends up in
 another's HTML.
 
-So export the **config**, and build the instance where the request is:
+So export the **config**, and let `sveltekit-i18n/kit` build the instances:
 
 ```javascript
-// src/lib/translations/index.js
+// src/lib/i18n.js
+import { defineI18n } from 'sveltekit-i18n/kit';
+
 export const config = {
   loaders: [/* ... */],
 };
+
+export const { handle, load, use, get } = defineI18n(config, {
+  preferredLocale: (event) => event.cookies?.get('lang'),
+});
 ```
 
-```javascript
-// src/routes/+layout.server.js
-import { I18n } from 'sveltekit-i18n';
-import { config } from '$lib/translations';
+`hooks.server.js` exports `handle`, both root layout files export `load`, the
+root `+layout.svelte` calls `use(() => data)`, and components call `get()`.
+Behind that:
 
-export const load = async ({ url, locals }) => {
-  const i18n = new I18n(config);
+- **The server** builds a fresh instance per request, negotiates the locale
+  (`preferredLocale`, `Accept-Language`, `initLocale`, `fallbackLocale`), loads
+  it for the route and returns `snapshot({ records: true })` on a page render —
+  only the locale and the route on a client navigation.
+- **The browser** builds one instance per tab from that snapshot with
+  `hydrate()`, so it is active before the first render and the loaders the
+  server ran do not run again. Every later pass is a warm load of the target
+  locale for the new route, since it may be a preload; `use()` switches the
+  locale and sets the route as the navigation commits.
+- **The server's answer rules**: a client `setLocale()` stands until the
+  server answers differently.
 
-  await i18n.loadTranslations(locals.locale, url.pathname);
-
-  return { locale: locals.locale, translations: i18n.snapshot() };
-};
-```
-
-```javascript
-// src/routes/+layout.js
-import { browser } from '$app/environment';
-import { I18n } from 'sveltekit-i18n';
-import { config } from '$lib/translations';
-
-// Assigned in the browser only — on the server this module-level binding
-// would be the shared state we are avoiding.
-let client;
-
-export const load = async ({ data, url }) => {
-  // `data` is null when no route matched: the error page renders through this
-  // load too, and on a static host that is every unknown URL.
-  let i18n = client;
-
-  if (!i18n) {
-    i18n = new I18n(config);
-
-    i18n.addTranslations(data?.translations);
-
-    if (browser) client = i18n;
-  }
-
-  await i18n.loadTranslations(data?.locale ?? config.fallbackLocale, url.pathname);
-
-  return { i18n };
-};
-```
-
-Pass it down with `setContext` and read it with `getContext`; the instance is
-reactive, so components re-render on a locale change with no subscription of any
-kind. The full four-step wiring is in
-[base's SSR section](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#server-side-rendering).
+The instance is reactive, so components re-render on a locale change with no
+subscription of any kind. The same wiring by hand is in
+[Server-Side Rendering](./README.md#server-side-rendering).
 
 A module-level singleton is still fine when the server renders nothing
 visitor-specific — a client-only app (`export const ssr = false`), or one locale
 for every request.
 
-### What `snapshot()` carries
+### What the hand-off carries
 
-`snapshot()` serializes the **active locale** and the **`fallbackLocale`**,
-narrowed to the current route, in the pre-preprocess shape. The receiving
-instance applies it with `addTranslations()`, which both fills its tables and
-records those keys as loaded — so the same data is not fetched twice. What the
-payload leaves out is deliberate: other locales, and keys claimed only by
-loaders whose routes do not match. That is why it is applied on top of the
-config rather than assigned to `config.translations`: assigned, it would drop
-the config's own data for everything it leaves out. Freshness is not transferred either; a
-hydrated locale's cache window starts when the client receives the data.
+`snapshot({ records: true })` serializes the **active locale** and the
+**`fallbackLocale`** in the pre-preprocess shape, together with the records of
+the loaders that delivered it — each loader's id and params signature, never a
+reference — the active locale and the route. It is plain data, so SvelteKit
+serializes it like any other load data. `hydrate()` resolves each record to a
+loader of its own config, so those loaders do not run again for the same
+params, displays the data, and restores the locale and the route.
+
+Data no record names is displayed, but keeps no loader from running: whatever
+the envelope does not cover loads again rather than going missing. It is
+applied on top of the config, so the config's own `translations` stay.
+Freshness is not transferred; a hydrated locale's cache window starts when the
+client receives the data.
+
+The plain `snapshot()` carries data without records. A plain hand-off
+(`hydrate({ translations })`) then keeps the loaders without route params of
+every namespace the data names from running, which is why the plain form leaves
+out what plain data cannot describe — a namespace fed by several loaders, one
+whose loader captures params, and one none of whose loaders delivered.
 
 ### `destroy()`
 
@@ -523,7 +552,7 @@ An instance with a shorter life than the app should be released:
 ```svelte
 <script>
   import { I18n } from 'sveltekit-i18n';
-  import { config } from '$lib/translations';
+  import { config } from '$lib/i18n';
 
   const i18n = new I18n(config);
 
@@ -567,8 +596,9 @@ flattens nested objects and arrays to dot notation.
 The lookup is then a single own-property access, and the key in your markup is
 the key in your file. `'preserveArrays'` keeps arrays as arrays, `'none'` stores
 the payload as it came, and a function does it your way. `addTranslations()`
-runs the same transformation, so the two tables never disagree — and `snapshot()`
-serializes the raw one, letting the receiving instance apply its own setting.
+and `hydrate()` run the same transformation, so the two tables never disagree —
+and `snapshot()` serializes the raw one, letting the receiving instance apply
+its own setting.
 
 ### The parser contract
 
@@ -579,9 +609,10 @@ parse(value: unknown, params: ParserParams, locale: string, key: string): Parser
 ```
 
 Four arguments, always: the stored `value` read as an **own** property after
-preprocessing (`undefined` when neither the active locale nor the fallback has
-the key), the `params` of the `t`/`l` call untouched (`[]` when there were
-none), the normalized `locale`, and the dot-notation `key`. In return the
+preprocessing, the `params` of the `t`/`l` call untouched (`[]` when there were
+none), the normalized `locale`, and the dot-notation `key`. A key neither the
+active locale nor the fallback has never reaches the parser: the core answers it
+with `fallbackValue`. In return the
 parser must not throw — not on a missing message, not on surplus parameters:
 `parse` runs on the render path. Everything else is the format's business,
 including what the parameters mean. For `parser-curly` they are the payload and
@@ -596,11 +627,12 @@ there.
 
 ### Namespaces
 
-A loader's `key` is a namespace, and it prefixes every key it contributes:
-`{ key: 'common' }` loading `{ greeting: '…' }` is read as
+A loader's `namespace` prefixes every key it contributes:
+`{ namespace: 'common' }` loading `{ greeting: '…' }` is read as
 `i18n.t('common.greeting')`. Namespaces are what makes route-scoped loading
-possible, keep the first payload small, and let teams own separate files. Keys
-must not contain dots — the dot is the separator.
+possible, keep the first payload small, and let teams own separate files. A
+namespace must not contain dots — the dot is the separator. The 3.0 spelling,
+`key`, still works and logs a deprecation warning.
 
 ### Typing is construction-time
 
@@ -611,8 +643,12 @@ constructor:
   It is read as a **type only**, so the slot may hold an empty value:
   `schema: {} as { 'common.greeting': { name: string } }`. A schema whose keys
   are not a closed set degrades to plain `string` keys instead of rejecting
-  every call. A generator for it is 3.1 work
-  ([#234](https://github.com/sveltekit-i18n/lib/issues/234)); v3 ships the slot.
+  every call. This package ships the slot;
+  [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen), a
+  Vite plugin installed on its own, fills it from your translations, reading
+  payloads through the re-exported `extractParamsFactory`. With `/kit`, the
+  schema in the config handed to `defineI18n` types `get()`, `use()` and
+  `data.i18n`.
 - **One payload type for every message** is stated through the type arguments
   instead: `new I18n<Config<Payload>, Payload>(config)`.
 - **The locales the config spells** complete `setLocale`, `l`, `invalidate` and
@@ -671,17 +707,19 @@ the parser slot filled, and installing both gives the app two cores.
 own-property access plus the parser call. Prototype keys (`__proto__`,
 `constructor`, …) are treated as missing rather than inherited.
 
-**Loading.** Every loader runs at most once per locale per freshness window, and
-duplicate triggers join the load in flight instead of doubling it. Route-scoped
-namespaces keep the first payload to what the landing page needs; everything
-else arrives on navigation.
+**Loading.** Every loader runs at most once per locale per freshness window and
+route params (a `cache: false` one leaves that to its source), and duplicate
+triggers join the load in flight instead of doubling it. Route-scoped loaders
+keep the first payload to what the landing page needs; everything else arrives
+on navigation, or on demand through `loadNamespace()`.
 
 **Rendering.** Reactivity is Svelte 5's own: a locale change invalidates the
 components that actually read the instance, not the tree around them.
 
-**Transfer.** `snapshot()` ships the active locale and the fallback for the
-current route — not the whole table — and marks those keys as loaded on the
-client so hydration fetches nothing twice.
+**Transfer.** `snapshot({ records: true })` ships what the instance holds for
+the active locale and the fallback — not every locale — with the records of the
+loaders that delivered it, so `hydrate()` keeps those loaders from fetching the
+same data twice.
 
 **Bundle.** The core has no runtime dependencies; `parser-curly`'s only
 dependency is the format's reference implementation. Everything is ESM with
@@ -696,5 +734,6 @@ parser's build-time surface never reaches the browser (see
 - [Best Practices](./BEST_PRACTICES.md) – recommended patterns
 - [Troubleshooting](./TROUBLESHOOTING.md) – symptoms and their causes
 - [base documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) – the core, member by member
+- [typegen](https://github.com/sveltekit-i18n/typegen) – generates the `schema` type
 - [parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly) – the message format
 - [extensions](https://github.com/sveltekit-i18n/extensions) – official extensions, including the store adapter
