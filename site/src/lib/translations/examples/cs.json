@@ -6,7 +6,7 @@
   "app": {
     "multi-page": {
       "title": "Více stránek",
-      "text": "Několik rout, jazyk není v URL. Určuje se pro každý požadavek z cookie, pak z Accept-Language."
+      "text": "Několik rout, jazyk není v URL. sveltekit-i18n/kit ho určuje pro každý požadavek z cookie, pak z Accept-Language."
     },
     "locale-param": {
       "title": "Jazyk v query parametru",
@@ -22,7 +22,7 @@
     },
     "locale-router-advanced": {
       "title": "Výchozí jazyk bez prefixu",
-      "text": "Výchozí jazyk si nechává holou URL a chybová stránka je tvoje, přeložená hned napoprvé. Na tomhle běží tenhle web."
+      "text": "Výchozí jazyk si nechává holou URL a chybová stránka je tvoje, přeložená hned napoprvé. Stejně směruje i tenhle web."
     },
     "component-scoped-csr": {
       "title": "Překlady u komponenty (CSR)",
@@ -30,7 +30,7 @@
     },
     "component-scoped-ssr": {
       "title": "Překlady u komponenty (SSR)",
-      "text": "Stejná komponenta, načtená stránkou a předaná přes snapshot(): kompletní už při prvním vykreslení."
+      "text": "Stejná komponenta, načtená stránkou a předaná přes snapshot() a hydrate(): kompletní už při prvním vykreslení."
     },
     "mdsvex": {
       "title": "mdsvex",

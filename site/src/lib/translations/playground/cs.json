@@ -27,7 +27,7 @@
   },
   "loaders": {
     "title": "Loadery",
-    "lead": "Loader se spustí, když sedí jeho jazyk i jeho routes na aktuální route, jednou za okno čerstvosti. Načti stejnou route dvakrát a sleduj, jak druhý pokus neudělá nic.",
+    "lead": "Loader se spustí, když sedí jeho jazyk i jeho routes na aktuální route, jednou za okno čerstvosti a parametry route. Každý loader se eviduje zvlášť. Načti stejnou route dvakrát a sleduj, jak druhý pokus neudělá nic.",
     "locale": "Jazyk",
     "route": "Route",
     "load": "Načíst překlady",

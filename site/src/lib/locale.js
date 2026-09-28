@@ -9,6 +9,3 @@ export const localeOf = (pathname) => PREFIXED.find(
 ) ?? DEFAULT_LOCALE;
 
 export const prefixOf = (locale) => (locale === DEFAULT_LOCALE ? '' : `/${locale}`);
-
-/** Loaders are scoped to the app's routes, which do not carry the prefix. */
-export const routeOf = (pathname, locale) => pathname.slice(prefixOf(locale).length) || '/';

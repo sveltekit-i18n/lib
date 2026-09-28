@@ -1,12 +1,11 @@
 <script>
-  import { getContext } from 'svelte';
-
   import Fallback from '$lib/playground/Fallback.svelte';
   import Loaders from '$lib/playground/Loaders.svelte';
   import Parser from '$lib/playground/Parser.svelte';
   import Preprocess from '$lib/playground/Preprocess.svelte';
+  import { get } from '$lib/translations';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   let { data } = $props();
 </script>

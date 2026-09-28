@@ -5,13 +5,13 @@
   "start": "Rychlý start",
   "more": "Kompletní průvodce prvními kroky",
   "step": {
-    "config": "Popiš překlady, které aplikace načítá.",
+    "config": "Popiš překlady, které aplikace načítá, a napoj je na SvelteKit.",
     "use": "Čti je z instance. Text se řídí aktivním jazykem."
   },
   "feature": {
     "sveltekit": {
       "title": "Stavěné pro SvelteKit",
-      "text": "Instance na každý požadavek, takže jazyk jednoho návštěvníka nikdy nedorazí na stránku druhého."
+      "text": "sveltekit-i18n/kit propojí hooky, layouty i komponenty: na serveru instance na každý požadavek, takže jazyk jednoho návštěvníka nikdy nedorazí na stránku druhého, v prohlížeči jedna na kartu."
     },
     "install": {
       "title": "Jedna instalace",
@@ -19,7 +19,7 @@
     },
     "lazy": {
       "title": "Načítá, co route potřebuje",
-      "text": "Loader se spustí, když sedí jeho jazyk i route — jednou za období platnosti."
+      "text": "Loader se spustí, když sedí jeho jazyk i route — jednou za období platnosti a parametry route."
     },
     "runes": {
       "title": "Jedna reaktivní instance",
@@ -27,7 +27,7 @@
     },
     "types": {
       "title": "Typované klíče i parametry",
-      "text": "Slot schema zúží, co t() a l() přijmou — až na parametry jednotlivých zpráv."
+      "text": "Slot schema zúží, co t() a l() přijmou — až na parametry jednotlivých zpráv. Vite plugin @sveltekit-i18n/typegen ho vyplní z tvých překladů."
     },
     "extensions": {
       "title": "Rozšiřitelné",

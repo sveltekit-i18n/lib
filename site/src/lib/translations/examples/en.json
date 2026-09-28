@@ -6,7 +6,7 @@
   "app": {
     "multi-page": {
       "title": "Multi-page",
-      "text": "Several routes, no locale in the URL. The locale is negotiated per request from a cookie, then Accept-Language."
+      "text": "Several routes, no locale in the URL. sveltekit-i18n/kit negotiates the locale per request from a cookie, then Accept-Language."
     },
     "locale-param": {
       "title": "Locale in the query",
@@ -22,7 +22,7 @@
     },
     "locale-router-advanced": {
       "title": "Advanced locale router",
-      "text": "The default locale keeps the bare URL and the error page is yours, translated on the first hit. What this site runs on."
+      "text": "The default locale keeps the bare URL and the error page is yours, translated on the first hit. This site routes the same way."
     },
     "component-scoped-csr": {
       "title": "Component-scoped (CSR)",
@@ -30,7 +30,7 @@
     },
     "component-scoped-ssr": {
       "title": "Component-scoped (SSR)",
-      "text": "The same component, loaded by the page and handed down through snapshot(): complete on the first render."
+      "text": "The same component, loaded by the page and handed down through snapshot() and hydrate(): complete on the first render."
     },
     "mdsvex": {
       "title": "mdsvex",

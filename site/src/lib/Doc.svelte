@@ -1,9 +1,8 @@
 <script>
-  import { getContext } from 'svelte';
-
   import { REPO } from '$lib/docs.js';
+  import { get } from '$lib/translations';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   let { html, title, headings, file } = $props();
 </script>
