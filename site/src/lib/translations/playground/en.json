@@ -27,7 +27,7 @@
   },
   "loaders": {
     "title": "Loaders",
-    "lead": "A loader runs when its locale matches and its routes match the current route, once per freshness window. Load the same route twice and watch the second attempt do nothing.",
+    "lead": "A loader runs when its locale matches and its routes match the current route, once per freshness window and route params. Each loader is recorded on its own. Load the same route twice and watch the second attempt do nothing.",
     "locale": "Locale",
     "route": "Route",
     "load": "Load translations",

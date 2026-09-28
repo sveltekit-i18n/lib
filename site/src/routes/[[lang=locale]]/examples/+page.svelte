@@ -1,9 +1,8 @@
 <script>
-  import { getContext } from 'svelte';
-
   import { EXAMPLES, GROUPS, runHref, sourceHref } from '$lib/examples.js';
+  import { get } from '$lib/translations';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 </script>
 
 <svelte:head>

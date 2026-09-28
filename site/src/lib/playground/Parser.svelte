@@ -1,5 +1,4 @@
 <script>
-  import { getContext } from 'svelte';
   import { I18n } from 'sveltekit-i18n';
   // The documented way to reach another message format is to build on the core
   // directly. It is the same core this package already carries, deduplicated by
@@ -9,10 +8,11 @@
   import { LOCALES } from '$lib/docs.js';
   import { highlightCurly, highlightJsonText, highlightPlain } from '$lib/highlight.js';
   import { FLAVOURS, KEY, MESSAGES, PAYLOAD, parsePayload } from '$lib/playground.js';
+  import { get } from '$lib/translations';
   import Editor from './Editor.svelte';
   import Panel from './Panel.svelte';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   let { code } = $props();
 

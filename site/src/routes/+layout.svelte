@@ -1,37 +1,26 @@
 <script>
-  import { setContext } from 'svelte';
-
   import '../app.css';
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
 
-  import { DEFAULT_LOCALE, LOCALES, NPM, REPO, SPONSOR } from '$lib/docs.js';
+  import { LOCALES, NPM, REPO, SPONSOR } from '$lib/docs.js';
   import { ICONS } from '$lib/icons.js';
+  import { localeOf, prefixOf } from '$lib/locale.js';
+  import { use } from '$lib/translations';
 
   let { data, children } = $props();
 
   const EXTERNAL = [{ key: 'github', url: REPO }, { key: 'npm', url: NPM }];
 
-  setContext('i18n', data.i18n);
+  const i18n = use(() => data);
 
-  const i18n = data.i18n;
+  const current = $derived(localeOf(page.url.pathname));
+  const prefix = $derived(prefixOf(current));
 
   // The path without its locale prefix, so the switcher can re-prefix it.
-  const bare = $derived(
-    (data.prefix ? page.url.pathname.replace(data.prefix, '') : page.url.pathname) || '/',
-  );
+  const bare = $derived(page.url.pathname.slice(prefix.length) || '/');
 
-  // The prerendered pages carry their locale from the server hook, but the
-  // static fallback is one shell serving every unknown URL.
-  $effect(() => {
-    document.documentElement.lang = i18n.locale;
-  });
-
-  const href = (locale) => {
-    const prefix = locale === DEFAULT_LOCALE ? '' : `/${locale}`;
-
-    return `${prefix}${bare === '/' ? '' : bare}` || '/';
-  };
+  const href = (target) => `${prefixOf(target)}${bare === '/' ? '' : bare}` || '/';
 </script>
 
 <a class="skip" href="#main">Skip to content</a>
@@ -41,16 +30,16 @@
 </a>
 
 <header>
-  <a class="brand" href={data.prefix || '/'}>
+  <a class="brand" href={prefix || '/'}>
     <strong>sveltekit-i18n</strong>
     <span>{i18n.t('site.tagline')}</span>
   </a>
 
   <nav>
-    <a href={data.prefix || '/'}>{i18n.t('nav.home')}</a>
-    <a href="{data.prefix}/docs">{i18n.t('nav.docs')}</a>
-    <a href="{data.prefix}/examples">{i18n.t('nav.examples')}</a>
-    <a href="{data.prefix}/playground">{i18n.t('nav.playground')}</a>
+    <a href={prefix || '/'}>{i18n.t('nav.home')}</a>
+    <a href="{prefix}/docs">{i18n.t('nav.docs')}</a>
+    <a href="{prefix}/examples">{i18n.t('nav.examples')}</a>
+    <a href="{prefix}/playground">{i18n.t('nav.playground')}</a>
 
     {#each EXTERNAL as { key, url } (key)}
       <a class="mark" href={url} target="_blank" rel="noreferrer" aria-label={i18n.t(`nav.${key}`)}>
@@ -81,7 +70,7 @@
 
   <label class="language">
     {i18n.t('nav.language')}
-    <select value={data.locale} onchange={(event) => goto(href(event.currentTarget.value))}>
+    <select value={current} onchange={(event) => goto(href(event.currentTarget.value))}>
       {#each LOCALES as locale (locale)}
         <option value={locale}>{i18n.t(`lang.${locale}`)}</option>
       {/each}

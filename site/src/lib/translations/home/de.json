@@ -5,13 +5,13 @@
   "start": "Schnellstart",
   "more": "Der vollständige Einstiegsleitfaden",
   "step": {
-    "config": "Beschreibe die Übersetzungen, die die App lädt.",
+    "config": "Beschreibe die Übersetzungen, die die App lädt, und binde sie in SvelteKit ein.",
     "use": "Lies sie von der Instanz. Der Text folgt der aktiven Sprache."
   },
   "feature": {
     "sveltekit": {
       "title": "Für SvelteKit gebaut",
-      "text": "Eine Instanz pro Anfrage, damit die Sprache eines Besuchers nie auf die Seite eines anderen gerät."
+      "text": "sveltekit-i18n/kit verdrahtet Hooks, Layouts und Komponenten: auf dem Server eine Instanz pro Anfrage, damit die Sprache eines Besuchers nie auf die Seite eines anderen gerät, im Browser eine pro Tab."
     },
     "install": {
       "title": "Eine Installation",
@@ -19,7 +19,7 @@
     },
     "lazy": {
       "title": "Lädt, was eine Route braucht",
-      "text": "Ein Loader läuft, wenn Sprache und Route passen — einmal pro Gültigkeitsfenster."
+      "text": "Ein Loader läuft, wenn Sprache und Route passen — einmal pro Gültigkeitsfenster und Routenparameter."
     },
     "runes": {
       "title": "Eine reaktive Instanz",
@@ -27,7 +27,7 @@
     },
     "types": {
       "title": "Typisierte Schlüssel und Parameter",
-      "text": "Ein schema-Slot verengt, was t() und l() annehmen — bis zu den Parametern jeder Nachricht."
+      "text": "Ein schema-Slot verengt, was t() und l() annehmen — bis zu den Parametern jeder Nachricht. Das Vite-Plugin @sveltekit-i18n/typegen füllt ihn aus deinen Übersetzungen."
     },
     "extensions": {
       "title": "Erweiterbar",

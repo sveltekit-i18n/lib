@@ -1,13 +1,13 @@
 <script>
-  import { getContext } from 'svelte';
   import { I18n } from 'sveltekit-i18n';
 
   import { highlightJson, highlightJsonText } from '$lib/highlight.js';
   import { PREPROCESS_MODES, TRANSLATIONS, parsePayload } from '$lib/playground.js';
+  import { get } from '$lib/translations';
   import Editor from './Editor.svelte';
   import Panel from './Panel.svelte';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   let { code } = $props();
 

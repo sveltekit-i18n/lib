@@ -5,13 +5,13 @@
   "start": "Quick start",
   "more": "The full getting started guide",
   "step": {
-    "config": "Describe the translations your app loads.",
+    "config": "Describe the translations your app loads, and wire them into SvelteKit.",
     "use": "Read them off the instance. The text follows the active locale."
   },
   "feature": {
     "sveltekit": {
       "title": "Built for SvelteKit",
-      "text": "Per-request instances on the server, so one visitor's language never reaches another visitor's page."
+      "text": "sveltekit-i18n/kit wires hooks, layouts and components: an instance per request on the server, so one visitor's language never reaches another visitor's page, and one per tab in the browser."
     },
     "install": {
       "title": "One install",
@@ -19,7 +19,7 @@
     },
     "lazy": {
       "title": "Loads what a route needs",
-      "text": "A loader fires when both its locale and its route match, once per freshness window."
+      "text": "A loader fires when both its locale and its route match, once per freshness window and route params."
     },
     "runes": {
       "title": "One reactive instance",
@@ -27,7 +27,7 @@
     },
     "types": {
       "title": "Typed keys and payloads",
-      "text": "A schema slot narrows what t() and l() accept, down to each message's parameters."
+      "text": "A schema slot narrows what t() and l() accept, down to each message's parameters. The @sveltekit-i18n/typegen Vite plugin fills it from your translations."
     },
     "extensions": {
       "title": "Extensible",

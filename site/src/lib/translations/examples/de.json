@@ -6,7 +6,7 @@
   "app": {
     "multi-page": {
       "title": "Mehrere Seiten",
-      "text": "Mehrere Routen, die Sprache steht nicht in der URL. Sie wird pro Anfrage aus einem Cookie und dann aus Accept-Language ermittelt."
+      "text": "Mehrere Routen, die Sprache steht nicht in der URL. sveltekit-i18n/kit ermittelt sie pro Anfrage aus einem Cookie und dann aus Accept-Language."
     },
     "locale-param": {
       "title": "Sprache im Query-Parameter",
@@ -22,7 +22,7 @@
     },
     "locale-router-advanced": {
       "title": "Standardsprache ohne Präfix",
-      "text": "Die Standardsprache behält die nackte URL, und die Fehlerseite ist deine eigene, schon beim ersten Aufruf übersetzt. Darauf läuft diese Website."
+      "text": "Die Standardsprache behält die nackte URL, und die Fehlerseite ist deine eigene, schon beim ersten Aufruf übersetzt. Genauso routet diese Website."
     },
     "component-scoped-csr": {
       "title": "Übersetzungen an der Komponente (CSR)",
@@ -30,7 +30,7 @@
     },
     "component-scoped-ssr": {
       "title": "Übersetzungen an der Komponente (SSR)",
-      "text": "Dieselbe Komponente, von der Seite geladen und über snapshot() weitergereicht: schon beim ersten Rendern vollständig."
+      "text": "Dieselbe Komponente, von der Seite geladen und über snapshot() und hydrate() weitergereicht: schon beim ersten Rendern vollständig."
     },
     "mdsvex": {
       "title": "mdsvex",

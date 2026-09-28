@@ -1,12 +1,16 @@
 <script>
-  import { getContext } from 'svelte';
+  import { page } from '$app/state';
 
   import { FEATURES } from '$lib/landing.js';
   import { REPO } from '$lib/docs.js';
+  import { localeOf, prefixOf } from '$lib/locale.js';
+  import { get } from '$lib/translations';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   let { data } = $props();
+
+  const prefix = $derived(prefixOf(localeOf(page.url.pathname)));
 </script>
 
 <svelte:head>
@@ -21,7 +25,7 @@
   {@html data.install}
 
   <p class="cta">
-    <a class="button" href="{data.prefix}/docs">{i18n.t('home.read')}</a>
+    <a class="button" href="{prefix}/docs">{i18n.t('home.read')}</a>
     <a href={REPO} rel="noreferrer">{i18n.t('nav.github')}</a>
   </p>
 
@@ -55,5 +59,5 @@
     </li>
   </ol>
 
-  <p><a href="{data.prefix}/docs/getting-started">{i18n.t('home.more')}</a></p>
+  <p><a href="{prefix}/docs/getting-started">{i18n.t('home.more')}</a></p>
 </section>

@@ -27,7 +27,7 @@
   },
   "loaders": {
     "title": "Loader",
-    "lead": "Ein Loader läuft, wenn seine Sprache passt und seine routes zur aktuellen Route passen, einmal pro Frische-Fenster. Lade dieselbe Route zweimal und sieh zu, wie der zweite Versuch nichts tut.",
+    "lead": "Ein Loader läuft, wenn seine Sprache passt und seine routes zur aktuellen Route passen, einmal pro Frische-Fenster und Routenparameter. Jeder Loader wird einzeln erfasst. Lade dieselbe Route zweimal und sieh zu, wie der zweite Versuch nichts tut.",
     "locale": "Sprache",
     "route": "Route",
     "load": "Übersetzungen laden",
