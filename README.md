@@ -341,6 +341,11 @@ and two for choosing and writing a locale: `matchLocale` (`Accept-Language`,
 
 A 3.0 config loads in 3.1 as it is. What to check:
 
+- **Messages follow version 3 of the Curly Message Format.** A payload value is
+  data and is never read as syntax, so a catalogue that composed messages
+  through its payload, or that doubled backslashes in values, renders
+  differently; `parserOptions.onSuspectValue` announces every such value while
+  you migrate. `pass-limit` is gone from `Report['code']`.
 - **Seeds no longer count as loaded.** A client that applied the server's
   `snapshot()` with `addTranslations()` now fetches everything again after
   hydration — move to `sveltekit-i18n/kit`, or to
@@ -353,7 +358,9 @@ A 3.0 config loads in 3.1 as it is. What to check:
   of a namespace is recorded on its own.
 
 The whole list is in
-[base's upgrade notes](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30).
+[base's upgrade notes](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30),
+and the format's move in
+[parser-curly's changelog](https://github.com/sveltekit-i18n/parsers/blob/master/parser-curly/CHANGELOG.md#310).
 
 ## Documentation
 

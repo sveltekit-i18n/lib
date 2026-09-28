@@ -830,11 +830,15 @@ config needs no `schema`:
 export const { handle, load, use, get } = defineI18n(config);
 ```
 
-With an older typegen, or a 3.0 core, cast the slot to the generated type:
+With an older typegen, or sveltekit-i18n before 3.1.0-next.2, cast the slot to
+the generated type:
 
 ```typescript
 export const { handle, load, use, get } = defineI18n({ ...config, schema: {} as TranslationSchema });
 ```
+
+sveltekit-i18n 3.0 has neither `/kit` nor the registry: cast the slot of the
+config handed to the constructor, `new I18n({ ...config, schema: {} as TranslationSchema })`.
 
 It runs the config's loaders as the app's server would, so the keys are the
 ones `preprocess` produces; `extractParams` reads payloads through the
@@ -907,8 +911,9 @@ From `sveltekit-i18n/kit`: `defineI18n` and the `Kit` types.
 From `sveltekit-i18n/utils`: `matchLocale`, `resolveLoaders`,
 `sanitizeLocales`, `textDirection`, `toDotNotation` and the `DotNotation` type.
 
-There is nothing to augment and nothing to declare: the instance is typed by the
-config it was constructed from.
+The instance is typed by the config it was constructed from, or, when that
+config states no schema, by the schema registered in `SvelteKitI18n.Register`,
+which the typegen writes for you.
 
 ## Extensions
 
@@ -968,6 +973,12 @@ const i18n = new I18n({ ...config, extensions: [withGreeting] });
 i18n.greet('World');
 i18n.t('common.greeting', { name: 'World' }); // still key- and payload-checked
 ```
+
+The pipe folds a tuple. A config kept in a variable, as the one handed to
+`defineI18n()`, widens its `extensions` to an array, and the surface is then
+typed as the bare instance while the call still returns the extension's output.
+Keep that config `as const` (`{ ...base, extensions: [withGreeting] } as const`),
+or hand the extensions over in the call as above.
 
 A generic function signature (`<I>(i18n: I) => I & { … }`) does **not** work:
 reading one instantiates its type parameters at their constraints, so the pipe
