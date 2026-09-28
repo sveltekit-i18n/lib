@@ -68,7 +68,7 @@
   };
 
   const reset = () => {
-    instance = build();
+    instance = build((namespace) => ran.push(namespace));
     log = [];
   };
 </script>
