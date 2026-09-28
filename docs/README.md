@@ -328,7 +328,8 @@ separate and silent by default — see [`parserOptions.onReport`](#parseroptions
 ### `schema`
 
 A type-only map of translation key to the payload that key's message expects.
-Only its type is read, so the slot may hold an empty value. See
+Only its type is read, so the slot may hold an empty value. Without it, the
+schema the app registers types the instance. See
 [TypeScript](#typing-keys-and-payloads-with-schema).
 
 ### The `extensions` pipe
@@ -984,7 +985,7 @@ import type { DotNotation } from 'sveltekit-i18n/utils';
 | `Extension` | core | `Extension.T`, `Extension.Operator`, `Extension.Generic`, `Extension.Piped` |
 | `Loader` | core | `Loader.LoaderModule`, `Loader.Route`, `Loader.Props`, `Loader.Params`, `Loader.Resolved`, … |
 | `Logger` | core | `Logger.T`, `Logger.Level` |
-| `Schema` | core | `Schema.FromConfig`, `Schema.FromInstance`, `Schema.Key`, `Schema.Params`, `Schema.Payload` |
+| `Schema` | core | `Schema.Registered`, `Schema.FromConfig`, `Schema.FromInstance`, `Schema.Key`, `Schema.Params`, `Schema.Payload` |
 | `Snapshot` | core | `Snapshot.Envelope` (what `snapshot({ records: true })` returns and `hydrate()` takes), `Snapshot.LoadRecord` |
 | `Translations` | core | `Translations.T`, `Translations.SerializedTranslations`, … |
 | `Kit` | core, from `sveltekit-i18n/kit` | `Kit.Options` (what `defineI18n` takes), `Kit.T` (what it returns), `Kit.Payload`, `Kit.Event`, … |
@@ -1189,36 +1190,45 @@ The package is written in TypeScript and ships its declarations. What you get:
 
 - ✅ Type definitions for every configuration slot
 - ✅ Typed properties and methods, with `t`/`l` returning `string`
-- ✅ Typed keys and payloads, from a [`schema`](#typing-keys-and-payloads-with-schema) you supply
+- ✅ Typed keys and payloads, from a [`schema`](#typing-keys-and-payloads-with-schema) registered once for the app, or stated per instance
 - ✅ Locale completion, from the locales the config spells
 - ✅ [`extractParamsFactory`](#extractparamsfactory), which reports what a message expects of its payload
 
-This package ships the slot, not the generator. The schema is hand-written for
-a small project, or generated from your translations by
+This package ships the slot and the registry, not the generator. The schema is
+hand-written for a small project, or generated from your translations by
 [`@sveltekit-i18n/typegen`](#generating-the-schema-with-typegen).
 
 ### Typing keys and payloads with `schema`
 
-`config.schema` maps each translation key to the payload its message expects.
-Supplying it types `t()` and `l()`: keys autocomplete, an unknown key is a type
-error, and the payload argument is checked against the key's entry.
+A schema maps each translation key to the payload its message expects. It
+types `t()` and `l()`: keys autocomplete, an unknown key is a type error, and
+the payload argument is checked against the key's entry.
 
-**Only the type is read** — nothing reads this value at runtime, so the slot may
-hold an empty value:
+**Register it once for the app.** A global script registers the app's schema in
+the global `SvelteKitI18n.Register` interface, and every instance whose config
+states no `schema` is typed by it — `new I18n(config)` and
+[`defineI18n(config)`](#sveltekit) alike, with nothing to wire. typegen
+[writes this file](#generating-the-schema-with-typegen); by hand, it is:
+
+```typescript
+// src/i18n-schema.d.ts — a global script: no top-level import or export
+interface TranslationSchema {
+  'common.greeting': { name: string };  // payload required
+  'common.about': never;                // message takes no parameters
+  'home.title': { title?: string };     // nothing required — payload optional
+}
+
+declare namespace SvelteKitI18n {
+  interface Register {
+    schema: TranslationSchema;
+  }
+}
+```
 
 ```typescript
 import { I18n } from 'sveltekit-i18n';
 
-type TranslationSchema = {
-  'common.greeting': { name: string };  // payload required
-  'common.about': never;                // message takes no parameters
-  'home.title': { title?: string };     // nothing required — payload optional
-};
-
-export const i18n = new I18n({
-  ...config,
-  schema: {} as TranslationSchema,
-});
+export const i18n = new I18n(config); // typed by TranslationSchema
 
 i18n.t('common.greeting', { name: 'Alice' }); // ok
 i18n.t('common.about');                       // ok
@@ -1227,6 +1237,17 @@ i18n.t('common.headline');                    // Error: unknown key
 i18n.t('common.greeting');                    // Error: missing payload
 i18n.t('common.greeting', { name: 42 });      // Error: wrong payload shape
 i18n.t('common.about', { title: 'About' });   // Error: takes no payload
+```
+
+**Or state it per instance.** `config.schema` types that instance, and it wins
+over the registry. **Only the type is read** — nothing reads this value at
+runtime, so the slot may hold an empty value:
+
+```typescript
+export const i18n = new I18n({
+  ...config,
+  schema: {} as TranslationSchema,
+});
 ```
 
 Payload rules:
@@ -1242,16 +1263,43 @@ The payload occupies the first parser slot only, so the trailing `props`
 argument survives unchanged — a schema narrows what a key expects, never what
 formatting options a call may pass.
 
-**⚠️ A schema whose keys are not a closed set is ignored.** An open index
-signature, or a schema with no keys at all, would reject every key or demand a
-payload for keys it knows nothing about — so keys degrade to plain `string` and
-calls are typed as if no schema were supplied.
+**Precedence.** The `schema` the config states decides; only an absent one
+reads the registry:
+
+| The config's `schema` | Keys and payloads are typed by |
+|---|---|
+| absent, or typed `any` (a plain `Config` annotation) | the registry — plain strings when nothing is registered |
+| a closed schema (`{} as X`) | `X`: a stated schema always wins |
+| a schema whose keys are not a closed set (`{}`, `Record<string, …>`) | nothing — keys are plain strings |
+
+**`schema: {}` opts out.** An open index signature, or a schema with no keys at
+all, would reject every key or demand a payload for keys it knows nothing
+about — so it types nothing: keys stay plain strings, and since the slot is
+stated, the registry stays out too. An instance with a catalogue of its own — a
+second instance in the app, a test, a Storybook story — states its closed
+schema, or `schema: {}`. A registration with no keys, what typegen writes
+before its first run, types nothing either. It is the config's **type** that is
+read: `schema: {}` opts out where the constructor infers that type from the
+value, while a config type passed as the first type argument decides on its own
+— see [One payload type for every message](#one-payload-type-for-every-message).
+
+**⚠️ The registry covers the whole program, so a library never registers.**
+Only the app's schema file fills `SvelteKitI18n.Register`. A library's own
+instances state their schema, or `schema: {}`, which also keeps an app's
+registry away from a workspace library compiled inside the app's program. Two
+registrations whose `schema` differs are a type error (TS2717) with
+`skipLibCheck: false`, and silent with SvelteKit's default
+`skipLibCheck: true`, where the first one wins.
+
+**⚠️ The registry needs `sveltekit-i18n` 3.1** or newer. An older core ignores
+the registration without a diagnostic; there, state the schema per instance.
 
 **⚠️ Construction time only.** The type is read off the config the constructor
-receives: a later [`loadConfig()`](#loadconfigconfig) cannot retype an existing
-instance, and an [extension](#extensions) typed by a fixed return type erases
-the instance's type parameters altogether. With [`/kit`](#sveltekit), the
-schema goes in the config handed to `defineI18n()`, which types `get()`,
+receives, and the registry with it: a later
+[`loadConfig()`](#loadconfigconfig) cannot retype an existing instance, and an
+[extension](#extensions) typed by a fixed return type erases the instance's
+type parameters altogether. With [`/kit`](#sveltekit), the config handed to
+`defineI18n()` — or the registry, when it states no schema — types `get()`,
 `use()` and `data.i18n`.
 
 ### Generating the schema with typegen
@@ -1292,8 +1340,12 @@ you override, say — goes unreported. See
 [`extractParams`](https://github.com/sveltekit-i18n/typegen#extractparams) in
 typegen's README.
 
-The output, `src/i18n-schema.d.ts`, declares a global `TranslationSchema` and
-imports nothing. Point the slot at it:
+The output, `src/i18n-schema.d.ts`, is a global script: it declares a global
+`TranslationSchema` and imports nothing. From typegen 3.0.0-next.3 on, it also
+[registers](#typing-keys-and-payloads-with-schema) that schema in
+`SvelteKitI18n.Register`, so every instance whose config states no `schema` is
+typed by it, with nothing to wire. The cast is then an explicit per-instance
+choice, and still what an older typegen, or a 3.0 core, needs:
 
 ```typescript
 const i18n = new I18n({ ...config, schema: {} as TranslationSchema });
@@ -1305,8 +1357,8 @@ plugin's options, diagnostics and limits are in
 
 ### One payload type for every message
 
-Where every message shares one payload shape, state it through the constructor's
-type arguments rather than a schema:
+Where every message shares one payload shape and the app registers no schema,
+state it through the constructor's type arguments:
 
 ```typescript
 import { I18n, type Config } from 'sveltekit-i18n';
@@ -1319,6 +1371,19 @@ export const i18n = new I18n<Config<Payload>, Payload>(config);
 
 i18n.t('common.welcome', { applicationName: 'My app' }); // ok
 i18n.t('common.welcome', { aplicationName: 'My app' });  // Error: typo caught
+```
+
+**⚠️ With a registered schema, the registry types this instance instead.**
+`Config<Payload>` leaves the schema slot typed `any`, which reads the
+[registry](#typing-keys-and-payloads-with-schema), and `schema: {}` in the value
+changes nothing, since the type argument decides — nor does
+`Config<Payload> & { schema: {} }`, whose slot stays `any`. State the opt-out in
+that argument, replacing the slot:
+
+```typescript
+type AppConfig = Omit<Config<Payload>, 'schema'> & { schema?: {} };
+
+export const i18n = new I18n<AppConfig, Payload>(config); // plain keys, `Payload` checked
 ```
 
 **⚠️ Annotating the config variable does not type the payload.**
@@ -1846,7 +1911,7 @@ a migration:
 | `getTranslationProps()` on the server | [`sveltekit-i18n/kit`](#sveltekit), or `i18n.snapshot({ records: true })` on a per-request instance, applied on the client with `hydrate()` |
 | `parserOptions` for `@sveltekit-i18n/parser-default` | `parserOptions` for `parser-curly`, built in; per-call props are keyed by modifier name (`{ number: { … } }`) |
 | Stores anywhere (`import { get } from 'svelte/store'`) | plain reads; add [`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores) to `config.extensions` for the `$t` form |
-| `new i18n<Parser.Params<Payload>>(config)` | `new I18n<Config<Payload>, Payload>(config)`, or `config.schema` for per-key payloads |
+| `new i18n<Parser.Params<Payload>>(config)` | `new I18n<Config<Payload>, Payload>(config)` ([with a registered schema](#one-payload-type-for-every-message), the opt-out form), or `config.schema` for per-key payloads |
 | `class MyI18n extends i18n {}` | an entry in [`config.extensions`](#extensions) — the exported `I18n` is a facade, there is nothing to subclass |
 
 Also worth knowing:

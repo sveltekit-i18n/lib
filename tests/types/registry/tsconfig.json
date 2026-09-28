@@ -1,0 +1,17 @@
+{
+  // One program of its own, since a registration types every instance in the
+  // program it is part of. `sveltekit-i18n` resolves to this package's build
+  // by its own name, through the `exports` map, as it does in an app; the
+  // core is reached only through it. `skipLibCheck` stays off, unlike in a
+  // SvelteKit app: it would hide a second, conflicting `Register.schema`.
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": false,
+    "noEmit": true,
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "types": []
+  },
+  "include": ["."]
+}

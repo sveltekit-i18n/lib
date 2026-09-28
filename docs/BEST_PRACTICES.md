@@ -746,28 +746,41 @@ while hiding the rest.
 
 ### Typed keys and payloads with `schema`
 
-`config.schema` maps each translation key to the payload its message expects.
-Only its **type** is read, which is why `{} as …` is the idiom:
+A schema maps each translation key to the payload its message expects.
+**Register it once for the app**: a global script fills the global
+`SvelteKitI18n.Register` interface, and every instance whose config states no
+`schema` is typed by it — `new I18n(config)`, and `get()`, `use()` and
+`data.i18n` from `defineI18n(config)` — with nothing to wire:
+
+```typescript
+// src/i18n-schema.d.ts — a global script: no top-level import or export
+interface TranslationSchema {
+  'common.greeting': { name: string };   // payload required
+  'common.about': never;                 // message takes no parameters
+  'home.title': { title?: string };      // nothing required — payload optional
+}
+
+declare namespace SvelteKitI18n {
+  interface Register {
+    schema: TranslationSchema;
+  }
+}
+```
 
 ```typescript
 import { I18n } from 'sveltekit-i18n';
 
-type TranslationSchema = {
-  'common.greeting': { name: string };   // payload required
-  'common.about': never;                 // message takes no parameters
-  'home.title': { title?: string };      // nothing required — payload optional
-};
-
-export const i18n = new I18n({
-  ...config,
-  schema: {} as TranslationSchema,
-});
+export const i18n = new I18n(config); // typed by TranslationSchema
 
 i18n.t('common.greeting', { name: 'Alice' }); // ok
 i18n.t('common.about');                       // ok — takes no payload
 i18n.t('common.greting', { name: 'Alice' });  // Error: not a key of the schema
 i18n.t('common.greeting', {});                // Error: `name` is required
 ```
+
+A config may state its own schema instead, which wins over the registry. Only
+its **type** is read, which is why `{} as …` is the idiom:
+`new I18n({ ...config, schema: {} as TranslationSchema })`.
 
 Rules worth knowing:
 
@@ -776,10 +789,21 @@ Rules worth knowing:
 - A union of keys (`t(cond ? 'a' : 'b', …)`) takes the **intersection** of their
   payloads.
 - A schema whose keys are not a closed set (`Record<string, …>`, or no keys at
-  all) degrades to plain `string` keys instead of rejecting every call.
+  all) degrades to plain `string` keys instead of rejecting every call — so
+  `schema: {}` opts an instance out of the registry, where the constructor
+  infers the config's type (a type argument decides on its own). A second
+  instance with a catalogue of its own, a test or a story states its closed
+  schema, or opts out.
+- **The registry covers the whole program: only the app registers.** A library
+  never ships a registration — its own instances state their schema, or
+  `schema: {}`. Two registrations whose `schema` differs are a type error
+  (TS2717) with `skipLibCheck: false`, and silent with SvelteKit's default
+  `skipLibCheck: true`, where the first one wins.
+- **The registry needs `sveltekit-i18n` 3.1** or newer; an older core ignores
+  it without a diagnostic, so state the schema per instance there.
 - **Construction time only.** A later `loadConfig()` cannot retype an existing
-  instance. With `/kit`, put the schema in the config handed to `defineI18n()`;
-  it types `get()`, `use()` and `data.i18n`.
+  instance. With `/kit`, the config handed to `defineI18n()` — or the registry,
+  when it states no schema — types `get()`, `use()` and `data.i18n`.
 
 **Generate it.** A hand-written schema drifts from the catalogue it describes.
 [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen) is a
@@ -798,6 +822,15 @@ export default {
   ],
 };
 ```
+
+From typegen 3.0.0-next.3 on, the file it writes registers the schema, so the
+config needs no `schema`:
+
+```typescript
+export const { handle, load, use, get } = defineI18n(config);
+```
+
+With an older typegen, or a 3.0 core, cast the slot to the generated type:
 
 ```typescript
 export const { handle, load, use, get } = defineI18n({ ...config, schema: {} as TranslationSchema });
@@ -833,7 +866,11 @@ i18n.t('greeting', { nmae: 'Jarda' }); // Error: typo caught
 ```
 
 Use `schema` for per-key payloads, this for a catalogue where every message
-takes the same shape.
+takes the same shape. It holds only while no schema is registered:
+`Config<Payload>` leaves the schema slot `any`, so a registered schema types
+the instance instead — the
+[opt-out](./README.md#one-payload-type-for-every-message) replaces the slot in
+the type argument.
 
 ### Custom modifier props
 
@@ -926,7 +963,7 @@ const withGreeting: Extension.Generic<WithGreeting> = (i18n) => Object.assign(i1
   greet: (name: string) => i18n.t('common.greeting', { name }),
 });
 
-const i18n = new I18n({ ...config, schema: {} as TranslationSchema, extensions: [withGreeting] });
+const i18n = new I18n({ ...config, extensions: [withGreeting] });
 
 i18n.greet('World');
 i18n.t('common.greeting', { name: 'World' }); // still key- and payload-checked
@@ -1203,6 +1240,9 @@ property that makes this the right mechanism on the server as well.
   with two copies of the core.
 - **Count on seeded strings to keep a loader from running.** In 3.1, data from
   `addTranslations()` or `config.translations` records nothing.
+- **Register a schema in `SvelteKitI18n.Register`.** The registry types every
+  schema-less instance of the program it is part of, so only the app fills it;
+  a library's own instances state their schema, or `schema: {}`.
 
 ## Dynamic Routes and Locales
 
@@ -1643,11 +1683,12 @@ import { PUBLIC_API_ORIGIN } from '$env/static/public';
    `invalidate(locale?, namespace?)` for event-driven refreshes; `cache: false`
    for a source that caches itself; cache the fetch, not the instance, on the
    server.
-5. **TypeScript** – a config literal for locale completion, `schema` for typed
-   keys and payloads, generated by `@sveltekit-i18n/typegen`, and
-   `Extension.Operator` so the pipe keeps both.
-6. **Libraries** – ship loaders and translations, never an instance; peer-depend
-   on `sveltekit-i18n`; take the instance as a prop or through context.
+5. **TypeScript** – a config literal for locale completion, a schema for typed
+   keys and payloads, generated and registered by `@sveltekit-i18n/typegen`,
+   and `Extension.Operator` so the pipe keeps both.
+6. **Libraries** – ship loaders and translations, never an instance or a
+   schema registration; peer-depend on `sveltekit-i18n`; take the instance as a
+   prop or through context.
 7. **Testing** – a real instance with inline `translations` is synchronous, so
    there is nothing to await and nothing to reset.
 

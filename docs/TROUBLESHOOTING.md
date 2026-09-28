@@ -1173,37 +1173,55 @@ i18n.t('common.welcome', { aplicationName: 'My app' });  // Error: typo caught
 
 A second type argument types the props a custom modifier takes: `Config<Payload, Props>` and `new I18n<Config<Payload, Props>, Payload, Props>(config)`.
 
+With a schema registered in `SvelteKitI18n.Register`, the registry types that instance instead: `Config<Payload>` leaves the schema slot `any`, which reads the registry, and `schema: {}` in the value changes nothing while the type argument decides. Replace the slot in the type argument — the [opt-out](./README.md#one-payload-type-for-every-message).
+
 For per-key payloads use [`config.schema`](./README.md#typing-keys-and-payloads-with-schema) instead.
 
 #### The `schema` is ignored — every key is accepted
 
 ```typescript
-// ❌ not a closed set, so the schema is ignored and keys stay plain `string`
+// ❌ not a closed set, so the schema types nothing and keys stay plain `string`
 export const i18n = new I18n({ ...config, schema: {} as Record<string, object> });
 ```
 
-**Cause:** a schema whose keys are not a closed set — an index signature, or no keys at all — would reject every key or demand a payload for keys it knows nothing about, so keys degrade to plain `string` and calls type as if no schema were supplied. Spell the keys out:
+**Cause:** a schema whose keys are not a closed set — an index signature, or no keys at all — would reject every key or demand a payload for keys it knows nothing about, so keys degrade to plain `string` and calls type as if no schema were supplied. Since the slot is stated, a registered schema stays out too: this is how `schema: {}` opts an instance out of the registry — where the constructor infers the config's type; a config type passed as a type argument decides on its own. Spell the keys out — registered once for the app, in a global script (no top-level import or export):
 
 ```typescript
-type TranslationSchema = {
+// src/i18n-schema.d.ts
+interface TranslationSchema {
   'common.greeting': { name: string };
   'common.about': never;              // takes no payload
   'home.title': { title?: string };   // payload optional
-};
+}
 
-export const i18n = new I18n({ ...config, schema: {} as TranslationSchema });
+declare namespace SvelteKitI18n {
+  interface Register {
+    schema: TranslationSchema;
+  }
+}
 ```
 
-Only the **type** is read, so the slot holds an empty value. The schema is read off the config the **constructor** receives — or `defineI18n()`, with `/kit` — so `loadConfig()` cannot retype an existing instance. To generate it from your translations instead of spelling it out, use [`@sveltekit-i18n/typegen`](./README.md#generating-the-schema-with-typegen).
+```typescript
+export const i18n = new I18n(config); // typed by TranslationSchema
+```
+
+— or per instance, where a stated closed schema wins over the registry: `new I18n({ ...config, schema: {} as TranslationSchema })`. Only the **type** is read, so the slot holds an empty value. The schema is read off the config the **constructor** receives — or `defineI18n()`, with `/kit` — so `loadConfig()` cannot retype an existing instance. To generate it from your translations instead of spelling it out, use [`@sveltekit-i18n/typegen`](./README.md#generating-the-schema-with-typegen).
 
 #### `TranslationSchema` is not defined, or every key is a plain `string`
 
-With [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen), the schema exists only once the plugin has run: `src/i18n-schema.d.ts` does not exist until the first `vite dev` or `vite build`, so a type check before any Vite run — a fresh clone, or CI running only `svelte-kit sync && svelte-check` — fails on the missing `TranslationSchema`; run `vite build` first. While the plugin holds its empty placeholder, keys stay plain strings. Check that:
+With [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen), the schema exists only once the plugin has run: `src/i18n-schema.d.ts` does not exist until the first `vite dev` or `vite build`, so a type check before any Vite run — a fresh clone, or CI running only `svelte-kit sync && svelte-check` — sees no schema: keys are plain strings, and a config that casts to `TranslationSchema` fails on the missing name. Run `vite build` first. While the plugin holds its empty placeholder, keys stay plain strings. Check that:
 
 - the plugin is in `vite.config.js`'s `plugins`, with `config` naming the module that exports the config (as `config`, unless `configExport` says otherwise);
 - the output sits under `src/`, where SvelteKit's generated `tsconfig.json` picks it up;
 - a JavaScript file carries `// @ts-check` (or the project sets `checkJs`) — without it, `tsc` reports nothing;
 - the plugin's own diagnostics in the Vite output (`loader-threw`, `config-unreadable`, …) — a failed generation keeps the previous schema.
+
+Without a cast, the instance is typed through the `SvelteKitI18n.Register` registry, so also check that:
+
+- the generated file ends in a `declare namespace SvelteKitI18n { interface Register { … } }` block — typegen writes it from 3.0.0-next.3 on; an older one writes only `TranslationSchema`, which then needs the cast;
+- `sveltekit-i18n` is 3.1 or newer — an older core ignores the registration without a diagnostic;
+- the config states no `schema`: `schema: {}`, or any schema without a closed key set, opts the instance out;
+- no extension typed by a fixed return type sits in `config.extensions` — it erases the schema, registered or stated (see [below](#an-extension-erased-the-schema-or-the-locales)).
 
 #### Locale completion disappeared
 
@@ -1716,7 +1734,7 @@ Documented, not fixed — see [above](#i18n-instanceof-i18n-is-false).
 
 ### 6. The schema generator is a separate package
 
-`config.schema` is a slot. This package ships no CLI and no bundler plugin to fill it: [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen) is the Vite plugin that does, installed on its own. A namespace whose loader cannot run at build time — a remote `query`, `routes` that capture params — is typed open.
+`config.schema` is a slot, and `SvelteKitI18n.Register` a registry. This package ships no CLI and no bundler plugin to fill either: [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen) is the Vite plugin that does, installed on its own. A namespace whose loader cannot run at build time — a remote `query`, `routes` that capture params — is typed open.
 
 ### 7. The hash router is not supported
 
