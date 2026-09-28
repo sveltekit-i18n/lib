@@ -22,5 +22,8 @@
     "./tests",
     "./*.js",
     "./*.ts"
-  ]
+  ],
+  // Programs of their own, which `tests/specs/registry.spec.ts` compiles: a
+  // registration there would type every instance of this one.
+  "exclude": ["./tests/types"]
 }

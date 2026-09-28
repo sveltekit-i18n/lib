@@ -639,18 +639,36 @@ namespace must not contain dots — the dot is the separator. The 3.0 spelling,
 The type of `new I18n(config)` is computed from the config that reaches the
 constructor:
 
-- **`config.schema`** narrows `t` and `l` — their keys and each key's payload.
-  It is read as a **type only**, so the slot may hold an empty value:
-  `schema: {} as { 'common.greeting': { name: string } }`. A schema whose keys
-  are not a closed set degrades to plain `string` keys instead of rejecting
-  every call. This package ships the slot;
+- **A schema** narrows `t` and `l` — their keys and each key's payload. The
+  app registers one for every instance in the global
+  `SvelteKitI18n.Register` interface (a global script,
+  `interface Register { schema: TranslationSchema }`), and every instance whose
+  config states no `schema` is typed by it. The core declares the interface
+  empty; this package adds nothing to it and needs no code for it: its
+  constructor and `defineI18n` resolve their type through the core's
+  `Schema.FromConfig`, which reads the registry. A config may instead state
+  `config.schema`, read as a **type only**, so the slot may hold an empty
+  value: `schema: {} as { 'common.greeting': { name: string } }`. A stated
+  closed schema wins over the registry; a schema whose keys are not a closed
+  set (`schema: {}`, `Record<string, …>`) degrades to plain `string` keys
+  instead of rejecting every call, and keeps the registry out — the opt-out.
+  The config's type is what is read: inferred from the value, or the one passed
+  as the first type argument, which then decides on its own.
+  The registry covers the whole program, so only the app registers, never a
+  library. It needs `sveltekit-i18n` 3.1; an older core ignores it. This
+  package ships the slot and the registry;
   [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen), a
-  Vite plugin installed on its own, fills it from your translations, reading
-  payloads through the re-exported `extractParamsFactory`. With `/kit`, the
-  schema in the config handed to `defineI18n` types `get()`, `use()` and
+  Vite plugin installed on its own, fills them from your translations (the
+  registration from its 3.0.0-next.3 on), reading payloads through the
+  re-exported `extractParamsFactory`. With `/kit`, the schema in the config
+  handed to `defineI18n` — or the registered one — types `get()`, `use()` and
   `data.i18n`.
 - **One payload type for every message** is stated through the type arguments
-  instead: `new I18n<Config<Payload>, Payload>(config)`.
+  instead: `new I18n<Config<Payload>, Payload>(config)`. That is for an app
+  without a registered schema: `Config<Payload>` leaves the schema slot `any`,
+  so the registry types the instance otherwise, unless the type argument
+  replaces the slot — the
+  [opt-out](./README.md#one-payload-type-for-every-message).
 - **The locales the config spells** complete `setLocale`, `l`, `invalidate` and
   the reads. The union stays open — a locale can arrive from a URL, a cookie or
   an `Accept-Language` header — so it is a completion hint, never a constraint.

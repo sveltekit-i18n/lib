@@ -108,6 +108,13 @@ issue tracker, docs, and examples for the whole family
 - `tests/specs/types.spec.ts` asserts by compiling: `pretest` runs
   `tsc --noEmit` over it, so a `@ts-expect-error` that stops being an error
   fails the run. Its closures are never invoked.
+- A type test that needs a registration in `SvelteKitI18n.Register` goes to
+  `tests/types/registry/`, never into `types.spec.ts`: a registration types
+  every schema-less instance of the program it is part of. That directory is a
+  program of its own, excluded from `typecheck` and ESLint, resolving
+  `sveltekit-i18n` to the build by the package's own name;
+  `tests/specs/registry.spec.ts` compiles it with `tsc` at
+  `skipLibCheck: false`.
 - Vitest needs `@sveltejs/vite-plugin-svelte` **and** base inlined
   (`test.server.deps.inline`): base ships its rune modules uncompiled for the
   consumer's bundler, and an externalized dependency never reaches the plugin.

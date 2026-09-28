@@ -592,14 +592,29 @@ hint, never a constraint: a locale can arrive from a URL, a cookie or an
 
 ### Typing keys and payloads with `schema`
 
+A schema maps each key to the payload its message expects. Register it once
+for the app — a global script filling the global `SvelteKitI18n.Register`
+interface — and every instance whose config states no `schema` is typed by it:
+`get()`, `use()` and `data.i18n` from `defineI18n(config)`, and
+`new I18n(config)`. [typegen](#generating-the-schema) writes that file for you;
+by hand, it is:
+
 ```typescript
-export const { handle, load, use, get } = defineI18n({
-  ...config,
-  schema: {} as {
-    'common.greeting': { name: string };
-    'common.nav.home': never;
-  },
-});
+// src/i18n-schema.d.ts — a global script: no top-level import or export
+interface TranslationSchema {
+  'common.greeting': { name: string };
+  'common.nav.home': never;
+}
+
+declare namespace SvelteKitI18n {
+  interface Register {
+    schema: TranslationSchema;
+  }
+}
+```
+
+```typescript
+export const { handle, load, use, get } = defineI18n(config);
 
 const i18n = get();
 
@@ -609,11 +624,21 @@ i18n.t('common.greting', { name: 'Alice' });  // Error: not a key of the schema
 i18n.t('common.greeting', {});                // Error: `name` is required
 ```
 
-Only the schema's **type** is read, which is why `{} as …` is the idiom. A
-schema whose keys are not a closed set (`Record<string, …>`, or no keys at all)
-degrades to plain `string` keys rather than rejecting every call. The schema
-in the config handed to `defineI18n` types `get()`, `use()` and `data.i18n`;
-`new I18n({ ...config, schema })` works the same way.
+The registry needs `sveltekit-i18n` 3.1 or newer; an older core ignores it
+without a diagnostic. A config may instead state its own `schema`, which wins
+over the registry. Only the schema's **type** is read, which is why `{} as …`
+is the idiom:
+
+```typescript
+defineI18n({ ...config, schema: {} as TranslationSchema });
+```
+
+A schema whose keys are not a closed set (`Record<string, …>`, or no keys at
+all) degrades to plain `string` keys rather than rejecting every call, so
+`schema: {}` opts an instance out of the registry where the constructor infers
+the config's type (a type argument decides on its own) — for a second instance
+with a catalogue of its own, a test, a story. The registry covers the whole
+program, so only the app registers: a library never does.
 
 ### Generating the schema
 
@@ -645,7 +670,8 @@ It evaluates `src/lib/i18n.js` the way `vite dev` would, reads its `config`
 export, runs the loaders, and writes `src/i18n-schema.d.ts` on `vite build` and
 whenever a translation changes under `vite dev`. The payloads come from this
 package's `extractParamsFactory`, which `extractParams: { from: 'sveltekit-i18n' }`
-points at. The file declares a global `TranslationSchema`:
+points at. The file declares a global `TranslationSchema` and, from typegen
+3.0.0-next.3 on, registers it, so the config module needs nothing more:
 
 ```javascript
 // src/lib/i18n.js
@@ -654,20 +680,22 @@ import { defineI18n } from 'sveltekit-i18n/kit';
 
 export const config = {/* as in Step 2 */};
 
-export const { handle, load, use, get } = defineI18n(
-  { ...config, schema: /** @type {TranslationSchema} */ ({}) },
-  { preferredLocale: (event) => event.cookies?.get('lang') },
-);
+export const { handle, load, use, get } = defineI18n(config, {
+  preferredLocale: (event) => event.cookies?.get('lang'),
+});
 ```
 
-In TypeScript, `schema: {} as TranslationSchema`. JavaScript files need
-`// @ts-check` (or `checkJs`) for the types to be checked at all. Add
-`src/i18n-schema.d.ts` to `.gitignore`: it is reproducible from your
-translations. The file does not exist until Vite first runs the plugin: `vite
-dev` or `vite build` writes an empty placeholder first, under which `t()` takes
-plain strings, then the generated schema. A type check that runs before any
-Vite run — a fresh clone, or CI running only `svelte-kit sync && svelte-check`
-— fails on the missing `TranslationSchema`, so run `vite build` first.
+With an older typegen, or a 3.0 core, point the slot at it instead:
+`schema: /** @type {TranslationSchema} */ ({})`, in TypeScript
+`schema: {} as TranslationSchema`. JavaScript files need `// @ts-check` (or
+`checkJs`) for the types to be checked at all. Add `src/i18n-schema.d.ts` to
+`.gitignore`: it is reproducible from your translations. The file does not
+exist until Vite first runs the plugin: `vite dev` or `vite build` writes an
+empty placeholder first, under which `t()` takes plain strings, then the
+generated schema. A type check that runs before any Vite run — a fresh clone,
+or CI running only `svelte-kit sync && svelte-check` — sees no schema: keys
+are plain strings, and a config that casts to `TranslationSchema` fails on the
+missing name. Run `vite build` first.
 
 ### One payload type for every message
 
@@ -682,6 +710,10 @@ const config: Config<Payload> = { loaders: [/* … */] };
 
 export const i18n = new I18n<Config<Payload>, Payload>(config);
 ```
+
+This is for an app without a registered schema: `Config<Payload>` leaves the
+schema slot `any`, so a registered schema types the instance instead. See the
+[opt-out](./README.md#one-payload-type-for-every-message).
 
 ### `instanceof` does not hold
 
