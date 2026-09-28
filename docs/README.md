@@ -1558,7 +1558,9 @@ matches, [`en-GB` falling back to `en`](#matchlocalerequested-available):
 
 `preferredLocale` runs on every navigation and every preload, and in an app
 without a server `load` in the universal one, whose event has no `cookies`
-(hence `cookies?.`). It must only read the event. A value no configured locale
+(hence `cookies?.`). With a server `load` it never runs in the browser: a
+navigation to a prerendered page takes the locale `preferredLocale` gave at
+build time, and otherwise keeps the tab's. It must only read the event. A value no configured locale
 matches is skipped, and one that throws is logged once and skipped.
 
 The server's answer rules. `i18n.setLocale('cs')` in the browser switches the
@@ -1621,8 +1623,12 @@ SvelteKit run the layout again on the next navigation.
   headers**, so the server and the browser can negotiate differently. Put the
   locale in the URL, or add the server `load`.
 - **A prerendered page has no visitor.** It renders the locale
-  `preferredLocale` finds in the URL, or else `initLocale`/`fallbackLocale`; a
-  query string (`?lang=`) does not reach it.
+  `preferredLocale` finds in the URL, or else `initLocale`/`fallbackLocale`. A
+  client navigation to one takes the locale `preferredLocale` gave at build
+  time, and otherwise keeps the tab's, so a cookie-first `preferredLocale` that
+  falls back to the URL follows the URL there. A query string (`?lang=`) does
+  not reach a prerendered page and the build's hostname is not the visitor's,
+  so a locale read from either is not supported on one.
 - **A negotiated response varies by visitor**, and `/kit` sets no `Vary`
   header. Before caching such a response in a shared cache, add `Vary` for what
   it depends on (`Accept-Language`, `Cookie`), or cache only pages whose locale
