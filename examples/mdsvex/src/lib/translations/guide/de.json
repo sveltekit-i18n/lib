@@ -1,7 +1,7 @@
 {
   "badge": "Diese Seite ist .svx",
   "heading": "Installation",
-  "intro": "Alles auf dieser Seite außer der Prosa stammt aus dem Namensraum guide, der geladen wurde, weil die Route /guide ist.",
+  "intro": "Alles auf dieser Seite außer der Prosa stammt aus dem Namensraum guide, der geladen wurde, weil der Pfad /de/guide ist.",
   "step": "Schritt {{n}}",
   "install": "Paket installieren",
   "configure": "Übersetzungen beschreiben",

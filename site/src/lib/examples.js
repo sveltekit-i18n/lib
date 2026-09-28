@@ -19,6 +19,6 @@ const STACKBLITZ = REPO.replace('https://github.com/', 'https://stackblitz.com/g
 
 /** The launcher `examples/README.md` carries: the dev server boots inside the
  *  browser tab and opens on that example's config. */
-export const runHref = (name) => `${STACKBLITZ}/tree/master/examples/${name}?startScript=dev&file=src/lib/translations/index.js`;
+export const runHref = (name) => `${STACKBLITZ}/tree/master/examples/${name}?startScript=dev&file=src/lib/translations/index.ts`;
 
 export const sourceHref = (name) => `${REPO}/tree/master/examples/${name}`;

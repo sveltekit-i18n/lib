@@ -7,17 +7,21 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "prepare": "svelte-kit sync || echo ''"
+    "prepare": "svelte-kit sync || echo ''",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
-    "sveltekit-i18n": "^3.1.0-0"
+    "sveltekit-i18n": "^3.1.0"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.10",
     "@sveltejs/kit": "^2.70.3",
     "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "@sveltekit-i18n/typegen": "^3.0.0",
     "mdsvex": "^0.12.6",
     "svelte": "^5.56.9",
+    "svelte-check": "^4.7.6",
+    "typescript": "^5.9.3",
     "vite": "^8.2.1"
   },
   "optionalDependencies": {

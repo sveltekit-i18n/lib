@@ -1,27 +1,24 @@
-<script>
-  import { setContext } from 'svelte';
-
+<script lang="ts">
   import '../app.css';
   import { page } from '$app/state';
 
-  import { LOCALES, routeOf } from '$lib/locale.js';
+  import { LOCALES, localeOf, pathOf, routeOf } from '$lib/locale';
+  import { use } from '$lib/translations';
 
-  let { data, children } = $props();
+  import type { LayoutProps } from './$types';
 
-  // The error page has no `load` of its own, so it reads the instance here.
-  setContext('i18n', data.i18n);
+  let { data, children }: LayoutProps = $props();
 
-  const i18n = data.i18n;
+  // Provides the instance to every component below — the error page included,
+  // which has no `load` of its own — and switches it to the path's locale as
+  // each navigation commits, `<html lang>` along with it.
+  const i18n = use(() => data);
+
+  const current = $derived(localeOf(page.url.pathname));
 
   const route = $derived(routeOf(page.url.pathname));
 
-  // A navigation between locales never reaches the server hook that wrote
-  // `<html lang>`, so the switch is repeated here.
-  $effect(() => {
-    document.documentElement.lang = i18n.locale;
-  });
-
-  const href = (path, locale = data.locale) => `/${locale}${path === '/' ? '' : path}`;
+  const href = (path: string, locale: string = current) => pathOf(path, locale);
 </script>
 
 <header>
@@ -39,13 +36,11 @@
     </a>
   </nav>
 
-  <!-- Preloading these would run their load and switch this page's locale
-       without a navigation ever happening. -->
-  <nav aria-label={i18n.t('nav.language')} data-sveltekit-preload-data="off">
+  <nav aria-label={i18n.t('nav.language')}>
     {#each LOCALES as locale (locale)}
       <a
         href={href(route, locale)}
-        aria-current={locale === data.locale ? 'page' : undefined}
+        aria-current={locale === current ? 'page' : undefined}
       >{locale}</a>
     {/each}
   </nav>

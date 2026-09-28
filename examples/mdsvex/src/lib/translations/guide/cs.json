@@ -1,7 +1,7 @@
 {
   "badge": "Tahle stránka je .svx",
   "heading": "Instalace",
-  "intro": "Všechno na téhle stránce kromě prózy pochází ze jmenného prostoru guide, který se načetl proto, že routa je /guide.",
+  "intro": "Všechno na téhle stránce kromě prózy pochází ze jmenného prostoru guide, který se načetl proto, že cesta je /cs/guide.",
   "step": "Krok {{n}}",
   "install": "Nainstaluj balíček",
   "configure": "Popiš svoje překlady",

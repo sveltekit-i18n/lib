@@ -5,11 +5,11 @@
   "cards": {
     "component": {
       "title": "It is just a component",
-      "text": "By the time the router sees +page.svx it is a Svelte component. getContext and t() work exactly as they do in .svelte."
+      "text": "By the time the router sees +page.svx it is a Svelte component. get() and t() work exactly as they do in .svelte."
     },
     "routes": {
       "title": "It is just a route",
-      "text": "/guide matches a route-scoped loader like any other path. The namespace has no idea the page is Markdown."
+      "text": "/en/guide matches a route-scoped loader like any other path — loaders see the locale segment too. The namespace has no idea the page is Markdown."
     },
     "prerender": {
       "title": "It prerenders the same way",

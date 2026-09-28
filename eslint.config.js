@@ -79,6 +79,9 @@ export default tseslint.config(
   },
   {
     files: ['**/*.svelte'],
+    // A `lang="ts"` script needs a TypeScript parser, which the Svelte parser
+    // does not pick on its own from here.
+    languageOptions: { parserOptions: { parser: tseslint.parser } },
     rules: {
       // The core rule reads a component's script as if it began at column 0, so
       // it sees neither a top-level statement's indentation nor the markup. The
@@ -86,7 +89,7 @@ export default tseslint.config(
       '@stylistic/indent': 'off',
       'svelte/indent': ['error', { indent: 2 }],
 
-      // No example sets `paths.base`, and none is type-checked, so `resolve()`
+      // No example sets `paths.base`, and ESLint lints none typed, so `resolve()`
       // would hand back the href it was given — at the price of an import in
       // every link of code whose subject is translation, not routing.
       'svelte/no-navigation-without-resolve': 'off',

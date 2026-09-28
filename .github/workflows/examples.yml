@@ -56,6 +56,17 @@ jobs:
       - name: Build Examples
         run: pnpm --filter './examples/*' run build
 
+      # After the build, which is what writes the schemas the check reads.
+      # Without a registration the check would pass on plain string keys, so
+      # each one's presence is checked first.
+      - name: Type-Check Examples
+        run: |
+          for schema in examples/*/src/i18n-schema.d.ts; do
+            grep -q 'interface Register' "$schema" || { echo "no registration in $schema"; exit 1; }
+          done
+          test "$(ls examples/*/src/i18n-schema.d.ts | wc -l)" -eq "$(ls examples/*/package.json | wc -l)"
+          pnpm --filter './examples/*' run check
+
       # An exit code proves nothing here: once `handleError` returns a
       # well-formed error, a prerender writes an error page for every route and
       # still succeeds. Assert on what was written, in more than one locale.
@@ -86,11 +97,16 @@ jobs:
             local body
             body=$(curl -sf -H "Accept-Language: $2" "http://127.0.0.1:4173$3")
             kill "$pid"
-            echo "$body" | grep -q "$4" || { echo "missing '$4' in $1$3 ($2)"; exit 1; }
+            local where="$1$3 ($2)"
+            shift 3
+            for expected in "$@"; do
+              echo "$body" | grep -q "$expected" || { echo "missing '$expected' in $where"; exit 1; }
+            done
           }
           check multi-page en / 'Translations that arrive with the route'
           check multi-page cs / 'Překlady, které dorazí s routou'
           check multi-page de /about 'Diese Seite hat ihren eigenen Namensraum'
+          check multi-page ar / 'ترجمات تصل مع المسار' '<html lang="ar" dir="rtl">'
           check locale-param en '/?lang=cs' 'Jazyk je parametr v query'
           check component-scoped-csr en / 'A component with its own lexicon'
           # The rendered plural, not the title: the serialized payload carries

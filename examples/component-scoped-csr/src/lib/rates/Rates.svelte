@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
   import { I18n } from 'sveltekit-i18n';
 
-  import { config } from './translations.js';
+  import { config } from './translations';
 
-  let { locale } = $props();
+  let { locale }: { locale: string | undefined } = $props();
 
   // A component has no `load` of its own, so the instance is created here and
   // its loaders run in the browser. Until they resolve there is nothing to
@@ -13,12 +13,12 @@
   const ROWS = [
     { key: 'standard', days: 4 },
     { key: 'express', days: 1 },
-  ];
+  ] as const;
 
   // `loadTranslations` rather than `setLocale`: it settles the route as well,
   // and a component has no route of its own for `initialized` to wait on.
   $effect(() => {
-    i18n.loadTranslations(locale);
+    if (locale) i18n.loadTranslations(locale);
   });
 
   $effect(() => () => i18n.destroy());

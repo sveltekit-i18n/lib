@@ -1,7 +1,7 @@
 {
   "badge": "This page is .svx",
   "heading": "Installing",
-  "intro": "Everything on this page except the prose comes from the guide namespace, which was loaded because the route is /guide.",
+  "intro": "Everything on this page except the prose comes from the guide namespace, which was loaded because the path is /en/guide.",
   "step": "Step {{n}}",
   "install": "Install the package",
   "configure": "Describe your translations",

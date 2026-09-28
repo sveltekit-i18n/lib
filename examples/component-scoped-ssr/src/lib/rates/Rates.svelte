@@ -1,26 +1,27 @@
-<script>
-  import { I18n } from 'sveltekit-i18n';
+<script lang="ts">
+  import { I18n, type Snapshot } from 'sveltekit-i18n';
 
-  import { config } from './translations.js';
+  import { config } from './translations';
 
-  let { locale, snapshot } = $props();
+  let { locale, snapshot }: { locale: string | undefined; snapshot: Snapshot.Envelope } = $props();
 
   // Hydrated with the payload the page's `load` produced: the snapshot's locale
   // is active at once and its records mark its loaders as run, so the first
   // render is complete and no loader runs to produce it.
   const i18n = new I18n(config);
 
+  // svelte-ignore state_referenced_locally
   i18n.hydrate(snapshot);
 
   const ROWS = [
     { key: 'standard', days: 4 },
     { key: 'express', days: 1 },
-  ];
+  ] as const;
 
   // Still reactive afterwards: switching the language in the browser loads the
   // component's own lexicon for the new locale.
   $effect(() => {
-    i18n.loadTranslations(locale);
+    if (locale) i18n.loadTranslations(locale);
   });
 
   $effect(() => () => i18n.destroy());

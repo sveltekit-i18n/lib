@@ -5,11 +5,11 @@
   "cards": {
     "component": {
       "title": "Nur eine Komponente",
-      "text": "Wenn der Router +page.svx sieht, ist es eine Svelte-Komponente. getContext und t() verhalten sich genau wie in .svelte."
+      "text": "Wenn der Router +page.svx sieht, ist es eine Svelte-Komponente. get() und t() verhalten sich genau wie in .svelte."
     },
     "routes": {
       "title": "Nur eine Route",
-      "text": "/guide passt auf einen routenbezogenen Loader wie jeder andere Pfad. Der Namensraum weiß nichts von Markdown."
+      "text": "/de/guide passt auf einen routenbezogenen Loader wie jeder andere Pfad — Loader sehen auch das Sprachsegment. Der Namensraum weiß nichts von Markdown."
     },
     "prerender": {
       "title": "Prerendert genauso",

@@ -2,8 +2,15 @@
 
 Each directory is a standalone SvelteKit application on `sveltekit-i18n` 3.x.
 They cover the **application-shaped** decisions — an adapter, a
-`svelte.config.js`, a `hooks.server.js`, a route tree — the things that are hard
-to get right from a snippet.
+`svelte.config.js`, a `hooks.server.ts`, a route tree — the things that are hard
+to get right from a snippet. Every one of them wires SvelteKit through
+`sveltekit-i18n/kit`; what sets them apart is mostly where `preferredLocale`
+reads the locale from.
+
+They are written in TypeScript, and each generates its schema with
+[`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen), so a
+key that is not in the catalogue is a type error — see
+[`multi-page`](./multi-page#typed-keys).
 
 Everything that is really three lines of configuration lives on the
 [playground](https://sveltekit-i18n.github.io/playground) instead, where a real
@@ -24,49 +31,52 @@ on its own. Drop the entry once rolldown declares it again.
 
 ## Routing
 
-[`multi-page`](./multi-page) — the common case · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/multi-page?startScript=dev&file=src/lib/translations/index.js)
+[`multi-page`](./multi-page) — the common case · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/multi-page?startScript=dev&file=src/lib/translations/index.ts)
 - several routes, no locale in the URL
-- the locale is negotiated per request from a cookie, then `Accept-Language`
+- `preferredLocale` reads a `lang` cookie; `Accept-Language` comes next
 - one namespace per route, and a translated error page
+- Arabic as a right-to-left locale: `dir` follows the locale
 - `@sveltejs/adapter-node`
 
-[`locale-param`](./locale-param) — the locale in the query string · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-param?startScript=dev&file=src/lib/translations/index.js)
-- `/about?lang=cs`, resolved on the server before rendering
+[`locale-param`](./locale-param) — the locale in the query string · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-param?startScript=dev&file=src/lib/translations/index.ts)
+- `/about?lang=cs`: `preferredLocale` reads the query, on the server before
+  rendering
 - internal links carry the locale; the default locale keeps the bare URL
 - not the SEO option — a query parameter is the same page to a crawler
 - `@sveltejs/adapter-node`
 
-[`locale-router`](./locale-router) — the locale in the path, prerendered · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router?startScript=dev&file=src/lib/translations/index.js)
-- `/en/about`, `/cs/about`, `/de/about`
+[`locale-router`](./locale-router) — the locale in the path, prerendered · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router?startScript=dev&file=src/lib/translations/index.ts)
+- `/en/about`, `/cs/about`, `/de/about`: `preferredLocale` reads the path
 - `entries()` for what the crawler cannot discover on its own
 - `@sveltejs/adapter-node`, everything prerendered
 
-[`locale-router-static`](./locale-router-static) — the same, with no server · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-static?startScript=dev&file=src/lib/translations/index.js)
+[`locale-router-static`](./locale-router-static) — the same, with no server · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-static?startScript=dev&file=src/lib/translations/index.ts)
 - one HTML file per page per locale
 - an unknown URL is the host's 404, not the app's
 - `@sveltejs/adapter-static`
 
-[`locale-router-advanced`](./locale-router-advanced) — the default locale has no prefix · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced?startScript=dev&file=src/lib/translations/index.js)
-- `/about` is English, `/cs/about` is Czech
+[`locale-router-advanced`](./locale-router-advanced) — the default locale has no prefix · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced?startScript=dev&file=src/lib/translations/index.ts)
+- `/about` is English, `/cs/about` is Czech, whatever the browser asks for
 - a `404.html` fallback shell, so the error page is **yours** and arrives
   translated on the first hit
-- the configuration the [documentation site](https://sveltekit-i18n.github.io/)
-  itself runs on
+- the routing the [documentation site](https://sveltekit-i18n.github.io/)
+  itself uses
 - `@sveltejs/adapter-static`
 
 ## Component-scoped translations
 
-[`component-scoped-csr`](./component-scoped-csr) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/component-scoped-csr?startScript=dev&file=src/lib/translations/index.js)
+[`component-scoped-csr`](./component-scoped-csr) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/component-scoped-csr?startScript=dev&file=src/lib/translations/index.ts)
 - a component with its own instance and its own lexicon, loaded in the browser
 - not in the server-rendered HTML — the trade-off, shown deliberately
 
-[`component-scoped-ssr`](./component-scoped-ssr) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/component-scoped-ssr?startScript=dev&file=src/lib/translations/index.js)
-- the same component, loaded by the page and handed down through `snapshot()`
+[`component-scoped-ssr`](./component-scoped-ssr) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/component-scoped-ssr?startScript=dev&file=src/lib/translations/index.ts)
+- the same component, loaded by the page and handed down as a
+  `snapshot({ records: true })` its instance applies with `hydrate()`
 - complete on the first render, still reactive afterwards
 
 ## Content
 
-[`mdsvex`](./mdsvex) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/mdsvex?startScript=dev&file=src/lib/translations/index.js)
+[`mdsvex`](./mdsvex) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/mdsvex?startScript=dev&file=src/lib/translations/index.ts)
 - a `.svx` route: `t()` in Markdown, route-scoped loading, prerendered per locale
 
 ## How to use an example

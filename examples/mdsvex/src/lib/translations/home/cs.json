@@ -5,11 +5,11 @@
   "cards": {
     "component": {
       "title": "Je to jenom komponenta",
-      "text": "Než se k +page.svx dostane router, je z něj Svelte komponenta. getContext i t() fungují přesně jako v .svelte."
+      "text": "Než se k +page.svx dostane router, je z něj Svelte komponenta. get() i t() fungují přesně jako v .svelte."
     },
     "routes": {
       "title": "Je to jenom routa",
-      "text": "/guide sedne na route-scoped loader jako každá jiná cesta. Jmenný prostor vůbec netuší, že je stránka v Markdownu."
+      "text": "/cs/guide sedne na route-scoped loader jako každá jiná cesta — loadery vidí i segment s jazykem. Jmenný prostor vůbec netuší, že je stránka v Markdownu."
     },
     "prerender": {
       "title": "Předgeneruje se stejně",

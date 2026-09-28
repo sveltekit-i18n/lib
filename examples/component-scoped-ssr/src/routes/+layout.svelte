@@ -1,27 +1,26 @@
-<script>
-  import { setContext } from 'svelte';
-
+<script lang="ts">
   import '../app.css';
   import { page } from '$app/state';
+  import type { ChangeEventHandler } from 'svelte/elements';
 
-  import { LOCALES } from '$lib/locale.js';
+  import { LOCALES, use } from '$lib/translations';
 
-  let { data, children } = $props();
+  import type { LayoutProps } from './$types';
 
-  // The error page has no `load` of its own, so it reads the instance here.
-  setContext('i18n', data.i18n);
+  let { data, children }: LayoutProps = $props();
 
-  const i18n = data.i18n;
+  // Provides the instance to every component below — the error page included,
+  // which has no `load` of its own — and keeps it on the route and the locale
+  // the server answers as each navigation commits.
+  const i18n = use(() => data);
 
-  const select = async ({ currentTarget }) => {
+  const select: ChangeEventHandler<HTMLSelectElement> = async ({ currentTarget }) => {
     const locale = currentTarget.value;
 
     // Persisted for the next request; the switch itself happens right here.
     document.cookie = `lang=${locale}; path=/; max-age=31536000; samesite=lax`;
 
     await i18n.setLocale(locale);
-
-    document.documentElement.lang = locale;
   };
 </script>
 
