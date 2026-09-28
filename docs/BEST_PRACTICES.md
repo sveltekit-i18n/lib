@@ -290,6 +290,19 @@ Locales](#dynamic-routes-and-locales)) and resolve the locale from the route
 parameter in `preferredLocale` instead of from a cookie — a prerendered route
 has no visitor to read one from.
 
+The build's answer travels with the page: a link or Back to a prerendered page
+switches the tab to the locale `preferredLocale` gave it at build time. With
+an optional segment (`[[lang]]`), let the unprefixed pages name the default
+locale, or they keep whatever locale the tab shows:
+
+```javascript
+preferredLocale: (event) => event.params.lang ?? 'en',
+```
+
+A default for visitors whose cookie or header names no locale belongs in
+`initLocale` instead: one returned from `preferredLocale` says the URL names
+that locale.
+
 ## Translation File Organization
 
 ### Directory Structure
