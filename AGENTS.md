@@ -39,10 +39,10 @@ issue tracker, docs, and examples for the whole family
   off this file. The pins on `base` and `parser-curly` are exact and stay that
   way.
 - **3.1 is on `next`.** The package pins base's `3.1.0-next` line and publishes
-  its own `3.1.0-next.N`; `latest` stays 3.0.0 until the stable release. The
-  site deploys from `master` on every push (`site.yml`), so the docs, `site/`
-  and the examples' move onto 3.1's recipes wait for that release: until then
-  the docs describe what `npm install sveltekit-i18n` installs. The site and
+  its own `3.1.0-next.N`; `latest` stays 3.0.0 until the stable release.
+  `README.md` and `docs/` describe 3.1. The site deploys from `master` on every
+  push (`site.yml`), so the move of `site/` and the examples onto 3.1's
+  recipes waits for the stable release. The site and
   the examples run the workspace package, so each change of behaviour the core
   brings lands in them with the bump that carries it. The examples' range is
   `^3.1.0-0`, which links the workspace package at its `3.1.0-0` seed.
