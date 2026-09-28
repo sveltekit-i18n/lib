@@ -1,9 +1,9 @@
-<script>
-  import { getContext } from 'svelte';
+<script lang="ts">
+  import { get } from '$lib/translations';
 
-  const i18n = getContext('i18n');
+  const i18n = get();
 
-  const CARDS = ['entries', 'matcher', 'build'];
+  const CARDS = ['entries', 'matcher', 'build'] as const;
 </script>
 
 <svelte:head>

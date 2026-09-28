@@ -1,13 +1,14 @@
-<script>
-  import { getContext } from 'svelte';
-
+<script lang="ts">
   import Rates from '$lib/rates/Rates.svelte';
+  import { get } from '$lib/translations';
 
-  const i18n = getContext('i18n');
+  import type { PageProps } from './$types';
 
-  let { data } = $props();
+  const i18n = get();
 
-  const CARDS = ['payload', 'ssr', 'reactive'];
+  let { data }: PageProps = $props();
+
+  const CARDS = ['payload', 'ssr', 'reactive'] as const;
 </script>
 
 <svelte:head>

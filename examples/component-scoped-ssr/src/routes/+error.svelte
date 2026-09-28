@@ -1,10 +1,11 @@
-<script>
-  import { getContext } from 'svelte';
+<script lang="ts">
   import { page } from '$app/state';
+
+  import { get } from '$lib/translations';
 
   // The error page renders without any `load` having run, so everything it
   // needs sits in `config.translations` rather than behind a loader.
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   const message = $derived(
     page.status === 404 ? i18n.t('error.404') : i18n.t('error.default'),

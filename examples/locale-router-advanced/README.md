@@ -5,21 +5,21 @@ The default locale owns the bare path and every other locale carries a prefix:
 `@sveltejs/adapter-static`, with a fallback shell so an unknown URL still gets a
 page of this application's — translated, on the first hit.
 
-This is the configuration the [documentation
-site](https://sveltekit-i18n.github.io/) itself runs on.
+This is the routing the [documentation
+site](https://sveltekit-i18n.github.io/) itself uses.
 
-[Run this example in StackBlitz](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced?startScript=dev&file=src/lib/translations/index.js) — Node and the dev server boot inside
+[Run this example in StackBlitz](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced?startScript=dev&file=src/lib/translations/index.ts) — Node and the dev server boot inside
 the browser tab, with nothing installed locally.
 
 ## What to look at
 
 | File | Why |
 |---|---|
-| [`src/params/locale.js`](./src/params/locale.js) | matches **only** the prefixed locales — accepting the default one would give every page two addresses, accepting anything would swallow `/about` |
+| [`src/params/locale.ts`](./src/params/locale.ts) | matches **only** the prefixed locales — accepting the default one would give every page two addresses, accepting anything would swallow `/about` |
 | [`svelte.config.js`](./svelte.config.js) | `fallback: '404.html'`, and explicit `entries` because a prefixed locale is reachable only through the switcher |
-| [`src/routes/+layout.js`](./src/routes/+layout.js) | reads the locale off `url.pathname`, not off the route params — the fallback shell renders for URLs that matched no route |
-| [`src/routes/+layout.svelte`](./src/routes/+layout.svelte) | sets `document.documentElement.lang` after hydration, because one shell serves every unknown URL |
-| [`src/routes/+error.svelte`](./src/routes/+error.svelte) | reads the instance from context; its strings ship in `config.translations` |
+| [`src/lib/translations/index.ts`](./src/lib/translations/index.ts) | `preferredLocale` reads the locale off `url.pathname`, not off the route params — the fallback shell renders for URLs that matched no route — and an unprefixed path is English whatever the browser asks for; loader `routes` list each path under every prefix |
+| [`src/routes/+layout.svelte`](./src/routes/+layout.svelte) | `use(() => data)`, which also sets `<html lang>` and `dir` after hydration, because one shell serves every unknown URL |
+| [`src/routes/+error.svelte`](./src/routes/+error.svelte) | `get()`; its strings ship in `config.translations` |
 
 ## Why the error page works here
 
@@ -48,6 +48,14 @@ hit:
 | `/nope` | `en` | English 404 |
 | `/cs/nope` | `cs` | Czech 404 |
 | `/de/nope` | `de` | German 404 |
+
+## Typed keys
+
+As in [`multi-page`](../multi-page#typed-keys): `@sveltekit-i18n/typegen` in
+[`vite.config.ts`](./vite.config.ts) writes `src/i18n-schema.d.ts` from the
+config's own loaders and registers it, so an unknown key or a payload its
+message does not take is a type error. Run `vite dev` or `vite build` once
+before `npm run check`.
 
 ## Run it
 

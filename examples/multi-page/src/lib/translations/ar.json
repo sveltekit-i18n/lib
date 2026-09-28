@@ -1,0 +1,16 @@
+{
+  "example.name": "صفحات متعددة",
+  "nav.home": "الرئيسية",
+  "nav.about": "حول",
+  "nav.language": "اللغة",
+  "lang.en": "English",
+  "lang.cs": "Čeština",
+  "lang.de": "Deutsch",
+  "lang.ar": "العربية",
+  "footer.source": "الشفرة المصدرية لهذا المثال",
+  "footer.docs": "التوثيق",
+  "error.title": "حدث خطأ ما",
+  "error.404": "هذه الصفحة غير موجودة.",
+  "error.default": "حدث خطأ غير متوقع.",
+  "error.home": "العودة إلى الصفحة الرئيسية"
+}

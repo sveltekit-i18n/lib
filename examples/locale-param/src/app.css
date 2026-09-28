@@ -50,6 +50,9 @@ code {
   border: 1px solid var(--line);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.875em;
+  /* A path or a locale tag reads left to right inside a right-to-left line. */
+  direction: ltr;
+  unicode-bidi: isolate;
 }
 
 pre {
@@ -81,7 +84,7 @@ header {
 }
 
 .brand {
-  margin-right: auto;
+  margin-inline-end: auto;
   color: inherit;
   text-decoration: none;
   line-height: 1.25;

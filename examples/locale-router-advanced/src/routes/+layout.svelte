@@ -1,28 +1,26 @@
-<script>
-  import { setContext } from 'svelte';
-
+<script lang="ts">
   import '../app.css';
   import { page } from '$app/state';
 
-  import { LOCALES, prefixOf, routeOf } from '$lib/locale.js';
+  import { LOCALES, localeOf, pathOf, routeOf } from '$lib/locale';
+  import { use } from '$lib/translations';
 
-  let { data, children } = $props();
+  import type { LayoutProps } from './$types';
 
-  // The error page has no `load` of its own, so it reads the instance here.
-  setContext('i18n', data.i18n);
+  let { data, children }: LayoutProps = $props();
 
-  const i18n = data.i18n;
+  // Provides the instance to every component below — the error page included,
+  // which has no `load` of its own — and switches it to the path's locale as
+  // each navigation commits. It also keeps `<html lang>` and `dir` in step:
+  // the prerendered pages carry theirs from the server hook, but the fallback
+  // shell is one file serving every unknown URL.
+  const i18n = use(() => data);
 
-  const route = $derived(routeOf(page.url.pathname, data.locale));
+  const current = $derived(localeOf(page.url.pathname));
 
-  // The prerendered pages carry their locale from the server hook, but the
-  // fallback shell is one file serving every unknown URL.
-  $effect(() => {
-    document.documentElement.lang = i18n.locale;
-  });
+  const route = $derived(routeOf(page.url.pathname, current));
 
-  const href = (path, locale = data.locale) =>
-    `${prefixOf(locale)}${path === '/' ? '' : path}` || '/';
+  const href = (path: string, locale: string = current) => pathOf(path, locale);
 </script>
 
 <header>
@@ -40,13 +38,11 @@
     </a>
   </nav>
 
-  <!-- Preloading these would run their load and switch this page's locale
-       without a navigation ever happening. -->
-  <nav aria-label={i18n.t('nav.language')} data-sveltekit-preload-data="off">
+  <nav aria-label={i18n.t('nav.language')}>
     {#each LOCALES as locale (locale)}
       <a
         href={href(route, locale)}
-        aria-current={locale === data.locale ? 'page' : undefined}
+        aria-current={locale === current ? 'page' : undefined}
       >{locale}</a>
     {/each}
   </nav>

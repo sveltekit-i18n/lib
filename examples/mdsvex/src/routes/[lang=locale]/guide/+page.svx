@@ -1,17 +1,15 @@
 <script>
-  import { getContext } from 'svelte';
-
-  import { NAMESPACES } from '$lib/translations';
+  import { NAMESPACES, get } from '$lib/translations';
 
   // Exactly what a .svelte page would do — by the time this runs, mdsvex has
   // already turned the file into an ordinary Svelte component.
-  const i18n = getContext('i18n');
+  const i18n = get();
 
   // The shell strings sit in `config.translations` under their own flat keys;
   // only the configured namespaces were actually loaded.
   const loaded = $derived(NAMESPACES
-    .map(({ key }) => key)
-    .filter((key) => Object.hasOwn(i18n.rawTranslations[i18n.locale] ?? {}, key))
+    .map(({ namespace }) => namespace)
+    .filter((namespace) => Object.hasOwn(i18n.rawTranslations[i18n.locale] ?? {}, namespace))
     .join(', '));
 </script>
 
