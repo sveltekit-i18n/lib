@@ -76,6 +76,15 @@ jobs:
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "dist-tag=$DIST_TAG" >> "$GITHUB_OUTPUT"
 
+      # npm resolves a README's relative links against the default branch, so
+      # the page of a released version would show docs that moved on since.
+      # The links into this package name the release tag instead: published,
+      # never committed, and checked against the tag before anything is pushed.
+      - name: Pin README links to the release
+        env:
+          TAG: ${{ steps.bump.outputs.tag }}
+        run: node "$GITHUB_WORKSPACE/.github/scripts/pin-readme-links.mjs" "$TAG"
+
       # Atomic: the branch and the tag land together or not at all, and the
       # publish below never runs on a half-pushed release.
       - name: Push release commit and tag
