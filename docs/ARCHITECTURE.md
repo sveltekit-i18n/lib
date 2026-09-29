@@ -51,7 +51,8 @@ in `.svelte.ts` modules as `$state` / `$derived` class fields.
 A parser is one function — `parse(value, params, locale, key)` — turning a
 stored message and a call's parameters into text. `parser-curly` implements the
 [Curly Message Format](https://curlymessage.dev): placeholders,
-default values, modifiers and comparisons in double curly braces. It resolves
+default values, modifiers, comparisons and plural selection in double curly
+braces. It resolves
 every message through `@curly-message/parser`, the format's reference
 implementation and its only dependency.
 

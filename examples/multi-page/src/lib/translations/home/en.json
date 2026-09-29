@@ -18,6 +18,6 @@
   },
   "counter": {
     "title": "Interpolation",
-    "text": "You have {{count}} unread {{count; 1:message; default:messages;}}."
+    "text": "You have {{count}} unread {{count:plural; one:message; other:messages;}}."
   }
 }

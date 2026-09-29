@@ -46,10 +46,10 @@ Inside a message, a Latin term that begins or ends in punctuation is wrapped in
 U+200E (the left-to-right mark) for the same reason.
 
 Arabic also has six plural forms, and `few` and `many` are chosen by the last
-two digits of the number (`103` takes the same form as `3`), which the format's
-comparisons cannot express. The config registers a `plural` modifier under
-`parserOptions.customModifiers` that asks `Intl.PluralRules` for the category,
-so the message names the forms: `{{count:plural; one:…; few:…; default:…;}}`.
+two digits of the number (`103` takes the same form as `3`). The format's
+`plural` modifier asks `Intl.PluralRules` for the category, so each message
+names the forms its locale uses:
+`{{count:plural; zero:…; one:…; two:…; few:…; many:…; other:…;}}`.
 
 ## Typed keys
 

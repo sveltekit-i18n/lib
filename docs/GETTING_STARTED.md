@@ -515,7 +515,7 @@ Messages use the [Curly Message Format](https://curlymessage.dev).
 {
   "greeting": "Hello, {{name}}!",
   "welcome": "Welcome, {{name; default:Guest;}}!",
-  "items": "You have {{count}} {{count; 1:item; default:items;}}.",
+  "items": "You have {{count}} {{count:plural; one:item; other:items;}}.",
   "price": "Total: {{amount:currency;}}",
   "updated": "Updated {{time:ago;}}"
 }
@@ -532,8 +532,9 @@ i18n.t('common.updated', { time: -3600000 });                              // â†
 
 The second argument is the **payload** (the values placeholders name), the third
 the per-call **props** (formatting options, keyed by modifier name). Built-in
-modifiers are `number`, `date`, `ago` and `currency`, plus the comparisons `eq`,
-`ne`, `lt`, `lte`, `gt` and `gte`. The full syntax is in the
+modifiers are `number`, `date`, `ago` and `currency`, the plural selections
+`plural` and `ordinal`, which select by the locale's CLDR plural categories, and
+the comparisons `eq`, `ne`, `lt`, `lte`, `gt` and `gte`. The full syntax is in the
 [parser's README](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly).
 
 ### Parser options

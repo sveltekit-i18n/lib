@@ -389,6 +389,8 @@ The built-in modifiers and what they take:
 | `date` | milliseconds since the epoch, or text `Date` parses | `Intl.DateTimeFormat` options |
 | `ago` | a signed millisecond delta from now, negative for the past | `Intl.RelativeTimeFormat` options, plus `format`: a unit from `second` to `year`, or `auto` |
 | `currency` | a number, multiplied by `ratio` (default `1`) | `Intl.NumberFormat` options in the currency style; `currency` names the code |
+| `plural` | a number | `Intl.PluralRules` options but `type`; it also reads the digit options of `number`, so it selects by the number as `number` shows it |
+| `ordinal` | an integer | `Intl.PluralRules` options but `type` |
 
 ```javascript
 const config = {
@@ -932,7 +934,7 @@ default: `{{key:modifier; optionKey:value; default:fallback;}}`.
   "welcome": "Welcome, {{name; default:Guest;}}!",
   "price": "Total: {{amount:number;}}",
   "updated": "Updated {{time:ago;}}",
-  "items": "You have {{count}} {{count; 1:item; default:items;}}.",
+  "items": "You have {{count}} {{count:plural; one:item; other:items;}}.",
   "stock": "{{count:gt; 0:In stock ({{count}}); default:Out of stock;}}"
 }
 ```
@@ -950,6 +952,14 @@ i18n.t('stock', { count: 0 })                // → "Out of stock"
   options; the first option whose key satisfies the comparison wins, and none
   selected takes the fallback. A placeholder with options and no modifier
   compares with `eq`.
+- **Plural selection.** `plural` and `ordinal` select the option named by the
+  category the locale's plural rules put the number in (`zero`, `one`, `two`,
+  `few`, `many`, `other`; each locale uses its own subset). A numeric key
+  matches the value exactly and wins over a category. No option catches the
+  categories a placeholder does not write, as ICU's `other` does: those take
+  the fallback, so a message writes every category its locale uses. The full
+  rules are in the
+  [parser's README](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly#plural-selection).
 - **Nesting.** An option's value may hold placeholders of its own, and only the
   selected option's are resolved — the branch the comparison passes over reads
   no payload entry.

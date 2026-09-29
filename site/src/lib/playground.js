@@ -12,7 +12,7 @@ export const PANELS = ['parser', 'preprocess', 'loaders', 'fallback'];
 export const FLAVOURS = ['curly', 'icu', 'mf2', 'i18next'];
 
 export const MESSAGES = {
-  curly: 'You have {{count:number;}} {{count; 1:message; default:messages;}}.',
+  curly: 'You have {{count:number;}} {{count:plural; one:message; default:messages;}}.',
   icu: 'You have {count, plural, one {# message} other {# messages}}.',
   mf2: '.input {$count :number}\n.match $count\none {{You have {$count} message.}}\n* {{You have {$count} messages.}}',
   // i18next selects a plural form by key suffix, which a single message cannot carry.
