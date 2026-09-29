@@ -13,11 +13,11 @@ importers:
   .:
     dependencies:
       '@sveltekit-i18n/base':
-        specifier: 3.1.0-next.2
-        version: 3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+        specifier: 3.1.0-next.3
+        version: 3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       '@sveltekit-i18n/parser-curly':
         specifier: 3.1.1
-        version: 3.1.1(@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
+        version: 3.1.1(@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -279,17 +279,17 @@ importers:
   site:
     dependencies:
       '@sveltekit-i18n/base':
-        specifier: 3.1.0-next.2
-        version: 3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+        specifier: 3.1.0-next.3
+        version: 3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       '@sveltekit-i18n/parser-i18next':
         specifier: 3.0.1
-        version: 3.0.1(@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))(typescript@5.9.3)
+        version: 3.0.1(@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))(typescript@5.9.3)
       '@sveltekit-i18n/parser-icu':
         specifier: 3.0.2
-        version: 3.0.2(@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
+        version: 3.0.2(@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
       '@sveltekit-i18n/parser-mf2':
         specifier: 3.0.2
-        version: 3.0.2(@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
+        version: 3.0.2(@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))
       messageformat:
         specifier: ^4.0.0
         version: 4.0.0
@@ -1131,8 +1131,8 @@ packages:
       svelte: ^5.46.4
       vite: ^8.0.0-beta.7 || ^8.0.0
 
-  '@sveltekit-i18n/base@3.1.0-next.2':
-    resolution: {integrity: sha512-JqFJ4VqhLJ14Wn/PJMfAn9ImCrDPQFq/yEP26MlJvnIRZHBHLsLpRxX+mEQgDz0MEtSh5zfbVgDB5F01CoeOFQ==}
+  '@sveltekit-i18n/base@3.1.0-next.3':
+    resolution: {integrity: sha512-QptUEOcreEVX0Q6ZfELgjOgrJ27Ldy9WNMuqHCFuOvbaL2D+07SyMVjilwSt5nqLPK1WHMqpPLyaIR94e8HyEA==}
     engines: {bun: '>=1.2', deno: '>=2', node: '>=22'}
     peerDependencies:
       svelte: '>=5'
@@ -3456,31 +3456,31 @@ snapshots:
       vite: 8.3.0(@types/node@26.5.1)(esbuild@0.28.2)
       vitefu: 1.1.3(vite@8.3.0(@types/node@26.5.1)(esbuild@0.28.2))
 
-  '@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0))':
+  '@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))':
     dependencies:
       svelte: 5.57.0(@typescript-eslint/types@8.70.0)
 
-  '@sveltekit-i18n/parser-curly@3.1.1(@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
+  '@sveltekit-i18n/parser-curly@3.1.1(@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
     dependencies:
       '@curly-message/parser': 3.0.0
-      '@sveltekit-i18n/base': 3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      '@sveltekit-i18n/base': 3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
 
-  '@sveltekit-i18n/parser-i18next@3.0.1(@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))(typescript@5.9.3)':
+  '@sveltekit-i18n/parser-i18next@3.0.1(@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))(typescript@5.9.3)':
     dependencies:
-      '@sveltekit-i18n/base': 3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      '@sveltekit-i18n/base': 3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       i18next: 26.4.2(typescript@5.9.3)
     transitivePeerDependencies:
       - typescript
 
-  '@sveltekit-i18n/parser-icu@3.0.2(@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
+  '@sveltekit-i18n/parser-icu@3.0.2(@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
     dependencies:
       '@formatjs/icu-messageformat-parser': 3.5.18
-      '@sveltekit-i18n/base': 3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      '@sveltekit-i18n/base': 3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       intl-messageformat: 11.2.15
 
-  '@sveltekit-i18n/parser-mf2@3.0.2(@sveltekit-i18n/base@3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
+  '@sveltekit-i18n/parser-mf2@3.0.2(@sveltekit-i18n/base@3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0)))':
     dependencies:
-      '@sveltekit-i18n/base': 3.1.0-next.2(svelte@5.57.0(@typescript-eslint/types@8.70.0))
+      '@sveltekit-i18n/base': 3.1.0-next.3(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       messageformat: 4.0.0
 
   '@tybys/wasm-util@0.10.3':
