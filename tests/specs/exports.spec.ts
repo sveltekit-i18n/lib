@@ -43,7 +43,9 @@ const exportsOf = (entry: string) => {
 // Issue #228: a consumer of this package must never have a reason to install
 // the core beside it, which holds only while every name the core publishes is
 // reachable from here. A new export in the core fails this.
-describe('re-export surface', () => {
+// Each case builds TypeScript programs, which takes a slow runner past the
+// default five seconds.
+describe('re-export surface', { timeout: 30_000 }, () => {
   it('carries every export of the core entry', () => {
     const reexported = exportsOf(`${import.meta.dirname}/../../dist/index.d.ts`);
 
