@@ -79,6 +79,15 @@ on its own. Drop the entry once rolldown declares it again.
 [`mdsvex`](./mdsvex) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/mdsvex?startScript=dev&file=src/lib/translations/index.ts)
 - a `.svx` route: `t()` in Markdown, route-scoped loading, prerendered per locale
 
+## Extensions
+
+[`stores`](./stores) — the `$t` store surface · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/stores?startScript=dev&file=src/lib/translations/index.ts)
+- [`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)
+  in the config handed to `defineI18n()`: `use()` and `get()` hand out `$t`,
+  `$l`, `$locale` and `$loading`
+- a language switcher bound to `$locale`, the way v2 wrote it
+- one page, `@sveltejs/adapter-node`
+
 ## How to use an example
 
 Copy the directory out of this repository and install:

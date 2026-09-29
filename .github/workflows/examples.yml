@@ -113,3 +113,7 @@ jobs:
           # the title even when the block renders nothing.
           check component-scoped-ssr en / '4 days'
           check component-scoped-ssr cs / '4 dny'
+          # Interpolated, and `$l` reading the fallback locale: the payload
+          # carries only the messages.
+          check stores cs / 'Máš 2 nepřečtené zprávy.' 'You have 2 unread messages.'
+          check stores de / 'Du hast 2 ungelesene Nachrichten.'

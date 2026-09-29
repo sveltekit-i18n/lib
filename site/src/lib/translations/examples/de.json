@@ -1,6 +1,6 @@
 {
   "title": "Beispiele",
-  "lead": "Acht eigenständige Anwendungen, jede zu einer Entscheidung, die man einmal trifft und dann behält. Alle laufen im Browser — Node und der Dev-Server starten im Tab, ohne lokale Installation.",
+  "lead": "Neun eigenständige Anwendungen, jede zu einer Entscheidung, die man einmal trifft und dann behält. Alle laufen im Browser — Node und der Dev-Server starten im Tab, ohne lokale Installation.",
   "run": "Ausführen",
   "source": "Quellcode",
   "app": {
@@ -35,11 +35,16 @@
     "mdsvex": {
       "title": "mdsvex",
       "text": "Eine in Markdown geschriebene Route: t() innerhalb von .svx, routenbezogenes Laden, pro Sprache vorgerendert."
+    },
+    "stores": {
+      "title": "Stores",
+      "text": "Die $t-Store-Oberfläche aus v2 auf einem 3.x-Kern: extension-stores in der Konfiguration für defineI18n() und eine Sprachauswahl, die an $locale gebunden ist."
     }
   },
   "group": {
     "routing": "Routing",
     "component": "Übersetzungen an der Komponente",
-    "content": "Inhalt"
+    "content": "Inhalt",
+    "extensions": "Erweiterungen"
   }
 }

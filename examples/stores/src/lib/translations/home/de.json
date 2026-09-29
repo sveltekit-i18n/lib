@@ -1,0 +1,24 @@
+{
+  "badge": "@sveltekit-i18n/extension-stores",
+  "title": "Die Store-Oberfläche auf einem 3.x-Kern",
+  "lead": "Eine Erweiterung in der Konfiguration, und die Instanz liest sich wieder als Stores: $t, $l, $locale und $loading, so wie v2 sie schrieb.",
+  "cards": {
+    "t": {
+      "title": "$t und $l",
+      "text": "Lesbare Stores mit einer Übersetzungsfunktion. Bei jedem Wechsel der Sprache oder der Übersetzungen kommt eine neue, und das Markup folgt."
+    },
+    "locale": {
+      "title": "Ein beschreibbares $locale",
+      "text": "Die Sprachauswahl bindet sich direkt daran. Der Store meldet die neue Sprache erst, wenn ihre Übersetzungen geladen sind."
+    },
+    "instance": {
+      "title": "Weiterhin eine Instanz pro Anfrage",
+      "text": "Die Erweiterung steht in der Konfiguration für defineI18n(), also bekommt jede Anfrage und jeder Tab die Stores seiner eigenen Instanz."
+    }
+  },
+  "counter": {
+    "title": "Interpolation",
+    "text": "Du hast {{count}} {{count; 1:ungelesene Nachricht; default:ungelesene Nachrichten;}}."
+  },
+  "english": "Dieselbe Zeile aus $l, immer auf Englisch:"
+}

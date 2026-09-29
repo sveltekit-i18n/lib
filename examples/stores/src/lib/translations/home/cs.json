@@ -1,0 +1,24 @@
+{
+  "badge": "@sveltekit-i18n/extension-stores",
+  "title": "Rozhraní se store na jádře 3.x",
+  "lead": "Jedno rozšíření v konfiguraci a instance se zase čte jako store: $t, $l, $locale a $loading, tak jak je psala verze 2.",
+  "cards": {
+    "t": {
+      "title": "$t a $l",
+      "text": "Čitelné store s překladovou funkcí. Nová se vydá při každé změně jazyka nebo překladů, takže šablona jde s nimi."
+    },
+    "locale": {
+      "title": "Zapisovatelný $locale",
+      "text": "Přepínač jazyka se na něj váže přímo. Store vydá nový jazyk, až se jeho překlady načtou, nikdy dřív."
+    },
+    "instance": {
+      "title": "Pořád instance na požadavek",
+      "text": "Rozšíření je v konfiguraci pro defineI18n(), takže každý požadavek i každá záložka dostane store své vlastní instance."
+    }
+  },
+  "counter": {
+    "title": "Interpolace",
+    "text": "Máš {{count}} {{count; 1:nepřečtenou zprávu; 2:nepřečtené zprávy; 3:nepřečtené zprávy; 4:nepřečtené zprávy; default:nepřečtených zpráv;}}."
+  },
+  "english": "Tentýž řádek z $l, vždy anglicky:"
+}

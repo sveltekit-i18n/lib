@@ -937,7 +937,8 @@ reintroduces exactly the sharing described in [Instance
 Ownership](#instance-ownership). Put the extension in the config handed to
 `defineI18n()` instead: `data.i18n`, `use()` and `get()` then hand out the
 store surface of each per-request and per-tab instance, while the wiring keeps
-driving the instance itself.
+driving the instance itself. The [`stores`](../examples/stores) example does
+exactly that.
 
 ### Writing your own
 
