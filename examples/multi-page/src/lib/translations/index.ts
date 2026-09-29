@@ -1,4 +1,4 @@
-import type { Config, Modifier } from 'sveltekit-i18n';
+import type { Config } from 'sveltekit-i18n';
 import { defineI18n } from 'sveltekit-i18n/kit';
 
 import ar from './ar.json';
@@ -19,25 +19,12 @@ export const NAMESPACES = [
   { namespace: 'about', routes: ['/about'] },
 ];
 
-/**
- * `{{count:plural; one:…; few:…; default:…;}}` picks the option named by the
- * locale's plural category (`zero`, `one`, `two`, `few`, `many`), and the
- * fallback for `other`. The format's own comparisons match the whole number,
- * while Arabic picks `few` and `many` by the last two digits (`103` is `few`).
- */
-const plural: Modifier.T = ({ value, options, locale }) => {
-  const category = new Intl.PluralRules(locale).select(Number(value));
-
-  return options.find(({ key }) => key === category)?.value;
-};
-
 // `as const` keeps the locales literal, so `setLocale()` and `locale` complete
 // them; `satisfies Config` alone would widen them to `string`.
 export const config = {
   // A negotiation candidate after the cookie and `Accept-Language`, so a
   // visitor who matches neither still gets a page in a language.
   initLocale: 'en',
-  parserOptions: { customModifiers: { plural } },
   translations: { en, cs, de, ar },
   loaders: NAMESPACES.map(({ namespace, routes }) => ({
     locale: LOCALES,

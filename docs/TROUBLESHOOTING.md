@@ -1130,7 +1130,7 @@ Common findings once the channel is open:
 
 - `unknown-modifier` — a modifier name nobody registered. It is never run as `eq`.
 - `failed-modifier` — the value cannot be read the way the modifier needs it (text under `number`, a `Date` object under `number` or `ago`, a `currency` placeholder with no currency code).
-- `missing-locale` — a formatting modifier with no locale; it resolves to the empty string.
+- `missing-locale` — a formatting modifier or a plural selection with no locale; it resolves to the empty string.
 
 ---
 
@@ -1555,21 +1555,26 @@ Translations render as text. For markup, use `@html`:
 
 ### How do I handle plurals?
 
-With the format's comparison options:
+With `plural`, which selects by the category the locale's plural rules put the count in, and `ordinal` for positions:
 
 ```json
 {
-  "items": "You have {{count}} {{count; 1:item; default:items;}}.",
-  "stock": "{{count:gt; 0:In stock ({{count}}); default:Out of stock;}}"
+  "items": "You have {{count}} {{count:plural; one:item; other:items;}}.",
+  "inbox": "{{count:plural; 0:No messages; one:{{count}} message; other:{{count}} messages;}}",
+  "files": "{{count:number}} {{count:plural; one:soubor; few:soubory; many:souboru; other:souborů;}}",
+  "place": "{{n}}{{n:ordinal; one:st; two:nd; few:rd; other:th;}}"
 }
 ```
 
 ```javascript
-i18n.t('items', { count: 1 });  // → "You have 1 item."
-i18n.t('items', { count: 5 });  // → "You have 5 items."
+i18n.t('items', { count: 1 });   // → "You have 1 item."
+i18n.t('items', { count: 5 });   // → "You have 5 items."
+i18n.t('inbox', { count: 0 });   // → "No messages"
+i18n.t('files', { count: 3 });   // → "3 soubory" (in cs)
+i18n.t('place', { n: 22 });      // → "22nd"
 ```
 
-A placeholder with options and no modifier compares with `eq`; `lt`, `lte`, `gt` and `gte` select by range. For CLDR plural categories, build on `@sveltekit-i18n/base` with [`@sveltekit-i18n/parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu) or [`@sveltekit-i18n/parser-mf2`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2) instead of using this package.
+The categories are CLDR's (`zero`, `one`, `two`, `few`, `many`, `other`), and each locale uses its own subset. A numeric key matches the value exactly and wins over a category, as `0:` does above. No option catches the categories a placeholder does not write, as ICU's `other` does: those take the fallback, so a message writes every category its locale uses (the Czech one above writes `many` for fractions). The full rules are in the [parser's README](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly#plural-selection). For choices that are not about grammatical number, the comparisons remain: `{{count:gt; 0:In stock; default:Out of stock;}}`.
 
 ### Can I change the parser?
 

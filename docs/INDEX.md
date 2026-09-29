@@ -191,7 +191,8 @@ any parser that satisfies
 **The parser wired into this package**
 
 - Placeholders `{{name}}`, default values, nested placeholders, escaping
-- Modifiers (`number`, `date`, `currency`, `ago`, …) and comparisons
+- Modifiers (`number`, `date`, `currency`, `ago`, …), plural selection
+  (`plural`, `ordinal`) and comparisons
 - Custom modifiers, modifier defaults, the report channel and how payload
   values are read — all reachable here through
   [`parserOptions`](./README.md#parser-options)

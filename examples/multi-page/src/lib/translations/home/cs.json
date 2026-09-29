@@ -18,6 +18,6 @@
   },
   "counter": {
     "title": "Interpolace",
-    "text": "Máš {{count}} {{count; 1:nepřečtenou zprávu; 2:nepřečtené zprávy; 3:nepřečtené zprávy; 4:nepřečtené zprávy; default:nepřečtených zpráv;}}."
+    "text": "Máš {{count}} {{count:plural; one:nepřečtenou zprávu; few:nepřečtené zprávy; many:nepřečtené zprávy; other:nepřečtených zpráv;}}."
   }
 }

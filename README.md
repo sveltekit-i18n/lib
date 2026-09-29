@@ -256,7 +256,7 @@ Use dynamic values in your translations:
 ```json
 {
   "welcome": "Welcome, {{name}}!",
-  "items": "You have {{count:number;}} {{count; 1:item; default:items;}}."
+  "items": "You have {{count:number;}} {{count:plural; one:item; other:items;}}."
 }
 ```
 
