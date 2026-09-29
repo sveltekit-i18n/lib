@@ -197,7 +197,7 @@ Everything lives on one reactive instance:
 
 Reading a property is reactive wherever reads are tracked — a component
 template, `$derived`, `$effect`. The full reference is in
-[the API documentation](./docs/README.md).
+[the API documentation](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md).
 
 ## Key Features
 
@@ -292,7 +292,7 @@ Reports are silent by default; `onReport` is where you route them.
 `sveltekit-i18n/kit` builds one instance **per request** on the server — a
 module-level instance is shared between concurrent requests, which leaks one
 visitor's locale into another's page — and hands its state to the browser. The
-[API documentation](./docs/README.md#sveltekit) covers how it picks the locale
+[API documentation](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#sveltekit) covers how it picks the locale
 and what to watch for.
 
 Wiring it by hand takes the same two halves: the server returns
@@ -321,7 +321,7 @@ i18n.hydrate(data?.i18n);
 
 Data passed to `addTranslations()` or `config.translations` only seeds the
 tables: it keeps no loader from running. The full manual recipe is in
-[Server-Side Rendering](./docs/README.md#server-side-rendering).
+[Server-Side Rendering](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#server-side-rendering).
 
 ### Base path
 
@@ -366,27 +366,27 @@ and the format's move in
 
 **🌐 [sveltekit-i18n.github.io](https://sveltekit-i18n.github.io)** – The documentation site, with a live playground
 
-**📖 [Complete Documentation Index](./docs/INDEX.md)** – Find everything in one place
+**📖 [Complete Documentation Index](https://github.com/sveltekit-i18n/lib/blob/master/docs/INDEX.md)** – Find everything in one place
 
 ### Quick Links
 
-- 🚀 [Getting Started Guide](./docs/GETTING_STARTED.md) – 15-minute tutorial
-- 🏗️ [Architecture Overview](./docs/ARCHITECTURE.md) – How everything works
-- 📚 [API Documentation](./docs/README.md) – Complete reference
-- ✨ [Best Practices](./docs/BEST_PRACTICES.md) – Production-ready patterns
-- 🔧 [Troubleshooting](./docs/TROUBLESHOOTING.md) – Common issues & FAQ
+- 🚀 [Getting Started Guide](https://github.com/sveltekit-i18n/lib/blob/master/docs/GETTING_STARTED.md) – 15-minute tutorial
+- 🏗️ [Architecture Overview](https://github.com/sveltekit-i18n/lib/blob/master/docs/ARCHITECTURE.md) – How everything works
+- 📚 [API Documentation](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md) – Complete reference
+- ✨ [Best Practices](https://github.com/sveltekit-i18n/lib/blob/master/docs/BEST_PRACTICES.md) – Production-ready patterns
+- 🔧 [Troubleshooting](https://github.com/sveltekit-i18n/lib/blob/master/docs/TROUBLESHOOTING.md) – Common issues & FAQ
 
 ## Examples
 
 Each example is a standalone SvelteKit application covering a decision that is
 application-shaped — an adapter, a `svelte.config.js`, a route tree:
 
-- [Multi-page app](./examples/multi-page) – the common setup: cookie and `Accept-Language`, route-scoped loading
-- [Locale-based routing](./examples/locale-router) – SEO-friendly URLs (e.g. `/en/about`), prerendered
-- [Default locale without a prefix](./examples/locale-router-advanced) – `/about` and `/cs/about`, static, translated 404
-- [Component-scoped translations](./examples/component-scoped-ssr) – a component with its own lexicon
-- [Markdown routes](./examples/mdsvex) – `t()` inside `.svx`
-- [All examples](./examples) – complete list
+- [Multi-page app](https://github.com/sveltekit-i18n/lib/tree/master/examples/multi-page) – the common setup: cookie and `Accept-Language`, route-scoped loading
+- [Locale-based routing](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router) – SEO-friendly URLs (e.g. `/en/about`), prerendered
+- [Default locale without a prefix](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced) – `/about` and `/cs/about`, static, translated 404
+- [Component-scoped translations](https://github.com/sveltekit-i18n/lib/tree/master/examples/component-scoped-ssr) – a component with its own lexicon
+- [Markdown routes](https://github.com/sveltekit-i18n/lib/tree/master/examples/mdsvex) – `t()` inside `.svx`
+- [All examples](https://github.com/sveltekit-i18n/lib/tree/master/examples) – complete list
 
 Everything that is really three lines of configuration — message formats,
 `preprocess`, `loaders`, `fallbackLocale` — is on the
@@ -486,7 +486,7 @@ export const i18n = new I18n<Config<Payload>, Payload>(config);
 
 That is for an app without a registered schema: `Config<Payload>` leaves the
 schema slot `any`, so a registered schema types this instance instead. The
-[opt-out](./docs/README.md#one-payload-type-for-every-message) keeps the
+[opt-out](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#one-payload-type-for-every-message) keeps the
 payload type.
 
 ### Generating the schema
@@ -535,12 +535,12 @@ type passed as a type argument decides instead. The registry covers the whole
 program, so only the app registers — a library never does. The plugin reads the config module's
 `config` export, so keep exporting it. Written by hand, the schema can also be
 derived with the re-exported
-[`extractParamsFactory`](./docs/README.md#extractparamsfactory), which reports
+[`extractParamsFactory`](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#extractparamsfactory), which reports
 what each message expects of its payload.
 
 ## Contributing
 
-We welcome contributions! Please read our [Contributing Guide](./CONTRIBUTING.md) for details on:
+We welcome contributions! Please read our [Contributing Guide](https://github.com/sveltekit-i18n/lib/blob/master/CONTRIBUTING.md) for details on:
 
 - Development setup and workflow
 - Git workflow (rebase-based, linear history)
