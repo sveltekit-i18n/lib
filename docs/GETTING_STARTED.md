@@ -670,8 +670,7 @@ It evaluates `src/lib/i18n.js` the way `vite dev` would, reads its `config`
 export, runs the loaders, and writes `src/i18n-schema.d.ts` on `vite build` and
 whenever a translation changes under `vite dev`. The payloads come from this
 package's `extractParamsFactory`, which `extractParams: { from: 'sveltekit-i18n' }`
-points at. The file declares a global `TranslationSchema` and, from typegen
-3.0.0-next.3 on, registers it, so the config module needs nothing more:
+points at. The file declares a global `TranslationSchema` and registers it, so the config module needs nothing more:
 
 ```javascript
 // src/lib/i18n.js
@@ -685,10 +684,9 @@ export const { handle, load, use, get } = defineI18n(config, {
 });
 ```
 
-With an older typegen, or sveltekit-i18n before 3.1.0-next.2, point the slot
-at it instead: `schema: /** @type {TranslationSchema} */ ({})`, in TypeScript
-`schema: {} as TranslationSchema`. sveltekit-i18n 3.0 has neither `/kit` nor
-the registry: there the cast goes on the config handed to `new I18n()`.
+sveltekit-i18n 3.0 has neither `/kit` nor the registry: there point the slot
+of the config handed to `new I18n()` at it, `schema: /** @type {TranslationSchema} */ ({})`,
+in TypeScript `schema: {} as TranslationSchema`.
 JavaScript files need `// @ts-check` (or `checkJs`) for the types to be
 checked at all. Add `src/i18n-schema.d.ts` to
 `.gitignore`: it is reproducible from your translations. The file does not

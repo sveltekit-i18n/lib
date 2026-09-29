@@ -1232,7 +1232,7 @@ With [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen), the
 
 Without a cast, the instance is typed through the `SvelteKitI18n.Register` registry, so also check that:
 
-- the generated file ends in a `declare namespace SvelteKitI18n { interface Register { … } }` block — typegen writes it from 3.0.0-next.3 on; an older one writes only `TranslationSchema`, which then needs the cast;
+- the generated file ends in a `declare namespace SvelteKitI18n { interface Register { … } }` block — a typegen prerelease before 3.0.0-next.3 writes only `TranslationSchema`: update it;
 - `sveltekit-i18n` is 3.1 or newer — an older core ignores the registration without a diagnostic;
 - the config states no `schema`: `schema: {}`, or any schema without a closed key set, opts the instance out;
 - no extension typed by a fixed return type sits in `config.extensions` — it erases the schema, registered or stated (see [below](#an-extension-erased-the-schema-or-the-locales)).
