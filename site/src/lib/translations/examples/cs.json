@@ -1,6 +1,6 @@
 {
   "title": "Příklady",
-  "lead": "Osm samostatných aplikací, každá k jednomu rozhodnutí, které uděláš jednou a pak s ním žiješ. Všechny běží přímo v prohlížeči — Node i vývojový server se spustí v záložce a nic se neinstaluje.",
+  "lead": "Devět samostatných aplikací, každá k jednomu rozhodnutí, které uděláš jednou a pak s ním žiješ. Všechny běží přímo v prohlížeči — Node i vývojový server se spustí v záložce a nic se neinstaluje.",
   "run": "Spustit",
   "source": "Zdroj",
   "app": {
@@ -35,11 +35,16 @@
     "mdsvex": {
       "title": "mdsvex",
       "text": "Routa psaná v Markdownu: t() uvnitř .svx, načítání podle routy, předgenerováno pro každý jazyk."
+    },
+    "stores": {
+      "title": "Store",
+      "text": "Rozhraní $t se store z verze 2 na jádře 3.x: extension-stores v konfiguraci pro defineI18n() a přepínač jazyka navázaný na $locale."
     }
   },
   "group": {
     "routing": "Routování",
     "component": "Překlady u komponenty",
-    "content": "Obsah"
+    "content": "Obsah",
+    "extensions": "Rozšíření"
   }
 }

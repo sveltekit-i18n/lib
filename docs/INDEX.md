@@ -226,11 +226,12 @@ i18next's own engine — on the core directly in the same way.
 ### [All Examples](../examples)
 **Working code you can learn from**
 
-Eight standalone applications on v3: locale routing (URL parameter, path
+Nine standalone applications on v3: locale routing (URL parameter, path
 prefix, static adapter, default locale unprefixed), per-request negotiation
 from a cookie and `Accept-Language`, component-scoped translations rendered on
 the client, and on the server handed over through `snapshot()` and `hydrate()`,
-and `t()` inside Markdown routes.
+`t()` inside Markdown routes, and the `$t` store surface of
+`extension-stores`.
 
 ---
 

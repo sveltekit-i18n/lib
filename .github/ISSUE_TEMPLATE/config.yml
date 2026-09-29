@@ -14,7 +14,7 @@ contact_links:
     about: Message formats, preprocessing, loaders and fallbacks, live
   - name: 💡 Examples
     url: https://sveltekit-i18n.github.io/examples
-    about: Eight applications you can open and run in the browser
+    about: Nine applications you can open and run in the browser
   - name: 🔤 Curly Message Format
     url: https://curlymessage.dev
     about: The message syntax itself — grammar questions and syntax proposals go here

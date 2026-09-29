@@ -1,0 +1,24 @@
+{
+  "badge": "@sveltekit-i18n/extension-stores",
+  "title": "The store surface, on a 3.x core",
+  "lead": "One extension in the config, and the instance reads as stores again: $t, $l, $locale and $loading, the way v2 wrote them.",
+  "cards": {
+    "t": {
+      "title": "$t and $l",
+      "text": "Readable stores holding a translation function. A new one is emitted whenever the locale or the translations change, so the markup follows."
+    },
+    "locale": {
+      "title": "A writable $locale",
+      "text": "The language switcher binds straight to it. The store emits once the new locale's translations have loaded, never before."
+    },
+    "instance": {
+      "title": "Still one instance per request",
+      "text": "The extension sits in the config handed to defineI18n(), so every request and every tab gets stores of its own instance."
+    }
+  },
+  "counter": {
+    "title": "Interpolation",
+    "text": "You have {{count}} unread {{count; 1:message; default:messages;}}."
+  },
+  "english": "The same line from $l, always in English:"
+}

@@ -2,7 +2,7 @@ import { REPO } from './docs.js';
 
 /** The groups and their order mirror `examples/README.md`, which stays the
  *  long-form reference — this page is the launcher index it links out to. */
-export const GROUPS = ['routing', 'component', 'content'];
+export const GROUPS = ['routing', 'component', 'content', 'extensions'];
 
 export const EXAMPLES = [
   { name: 'multi-page', group: 'routing', adapter: 'node' },
@@ -13,6 +13,7 @@ export const EXAMPLES = [
   { name: 'component-scoped-csr', group: 'component', adapter: 'node' },
   { name: 'component-scoped-ssr', group: 'component', adapter: 'node' },
   { name: 'mdsvex', group: 'content', adapter: 'static' },
+  { name: 'stores', group: 'extensions', adapter: 'node' },
 ];
 
 const STACKBLITZ = REPO.replace('https://github.com/', 'https://stackblitz.com/github/');
