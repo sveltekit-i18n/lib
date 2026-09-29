@@ -1,6 +1,6 @@
 # Documentation Index
 
-Complete documentation for the `sveltekit-i18n` ecosystem, covering **3.1**:
+Complete documentation for the `sveltekit-i18n` ecosystem, covering **3.2**:
 one reactive instance built on Svelte 5 runes, no stores, the parser wired in,
 and `sveltekit-i18n/kit` wiring it into SvelteKit — `npm install sveltekit-i18n`
 is the whole install.

@@ -38,10 +38,10 @@ issue tracker, docs, and examples for the whole family
   package moves on its own from there, so read a version off npm rather than
   off this file. The pins on `base` and `parser-curly` are exact and stay that
   way.
-- **3.1 is the stable line.** `README.md` and `docs/` describe it. The site
+- **3.2 is the stable line.** `README.md` and `docs/` describe it. The site
   deploys from `master` on every push (`site.yml`). The site and the examples
   run the workspace package, so each change of behaviour the core brings lands
-  in them with the bump that carries it. The examples' range, `^3.1.0`,
+  in them with the bump that carries it. The examples' range, `^3.2.0`,
   links the workspace package.
 - **`examples/` is on v3** — nine standalone applications, each with a real
   adapter and route tree and a shared design, pinning the published package so
