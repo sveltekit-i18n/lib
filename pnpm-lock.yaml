@@ -68,7 +68,7 @@ importers:
   examples/component-scoped-csr:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -103,7 +103,7 @@ importers:
   examples/component-scoped-ssr:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -138,7 +138,7 @@ importers:
   examples/locale-param:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -173,7 +173,7 @@ importers:
   examples/locale-router:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -208,7 +208,7 @@ importers:
   examples/locale-router-advanced:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-static':
@@ -243,7 +243,7 @@ importers:
   examples/locale-router-static:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-static':
@@ -278,7 +278,7 @@ importers:
   examples/mdsvex:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-static':
@@ -316,7 +316,7 @@ importers:
   examples/multi-page:
     dependencies:
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':
@@ -354,7 +354,7 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1(@sveltekit-i18n/base@3.1.2(svelte@5.57.0(@typescript-eslint/types@8.70.0)))(svelte@5.57.0(@typescript-eslint/types@8.70.0))
       sveltekit-i18n:
-        specifier: ^3.1.0
+        specifier: ^3.2.0
         version: link:../..
     devDependencies:
       '@sveltejs/adapter-node':

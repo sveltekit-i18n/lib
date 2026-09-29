@@ -2,7 +2,7 @@
 
 This guide walks a SvelteKit app from nothing to a working multilingual site:
 translation files, the SvelteKit wiring, server-side rendering, a language
-switcher, route-scoped loading and generated types. Everything here is 3.1.
+switcher, route-scoped loading and generated types. Everything here is 3.2.
 
 ## Table of Contents
 

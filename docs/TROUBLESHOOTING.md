@@ -2,7 +2,7 @@
 
 This guide helps you diagnose and fix common issues when using `sveltekit-i18n`. If you don't find your issue here, check [GitHub Issues](https://github.com/sveltekit-i18n/lib/issues) or create a new one.
 
-Everything below assumes the 3.1 surface: **one reactive instance, no stores**, wired into SvelteKit by `sveltekit-i18n/kit`. If you are upgrading, start with [Upgrading from v2](#upgrading-from-v2) or [Upgrading from 3.0](#upgrading-from-30) — that is where the first-day errors are. The [API documentation](./README.md) describes the surface itself, and [base's documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) is the canonical reference for every member this package inherits from the core.
+Everything below assumes the 3.2 surface: **one reactive instance, no stores**, wired into SvelteKit by `sveltekit-i18n/kit`. If you are upgrading, start with [Upgrading from v2](#upgrading-from-v2) or [Upgrading from 3.0](#upgrading-from-30) — that is where the first-day errors are. The [API documentation](./README.md) describes the surface itself, and [base's documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) is the canonical reference for every member this package inherits from the core.
 
 ## Table of Contents
 
