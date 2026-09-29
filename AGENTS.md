@@ -10,10 +10,10 @@ preference. If your own memory conflicts with this file, follow this file.
 This repo follows the same working rules as
 [`base`'s AGENTS.md](https://github.com/sveltekit-i18n/base/blob/master/AGENTS.md)
 (sections 1-14: think before coding, simplicity first, surgical changes,
-verify and review cycle, commit on approval, fixup hygiene, branch & push
-discipline, PRs, docs track code, coding conventions, security posture,
-English-only artifacts, test rules, terse output, no emojis). What follows is
-only what differs here.
+verify and review cycle with release planning, commit on approval, fixup
+hygiene, branch & push discipline, PRs, docs track code, coding conventions,
+security posture, English-only artifacts, test rules, terse output, no
+emojis). What follows is only what differs here.
 
 ---
 
@@ -49,6 +49,12 @@ issue tracker, docs, and examples for the whole family
   builds all nine on any change under `examples/**` or `src/**` and asserts on
   the rendered output. They are a reference for how v3 is used, alongside
   `README.md` and `docs/`.
+- **This package is released last** (base's §4, *Releases*). Its pins are
+  exact, so every release of `base` or `parser-curly` means one of this
+  package: plan them as one release, and never publish this package while
+  either holds an unreleased change or a planned fix. `README.md` is the npm
+  page and the site deploys from `master`, so both describe the version being
+  published, and each of their links resolves.
 
 ## Architecture you must respect
 
