@@ -652,10 +652,10 @@ const config = { cache: 0 };
 Expiry is evaluated on the **next activating load trigger**
 (`loadTranslations`, `setLocale`, `setRoute`); nothing refetches in the
 background, and a warm load (`{ activate: false }`, `loadNamespace()`) leaves
-expiry to the next activating one. And expiry *refreshes*, it never removes:
-fresh data merges over what is displayed, so a message the source dropped since
-the first load stays until the loader's params change or the instance is
-recreated.
+expiry to the next activating one. And expiry *refreshes*, it never removes by
+itself: what is displayed stays until the refetch lands, and then the fresh data
+replaces what that loader delivered before, so a message the source dropped
+goes and falls back to `fallbackLocale`.
 
 **A source that caches on its own** — a SvelteKit remote `query`, an SWR layer,
 an HTTP cache — gets `cache: false` on its loader. The core then keeps no
