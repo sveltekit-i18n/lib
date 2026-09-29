@@ -82,7 +82,7 @@
     "vitest": "^4.1.10"
   },
   "dependencies": {
-    "@sveltekit-i18n/base": "3.1.0",
+    "@sveltekit-i18n/base": "3.1.1",
     "@sveltekit-i18n/parser-curly": "3.1.2"
   },
   "svelte": "./dist/index.js",
