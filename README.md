@@ -513,7 +513,7 @@ export default {
 ```
 
 It writes `src/i18n-schema.d.ts` (reproducible, so ignore it in Git), which
-declares a global `TranslationSchema` and, from typegen 3.0.0-next.3 on,
+declares a global `TranslationSchema` and
 registers it in the global `SvelteKitI18n.Register` interface. Every instance
 whose config states no `schema` is then typed by it — `new I18n(config)` and
 `defineI18n(config)` alike — with nothing to wire:

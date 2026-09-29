@@ -1341,11 +1341,11 @@ you override, say — goes unreported. See
 typegen's README.
 
 The output, `src/i18n-schema.d.ts`, is a global script: it declares a global
-`TranslationSchema` and imports nothing. From typegen 3.0.0-next.3 on, it also
+`TranslationSchema` and imports nothing. It also
 [registers](#typing-keys-and-payloads-with-schema) that schema in
 `SvelteKitI18n.Register`, so every instance whose config states no `schema` is
 typed by it, with nothing to wire. The cast is then an explicit per-instance
-choice, and still what an older typegen, or a 3.0 core, needs:
+choice, and still what a 3.0 core needs:
 
 ```typescript
 const i18n = new I18n({ ...config, schema: {} as TranslationSchema });

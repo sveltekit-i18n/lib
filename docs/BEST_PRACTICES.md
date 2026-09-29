@@ -823,15 +823,14 @@ export default {
 };
 ```
 
-From typegen 3.0.0-next.3 on, the file it writes registers the schema, so the
-config needs no `schema`:
+The file typegen writes registers the schema, so the config needs no `schema`:
 
 ```typescript
 export const { handle, load, use, get } = defineI18n(config);
 ```
 
-With an older typegen, or sveltekit-i18n before 3.1.0-next.2, cast the slot to
-the generated type:
+A cast of the slot still types the instance, and overrides the registered schema
+for it:
 
 ```typescript
 export const { handle, load, use, get } = defineI18n({ ...config, schema: {} as TranslationSchema });

@@ -658,8 +658,7 @@ constructor:
   library. It needs `sveltekit-i18n` 3.1; an older core ignores it. This
   package ships the slot and the registry;
   [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen), a
-  Vite plugin installed on its own, fills them from your translations (the
-  registration from its 3.0.0-next.3 on), reading payloads through the
+  Vite plugin installed on its own, fills them from your translations, reading payloads through the
   re-exported `extractParamsFactory`. With `/kit`, the schema in the config
   handed to `defineI18n` — or the registered one — types `get()`, `use()` and
   `data.i18n`.
