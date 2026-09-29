@@ -189,8 +189,8 @@ sveltekit-i18n
 └── i18next
 ```
 
-Everything is ESM-only, and runs on Node 22+, Bun 1.2+ or Deno 2+. There is no
-CJS entry.
+Everything is ESM-only, and runs on Node 22+ (22.12+ for `parser-mf2`), Bun
+1.2+ or Deno 2+. There is no CJS entry.
 
 ## The Reactive Engine
 
@@ -305,8 +305,9 @@ export const load = async ({ url }) => {
 6. run the rest in parallel; a loader that throws is logged on its own and
    ↓  does not fail the batch — SvelteKit's redirect() and error() below 500
    ↓  reject the load once the others settled
-7. merge into `rawTranslations`, preprocess into `translations`, record each
-   ↓  loader with its params, stamp the locale's freshness
+7. apply to `rawTranslations` (a loader that delivered before replaces its
+   ↓  earlier part), preprocess into `translations`, record each loader with
+   ↓  its params, stamp the locale's freshness
 8. activate the locale — unless a later request superseded it meanwhile
 ```
 
@@ -456,7 +457,9 @@ i18n.invalidate(undefined, 'cms'); // one namespace, in every locale
 
 Both do exactly one thing: drop the bookkeeping that prevents a refetch. Neither
 starts a load, and neither removes anything that is on screen — the next load
-trigger refetches and the fresh data merges over the old. A loader already in
+trigger refetches, and each loader's fresh data replaces what it delivered
+before, so a key its source dropped goes once the refetch lands (seeded data,
+a plain `hydrate()`'s included, stays). A loader already in
 flight for what was invalidated is **severed**: its data is discarded, because
 it predates the invalidation, while the rest of its load lands. An activating
 trigger still in flight fetches the severed part again before it activates, so

@@ -5,7 +5,7 @@
   "cards": {
     "t": {
       "title": "$t und $l",
-      "text": "Lesbare Stores mit einer Übersetzungsfunktion. Bei jedem Wechsel der Sprache oder der Übersetzungen kommt eine neue, und das Markup folgt."
+      "text": "Lesbare Stores mit einer Übersetzungsfunktion. $t liefert bei jedem Wechsel der Sprache oder der Übersetzungen eine neue, $l bei jedem Wechsel der Übersetzungen, und das Markup folgt."
     },
     "locale": {
       "title": "Ein beschreibbares $locale",

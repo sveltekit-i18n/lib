@@ -396,9 +396,10 @@ what belongs together while each page fetches only its part:
 
 Where both parts declare the same key, the data applied last wins. The
 collision is logged (at `warn`) only when both parts are applied together — one
-load delivering both, or the namespace rebuilt once a loader's params change;
-parts that arrive in separate loads, as route-scoped ones usually do, overwrite
-each other silently. Keep their keys disjoint.
+load delivering both, or the namespace rebuilt because one of its loaders
+delivered again (for new params, after expiry or `invalidate()`, or as a
+`cache: false` loader); parts that arrive in separate loads, as route-scoped
+ones usually do, overwrite each other silently otherwise. Keep their keys disjoint.
 
 #### Feature-based organization
 

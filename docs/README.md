@@ -303,8 +303,10 @@ background. For event-driven refreshes keep the default and call
 [`invalidate()`](#invalidatelocale-namespace). A loader with `cache: false`
 starts no window and is not covered by one.
 
-Expiry and invalidation drop bookkeeping, never displayed data: a refetch
-merges leaf by leaf over what is already shown.
+Expiry and invalidation drop bookkeeping, never displayed data by themselves:
+what is shown stays until the refetch lands, and then each loader's fresh data
+replaces what it delivered before, so a key its source dropped goes. Seeded
+data, a plain `hydrate()`'s included, came from no loader and stays.
 
 ### `log`
 
@@ -1933,7 +1935,8 @@ Also worth knowing:
   builds them for you.
 - **A loader names its `namespace`.** v2's `key` still works in v3, deprecated
   since 3.1.
-- **ESM only, Svelte 5+, on Node 22+, Bun 1.2+ or Deno 2+.** There is no CJS
+- **ESM only, Svelte 5+, on Node 22+ (22.12+ for `parser-mf2`), Bun 1.2+ or
+  Deno 2+.** There is no CJS
   entry, and the core's rune
   modules are compiled by your bundler.
 - **Parser reports are silent** unless `parserOptions.onReport` names a channel.

@@ -1014,7 +1014,7 @@ const config = {
 };
 ```
 
-Neither expiry nor `invalidate()` removes what is displayed or starts a load by itself: they drop the bookkeeping that would otherwise skip the loaders, and a refetch merges leaf by leaf over what is already shown. A loader already in flight for what was invalidated is severed — its data is discarded while the rest of its load lands, and an activating trigger still in flight fetches it again before it activates.
+Neither expiry nor `invalidate()` removes what is displayed or starts a load by itself: they drop the bookkeeping that would otherwise skip the loaders, and once the refetch lands, each loader's fresh data replaces what it delivered before, so a key its source dropped goes (seeded data, a plain `hydrate()`'s included, stays). A loader already in flight for what was invalidated is severed — its data is discarded while the rest of its load lands, and an activating trigger still in flight fetches it again before it activates.
 
 **The loader answers from a cache of its own.** A loader backed by a remote `query`, an SWR layer or an HTTP cache can hand back the same stale table after `invalidate()`, which the core then stamps fresh. Give it `cache: false`: it then runs on every trigger that selects it, and refreshing its source (`query.refresh()`) is what brings new data.
 
