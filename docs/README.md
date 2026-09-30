@@ -20,6 +20,7 @@ shipped as one install.
 - [Server-Side Rendering](#server-side-rendering)
 - [Testing components that translate](#testing-components-that-translate)
 - [Migrating from v2](#migrating-from-v2)
+- [Upgrading from 3.2](#upgrading-from-32)
 - [Upgrading from 3.0](#upgrading-from-30)
 - [See Also](#see-also)
 
@@ -236,9 +237,12 @@ it.
 ### `initLocale` and `fallbackLocale`
 
 `initLocale` starts a load on construction and activates that locale once it
-resolves. `fallbackLocale` is read whenever a key is missing in the active
-locale — its translations are loaded alongside, which roughly doubles what a
-page fetches, so use it deliberately.
+resolves. With [`sveltekit-i18n/kit`](#sveltekit) it is a negotiation candidate
+instead: the locale a visitor gets when nothing they prefer is served, loaded
+only when negotiation picks it (see [Which locale](#which-locale)).
+`fallbackLocale` is read whenever a key is missing in the active locale — its
+translations are loaded alongside, which roughly doubles what a page fetches,
+so use it deliberately.
 
 ### `fallbackValue`
 
@@ -1591,9 +1595,10 @@ export { load } from '$lib/i18n';
 ```
 
 - **`handle`** replaces `%lang%` in the `<html>` start tag with the negotiated
-  locale (an empty string when nothing matches) and `%dir%` with its
-  [direction](#textdirectionlocale). Anything else the locale belongs in, an
-  `og:locale` meta for one, goes in `<svelte:head>` from `i18n.locale`.
+  locale (an empty string when the config serves no locale) and `%dir%` with
+  its [direction](#textdirectionlocale), `ltr` without a locale. Anything else
+  the locale belongs in, an `og:locale` meta for one, goes in `<svelte:head>`
+  from `i18n.locale`.
 - **`load`** is one function for both layout files. The server branch
   negotiates, loads the locale for the route into a fresh instance and returns
   its [`snapshot({ records: true })`](#snapshotoptions) on a page render, and
@@ -1631,7 +1636,17 @@ matches, [`en-GB` falling back to `en`](#matchlocalerequested-available):
 2. the `Accept-Language` header; in an app without a server `load`, the
    browser's `navigator.languages`;
 3. `initLocale`;
-4. `fallbackLocale`.
+4. `fallbackLocale`;
+5. the first locale the config serves: the loaders' locales in the order the
+   config lists them, then the keys of `translations`.
+
+The defaults (3–5) do not read the header, so a range the visitor refused
+(`q=0`) does not keep one of them out. A config that serves at least one locale
+therefore always settles on one; only a config that serves none renders the
+page with no active locale. Set `initLocale` to choose the locale a visitor
+gets when nothing they prefer is served, rather than leaving it to the order of
+the loaders. A `*` range in the header is a preference of its own: it takes the
+first locale served before `initLocale` is tried.
 
 `preferredLocale` runs on every navigation and every preload, and in an app
 without a server `load` in the universal one, whose event has no `cookies`
@@ -1702,12 +1717,13 @@ SvelteKit run the layout again on the next navigation.
   headers**, so the server and the browser can negotiate differently. Put the
   locale in the URL, or add the server `load`.
 - **A prerendered page has no visitor.** It renders the locale
-  `preferredLocale` finds in the URL, or else `initLocale`/`fallbackLocale`. A
-  client navigation to one takes the locale `preferredLocale` gave at build
-  time, and otherwise keeps the tab's, so a cookie-first `preferredLocale` that
-  falls back to the URL follows the URL there. A query string (`?lang=`) does
-  not reach a prerendered page and the build's hostname is not the visitor's,
-  so a locale read from either is not supported on one.
+  `preferredLocale` finds in the URL, or else the default (`initLocale`,
+  `fallbackLocale`, the first locale served). A client navigation to one takes
+  the locale `preferredLocale` gave at build time, and otherwise keeps the
+  tab's, so a cookie-first `preferredLocale` that falls back to the URL follows
+  the URL there. A query string (`?lang=`) does not reach a prerendered page
+  and the build's hostname is not the visitor's, so a locale read from either
+  is not supported on one.
 - **A negotiated response varies by visitor**, and `/kit` sets no `Vary`
   header. Before caching such a response in a shared cache, add `Vary` for what
   it depends on (`Accept-Language`, `Cookie`), or cache only pages whose locale
@@ -1950,6 +1966,25 @@ Also worth knowing:
   entry, and the core's rune
   modules are compiled by your bundler.
 - **Parser reports are silent** unless `parserOptions.onReport` names a channel.
+
+## Upgrading from 3.2
+
+A 3.2 config loads in 3.3 as it is. One behaviour of
+[`sveltekit-i18n/kit`](#sveltekit) changes, which 3.3 brings in with
+`@sveltekit-i18n/base` 3.2:
+
+- **A pass always has a locale when the config serves one.** In 3.2, when
+  neither `preferredLocale`, what the visitor's browser asks for, `initLocale`
+  nor `fallbackLocale` named a locale the config serves, the pass had none:
+  nothing loaded, every `t()` returned `''` and `%lang%` was empty. In 3.3
+  negotiation ends with the first locale the config serves — the loaders'
+  locales in config order, then the `translations` keys (see
+  [Which locale](#which-locale)). Set `initLocale` to choose the locale such a
+  visitor gets, rather than leave it to the order of the loaders. Only a config
+  that serves no locale still renders without one.
+
+The core's notes:
+[base — Upgrading from 3.1](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-31).
 
 ## Upgrading from 3.0
 

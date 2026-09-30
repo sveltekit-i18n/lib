@@ -2,7 +2,7 @@
 
 This guide walks a SvelteKit app from nothing to a working multilingual site:
 translation files, the SvelteKit wiring, server-side rendering, a language
-switcher, route-scoped loading and generated types. Everything here is 3.2.
+switcher, route-scoped loading and generated types. Everything here is 3.3.
 
 ## Table of Contents
 
@@ -192,8 +192,9 @@ module exports the config and the four functions that do that.
 
 **Which locale.** Each request takes the first of these that matches a locale
 the config serves: `preferredLocale(event)` (here the `lang` cookie the
-switcher below writes), the `Accept-Language` header, `initLocale`, then
-`fallbackLocale`. A visitor asking for `en-GB` gets `en`.
+switcher below writes), the `Accept-Language` header, `initLocale`,
+`fallbackLocale`, then the first locale the config serves. A visitor asking for
+`en-GB` gets `en`.
 
 There is **no `parser` slot**: this package fills it with the Curly Message
 Format parser. Its options live under

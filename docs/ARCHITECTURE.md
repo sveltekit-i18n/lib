@@ -508,9 +508,10 @@ root `+layout.svelte` calls `use(() => data)`, and components call `get()`.
 Behind that:
 
 - **The server** builds a fresh instance per request, negotiates the locale
-  (`preferredLocale`, `Accept-Language`, `initLocale`, `fallbackLocale`), loads
-  it for the route and returns `snapshot({ records: true })` on a page render —
-  only the locale and the route on a client navigation.
+  (`preferredLocale`, `Accept-Language`, `initLocale`, `fallbackLocale`, the
+  first locale the config serves), loads it for the route and returns
+  `snapshot({ records: true })` on a page render — only the locale and the
+  route on a client navigation.
 - **The browser** builds one instance per tab from that snapshot with
   `hydrate()`, so it is active before the first render and the loaders the
   server ran do not run again. Every later pass is a warm load of the target
