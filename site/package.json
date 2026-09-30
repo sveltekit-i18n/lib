@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "sveltekit-i18n": "workspace:*",
-    "@sveltekit-i18n/base": "3.1.2",
+    "@sveltekit-i18n/base": "3.2.0",
     "@sveltekit-i18n/parser-icu": "3.0.5",
     "@sveltekit-i18n/parser-mf2": "3.0.4",
     "@sveltekit-i18n/parser-i18next": "3.0.3",
