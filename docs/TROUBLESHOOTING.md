@@ -2,7 +2,7 @@
 
 This guide helps you diagnose and fix common issues when using `sveltekit-i18n`. If you don't find your issue here, check [GitHub Issues](https://github.com/sveltekit-i18n/lib/issues) or create a new one.
 
-Everything below assumes the 3.2 surface: **one reactive instance, no stores**, wired into SvelteKit by `sveltekit-i18n/kit`. If you are upgrading, start with [Upgrading from v2](#upgrading-from-v2) or [Upgrading from 3.0](#upgrading-from-30) — that is where the first-day errors are. The [API documentation](./README.md) describes the surface itself, and [base's documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) is the canonical reference for every member this package inherits from the core.
+Everything below assumes the 3.3 surface: **one reactive instance, no stores**, wired into SvelteKit by `sveltekit-i18n/kit`. If you are upgrading, start with [Upgrading from v2](#upgrading-from-v2), [Upgrading from 3.0](#upgrading-from-30) or, from 3.2, the API docs' [Upgrading from 3.2](./README.md#upgrading-from-32) — that is where the first-day errors are. The [API documentation](./README.md) describes the surface itself, and [base's documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) is the canonical reference for every member this package inherits from the core.
 
 ## Table of Contents
 
@@ -1068,7 +1068,7 @@ When SvelteKit renders the error page **without a server `load`** — on a stati
 
 **Solution:**
 
-[`sveltekit-i18n/kit`](./README.md#sveltekit) handles a `null` `data`: its universal `load` negotiates on its own — from `preferredLocale`, then `navigator.languages` in the browser, then `initLocale` and `fallbackLocale` — and `+error.svelte` reads the instance with `get()` like any page.
+[`sveltekit-i18n/kit`](./README.md#sveltekit) handles a `null` `data`: its universal `load` negotiates on its own — from `preferredLocale`, then `navigator.languages` in the browser, then `initLocale`, `fallbackLocale` and the first locale the config serves — and `+error.svelte` reads the instance with `get()` like any page.
 
 Wired by hand, read the server payload optionally and fall back for the locale:
 
@@ -1664,7 +1664,7 @@ In production, `fallbackValue: ''` hides the misses instead.
 
 ### How do I detect the visitor's language?
 
-[`sveltekit-i18n/kit`](./README.md#sveltekit) negotiates it on every request: `preferredLocale(event)` first (a cookie, a route param, a profile in `locals`), then the `Accept-Language` header — `navigator.languages` in an app without a server `load` — then `initLocale` and `fallbackLocale`, each matched against the locales the config serves:
+[`sveltekit-i18n/kit`](./README.md#sveltekit) negotiates it on every request: `preferredLocale(event)` first (a cookie, a route param, a profile in `locals`), then the `Accept-Language` header — `navigator.languages` in an app without a server `load` — then `initLocale` and `fallbackLocale`, each matched against the locales the config serves, and last the first of those locales:
 
 ```javascript
 export const { handle, load, use, get } = defineI18n(config, {
@@ -1745,7 +1745,7 @@ By default `sanitizeLocales` resolves locales through `Intl`, so `'en-us'` becom
 
 ### 4. Locale detection needs the SvelteKit wiring
 
-The instance itself never reads the URL, a cookie or a header. [`sveltekit-i18n/kit`](./README.md#sveltekit) does: it negotiates from `preferredLocale`, `Accept-Language`, `initLocale` and `fallbackLocale`. An app that builds its instances by hand resolves the locale itself, with [`matchLocale()`](./README.md#matchlocalerequested-available).
+The instance itself never reads the URL, a cookie or a header. [`sveltekit-i18n/kit`](./README.md#sveltekit) does: it negotiates from `preferredLocale`, `Accept-Language`, `initLocale`, `fallbackLocale` and the first locale the config serves. An app that builds its instances by hand resolves the locale itself, with [`matchLocale()`](./README.md#matchlocalerequested-available).
 
 ### 5. `i18n instanceof I18n` is `false`
 

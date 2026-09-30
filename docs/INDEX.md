@@ -1,13 +1,14 @@
 # Documentation Index
 
-Complete documentation for the `sveltekit-i18n` ecosystem, covering **3.2**:
+Complete documentation for the `sveltekit-i18n` ecosystem, covering **3.3**:
 one reactive instance built on Svelte 5 runes, no stores, the parser wired in,
 and `sveltekit-i18n/kit` wiring it into SvelteKit — `npm install sveltekit-i18n`
 is the whole install.
 
 Upgrading from v2? Go straight to
 [Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2) and the
-[migration table](./README.md#migrating-from-v2). From 3.0? Read
+[migration table](./README.md#migrating-from-v2). From an earlier 3.x? Read
+[Upgrading from 3.2](./README.md#upgrading-from-32) and, from 3.0,
 [Upgrading from 3.0](./README.md#upgrading-from-30).
 
 ---
@@ -90,7 +91,8 @@ Perfect for: understanding internals, making architecture decisions
   locale, `data.i18n`, pitfalls
 - [SSR by hand](./README.md#server-side-rendering),
   [testing](./README.md#testing-components-that-translate)
-- [Migrating from v2](./README.md#migrating-from-v2) and
+- [Migrating from v2](./README.md#migrating-from-v2),
+  [upgrading from 3.2](./README.md#upgrading-from-32) and
   [upgrading from 3.0](./README.md#upgrading-from-30)
 
 Perfect for: day-to-day development, looking up specific APIs
@@ -103,7 +105,8 @@ Perfect for: day-to-day development, looking up specific APIs
 - [Instance properties and methods](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#instance-properties-and-methods)
 - [SvelteKit](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#sveltekit)
   and [server-side rendering](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#server-side-rendering)
-- [Upgrading from 3.0](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30)
+- [Upgrading from 3.1](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-31)
+  and [from 3.0](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30)
   – every behaviour and type change
 - [The parser contract](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#the-parser-contract)
   – for building on the core with a different parser
@@ -297,6 +300,9 @@ it pins them exactly. Read a package's current version off npm.
 [API Docs: SSR by hand](./README.md#server-side-rendering) or
 [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership)
 
+#### Upgrade an app from 3.2
+→ [API Docs: Upgrading from 3.2](./README.md#upgrading-from-32)
+
 #### Upgrade an app from 3.0
 → [API Docs: Upgrading from 3.0](./README.md#upgrading-from-30) and
 [Troubleshooting: Upgrading from 3.0](./TROUBLESHOOTING.md#upgrading-from-30)
@@ -358,8 +364,9 @@ it pins them exactly. Read a package's current version off npm.
 ### For Upgraders
 1. [Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2) – the first-day errors
 2. [Migrating from v2](./README.md#migrating-from-v2) – the old member, the new one
-3. [Upgrading from 3.0](./README.md#upgrading-from-30) – what 3.1 changes
-4. [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership) –
+3. [Upgrading from 3.2](./README.md#upgrading-from-32) – what 3.3 changes
+4. [Upgrading from 3.0](./README.md#upgrading-from-30) – what 3.1 changes
+5. [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership) –
    what per-request instances change
 
 ### For Advanced Users

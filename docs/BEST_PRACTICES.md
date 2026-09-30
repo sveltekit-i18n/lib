@@ -279,8 +279,11 @@ The wiring tries that first, then `Accept-Language`, then `initLocale` and
 `fallbackLocale`, and matches each against the configured locales with
 [`matchLocale`](./README.md#matchlocalerequested-available): a visitor sending
 `en-GB` gets `en`, and a region-tagged configured locale is matched as it is
-spelled. `preferredLocale` runs on every navigation and every preload, so it
-only reads the event.
+spelled. When none matches, the first locale the config serves is taken — set
+`initLocale` to choose the locale such a visitor gets, rather than leave it to
+the order of the loaders.
+`preferredLocale` runs on every navigation and every preload, so it only reads
+the event.
 
 ### Prerendering
 
@@ -1283,9 +1286,10 @@ export const { handle, load, use, get } = defineI18n(config, {
 The root wiring from [SSR and CSR
 Considerations](#ssr-and-csr-considerations) is unchanged: the locale now comes
 from the path instead of a cookie, and a value no configured locale matches
-falls through to `Accept-Language`, `initLocale` and `fallbackLocale`. A link to
-another locale's URL switches the tab as the navigation commits. Nothing under
-`[lang]/` has to load translations again.
+falls through to `Accept-Language`, `initLocale`, `fallbackLocale` and the
+first locale the config serves. A link to another locale's URL switches the tab
+as the navigation commits. Nothing under `[lang]/` has to load translations
+again.
 
 Loader `routes` match `url.pathname`, so they see the locale segment
 (`/cs/about`). Match it in the pattern:

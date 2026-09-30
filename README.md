@@ -114,10 +114,10 @@ export { load } from '$lib/i18n';
 ```
 
 The server negotiates the locale on every request — `preferredLocale`, then
-`Accept-Language`, then `initLocale` and `fallbackLocale` — loads it into an
-instance of its own and hands its state to the browser, which keeps one
-instance per tab and does not fetch again what the server loaded. `handle`
-fills `%lang%` and `%dir%`.
+`Accept-Language`, then `initLocale`, `fallbackLocale` and the first locale the
+config serves — loads it into an instance of its own and hands its state to
+the browser, which keeps one instance per tab and does not fetch again what the
+server loaded. `handle` fills `%lang%` and `%dir%`.
 
 ### 4. Use translations in your components
 
@@ -336,6 +336,20 @@ code has to match it — `sanitizeLocales`, `toDotNotation`, `resolveLoaders` �
 and two for choosing and writing a locale: `matchLocale` (`Accept-Language`,
 `navigator.languages` or a cookie against the configured set) and
 `textDirection` (`'ltr'` or `'rtl'`).
+
+## Upgrading from 3.2
+
+A 3.2 config loads in 3.3 as it is. What to check:
+
+- **A pass always has a locale when the config serves one.** When neither
+  what the visitor prefers, `initLocale` nor `fallbackLocale` names a served
+  locale, `sveltekit-i18n/kit` now takes the first locale the config serves
+  (the loaders' locales in config order, then the `translations` keys) instead
+  of rendering without one. Set `initLocale` to choose the locale such a
+  visitor gets.
+
+The core's notes:
+[base — Upgrading from 3.1](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-31).
 
 ## Upgrading from 3.0
 
