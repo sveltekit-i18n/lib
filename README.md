@@ -64,7 +64,7 @@ core and two reactive graphs.
 import { defineI18n } from 'sveltekit-i18n/kit';
 
 export const config = {
-  fallbackLocale: 'en',
+  initLocale: 'en',
   loaders: [
     {
       locale: ['en', 'cs'],

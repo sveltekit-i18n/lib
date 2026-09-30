@@ -57,7 +57,7 @@ failure is load-dependent: a single-user dev session never shows it.
 import { defineI18n } from 'sveltekit-i18n/kit';
 
 export const config = {
-  fallbackLocale: 'en',
+  initLocale: 'en',
   loaders: [/* … */],
 };
 

@@ -162,7 +162,7 @@ src/lib/
 import { defineI18n } from 'sveltekit-i18n/kit';
 
 export const config = {
-  fallbackLocale: 'en',
+  initLocale: 'en',
   // Available immediately, in every locale — the language switcher renders
   // each language in its own name from these.
   translations: {
@@ -348,7 +348,7 @@ src/lib/translations/
 const fromFile = async ({ locale, namespace }) => (await import(`./translations/${locale}/${namespace}.json`)).default;
 
 export const config = {
-  fallbackLocale: 'en',
+  initLocale: 'en',
   translations: {
     en: { 'lang.en': 'English', 'lang.cs': 'Czech' },
     cs: { 'lang.en': 'Angličtina', 'lang.cs': 'Čeština' },
