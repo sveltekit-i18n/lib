@@ -50,7 +50,8 @@ stores.
 `$l('en', …)` reads English whatever the active locale is, but only what is
 loaded. `fallbackLocale: 'en'` loads English next to the active locale, so the
 page can show the same message in both, and a key the active locale lacks falls
-back to it.
+back to it. That is a second load on every page in another locale, there only
+for `$l`: an app that does not read another locale gets by with `initLocale`.
 
 ## Typed keys
 
