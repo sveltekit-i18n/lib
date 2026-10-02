@@ -15,6 +15,12 @@ hygiene, branch & push discipline, PRs, docs track code, coding conventions,
 security posture, English-only artifacts, test rules, terse output, no
 emojis). What follows is only what differs here.
 
+Those rules are not in this file, and nothing loads them for you: before any
+change, read base's AGENTS.md in full — `../base/AGENTS.md` when `base` is
+checked out beside this repository on an up-to-date `master`, otherwise
+[the raw file](https://raw.githubusercontent.com/sveltekit-i18n/base/master/AGENTS.md)
+— and follow it as fully as the rules below.
+
 ---
 
 ## The repository
