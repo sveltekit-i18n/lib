@@ -1,6 +1,6 @@
 {
   "title": "Examples",
-  "lead": "Nine standalone applications, each covering one decision you make once and live with. Every one of them runs in the browser — Node and the dev server boot inside the tab, with nothing installed locally.",
+  "lead": "Standalone applications, each covering one decision you make once and live with. Every one of them runs in the browser — Node and the dev server boot inside the tab, with nothing installed locally.",
   "run": "Run it",
   "source": "Source",
   "app": {

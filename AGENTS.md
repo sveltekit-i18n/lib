@@ -49,10 +49,10 @@ issue tracker, docs, and examples for the whole family
   run the workspace package, so each change of behaviour the core brings lands
   in them with the bump that carries it. The examples' range, `^3.3.0`,
   links the workspace package.
-- **`examples/` is on v3** — nine standalone applications, each with a real
+- **`examples/` is on v3** — standalone applications, each with a real
   adapter and route tree and a shared design, pinning the published package so
   a copied-out directory installs on its own. `.github/workflows/examples.yml`
-  builds all nine on any change under `examples/**` or `src/**` and asserts on
+  builds every one on any change under `examples/**` or `src/**` and asserts on
   the rendered output. They are a reference for how v3 is used, alongside
   `README.md` and `docs/`.
 - **This package is released last** (base's §4, *Releases*). Its pins are

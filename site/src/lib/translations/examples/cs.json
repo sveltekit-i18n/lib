@@ -1,6 +1,6 @@
 {
   "title": "Příklady",
-  "lead": "Devět samostatných aplikací, každá k jednomu rozhodnutí, které uděláš jednou a pak s ním žiješ. Všechny běží přímo v prohlížeči — Node i vývojový server se spustí v záložce a nic se neinstaluje.",
+  "lead": "Samostatné aplikace, každá k jednomu rozhodnutí, které uděláš jednou a pak s ním žiješ. Všechny běží přímo v prohlížeči — Node i vývojový server se spustí v záložce a nic se neinstaluje.",
   "run": "Spustit",
   "source": "Zdroj",
   "app": {

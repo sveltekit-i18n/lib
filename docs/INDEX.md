@@ -230,7 +230,7 @@ i18next's own engine — on the core directly in the same way.
 ### [All Examples](../examples)
 **Working code you can learn from**
 
-Nine standalone applications on v3: locale routing (URL parameter, path
+Standalone applications on v3: locale routing (URL parameter, path
 prefix, static adapter, default locale unprefixed), per-request negotiation
 from a cookie and `Accept-Language`, component-scoped translations rendered on
 the client, and on the server handed over through `snapshot()` and `hydrate()`,

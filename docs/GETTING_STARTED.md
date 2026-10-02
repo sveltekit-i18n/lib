@@ -816,6 +816,6 @@ cases — the same property that makes per-request instances right on the server
 
 - **[Troubleshooting Guide](./TROUBLESHOOTING.md)** – common issues
 - **[GitHub Issues](https://github.com/sveltekit-i18n/lib/issues)** – report bugs or ask questions
-- **[Examples](../examples)** – nine standalone applications on v3
+- **[Examples](../examples)** – standalone applications on v3
 
 Happy translating! 🌍
