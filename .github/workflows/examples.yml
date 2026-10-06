@@ -117,3 +117,7 @@ jobs:
           # carries only the messages.
           check stores cs / 'Máš 2 nepřečtené zprávy.' 'You have 2 unread messages.'
           check stores de / 'Du hast 2 ungelesene Nachrichten.'
+          # The member form's line: the string form renders the same text in
+          # an `<em>`.
+          check typed-access cs / '<p>Máš 2 nepřečtené zprávy.</p>'
+          check typed-access de / '<p>Du hast 2 ungelesene Nachrichten.</p>'
