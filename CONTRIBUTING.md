@@ -190,7 +190,7 @@ lots of changes
 
 - All source code is in `src/` – three small files, because this package is wiring. A change to how translations load, cache or interpolate almost always belongs in [`base`](https://github.com/sveltekit-i18n/base) or [`parsers`](https://github.com/sveltekit-i18n/parsers) instead.
 - TypeScript strict mode is enforced
-- ESLint runs automatically on commit (pre-commit hook)
+- ESLint runs automatically on commit (pre-commit hook), and in CI without `--fix`
 - Keep the parser-less `Config` and the re-export surface intact – both are covered by tests
 
 ### Documentation Changes
@@ -206,7 +206,7 @@ If you drive changes with an LLM coding assistant, `AGENTS.md` (imported by `CLA
 
 - Examples are in `examples/`, each a standalone SvelteKit application with its own toolchain, consuming the package through `workspace:*`
 - Include a README explaining the use case and how it works
-- ESLint ignores `examples/` – each example lints under its own config
+- ESLint holds `examples/` to the shared formatting contract alone – untyped, and without the dependency rule, since each example brings its own dependencies
 
 ## Testing
 

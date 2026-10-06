@@ -37,6 +37,29 @@ jobs:
         env:
           tests: true
 
+  Lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      # `eslint` rather than the package's `lint`, which fixes in place: a job
+      # that rewrites files and passes proves nothing.
+      - name: Lint
+        run: pnpm exec eslint .
+
   # The package declares no runtime API of its own, so these legs exist to keep
   # that true. Dependencies still install through pnpm: the alternative runtimes
   # run the suite, they do not manage the tree.
