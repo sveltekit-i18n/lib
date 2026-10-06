@@ -13,9 +13,9 @@
   "dependencies": {
     "sveltekit-i18n": "workspace:*",
     "@sveltekit-i18n/base": "3.2.0",
-    "@sveltekit-i18n/parser-icu": "3.0.5",
-    "@sveltekit-i18n/parser-mf2": "3.0.4",
-    "@sveltekit-i18n/parser-i18next": "3.0.3",
+    "@sveltekit-i18n/parser-icu": "3.1.0",
+    "@sveltekit-i18n/parser-mf2": "3.1.0",
+    "@sveltekit-i18n/parser-i18next": "3.0.4",
     "messageformat": "^4.0.0"
   },
   "devDependencies": {
