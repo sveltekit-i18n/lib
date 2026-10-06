@@ -1,0 +1,111 @@
+name: Bench
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    paths:
+      - 'src/**'
+      - 'bench/**'
+      - 'tsconfig.json'
+      - 'tsup.config.js'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - '.github/workflows/bench.yml'
+
+# GITHUB_TOKEN only: this job runs the pull request's code, so it never holds
+# the app token, which may push to master.
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: bench-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  Bench:
+    runs-on: ubuntu-latest
+    # A run takes about twenty minutes; one that hangs fails long before
+    # GitHub's six hours.
+    timeout-minutes: 60
+
+    steps:
+      # The merge commit, whose first parent is the base branch it measures
+      # against.
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      - name: Check out the base
+        run: git worktree add ../master HEAD^1
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The base is measured, never run as a checkout of its own: its install
+      # skips the scripts, which would install git hooks into the worktree.
+      - name: Install the base
+        working-directory: ../master
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      # Its verdict is kept for the last step, so the report is posted
+      # whatever it says.
+      - name: Bench
+        id: bench
+        run: |
+          status=0
+          pnpm run bench --compare ../master --report "$RUNNER_TEMP/bench.md" || status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          if [ -f "$RUNNER_TEMP/bench.md" ]; then
+            cat "$RUNNER_TEMP/bench.md" >> "$GITHUB_STEP_SUMMARY"
+            echo 'report=true' >> "$GITHUB_OUTPUT"
+          fi
+
+      # A fork's or Dependabot's run gets a read-only token: its report is the
+      # job summary only.
+      - name: Comment
+        if: ${{ !cancelled() && steps.bench.outputs.report == 'true' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          ID="$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- bench:sveltekit-i18n -->"))) | .id' | head -n 1)"
+          if [ -n "$ID" ]; then
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$ID" -F "body=@$RUNNER_TEMP/bench.md" > /dev/null
+          else
+            gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -F "body=@$RUNNER_TEMP/bench.md" > /dev/null
+          fi
+
+      - name: Verdict
+        if: steps.bench.outputs.status != '0' && steps.bench.outputs.status != '2'
+        run: |
+          echo 'A project of this branch failed: see the report.'
+          exit 1
+
+      # The labels are read now, not from the event, which a re-run keeps:
+      # `bench-label.yml` re-runs this when the label changes, by this step's
+      # name.
+      - name: Comparison
+        if: steps.bench.outputs.status == '2'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          if gh api "repos/$GITHUB_REPOSITORY/issues/$PR/labels" --jq '.[].name' | grep -qx 'bench-accepted'; then
+            echo 'The comparison failed, and the `bench-accepted` label accepts it: see the report.'
+            exit 0
+          fi
+          echo 'The comparison failed (a count grew, a row is missing, or a project of the base failed): see the report. A comparison the change means to fail passes with the `bench-accepted` label.'
+          exit 1

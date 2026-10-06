@@ -7,9 +7,10 @@ import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   // Build outputs, plus `site/` — a standalone SvelteKit project with its own
-  // toolchain and its own ESLint config — and the type fixtures, programs of
-  // their own outside the one the typed rules read.
-  { ignores: ['**/dist/', '/lib/', '**/build/', '**/.svelte-kit/', 'site/', 'tests/types/'] },
+  // toolchain and its own ESLint config — and the type fixtures and the
+  // benchmark's probe, programs of their own outside the one the typed rules
+  // read.
+  { ignores: ['**/dist/', '/lib/', '**/build/', '**/.svelte-kit/', 'site/', 'tests/types/', 'bench/types/', 'bench/out/'] },
   js.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
   // Self-scoped to `**/*.svelte`, which only the examples carry here.
@@ -45,6 +46,7 @@ export default tseslint.config(
           '**/*.config.ts',
           '**/*.config.js',
           'tests/**',
+          'bench/**',
         ],
       }],
     },

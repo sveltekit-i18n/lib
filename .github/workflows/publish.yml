@@ -21,6 +21,8 @@ jobs:
   publish-npm:
     needs: tests
     runs-on: ubuntu-latest
+    # The benchmark of the release runs in here.
+    timeout-minutes: 60
     permissions:
       contents: read
       id-token: write
@@ -47,7 +49,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version: 24
           registry-url: https://registry.npmjs.org/
           cache: 'pnpm'
 
@@ -67,12 +69,18 @@ jobs:
           # The bump picks the dist-tag: a prerelease can only reach `next`,
           # and only a released version can move `latest`.
           if [ '${{ inputs.version }}' = next ]; then
-            TAG="$(pnpm version prerelease --preid=next | tail -n 1)"
+            TAG="$(pnpm version prerelease --preid=next --no-git-tag-version | tail -n 1)"
             DIST_TAG=next
           else
-            TAG="$(pnpm version '${{ inputs.version }}' | tail -n 1)"
+            TAG="$(pnpm version '${{ inputs.version }}' --no-git-tag-version | tail -n 1)"
             DIST_TAG=latest
           fi
+          # The release commit carries the benchmark of the version it
+          # releases; commit and tag are written as `pnpm version` writes them.
+          pnpm run bench --write
+          git add package.json BENCH.md
+          git commit -m "${TAG#v}"
+          git tag -a "$TAG" -m "${TAG#v}"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
           echo "dist-tag=$DIST_TAG" >> "$GITHUB_OUTPUT"
 

@@ -132,6 +132,50 @@ issue tracker, docs, and examples for the whole family
   `browser` condition, which also picks the browser half of base's `#kit-*`
   imports.
 
+## Benchmark
+
+`pnpm run bench` measures this tree, and `pnpm run bench --compare <dir>`
+measures it against the package checked out and installed at `<dir>`, as
+`bench.yml` does on every pull request that touches what it measures, against
+its base. It reads rows as base's benchmark does (base's §4): a project of the
+branch that fails fails the job; a count that grew, a row of the base the
+branch lacks or a project of the base that failed fails it unless the pull
+request carries the `bench-accepted` label (`bench-label.yml` re-runs the job
+when the label changes); and a size that grew, a time beyond its spread by 5%
+or more and heap that grew beyond its spread are flagged for review.
+`tests/specs/bench.spec.ts` pins that reading (`bench/compare.ts`), and
+`publish.yml` writes `BENCH.md` into the release commit.
+
+- **It measures what this package adds, never the core or the grammar
+  again** — base's and the parsers' benchmarks do. The rows are the parsers
+  the package builds, what its declarations cost the checker, the browser
+  bundles of its entry and `/kit`, the time of `t`, construction, `loadConfig`
+  and `defineI18n`, and the heap an instance and a page render through
+  `defineI18n`'s loads leave behind.
+- **Each side is its own build on its own install; the instruments are this
+  tree's.** `run.ts` builds each tree with its own `pnpm run build` and bundles
+  its `dist/` with the core and the parser its install holds, so a bump of a
+  pin is a change measured. esbuild, the Svelte that compiles and runs the
+  core's rune modules (which the core ships uncompiled) and TypeScript are
+  this tree's, so the base needs no `bench/` and a change of an instrument
+  moves both sides alike.
+- **Counts:** the parsers `new I18n`, `loadConfig`, and `defineI18n` with its
+  page renders build, through a bundle whose parser module counts them; and
+  the instantiations of a typed construction and of a typed `t` and `l`,
+  through the tree's `dist/` declarations, on a probe built as base's bench
+  probe is; a block at its end, which nothing measures, proves the schemas
+  still narrow.
+- **Sizes:** the browser bundles of `I18n` and `defineI18n`, minified and
+  gzipped, `svelte` left out, whole and this package's code alone. The entry
+  re-exports `cst` and `extractParamsFactory`, so its bundle must come out as
+  it does with both stubbed out, but for the names esbuild picks: it names a
+  symbol by every symbol it saw, the ones it then dropped included.
+- **Heap** is read as the difference between two points of one curve, under
+  `--expose-gc --max-opt=0 --no-flush-bytecode`: V8 drops the bytecode of code
+  that ran once, before the curve, at a collection no row can foresee.
+- **A project that waits fails by a deadline** (`within`), each project
+  process by a timeout, and the jobs carry a `timeout-minutes`.
+
 ## Comments
 
 If you need a paragraph-long comment to justify why the workaround is OK,

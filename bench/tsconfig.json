@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    // Node runs the benchmark as it is, by stripping its types, so it imports
+    // its own modules by the `.ts` name. Only this program allows that name:
+    // src/ ships its modules as `.js`.
+    "allowImportingTsExtensions": true,
+    // Node strips the types of every project, so only syntax it can strip
+    // compiles, and a type is imported as one.
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true
+  },
+  "include": ["."],
+  // The probe resolves the package to the tree it measures, and the bundles
+  // land under out/.
+  "exclude": ["./types", "./out"]
+}
