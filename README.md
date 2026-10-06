@@ -574,6 +574,7 @@ See [Releases](https://github.com/sveltekit-i18n/lib/releases) for version histo
 - [@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2) – Unicode MessageFormat 2 parser
 - [@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next) – i18next syntax parser
 - [@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores) – Svelte store surface for the instance
+- [@sveltekit-i18n/extension-html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html) – renders the markup a translation carries as elements and Svelte components
 - [@sveltekit-i18n/typegen](https://github.com/sveltekit-i18n/typegen) – generates the `schema` type from your translations
 
 ## Sponsor
