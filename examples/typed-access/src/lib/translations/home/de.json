@@ -1,0 +1,24 @@
+{
+  "badge": "@sveltekit-i18n/extension-typed-access",
+  "title": "Jeder Schlüssel ein Pfad",
+  "lead": "Eine Erweiterung in der Konfiguration, und die Schlüssel lesen sich als Member von t: t.home.title() neben t('home.title'), Segment für Segment vervollständigt und aus dem generierten Schema typisiert.",
+  "cards": {
+    "tree": {
+      "title": "Beim Tippen vervollständigt",
+      "text": "Der Editor vervollständigt jedes Segment, und ein Segment, das der Katalog nicht kennt, ist ein Typfehler, genau wie ein falscher Schlüssel in der String-Form."
+    },
+    "string": {
+      "title": "Die String-Form bleibt",
+      "text": "t('home.title') funktioniert weiter. Ein Schlüssel, der erst zur Laufzeit feststeht, aus einem CMS oder einem Prop, behält sie."
+    },
+    "runtime": {
+      "title": "Eine Laufzeit",
+      "text": "Jeder Member-Aufruf läuft über das t der Instanz, also wird ein Schlüssel aufgelöst, fällt zurück und scheitert sanft wie in der String-Form."
+    }
+  },
+  "counter": {
+    "title": "Ein typisierter Payload",
+    "text": "Du hast {{count}} {{count; 1:ungelesene Nachricht; default:ungelesene Nachrichten;}}.",
+    "string": "Dieselbe Nachricht über die String-Form:"
+  }
+}

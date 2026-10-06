@@ -39,6 +39,10 @@
     "stores": {
       "title": "Stores",
       "text": "Die $t-Store-Oberfläche aus v2 auf einem 3.x-Kern: extension-stores in der Konfiguration für defineI18n() und eine Sprachauswahl, die an $locale gebunden ist."
+    },
+    "typed-access": {
+      "title": "Typisierter Zugriff",
+      "text": "Schlüssel als Member von t: extension-typed-access in der Konfiguration für defineI18n() und t.home.title(), typisiert aus dem generierten Schema."
     }
   },
   "group": {

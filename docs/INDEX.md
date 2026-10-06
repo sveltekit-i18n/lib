@@ -234,8 +234,8 @@ Standalone applications on v3: locale routing (URL parameter, path
 prefix, static adapter, default locale unprefixed), per-request negotiation
 from a cookie and `Accept-Language`, component-scoped translations rendered on
 the client, and on the server handed over through `snapshot()` and `hydrate()`,
-`t()` inside Markdown routes, and the `$t` store surface of
-`extension-stores`.
+`t()` inside Markdown routes, the `$t` store surface of `extension-stores`, and
+the member keys of `extension-typed-access`.
 
 ---
 

@@ -39,6 +39,10 @@
     "stores": {
       "title": "Stores",
       "text": "The $t store surface from v2 on a 3.x core: extension-stores in the config handed to defineI18n(), and a language switcher bound to $locale."
+    },
+    "typed-access": {
+      "title": "Typed access",
+      "text": "Keys as members of t: extension-typed-access in the config handed to defineI18n(), and t.home.title() typed from the generated schema."
     }
   },
   "group": {

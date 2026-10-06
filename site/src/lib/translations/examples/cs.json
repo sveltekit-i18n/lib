@@ -39,6 +39,10 @@
     "stores": {
       "title": "Store",
       "text": "Rozhraní $t se store z verze 2 na jádře 3.x: extension-stores v konfiguraci pro defineI18n() a přepínač jazyka navázaný na $locale."
+    },
+    "typed-access": {
+      "title": "Typovaný přístup",
+      "text": "Klíče jako členy t: extension-typed-access v konfiguraci pro defineI18n() a t.home.title() typované z vygenerovaného schématu."
     }
   },
   "group": {

@@ -88,6 +88,13 @@ on its own. Drop the entry once rolldown declares it again.
 - a language switcher bound to `$locale`, the way v2 wrote it
 - one page, `@sveltejs/adapter-node`
 
+[`typed-access`](./typed-access) — keys as members of `t` · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/typed-access?startScript=dev&file=src/lib/translations/index.ts)
+- [`@sveltekit-i18n/extension-typed-access`](https://www.npmjs.com/package/@sveltekit-i18n/extension-typed-access)
+  in the config handed to `defineI18n()`: `t.home.title()` beside
+  `t('home.title')`, typed from the generated schema
+- a typed payload, `t.home.counter.text({ count })`
+- one page, `@sveltejs/adapter-node`
+
 ## How to use an example
 
 Copy the directory out of this repository and install:

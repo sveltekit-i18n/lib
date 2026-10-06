@@ -1,0 +1,24 @@
+{
+  "badge": "@sveltekit-i18n/extension-typed-access",
+  "title": "Every key, a path",
+  "lead": "One extension in the config, and the keys read as members of t: t.home.title() beside t('home.title'), completed segment by segment and typed from the generated schema.",
+  "cards": {
+    "tree": {
+      "title": "Completed as you type",
+      "text": "Each segment completes in the editor, and a segment the catalogue lacks is a type error, exactly as a wrong key is in the string form."
+    },
+    "string": {
+      "title": "The string form stays",
+      "text": "t('home.title') still works. A key known only at runtime, from a CMS or a prop, keeps it."
+    },
+    "runtime": {
+      "title": "One runtime",
+      "text": "Every member call goes through the instance's own t, so a key resolves, falls back and fails soft as the string form does."
+    }
+  },
+  "counter": {
+    "title": "A typed payload",
+    "text": "You have {{count}} unread {{count; 1:message; default:messages;}}.",
+    "string": "The same message through the string form:"
+  }
+}

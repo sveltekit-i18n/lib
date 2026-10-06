@@ -1,0 +1,24 @@
+{
+  "badge": "@sveltekit-i18n/extension-typed-access",
+  "title": "Každý klíč je cesta",
+  "lead": "Jedno rozšíření v konfiguraci a klíče se čtou jako členy t: t.home.title() vedle t('home.title'), doplňované po segmentech a typované z vygenerovaného schématu.",
+  "cards": {
+    "tree": {
+      "title": "Doplňuje se při psaní",
+      "text": "Editor doplní každý segment a segment, který katalog nemá, je typová chyba, stejně jako špatný klíč v řetězcové podobě."
+    },
+    "string": {
+      "title": "Řetězcová podoba zůstává",
+      "text": "t('home.title') funguje dál. Klíč, který je známý až za běhu, z CMS nebo z propu, ji používá i nadále."
+    },
+    "runtime": {
+      "title": "Jeden runtime",
+      "text": "Každé volání člena jde přes vlastní t instance, takže se klíč najde, spadne na fallback a selže měkce stejně jako v řetězcové podobě."
+    }
+  },
+  "counter": {
+    "title": "Typovaný payload",
+    "text": "Máš {{count}} {{count; 1:nepřečtenou zprávu; 2:nepřečtené zprávy; 3:nepřečtené zprávy; 4:nepřečtené zprávy; default:nepřečtených zpráv;}}.",
+    "string": "Stejná zpráva přes řetězcovou podobu:"
+  }
+}
