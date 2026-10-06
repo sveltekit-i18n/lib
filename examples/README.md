@@ -95,6 +95,14 @@ on its own. Drop the entry once rolldown declares it again.
 - a typed payload, `t.home.counter.text({ count })`
 - one page, `@sveltejs/adapter-node`
 
+[`html`](./html) — markup in a message, rendered as elements · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/html?startScript=dev&file=src/lib/translations/index.ts)
+- [`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/extension-html@3.0.0/extension-html)
+  in the config handed to `defineI18n()`: `<i18n.T key="…" />` renders the
+  markup, `t()` still returns it as text
+- an escaped payload, a tag rendered as a component, block elements per usage,
+  and what is dropped and reported
+- one page, `@sveltejs/adapter-node`
+
 ## How to use an example
 
 Copy the directory out of this repository and install:

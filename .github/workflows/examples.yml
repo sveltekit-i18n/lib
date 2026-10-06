@@ -95,7 +95,9 @@ jobs:
               sleep 0.25
             done
             local body
-            body=$(curl -sf -H "Accept-Language: $2" "http://127.0.0.1:4173$3")
+            # Without the hydration markers Svelte puts around blocks and
+            # components, so the markup a component renders reads as written.
+            body=$(curl -sf -H "Accept-Language: $2" "http://127.0.0.1:4173$3" | sed 's/<!--[^>]*-->//g')
             kill "$pid"
             local where="$1$3 ($2)"
             shift 3
@@ -121,3 +123,7 @@ jobs:
           # an `<em>`.
           check typed-access cs / '<p>Máš 2 nepřečtené zprávy.</p>'
           check typed-access de / '<p>Du hast 2 ungelesene Nachrichten.</p>'
+          # The serialized payload escapes `<`, so a tag found here was rendered.
+          # The warnings in the log are the reports the page exists to show.
+          check html en / '<ul><li>' 'This <a>link</a> has no address, and the image' 'target="_blank" rel="noopener noreferrer"'
+          check html cs / 'Ahoj <b>&lt;b>Ann&lt;/b></b>, vítej zpět.'

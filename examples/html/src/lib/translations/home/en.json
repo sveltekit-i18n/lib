@@ -1,0 +1,29 @@
+{
+  "badge": "@sveltekit-i18n/extension-html",
+  "title": "Markup in a message",
+  "lead": "A translation may carry <b>markup</b>, and <code>&lt;i18n.T&gt;</code> renders it as elements Svelte creates, from an allowlist, with no <code>@html</code> anywhere.",
+  "payload": {
+    "title": "A payload is text",
+    "label": "Your name",
+    "text": "Hello <b>{{name}}</b>, welcome back.",
+    "note": "What you type is escaped before the parser sees it, so a tag in it renders as the characters it is."
+  },
+  "component": {
+    "title": "A tag as a component",
+    "text": "The rest is in <a href=\"https://sveltekit-i18n.github.io/docs\">the documentation</a>.",
+    "note": "This usage maps the message's <code>a</code> onto a component of the app's, which takes the tag's attributes as props and its content as children."
+  },
+  "blocks": {
+    "title": "Block elements where they fit",
+    "text": "<ul><li>Off by default, since a message often sits inside a <code>p</code> or a <code>button</code>, which cannot hold a list.</li><li>Enabled per usage with <code>BLOCK_ELEMENTS</code>, here inside a <code>div</code>.</li></ul>"
+  },
+  "blocked": {
+    "title": "What never renders",
+    "text": "This <a href=\"javascript:alert(1)\">link</a> has no address<img src=\"x\" onerror=\"alert(1)\">, and the image that followed it is gone.",
+    "note": "Both are reported through onReport: in the server's log, and in the browser's console."
+  },
+  "string": {
+    "title": "t() stays text",
+    "text": "t() returns the same message with its markup as text, which is what a title or an attribute needs:"
+  }
+}

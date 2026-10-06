@@ -43,6 +43,10 @@
     "typed-access": {
       "title": "Typovaný přístup",
       "text": "Klíče jako členy t: extension-typed-access v konfiguraci pro defineI18n() a t.home.title() typované z vygenerovaného schématu."
+    },
+    "html": {
+      "title": "HTML",
+      "text": "Markup ve zprávě vykreslený jako elementy: komponenta T z extension-html, payload vykreslený jako text, tag namapovaný na komponentu a co se nikdy nevykreslí."
     }
   },
   "group": {
