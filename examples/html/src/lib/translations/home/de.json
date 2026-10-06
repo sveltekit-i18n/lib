@@ -1,0 +1,29 @@
+{
+  "badge": "@sveltekit-i18n/extension-html",
+  "title": "Markup in einer Nachricht",
+  "lead": "Eine Übersetzung darf <b>Markup</b> enthalten, und <code>&lt;i18n.T&gt;</code> rendert es als Elemente, die Svelte nach einer Allowlist erzeugt, ganz ohne <code>@html</code>.",
+  "payload": {
+    "title": "Ein Payload ist Text",
+    "label": "Dein Name",
+    "text": "Hallo <b>{{name}}</b>, willkommen zurück.",
+    "note": "Was du eingibst, wird escapt, bevor der Parser es sieht, also rendert ein Tag darin als die Zeichen, die er ist."
+  },
+  "component": {
+    "title": "Ein Tag als Komponente",
+    "text": "Der Rest steht in der <a href=\"https://sveltekit-i18n.github.io/docs\">Dokumentation</a>.",
+    "note": "Diese Verwendung bildet das <code>a</code> der Nachricht auf eine Komponente der App ab, die die Attribute des Tags als Props und seinen Inhalt als Children bekommt."
+  },
+  "blocks": {
+    "title": "Blockelemente, wo sie passen",
+    "text": "<ul><li>Standardmäßig aus, da eine Nachricht oft in einem <code>p</code> oder einem <code>button</code> steht, die keine Liste aufnehmen.</li><li>Pro Verwendung mit <code>BLOCK_ELEMENTS</code> eingeschaltet, hier in einem <code>div</code>.</li></ul>"
+  },
+  "blocked": {
+    "title": "Was nie gerendert wird",
+    "text": "Dieser <a href=\"javascript:alert(1)\">Link</a> hat keine Adresse<img src=\"x\" onerror=\"alert(1)\">, und das Bild dahinter ist verschwunden.",
+    "note": "Beides wird über onReport gemeldet: im Log des Servers und in der Konsole des Browsers."
+  },
+  "string": {
+    "title": "t() bleibt Text",
+    "text": "t() gibt dieselbe Nachricht mit ihrem Markup als Text zurück, was ein Titel oder ein Attribut braucht:"
+  }
+}

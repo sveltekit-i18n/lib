@@ -43,6 +43,10 @@
     "typed-access": {
       "title": "Typed access",
       "text": "Keys as members of t: extension-typed-access in the config handed to defineI18n(), and t.home.title() typed from the generated schema."
+    },
+    "html": {
+      "title": "HTML",
+      "text": "Markup in a message rendered as elements: extension-html's T component, a payload rendered as text, a tag mapped to a component, and what never renders."
     }
   },
   "group": {

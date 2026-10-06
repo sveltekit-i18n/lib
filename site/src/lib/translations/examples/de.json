@@ -43,6 +43,10 @@
     "typed-access": {
       "title": "Typisierter Zugriff",
       "text": "Schlüssel als Member von t: extension-typed-access in der Konfiguration für defineI18n() und t.home.title(), typisiert aus dem generierten Schema."
+    },
+    "html": {
+      "title": "HTML",
+      "text": "Markup in einer Nachricht als Elemente: die T-Komponente von extension-html, ein Payload als Text, ein Tag als Komponente und was nie gerendert wird."
     }
   },
   "group": {

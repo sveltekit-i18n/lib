@@ -1,0 +1,29 @@
+{
+  "badge": "@sveltekit-i18n/extension-html",
+  "title": "Markup ve zprávě",
+  "lead": "Překlad smí nést <b>markup</b> a <code>&lt;i18n.T&gt;</code> ho vykreslí jako elementy, které vytvoří Svelte podle povoleného seznamu, bez jediného <code>@html</code>.",
+  "payload": {
+    "title": "Payload je text",
+    "label": "Tvoje jméno",
+    "text": "Ahoj <b>{{name}}</b>, vítej zpět.",
+    "note": "Co napíšeš, se escapuje dřív, než to parser uvidí, takže tag v tom se vykreslí jako znaky, kterými je."
+  },
+  "component": {
+    "title": "Tag jako komponenta",
+    "text": "Zbytek najdeš v <a href=\"https://sveltekit-i18n.github.io/docs\">dokumentaci</a>.",
+    "note": "Tohle použití mapuje <code>a</code> ze zprávy na komponentu aplikace, která dostane atributy tagu jako props a jeho obsah jako children."
+  },
+  "blocks": {
+    "title": "Blokové elementy tam, kam patří",
+    "text": "<ul><li>Ve výchozím stavu vypnuté, protože zpráva často stojí uvnitř <code>p</code> nebo <code>button</code>, které seznam neudrží.</li><li>Zapínají se pro jedno použití přes <code>BLOCK_ELEMENTS</code>, tady uvnitř <code>div</code>.</li></ul>"
+  },
+  "blocked": {
+    "title": "Co se nikdy nevykreslí",
+    "text": "Tenhle <a href=\"javascript:alert(1)\">odkaz</a> nemá adresu<img src=\"x\" onerror=\"alert(1)\"> a obrázek, který za ním stál, zmizel.",
+    "note": "Obojí se hlásí přes onReport: v logu serveru a v konzoli prohlížeče."
+  },
+  "string": {
+    "title": "t() zůstává textem",
+    "text": "t() vrátí stejnou zprávu s markupem jako textem, což potřebuje title nebo atribut:"
+  }
+}
