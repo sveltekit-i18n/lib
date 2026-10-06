@@ -1,0 +1,59 @@
+name: Bench label
+
+# The `bench-accepted` label decides the Comparison step of the Bench run of a
+# pull request's head, which reads the labels when it runs. A change of the
+# label re-runs a run whose Comparison it turns. This runs nothing of the
+# pull request, so it takes `pull_request_target`, which a fork's pull request
+# reaches too.
+on:
+  pull_request_target:
+    types: [labeled, unlabeled]
+
+permissions:
+  actions: write
+  pull-requests: read
+
+# Per label, so another label's event cancels nothing of this one's.
+concurrency:
+  group: bench-label-${{ github.event.pull_request.number }}-${{ github.event.label.name }}
+  cancel-in-progress: true
+
+jobs:
+  Rerun:
+    if: github.event.label.name == 'bench-accepted'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Re-run the Bench run of the head
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+          # The Comparison the label change can turn.
+          TURNS: ${{ github.event.action == 'labeled' && 'failure' || 'success' }}
+        run: |
+          ID="$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/bench.yml/runs?head_sha=$SHA&event=pull_request&per_page=1" --jq '.workflow_runs[0].id // empty')"
+          if [ -z "$ID" ]; then
+            echo 'No Bench run for this head.'
+            exit 0
+          fi
+          # A run still going reads the labels when its Comparison runs, which
+          # may be before this change: wait for it to end.
+          until [ "$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$ID" --jq .status)" = completed ]; do sleep 30; done
+          COMPARISON="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$ID/jobs" --jq '.jobs[].steps[] | select(.name == "Comparison") | .conclusion')"
+          if [ "$COMPARISON" != "$TURNS" ]; then
+            echo "Its Comparison step ended with ${COMPARISON:-nothing}: the label does not change it."
+            exit 0
+          fi
+          # A push since has a run of its own, which a re-run would cancel.
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR" --jq .head.sha)" != "$SHA" ]; then
+            echo 'The head moved on: its own run reads the label.'
+            exit 0
+          fi
+          # GitHub re-runs a run for 30 days after it started, and 50 times.
+          if ! gh api --method POST "repos/$GITHUB_REPOSITORY/actions/runs/$ID/rerun" > /dev/null; then
+            echo "GitHub refused to re-run https://github.com/$GITHUB_REPOSITORY/actions/runs/$ID: push, or close and reopen the pull request, so a new Bench run reads the label."
+            exit 1
+          fi
+          echo "Re-ran https://github.com/$GITHUB_REPOSITORY/actions/runs/$ID."

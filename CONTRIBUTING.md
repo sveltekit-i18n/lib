@@ -43,7 +43,8 @@ The **Curly Message Format** – the `{{ … }}` syntax `parser-curly` resolves 
 lib/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/   # bug report, feature request, documentation
-│   └── workflows/        # tests.yml (CI matrix), publish.yml (release)
+│   └── workflows/        # tests.yml (CI matrix), publish.yml (release), bench.yml + bench-label.yml (benchmark)
+├── bench/                # the benchmark, `pnpm run bench`
 ├── docs/                 # user documentation
 │   ├── INDEX.md
 │   ├── GETTING_STARTED.md
@@ -60,9 +61,10 @@ lib/
 │   └── utils.ts          # the `sveltekit-i18n/utils` subpath
 ├── tests/
 │   ├── data/             # CONFIG + JSON fixtures
-│   └── specs/            # index.spec.ts, kit.spec.ts, exports.spec.ts, types.spec.ts
+│   └── specs/            # index.spec.ts, kit.spec.ts, exports.spec.ts, types.spec.ts, bench.spec.ts
 ├── dist/                 # build output, generated (git-ignored)
 ├── AGENTS.md             # rules for LLM coding assistants (CLAUDE.md imports it)
+├── BENCH.md              # the benchmark of the last release, written by publish.yml
 ├── eslint.config.js      # ESLint 10 flat config
 ├── tsup.config.js        # build
 ├── vitest.config.ts      # test runner
@@ -99,8 +101,9 @@ pnpm install
 | `pnpm run dev` | `tsup` build in watch mode |
 | `pnpm run build` | build `dist/` with `tsup` (ESM + `.d.ts`) |
 | `pnpm test` | the Vitest suite; `pretest` builds and typechecks first |
-| `pnpm run typecheck` | `tsc --noEmit` over `src`, `tests` and the root configs |
+| `pnpm run typecheck` | `tsc --noEmit` over `src`, `tests` and the root configs, then over `bench` |
 | `pnpm run lint` | `eslint --fix .` (also the pre-commit hook, via `simple-git-hooks`) |
+| `pnpm run bench` | the benchmark of this tree; `--compare <dir>` measures it against the package checked out and installed at `<dir>` (see [Benchmark](#benchmark)) |
 
 ## Git Workflow
 
@@ -222,7 +225,7 @@ pnpm test exports
 # Watch mode (build `dist/` first - see below)
 pnpm exec vitest
 
-# Typecheck `src` and `tests` - how `types.spec.ts` makes its assertions
+# Typecheck `src`, `tests` and `bench` - how `types.spec.ts` makes its assertions
 pnpm run typecheck
 ```
 
@@ -279,6 +282,20 @@ describe('parser wiring', () => {
   });
 });
 ```
+
+### Benchmark
+
+`pnpm run bench` measures what this package adds to the core and the parser it pins, and `--compare <dir>` measures this tree against the package checked out and installed at `<dir>`:
+
+```bash
+git worktree add ../master origin/master
+cd ../master && pnpm install --frozen-lockfile --ignore-scripts && cd -
+pnpm run bench --compare ../master
+```
+
+Each side is built by its own `pnpm run build` and bundled with the core and the parser its own install holds, so a change of a pin is a change measured; the bundler, the Svelte compiler and TypeScript that measure both sides are this tree's. The rows are the parsers this package builds, what a typed construction and a typed `t` cost the checker through its declarations, the browser bundles of `I18n` and of `defineI18n` (whole, and this package's code alone), the time of `t`, construction, `loadConfig` and `defineI18n`, and the heap an instance and a page render leave behind.
+
+The **Bench** workflow runs it on every pull request that changes what it measures and posts the table as a comment (a fork's run gets the job summary only). A count that grew, a row the branch lacks or a project of the base that failed fails the job, unless the pull request carries the `bench-accepted` label; a size that grew, a time beyond its spread by 5% or more and heap beyond its spread are flagged for review.
 
 ## Pull Request Process
 
@@ -461,7 +478,7 @@ This section is for maintainers with publish access.
 Releases run from CI, not from a maintainer's machine. Trigger the **NPM Publish** workflow (`.github/workflows/publish.yml`) with the version choice – `next`, `patch`, `minor` or `major`. It:
 
 1. runs the full test matrix,
-2. bumps the version with `pnpm version` (a `next` bump can only reach the `next` dist-tag; only a released version moves `latest`),
+2. bumps the version with `pnpm version` (a `next` bump can only reach the `next` dist-tag; only a released version moves `latest`), runs the [benchmark](#benchmark) and commits its figures as `BENCH.md` with the bump,
 3. pushes the release commit and the tag atomically,
 4. publishes to npm through trusted publishing (OIDC with provenance – no token), and
 5. creates the GitHub release with notes generated from the commit history.
