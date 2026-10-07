@@ -60,7 +60,8 @@ issue tracker, docs, and examples for the whole family
   package: plan them as one release, and never publish this package while
   either holds an unreleased change or a planned fix. `README.md` is the npm
   page and the site deploys from `master`, so both describe the version being
-  published, and each of their links resolves.
+  published, leave out nothing it or the family brings, and each of their
+  links resolves.
 
 ## Architecture you must respect
 
