@@ -189,7 +189,8 @@ Everything lives on one reactive instance:
 | `loading` | `true` while any activating load is in flight |
 | `initialized` | `true` once a locale and a route are set and translations are present |
 | `translations` / `rawTranslations` | the tables, after and before preprocessing |
-| `loadTranslations(locale, route?, { activate? })`, `setLocale`, `setRoute` | return the promise of the matching load; `{ activate: false }` only fills the tables |
+| `loadTranslations(locale, route?, { activate?, preloaded? })`, `setLocale(locale?)`, `setRoute(route, { preloaded? })` | return the promise of the matching load; `{ activate: false }` only fills the tables, and `{ preloaded }` shows what a `preload()` fetched |
+| `preload(locale, route?)` | the request of a navigation that may never commit; resolves to a token the commit's `loadTranslations()` or `setRoute()` takes as `{ preloaded }` |
 | `loadNamespace(namespace, locale?)` | loads one namespace on demand, whatever the route |
 | `loadConfig` | returns the promise of the config load |
 | `snapshot(options?)`, `hydrate(envelope?)` | the SSR hand-off, server half and client half |
@@ -336,6 +337,52 @@ code has to match it — `sanitizeLocales`, `toDotNotation`, `resolveLoaders` �
 and two for choosing and writing a locale: `matchLocale` (`Accept-Language`,
 `navigator.languages` or a cookie against the configured set) and
 `textDirection` (`'ltr'` or `'rtl'`).
+
+## Upgrading from 3.3
+
+A 3.3 config loads in 3.4 as it is. What to check:
+
+- **A `sveltekit-i18n/kit` navigation shows its data at commit.** Its `load`
+  now preloads the target with `preload()`, and the commit shows what that
+  fetched, so a `cache: false` loader runs once per navigation instead of
+  twice, and neither it nor an elapsed `cache` window leaves the page on the
+  previous page's text until a refetch at commit lands; a `cache: false`
+  loader whose fetch the preload only shared is refreshed behind what it
+  shows. A preload is a request, a hover's included, so it ends the pass a
+  `hydrate()` hand-off held a `cache: false` loader back for.
+- **A page render builds one instance.** The universal `load` of a page render
+  takes over the instance the server `load` loaded instead of hydrating a
+  second one from its snapshot, unless a loader has `cache: false`. A wrapper
+  that copies `data.i18n` still builds the second one; pass it on as the
+  object it is
+  ([Combining with your own code](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#combining-with-your-own-code)).
+- **A call whose data cannot be applied is undone.** When a custom
+  `preprocess` throws on what a call's load brought, the call is undone as one
+  whose loader threw SvelteKit's control flow, its route aside, and it never
+  throws synchronously.
+- **Schema-typed calls check fast.** A `t` or `l` call on a key of the schema
+  costs the checker the same at any schema size, a key outside it or a union
+  of many keys no longer stalls an editor for minutes, and a wrapper typed
+  with `Schema.Key` and `Schema.Params` is assignable to `t` and `l` both
+  ways.
+- **Large catalogues load in linear time**, at the cost, on Node and Deno, of
+  slower listing and serializing and more memory per instance for tables of
+  up to about a thousand keys; see
+  [base's notes](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-32).
+  A custom `preprocess` is called once per rebuilt locale on a re-delivery,
+  with the whole table.
+- **A namespace holding `NaN` travels in the snapshot** instead of being left
+  out with a warning.
+- **A `date` placeholder whose layers name no `timeZone`** keeps the zone the
+  host had when its formatter was built, since the formatting modifiers now
+  keep their `Intl` objects.
+- **New:** `preload(locale, route?)`, `{ preloaded }` on `loadTranslations()`
+  and `setRoute()`, and `Loader.Preloaded`.
+
+The core's notes:
+[base — Upgrading from 3.2](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-32),
+and the parser's in
+[parser-curly's changelog](https://github.com/sveltekit-i18n/parsers/blob/master/parser-curly/CHANGELOG.md#321).
 
 ## Upgrading from 3.2
 

@@ -205,7 +205,7 @@ export const i18n = new I18n(config);
 - reactive properties: `locale` (assignable), `locales`, `loading`,
   `initialized`, `translations`, `rawTranslations`
 - reactive functions: `t(key, payload?, props?)`, `l(locale, key, payload?, props?)`
-- promise-returning methods: `loadTranslations`, `loadNamespace`, `loadConfig`, `setLocale`, `setRoute`
+- promise-returning methods: `loadTranslations`, `preload`, `loadNamespace`, `loadConfig`, `setLocale`, `setRoute`
 - synchronous methods: `addTranslations`, `invalidate`, `snapshot`, `hydrate`, `destroy`
 
 There are **no stores anywhere**: no `$t` / `$locale` / `$loading`
@@ -324,12 +324,21 @@ step 8 and without the expiry in step 2 — only an activating trigger evaluates
 the `cache` window — and `loadNamespace()` selects in step 3 by namespace
 rather than by route, ignoring the loaders' `routes`. Data a warm load fetches
 for other route params than the current route asks for is kept aside, and the
-trigger that asks for those params applies it — which is how a preload lands
-without a second fetch.
+trigger that asks for those params applies it without a second fetch.
 
 The instance imported above is a module-level singleton, which on the server is
 shared by every request in the process — see
 [Instance Lifetime](#instance-lifetime) for the per-request wiring.
+
+`preload(locale, route)` is the request of a navigation that may never commit.
+Like an activating trigger, it evaluates the `cache` window in step 2 and runs
+a `cache: false` loader; like a warm load, it shows nothing — it activates
+nothing in steps 4 and 8, and lands what it fetched as a warm load does, data
+for other route params kept aside. It resolves to a token. The call that
+commits the navigation takes it as `{ preloaded }`, shows what the preload
+fetched instead of fetching it again, and leaves expiry to the preload; what
+the preload shared from a `cache: false` fetch already in flight is shown, then
+fetched again behind it.
 
 ### 3. Translation
 
@@ -435,9 +444,10 @@ own, since a loader receives the route.
 `loading` is derived from the set of **activating** loads currently in flight:
 `true` while any of them runs, `false` once the last settles. A warm load
 (`{ activate: false }`, `loadNamespace()`) counts only once an activating
-trigger joins it, and a trigger that finds nothing to fetch registers no load
-at all, so a cache-served navigation does not flicker the flag. To wait for one
-specific load, await the promise the method returned — never poll `loading`.
+trigger joins it, a `preload()` does not count, and a trigger that finds
+nothing to fetch registers no load at all, so a cache-served navigation does
+not flicker the flag. To wait for one specific load, await the promise the
+method returned — never poll `loading`.
 
 ### Cache and invalidation
 
@@ -468,7 +478,10 @@ its promise keeps meaning "loaded".
 
 A loader with `cache: false` keeps no freshness of its own: its source caches
 (a remote `query`, an SWR layer), so it runs on every trigger that selects it,
-starts no window and is outside expiry.
+starts no window and is outside expiry. A call handed a `preload()` token
+shows what that preload fetched of it instead of running it again; what the
+preload shared from a fetch already in flight is shown, then fetched again
+behind it, since that fetch started before the navigation was requested.
 
 ### Server and client
 
@@ -514,9 +527,10 @@ Behind that:
   route on a client navigation.
 - **The browser** builds one instance per tab from that snapshot with
   `hydrate()`, so it is active before the first render and the loaders the
-  server ran do not run again. Every later pass is a warm load of the target
-  locale for the new route, since it may be a preload; `use()` switches the
-  locale and sets the route as the navigation commits.
+  server ran do not run again. Every later pass preloads the target locale for
+  the new route with `preload()`, since it may never commit; `use()` switches
+  the locale and sets the route as the navigation commits, showing what that
+  preload fetched.
 - **The server's answer rules**: a client `setLocale()` stands until the
   server answers differently.
 

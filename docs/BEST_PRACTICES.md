@@ -151,7 +151,9 @@ editorOpen = true;
 ```
 
 With [`/kit`](./README.md#sveltekit), the root layout's `load` awaits the
-route's translations for you, so a page renders with them present.
+route's translations for you, so a page renders with them present — on a
+client navigation, `load` preloads them and the navigation shows them as it
+commits.
 
 **Never poll `loading`.** It is a UI flag — `true` while *any* load is in
 flight — not a synchronization primitive. A wall-clock wait is worse: it flakes
@@ -589,23 +591,33 @@ loader: async () => (await import('./large-translations.json')).default
 ### Preloading the next page
 
 With [`/kit`](./README.md#sveltekit), SvelteKit's own link preloading
-(`data-sveltekit-preload-data`) runs the root layout's `load`, which warms the
-target route's translations without changing what is shown — the next page's
-translations come along with its data, with nothing to wire up. Where
-preloading costs too much, turn it off: `data-sveltekit-preload-data="false"`.
+(`data-sveltekit-preload-data`) runs the root layout's `load`, which preloads
+the target route's translations without changing what is shown — the next
+page's translations come along with its data, and the navigation shows them as
+it commits, with nothing to wire up. Where preloading costs too much, turn it
+off: `data-sveltekit-preload-data="false"`.
 
-By hand, `{ activate: false }` fills the tables for a locale and route without
-switching to them — neither the locale, the route nor `loading` changes:
+By hand, [`preload()`](./README.md#preloadlocale-route) is the request of a
+navigation that may never commit. It fetches what a locale and route need —
+judging the `cache` window and running `cache: false` loaders as the
+navigation would — without switching to them: neither the locale, the route
+nor `loading` changes. It resolves to a token, which the call that commits the
+navigation takes as `{ preloaded }` to show what the preload fetched instead of
+fetching it again:
 
 ```javascript
 // Hovering a link to the German about page
-await i18n.loadTranslations('de', '/about', { activate: false });
+const preloaded = await i18n.preload('de', '/about');
+
+// Following it
+await i18n.loadTranslations('de', '/about', { preloaded });
 ```
 
-Data it fetches for other route params than the current route asks for is kept
-aside, and the navigation that asks for them applies it instead of fetching it
-again. A plain `loadTranslations(locale, route)` **activates** the locale and
-sets the route, so keep it for the case where you are switching.
+A plain `loadTranslations(locale, route)` **activates** the locale and sets the
+route, so keep it for the case where you are switching.
+`loadTranslations(locale, route, { activate: false })` only fills the tables,
+for data a page may need later: it leaves expiry to the call that activates,
+and runs a `cache: false` loader, which the activating call then runs again.
 
 ### Synchronous translations for the first paint
 
@@ -654,9 +666,10 @@ const config = { cache: 0 };
 ```
 
 Expiry is evaluated on the **next activating load trigger**
-(`loadTranslations`, `setLocale`, `setRoute`); nothing refetches in the
-background, and a warm load (`{ activate: false }`, `loadNamespace()`) leaves
-expiry to the next activating one. And expiry *refreshes*, it never removes by
+(`loadTranslations`, `setLocale`, `setRoute`) or `preload()`; nothing refetches
+in the background, a warm load (`{ activate: false }`, `loadNamespace()`)
+leaves expiry to the next activating one, and a call handed a preload's token
+leaves it to that preload. And expiry *refreshes*, it never removes by
 itself: what is displayed stays until the refetch lands, and then the fresh data
 replaces what that loader delivered before, so a message the source dropped
 goes and falls back to `fallbackLocale`.
