@@ -320,10 +320,10 @@ return { i18n: i18n.snapshot({ records: true }) };
 // src/routes/+layout.js, on the pass that builds the client instance
 i18n.hydrate(data?.i18n);
 
-await i18n.loadTranslations(data?.i18n?.locale ?? config.fallbackLocale, url.pathname);
+await i18n.loadTranslations(data?.i18n?.locale ?? DEFAULT_LOCALE, url.pathname);
 ```
 
-The config leaves `initLocale` out: it would start a load in the constructor, before `hydrate()` runs, so `fallbackLocale` is the default here. Every later pass reuses that instance and, since it may be a preload, calls `preload()` instead of activating. The whole recipe is in [Server-Side Rendering](./README.md#server-side-rendering).
+`DEFAULT_LOCALE` is a constant your config module (`#lib/i18n.js`) exports beside the config. The config leaves `initLocale` out: it would start a load in the constructor, before `hydrate()` runs. Every later pass reuses that instance and, since it may be a preload, calls `preload()` instead of activating. The whole recipe is in [Server-Side Rendering](./README.md#server-side-rendering).
 
 ---
 
@@ -1131,13 +1131,13 @@ export const load = async ({ data, url }) => {
 
   if (!import.meta.env.SSR) client = i18n;
 
-  await i18n.loadTranslations(data?.i18n?.locale ?? config.fallbackLocale, url.pathname);
+  await i18n.loadTranslations(data?.i18n?.locale ?? DEFAULT_LOCALE, url.pathname);
 
   return { i18n };
 };
 ```
 
-The fallback is `fallbackLocale`, not `initLocale`: the recipe's config leaves `initLocale` out, since it would start a load in the constructor, before `hydrate()` runs.
+`DEFAULT_LOCALE` is a constant the recipe's config module exports. It is neither `initLocale`, which would start a load in the constructor, before `hydrate()` runs, nor `fallbackLocale`, which would load its translations alongside every other locale's.
 
 Give the error page's messages a loader scoped to the routes that can fail, or put them in `config.translations` so they are always present.
 

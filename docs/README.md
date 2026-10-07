@@ -1969,9 +1969,10 @@ that needs something the wiring does not do.
 ```javascript
 // src/lib/i18n.js
 
+export const DEFAULT_LOCALE = 'en';
+
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
-  fallbackLocale: 'en',
   loaders: [
     {
       locale: ['en', 'cs'],
@@ -1987,12 +1988,12 @@ export const config = {
 ```javascript
 // src/routes/+layout.server.js
 import { I18n } from 'sveltekit-i18n';
-import { config } from '#lib/i18n.js';
+import { DEFAULT_LOCALE, config } from '#lib/i18n.js';
 
 export const load = async ({ url, locals }) => {
   const i18n = new I18n(config);
 
-  await i18n.loadTranslations(locals.locale, url.pathname);
+  await i18n.loadTranslations(locals.locale ?? DEFAULT_LOCALE, url.pathname);
 
   return { i18n: i18n.snapshot({ records: true }) };
 };
@@ -2001,13 +2002,14 @@ export const load = async ({ url, locals }) => {
 `locals.locale` is whatever your `handle` hook resolved from the cookie, the URL
 or the `Accept-Language` header — [`matchLocale()`](#matchlocalerequested-available)
 matches such a value against the configured locales.
+`DEFAULT_LOCALE` stands in when it resolved none.
 
 ### 3. Build the instance the application renders with
 
 ```javascript
 // src/routes/+layout.js
 import { I18n } from 'sveltekit-i18n';
-import { config } from '#lib/i18n.js';
+import { DEFAULT_LOCALE, config } from '#lib/i18n.js';
 
 // Assigned in the browser only — on the server this module-level binding
 // would be the shared state we are avoiding.
@@ -2031,7 +2033,7 @@ export const load = async ({ data, url }) => {
 
   if (!import.meta.env.SSR) client = i18n;
 
-  await i18n.loadTranslations(data?.i18n?.locale ?? config.fallbackLocale, url.pathname);
+  await i18n.loadTranslations(data?.i18n?.locale ?? DEFAULT_LOCALE, url.pathname);
 
   return { i18n };
 };
@@ -2059,7 +2061,10 @@ The hand-off is applied once, on the path that builds the instance, and
 **on top of** the config, so the config's own `translations` stay — the
 language names a switcher renders in each language, typically. Leave
 `initLocale` out of a config used this way: it starts a load inside the
-constructor, before `hydrate()` can be called.
+constructor, before `hydrate()` can be called. `DEFAULT_LOCALE` takes its place
+for a pass the server sent nothing for — the error page on a static host. It is
+a constant rather than `fallbackLocale`, which would load its translations
+alongside every other locale's.
 
 ### 4. Pass it down, and commit each navigation
 
