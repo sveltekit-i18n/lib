@@ -21,7 +21,7 @@ Svelte 5 or newer, and one of Node 22+, Bun 1.2+ or Deno 2+. The package is
 ESM-only and imports no `node:` module, so every runtime that runs your
 SvelteKit build runs it. The docs' SvelteKit snippets need SvelteKit 2.12 or
 newer, which ships `$app/state`; `@sveltekit-i18n/typegen` needs Vite 8, which
-SvelteKit supports from 2.53.
+SvelteKit supports from 2.53, and so Node 22.12 or newer.
 
 ## Installation
 
