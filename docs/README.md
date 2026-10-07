@@ -62,6 +62,7 @@ What follows from that:
 // src/lib/i18n.js
 import { I18n } from 'sveltekit-i18n';
 
+/** @satisfies {import('sveltekit-i18n').Config} */
 export const config = {
   loaders: [
     {
@@ -162,6 +163,7 @@ it: a string (an exact match), a `RegExp`, or anything with a `test` method,
 matched against the route path without [`basePath`](#basepath).
 
 ```javascript
+/** @satisfies {import('sveltekit-i18n').Config} */
 const config = {
   loaders: [
     // Every page, one call per locale and namespace
@@ -1719,6 +1721,7 @@ every instance it builds.
 // src/lib/i18n.js
 import { defineI18n } from 'sveltekit-i18n/kit';
 
+/** @satisfies {import('sveltekit-i18n').Config} */
 export const config = {
   fallbackLocale: 'en',
   loaders: [

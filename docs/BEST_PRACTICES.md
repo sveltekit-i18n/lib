@@ -1243,6 +1243,7 @@ import { tableLoaders } from 'acme-table/i18n';
 
 const locales = ['en', 'cs', 'de'];
 
+/** @satisfies {import('sveltekit-i18n').Config} */
 export const config = {
   fallbackLocale: 'en',
   loaders: [
@@ -1481,6 +1482,7 @@ would then too.
 A loader is just an async function:
 
 ```javascript
+/** @satisfies {import('sveltekit-i18n').Config} */
 export const config = {
   loaders: [
     {
