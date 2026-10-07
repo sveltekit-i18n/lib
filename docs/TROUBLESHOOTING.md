@@ -323,7 +323,7 @@ i18n.hydrate(data?.i18n);
 await i18n.loadTranslations(data?.i18n?.locale ?? config.fallbackLocale, url.pathname);
 ```
 
-Every later pass reuses that instance and, since it may be a preload, calls `preload()` instead of activating. The whole recipe is in [Server-Side Rendering](./README.md#server-side-rendering).
+The config leaves `initLocale` out: it would start a load in the constructor, before `hydrate()` runs, so `fallbackLocale` is the default here. Every later pass reuses that instance and, since it may be a preload, calls `preload()` instead of activating. The whole recipe is in [Server-Side Rendering](./README.md#server-side-rendering).
 
 ---
 
@@ -1136,6 +1136,8 @@ export const load = async ({ data, url }) => {
   return { i18n };
 };
 ```
+
+The fallback is `fallbackLocale`, not `initLocale`: the recipe's config leaves `initLocale` out, since it would start a load in the constructor, before `hydrate()` runs.
 
 Give the error page's messages a loader scoped to the routes that can fail, or put them in `config.translations` so they are always present.
 
