@@ -609,14 +609,14 @@ loader: async () => (await import('./translations/en.json')).default
 
 #### 4. JSON syntax error
 
-```json
+```jsonc
 // ❌ Invalid JSON (trailing comma)
 {
   "greeting": "Hello",
 }
 ```
 
-```json
+```jsonc
 // ✅ Valid JSON
 {
   "greeting": "Hello"
@@ -680,7 +680,7 @@ The loader's `namespace` is the prefix every key in that file sits under.
 }
 ```
 
-```json
+```jsonc
 // en/home.json
 {
   "title": "Welcome"

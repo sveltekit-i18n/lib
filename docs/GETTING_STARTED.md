@@ -139,7 +139,7 @@ src/lib/
         └── common.json
 ```
 
-```json
+```jsonc
 // src/lib/translations/en/common.json
 {
   "app.name": "My Application",
@@ -149,7 +149,7 @@ src/lib/
 }
 ```
 
-```json
+```jsonc
 // src/lib/translations/cs/common.json
 {
   "app.name": "Moje Aplikace",
@@ -336,7 +336,7 @@ src/lib/translations/
     └── about.json
 ```
 
-```json
+```jsonc
 // src/lib/translations/en/home.json
 {
   "title": "Welcome Home",
@@ -344,7 +344,7 @@ src/lib/translations/
 }
 ```
 
-```json
+```jsonc
 // src/lib/translations/en/about.json
 {
   "title": "About Us",

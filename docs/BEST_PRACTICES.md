@@ -368,7 +368,7 @@ spelling of `namespace`; it still works and logs a warning once per loader.)
 
 Keep frequently used translations in a `common` namespace loaded on every page:
 
-```json
+```jsonc
 // common.json
 {
   "app.name": "My App",
@@ -487,7 +487,7 @@ the loader's namespace. Arrays flatten too (`items.0`, `items.1`); `preprocess:
 
 ### Descriptive names
 
-```json
+```jsonc
 // ❌ Bad
 { "t1": "Welcome", "btn": "Click", "txt": "Hello" }
 
