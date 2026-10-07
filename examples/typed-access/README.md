@@ -2,7 +2,7 @@
 
 Keys read as members of `t`: `t.home.title()` beside `t('home.title')`. One
 extension,
-[`@sveltekit-i18n/extension-typed-access`](https://www.npmjs.com/package/@sveltekit-i18n/extension-typed-access),
+[`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access),
 sits in the config handed to `defineI18n()`, and `use()` and `get()` hand out
 its output, whose `t` carries the tree.
 
@@ -48,7 +48,7 @@ A few names are no segments: at the first level, the names a function answers
 (`name`, `length`, `call`, …) read the real `t`, and `then` answers
 `undefined` at every level, so a node is never a thenable. A namespace of one
 of those names is reached through the string form; the
-[extension's README](https://www.npmjs.com/package/@sveltekit-i18n/extension-typed-access)
+[extension's README](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
 lists them, along with what the tree costs the checker on a large schema.
 
 ## With other extensions

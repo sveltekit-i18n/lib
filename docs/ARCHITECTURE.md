@@ -187,18 +187,25 @@ sveltekit-i18n
     └── @curly-message/parser
 
 @sveltekit-i18n/parser-icu        (an alternative to parser-curly)
-├── intl-messageformat
-└── @formatjs/icu-messageformat-parser
+└── intl-messageformat
 
 @sveltekit-i18n/parser-mf2        (an alternative to parser-curly)
 └── messageformat
 
 @sveltekit-i18n/parser-i18next    (an alternative to parser-curly)
 └── i18next
+
+@sveltekit-i18n/extension-stores        (no runtime dependencies; peers: base, svelte)
+@sveltekit-i18n/extension-typed-access  (no runtime dependencies; peers: base, svelte)
+@sveltekit-i18n/extension-html          (peers: base, svelte)
+└── parse5
+
+@sveltekit-i18n/typegen           (build time; peer: vite; optional: base or sveltekit-i18n, @sveltejs/kit)
 ```
 
-Everything is ESM-only, and runs on Node 22+ (22.12+ for `parser-mf2`), Bun
-1.2+ or Deno 2+. There is no CJS entry.
+Everything is ESM-only; there is no CJS entry. The core, this package and the
+parsers run on Node 22+ (22.12+ for `parser-mf2`), Bun 1.2+ or Deno 2+; the
+extensions state Node 22+; typegen states 22+ but needs 22.12+ through its `vite` 8 peer.
 
 ## The Reactive Engine
 
@@ -239,7 +246,11 @@ component, destructure through `$derived`:
 If you want the `$t` form back, add
 [`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)
 to `config.extensions` — it adapts the instance to stores without the core
-knowing about them.
+knowing about them. The other official extensions work the same way:
+[`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
+reads keys as members of `t`, and
+[`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
+adds a `T` component that renders the markup a message carries.
 
 ### The rune modules ship uncompiled
 
@@ -743,6 +754,25 @@ export const i18n = new I18n({
 Pick one of the two. They are not layers you stack: this package *is* base with
 the parser slot filled, and installing both gives the app two cores.
 
+### Beside either
+
+The companion packages are installed on their own, beside whichever core the
+app has:
+
+- [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen) – a
+  Vite plugin, build time only, when keys and payloads should be typed from the
+  catalogue
+- [`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)
+  – when code reads `$t`, `$locale` and `$loading`, as v2 did
+- [`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
+  – when keys should read as members of `t`, `t.home.title()`
+- [`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
+  – when a message carries markup to render as elements; with `parser-icu`,
+  pass its `ignoreTag: true`
+
+`extension-stores` returns no instance, so it goes after the other two in
+`config.extensions` (see [the pipe order](./README.md#pipe-order)).
+
 ## Performance Considerations
 
 **Lookup.** Translations are flattened once, at load time, so `t()` is an
@@ -768,6 +798,9 @@ dependency is the format's reference implementation. Everything is ESM, and
 this package and the parsers declare `sideEffects: false`, so what an app does
 not import from them is dropped, and the parser's build-time surface never
 reaches the browser (see [The parser contract](#the-parser-contract)).
+`extension-html` adds the one runtime dependency of the extensions, `parse5`,
+to the client bundle; its README gives the
+[size](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html#size).
 
 ## See Also
 
@@ -778,4 +811,4 @@ reaches the browser (see [The parser contract](#the-parser-contract)).
 - [base documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) – the core, member by member
 - [typegen](https://github.com/sveltekit-i18n/typegen) – generates the `schema` type
 - [parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly) – the message format
-- [extensions](https://github.com/sveltekit-i18n/extensions) – official extensions, including the store adapter
+- [extensions](https://github.com/sveltekit-i18n/extensions) – official extensions: the store adapter, typed member access and markup rendering

@@ -708,6 +708,11 @@ or CI running only `svelte-kit sync && svelte-check` — sees no schema: keys
 are plain strings, and a config that casts to `TranslationSchema` fails on the
 missing name. Run `vite build` first.
 
+To read keys as members of `t` — `i18n.t.home.title()`, typed from the same
+schema — add
+[`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
+to the config's `extensions` (see [Keys as members of `t`](./README.md#keys-as-members-of-t)).
+
 ### One payload type for every message
 
 State it through the type arguments — annotating the config variable does not:
@@ -807,6 +812,11 @@ cases — the same property that makes per-request instances right on the server
   adapter functions, left to right, and `new I18n(config)` evaluates to the last
   one's output. The `$t` store form is one of them:
   [`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores).
+  [`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
+  reads keys as members of `t`, and
+  [`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
+  renders the markup a message carries as elements, without `{@html}` (see
+  [Extensions](./README.md#extensions)).
 - **A different message format** – this package fills the parser slot itself, so
   another format means building on
   [`@sveltekit-i18n/base`](https://github.com/sveltekit-i18n/base) directly.

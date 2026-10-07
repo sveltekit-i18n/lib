@@ -2,7 +2,7 @@
 
 This guide helps you diagnose and fix common issues when using `sveltekit-i18n`. If you don't find your issue here, check [GitHub Issues](https://github.com/sveltekit-i18n/lib/issues) or create a new one.
 
-Everything below assumes the 3.4 surface: **one reactive instance, no stores**, wired into SvelteKit by `sveltekit-i18n/kit`. If you are upgrading, start with [Upgrading from v2](#upgrading-from-v2), [Upgrading from 3.0](#upgrading-from-30) or, from 3.2 or 3.3, the API docs' [Upgrading from 3.2](./README.md#upgrading-from-32) and [Upgrading from 3.3](./README.md#upgrading-from-33) — that is where the first-day errors are. The [API documentation](./README.md) describes the surface itself, and [base's documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) is the canonical reference for every member this package inherits from the core.
+Everything below assumes the 3.4 surface: **one reactive instance, no stores**, wired into SvelteKit by `sveltekit-i18n/kit`. If you are upgrading, start with [Upgrading from v2](#upgrading-from-v2), [Upgrading from 3.0](#upgrading-from-30) or, from 3.1, 3.2 or 3.3, the API docs' [Upgrading from 3.1](./README.md#upgrading-from-31), [Upgrading from 3.2](./README.md#upgrading-from-32) and [Upgrading from 3.3](./README.md#upgrading-from-33) — that is where the first-day errors are. The [API documentation](./README.md) describes the surface itself, and [base's documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) is the canonical reference for every member this package inherits from the core.
 
 ## Table of Contents
 
@@ -14,6 +14,7 @@ Everything below assumes the 3.4 surface: **one reactive instance, no stores**, 
   - [`getTranslationProps()` is gone](#gettranslationprops-is-gone)
   - [`i18n instanceof I18n` is `false`](#i18n-instanceof-i18n-is-false)
 - [Upgrading from 3.0](#upgrading-from-30)
+  - [A payload value shows up as `{{…}}` or with its backslashes](#a-payload-value-shows-up-as--or-with-its-backslashes)
   - [Everything is fetched again after hydration](#everything-is-fetched-again-after-hydration)
   - [A warning that `key` is deprecated](#a-warning-that-key-is-deprecated)
   - [A loader's `redirect()` or `error()` rejects the load](#a-loaders-redirect-or-error-rejects-the-load)
@@ -21,6 +22,7 @@ Everything below assumes the 3.4 surface: **one reactive instance, no stores**, 
   - [`$state is not defined`](#state-is-not-defined)
   - [Two copies of the core](#two-copies-of-the-core)
   - [`ERR_REQUIRE_ESM`](#err_require_esm)
+  - [An extension throws at construction](#an-extension-throws-at-construction)
 - [Common Issues](#common-issues)
   - [Translations Not Loading](#translations-not-loading)
   - [Translation Keys Displayed Instead of Values](#translation-keys-displayed-instead-of-values)
@@ -501,6 +503,29 @@ const { I18n } = await import('sveltekit-i18n');
 
 Node `>=22` and Svelte `>=5` are required; the Svelte peer dependency is not optional, since the instance is runes-based.
 
+### An extension throws at construction
+
+**Symptoms:**
+- ``TypeError: [i18n]: `typedAccess` takes an instance: put it before any extension whose output is no instance, such as `stores`.``
+- ``TypeError: html() needs the instance itself: put it before any extension whose output is no instance, such as `stores`.``
+- ``TypeError: html is a factory of the options: put `html({ onReport })` in `extensions`.``
+
+**Cause:**
+
+The pipe runs left to right, and each extension receives what the one before it returned. `extension-stores` returns stores, not an instance, so an extension after it has nothing to wrap. `extension-html` is a factory of its options: `extensions: [html]` hands it the instance where it expects them.
+
+**Solution:**
+
+```javascript
+// ❌
+extensions: [stores, typedAccess, html]
+
+// ✅
+extensions: [typedAccess, html({ onReport: null }), stores]
+```
+
+What each order hands out is in [the pipe order](./README.md#pipe-order).
+
 ---
 
 ## Common Issues
@@ -718,6 +743,20 @@ Use the default `'full'` unless you have a reason not to — `t()` resolves a ke
 #### 5. The key is named after an `Object.prototype` member
 
 Keys are read as **own** properties, so `toString`, `constructor` and `__proto__` are treated as missing rather than resolving to something inherited. Rename the key.
+
+#### 6. A member key read without its call
+
+With [`extension-typed-access`](./README.md#keys-as-members-of-t), a leaf is a function: `{i18n.t.home.title}` renders the missing-key text of the coercion that ran, such as `home.title.toString`. Call it:
+
+```svelte
+<!-- ❌ -->
+<h1>{i18n.t.home.title}</h1>
+
+<!-- ✅ -->
+<h1>{i18n.t.home.title()}</h1>
+```
+
+Markup accepts a function, so `svelte-check` does not catch it; a `string` annotation does. With an object `fallbackValue`, the forgotten call throws instead.
 
 ---
 
@@ -1545,13 +1584,27 @@ Add [`@sveltekit-i18n/extension-stores`](https://github.com/sveltekit-i18n/exten
 
 ### Can I use HTML in translations?
 
-Translations render as text. For markup, use `@html`:
+Translations render as text. For markup, add [`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html) to `config.extensions`: its `T` component renders the markup a message carries as elements and Svelte components — from an allowlist, with an `href` gated by scheme and the payload escaped — without `{@html}`:
+
+```json
+{ "intro": "Hi <b>{{name}}</b>, read <a href=\"/docs\">the docs</a>." }
+```
+
+```svelte
+<i18n.T key="intro" params={{ name }} />
+```
+
+`t()` keeps returning the markup as text, for attributes and `<title>`. See [Markup in a message](./README.md#markup-in-a-message) and the [`html`](../examples/html) example.
+
+The parser has to pass the tags through. With `parser-icu`, a message with tags comes back raw and is reported as `failed-message`, since ICU reads a tag as its own syntax: build that parser with `ignoreTag: true`. What each official parser needs is in [extension-html's README](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html#parsers).
+
+`{@html}` remains for a message whose whole markup you trust:
 
 ```svelte
 <p>{@html i18n.t('content.with.html')}</p>
 ```
 
-**⚠️ Security warning:** only with trusted content. Never with anything a user supplied.
+**⚠️ Security warning:** only with trusted content. Never with anything a user supplied — a payload included, since `{@html}` renders whatever the parser returns.
 
 ### How do I handle plurals?
 
@@ -1770,7 +1823,7 @@ Loader `routes` match `url.pathname`. Under SvelteKit's `router.type: 'hash'`, t
 
 ### Where to Get Help
 
-1. **[GitHub Issues](https://github.com/sveltekit-i18n/lib/issues)** – bug reports and feature requests, for the whole family (`base`, `lib`, `parsers`, `extensions`)
+1. **[GitHub Issues](https://github.com/sveltekit-i18n/lib/issues)** – bug reports and feature requests, for the whole family (`base`, `lib`, `parsers`, `extensions`, `typegen`)
 2. **[GitHub Discussions](https://github.com/sveltekit-i18n/lib/discussions)** – questions and community help
 3. **[Examples](../examples)** – working code you can reference
 

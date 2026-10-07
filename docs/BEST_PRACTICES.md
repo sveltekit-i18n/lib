@@ -562,6 +562,15 @@ lookup finds it.
 The same applies to locale codes: they are keys too, and they key the tables
 through `sanitizeLocales`.
 
+With [`extension-typed-access`](#keys-as-members-of-t), the first-level
+members of `t` named like what a function answers (`name`, `length`, `call`,
+`toString`, …) read the real `t`, so avoid these as namespace names, or reach
+their keys through the string form (`t('name.first')`). The extension's README
+lists them:
+[reserved names](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access#the-tree).
+`then` reads `undefined` at every level, so a key under it, at any depth, takes
+the string form too.
+
 ## Performance Optimization
 
 ### Lazy loading by route
@@ -883,6 +892,10 @@ Keep the generated `src/i18n-schema.d.ts` out of Git, and let CI's
 (a remote `query`, `routes` that capture params) is typed open: any key under
 it, unchecked.
 
+The same schema types keys as members of `t` — `t.home.title()` — with
+[`extension-typed-access`](#keys-as-members-of-t), which reads the levels the
+generated file registers (typegen 3.1 and newer).
+
 ### One payload type for every message
 
 State it through the type arguments. Annotating the config variable does not
@@ -972,6 +985,77 @@ Ownership](#instance-ownership). Put the extension in the config handed to
 store surface of each per-request and per-tab instance, while the wiring keeps
 driving the instance itself. The [`stores`](../examples/stores) example does
 exactly that.
+
+### Keys as members of `t`
+
+[`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
+reads a key as a path of members on `t`, typed from the schema:
+`t.cart.summary.itemCount({ count: 3 })` beside
+`t('cart.summary.itemCount', { count: 3 })`.
+
+```javascript
+import { defineI18n } from 'sveltekit-i18n/kit';
+import typedAccess from '@sveltekit-i18n/extension-typed-access';
+
+export const { handle, load, use, get } = defineI18n({ ...config, extensions: [typedAccess] });
+```
+
+- **Generate the schema with typegen 3.1 or newer.** The file it writes also
+  registers the keys nested by segment, so a level of the tree costs the checker its own
+  segments. Without them the extension groups the keys itself, at a cost that
+  grows with the square of the keys under one segment: keep namespaces to
+  hundreds of keys there.
+- **Keep the string form for keys known only at runtime** — CMS content,
+  `t(item.labelKey)` — and for a namespace with a reserved name (see
+  [Key Naming Conventions](#avoid-prototype-names-as-key-segments)).
+- **Call the leaf.** `{t.home.title}` without the call renders missing-key
+  text — or throws, with an object `fallbackValue` — and markup accepts a
+  function, so `svelte-check` does not catch it; a `string` annotation does.
+
+The [`typed-access`](../examples/typed-access) example reads its keys through
+the tree.
+
+### Markup in a message
+
+[`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
+adds a `T` component that renders the markup a message carries as elements and
+Svelte components, without `{@html}`: tags come from an allowlist, an `href`
+is gated by scheme, and the payload is escaped.
+
+```javascript
+import { defineI18n } from 'sveltekit-i18n/kit';
+import html from '@sveltekit-i18n/extension-html';
+
+export const { handle, load, use, get } = defineI18n({
+  ...config,
+  extensions: [html({ onReport: null })],
+});
+```
+
+```svelte
+<i18n.T key="intro" params={{ name }} />
+```
+
+- **`<T>` where the markup renders, `t()` everywhere else.** An attribute, a
+  `<title>` or an `aria-label` takes the message with its markup as text.
+- **Map a tag to a component of your own** — a router-aware link, say:
+  `html({ onReport: null, components: { a: Link } })` renders `<a>` as
+  `<Link>`, with the tag's attributes as props.
+- **Block elements are off by default.** A `<T>` inside a `<p>` or a `<button>`
+  cannot hold a `<p>` or a `<div>`; enable `BLOCK_ELEMENTS` where the context
+  allows, and pass `components={{ a: null }}` to a `<T>` inside a link.
+- **Send `onReport` somewhere in development.** An unmapped tag, a dropped
+  attribute or a blocked URL is reported, not thrown, on every render — so a
+  channel that counts should deduplicate.
+
+The [`html`](../examples/html) example renders an escaped payload, a tag as a
+component and block elements per usage.
+
+### Pipe order
+
+`extension-stores` goes last, since it returns no instance; `extension-html`
+goes after `extension-typed-access`. What each order hands out is in
+[the API reference](./README.md#pipe-order).
 
 ### Writing your own
 
@@ -1739,4 +1823,5 @@ Measure inside the loader — that is the boundary the network crosses:
 - [Architecture Overview](./ARCHITECTURE.md) – how it all works
 - [Troubleshooting](./TROUBLESHOOTING.md) – common issues and solutions
 - [typegen](https://github.com/sveltekit-i18n/typegen) – generates the `schema` type
+- [Extensions](https://github.com/sveltekit-i18n/extensions) – the official extensions: stores, typed access and markup
 - [Examples](../examples) – working code examples
