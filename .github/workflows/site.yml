@@ -79,7 +79,7 @@ jobs:
         if: github.event_name != 'pull_request'
         uses: actions/create-github-app-token@v3
         with:
-          app-id: ${{ secrets.AUTOMATION_APP_ID }}
+          client-id: ${{ secrets.AUTOMATION_APP_CLIENT_ID }}
           private-key: ${{ secrets.AUTOMATION_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
           repositories: sveltekit-i18n.github.io
