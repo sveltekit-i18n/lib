@@ -17,7 +17,7 @@
     "@sveltejs/adapter-node": "^5.3.4",
     "@sveltejs/kit": "^2.70.3",
     "@sveltejs/vite-plugin-svelte": "^7.3.0",
-    "@sveltekit-i18n/typegen": "^3.0.2",
+    "@sveltekit-i18n/typegen": "^3.1.0",
     "svelte": "^5.56.9",
     "svelte-check": "^4.7.6",
     "typescript": "^5.9.3",
