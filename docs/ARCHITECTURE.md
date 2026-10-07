@@ -205,7 +205,7 @@ sveltekit-i18n
 
 Everything is ESM-only; there is no CJS entry. The core, this package and the
 parsers run on Node 22+ (22.12+ for `parser-mf2`), Bun 1.2+ or Deno 2+; the
-extensions state Node 22+; typegen states 22+ but needs 22.12+ through its `vite` 8 peer.
+extensions state Node 22+; typegen needs 22.12+, the floor of its `vite` 8 peer.
 
 ## The Reactive Engine
 
