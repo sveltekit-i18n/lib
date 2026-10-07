@@ -10,7 +10,6 @@ import globals from 'globals';
  */
 const SERVER = [
   'eslint.config.js',
-  'svelte.config.js',
   'vite.config.js',
   'vitest.config.js',
   'tests/**',

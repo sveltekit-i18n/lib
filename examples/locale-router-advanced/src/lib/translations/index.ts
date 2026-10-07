@@ -1,7 +1,7 @@
 import type { Config } from 'sveltekit-i18n';
 import { defineI18n } from 'sveltekit-i18n/kit';
 
-import { LOCALES, localeOf, pathOf } from '$lib/locale';
+import { LOCALES, localeOf, pathOf } from '#lib/locale.js';
 import cs from './cs.json';
 import de from './de.json';
 import en from './en.json';

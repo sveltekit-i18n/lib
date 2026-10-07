@@ -464,7 +464,7 @@ and the format's move in
 ## Examples
 
 Each example is a standalone SvelteKit application covering a decision that is
-application-shaped — an adapter, a `svelte.config.js`, a route tree:
+application-shaped — an adapter, a `vite.config.ts`, a route tree:
 
 - [Multi-page app](https://github.com/sveltekit-i18n/lib/tree/master/examples/multi-page) – the common setup: cookie and `Accept-Language`, route-scoped loading
 - [Locale-based routing](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router) – SEO-friendly URLs (e.g. `/en/about`), prerendered

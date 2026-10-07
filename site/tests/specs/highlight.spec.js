@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { createHighlighter } from 'shiki';
 
-import { highlightCurly, highlightJson, highlightJsonText, highlightPlain } from '$lib/highlight.js';
-import { highlight as i18next } from '$lib/playground/flavours/i18next.js';
-import { highlight as icu } from '$lib/playground/flavours/icu.js';
-import { highlight as mf2 } from '$lib/playground/flavours/mf2.js';
-import { MESSAGES, PAYLOAD, TRANSLATIONS } from '$lib/playground.js';
+import { highlightCurly, highlightJson, highlightJsonText, highlightPlain } from '#lib/highlight.js';
+import { highlight as i18next } from '#lib/playground/flavours/i18next.js';
+import { highlight as icu } from '#lib/playground/flavours/icu.js';
+import { highlight as mf2 } from '#lib/playground/flavours/mf2.js';
+import { MESSAGES, PAYLOAD, TRANSLATIONS } from '#lib/playground.js';
 
 /**
  * GitHub's theme as Shiki emits it, restated rather than imported: a drawing

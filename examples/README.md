@@ -2,7 +2,7 @@
 
 Each directory is a standalone SvelteKit application on `sveltekit-i18n` 3.x.
 They cover the **application-shaped** decisions — an adapter, a
-`svelte.config.js`, a `hooks.server.ts`, a route tree — the things that are hard
+`vite.config.ts`, a `hooks.server.ts`, a route tree — the things that are hard
 to get right from a snippet. Every one of them wires SvelteKit through
 `sveltekit-i18n/kit`; what sets them apart is mostly where `preferredLocale`
 reads the locale from.
@@ -119,6 +119,5 @@ resolve the published package.
 ## In CI
 
 Every example is built on each change under `examples/**`, and the build output
-is checked for a known translated string. An exit code proves nothing here: once
-`handleError` returns a well-formed error, a prerender writes an error page for
-every route and still succeeds.
+is checked for a known translated string. An exit code proves nothing here: a
+page that renders without its translations still builds.

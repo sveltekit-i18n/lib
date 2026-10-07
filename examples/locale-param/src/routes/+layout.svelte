@@ -2,7 +2,7 @@
   import '../app.css';
   import { page } from '$app/state';
 
-  import { DEFAULT_LOCALE, LOCALES, use } from '$lib/translations';
+  import { DEFAULT_LOCALE, LOCALES, use } from '#lib/translations/index.js';
 
   import type { LayoutProps } from './$types';
 

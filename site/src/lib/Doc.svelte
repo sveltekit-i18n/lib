@@ -1,6 +1,6 @@
 <script>
-  import { REPO } from '$lib/docs.js';
-  import { get } from '$lib/translations';
+  import { REPO } from '#lib/docs.js';
+  import { get } from '#lib/translations/index.js';
 
   const i18n = get();
 

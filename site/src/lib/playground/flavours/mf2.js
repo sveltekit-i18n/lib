@@ -10,7 +10,7 @@
 
 import { parseCST } from 'messageformat/cst';
 
-import { drawSpans } from '$lib/highlight.js';
+import { drawSpans } from '#lib/highlight.js';
 
 export { default as parser } from '@sveltekit-i18n/parser-mf2';
 

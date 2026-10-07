@@ -14,7 +14,7 @@ the browser tab, with nothing installed locally.
 | File | Why |
 |---|---|
 | [`src/lib/translations/index.ts`](./src/lib/translations/index.ts) | exports the **config** (`as const satisfies Config`) and `defineI18n(config, { preferredLocale })` — `handle`, `load`, `use` and `get`, never a module-level instance |
-| [`src/hooks.server.ts`](./src/hooks.server.ts) | `export { handle }` fills `%lang%` and `%dir%`; `handleError` returns a well-formed `App.Error` |
+| [`src/hooks.server.ts`](./src/hooks.server.ts) | `export { handle }` fills `%lang%` and `%dir%` |
 | [`src/routes/+layout.server.ts`](./src/routes/+layout.server.ts) and [`+layout.ts`](./src/routes/+layout.ts) | the same `export { load }`: one instance per request, handed to the browser as `snapshot({ records: true })` and applied with `hydrate()`, so no loader runs twice |
 | [`src/routes/+layout.svelte`](./src/routes/+layout.svelte) | `use(() => data)`, and a switcher that writes the cookie and calls `setLocale()` |
 | [`src/routes/+error.svelte`](./src/routes/+error.svelte) | `get()` — the error page has no `load` of its own |

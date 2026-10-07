@@ -5,10 +5,10 @@
   // the exact pin both declare, so the page still holds one copy.
   import { I18n as Core } from '@sveltekit-i18n/base';
 
-  import { LOCALES } from '$lib/docs.js';
-  import { highlightCurly, highlightJsonText, highlightPlain } from '$lib/highlight.js';
-  import { FLAVOURS, KEY, MESSAGES, PAYLOAD, parsePayload } from '$lib/playground.js';
-  import { get } from '$lib/translations';
+  import { LOCALES } from '#lib/docs.js';
+  import { highlightCurly, highlightJsonText, highlightPlain } from '#lib/highlight.js';
+  import { FLAVOURS, KEY, MESSAGES, PAYLOAD, parsePayload } from '#lib/playground.js';
+  import { get } from '#lib/translations/index.js';
   import Editor from './Editor.svelte';
   import Panel from './Panel.svelte';
 

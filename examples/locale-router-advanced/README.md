@@ -15,8 +15,8 @@ the browser tab, with nothing installed locally.
 
 | File | Why |
 |---|---|
-| [`src/params/locale.ts`](./src/params/locale.ts) | matches **only** the prefixed locales — accepting the default one would give every page two addresses, accepting anything would swallow `/about` |
-| [`svelte.config.js`](./svelte.config.js) | `fallback: '404.html'`, and explicit `entries` because a prefixed locale is reachable only through the switcher |
+| [`src/params.ts`](./src/params.ts) | matches **only** the prefixed locales — accepting the default one would give every page two addresses, accepting anything would swallow `/about` |
+| [`vite.config.ts`](./vite.config.ts) | `fallback: '404.html'`, and explicit `entries` because a prefixed locale is reachable only through the switcher |
 | [`src/lib/translations/index.ts`](./src/lib/translations/index.ts) | `preferredLocale` reads the locale off `url.pathname`, not off the route params — the fallback shell renders for URLs that matched no route — and an unprefixed path is English whatever the browser asks for; loader `routes` list each path under every prefix |
 | [`src/routes/+layout.svelte`](./src/routes/+layout.svelte) | `use(() => data)`, which also sets `<html lang>` and `dir` after hydration, because one shell serves every unknown URL |
 | [`src/routes/+error.svelte`](./src/routes/+error.svelte) | `get()`; its strings ship in `config.translations` |

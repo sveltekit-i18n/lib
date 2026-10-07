@@ -1,8 +1,8 @@
 <script lang="ts">
   import { page } from '$app/state';
 
-  import { localeOf, prefixOf } from '$lib/locale';
-  import { get } from '$lib/translations';
+  import { localeOf, prefixOf } from '#lib/locale.js';
+  import { get } from '#lib/translations/index.js';
 
   // The error page renders without any `load` having run, so everything it
   // needs sits in `config.translations` rather than behind a loader.

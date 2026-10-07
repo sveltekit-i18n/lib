@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Rates from '$lib/rates/Rates.svelte';
-  import { get } from '$lib/translations';
+  import Rates from '#lib/rates/Rates.svelte';
+  import { get } from '#lib/translations/index.js';
 
   const i18n = get();
 

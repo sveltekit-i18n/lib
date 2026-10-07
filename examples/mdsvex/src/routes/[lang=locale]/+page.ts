@@ -1,1 +1,1 @@
-export { entries } from '$lib/locale';
+export { entries } from '#lib/locale.js';

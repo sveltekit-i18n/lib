@@ -3,10 +3,10 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
 
-  import { LOCALES, NPM, REPO, SPONSOR } from '$lib/docs.js';
-  import { ICONS } from '$lib/icons.js';
-  import { localeOf, prefixOf } from '$lib/locale.js';
-  import { use } from '$lib/translations';
+  import { LOCALES, NPM, REPO, SPONSOR } from '#lib/docs.js';
+  import { ICONS } from '#lib/icons.js';
+  import { localeOf, prefixOf } from '#lib/locale.js';
+  import { use } from '#lib/translations/index.js';
 
   let { data, children } = $props();
 
