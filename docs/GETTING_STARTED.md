@@ -2,7 +2,7 @@
 
 This guide walks a SvelteKit app from nothing to a working multilingual site:
 translation files, the SvelteKit wiring, server-side rendering, a language
-switcher, route-scoped loading and generated types. Everything here is 3.3.
+switcher, route-scoped loading and generated types. Everything here is 3.4.
 
 ## Table of Contents
 
@@ -98,6 +98,7 @@ Everything lives on one reactive object:
 | `initialized` | `true` once a locale and a route are set and translations are present |
 | `translations` / `rawTranslations` | the tables, after and before preprocessing |
 | `loadTranslations`, `loadNamespace`, `setLocale`, `setRoute` | return the promise of the matching load |
+| `preload` | the request of a navigation that may never commit; resolves to a token the commit's `loadTranslations()` or `setRoute()` takes as `{ preloaded }` |
 | `loadConfig` | returns the promise of the config load |
 | `addTranslations`, `invalidate`, `snapshot`, `hydrate`, `destroy` | synchronous |
 
