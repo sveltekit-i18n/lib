@@ -7,6 +7,13 @@ does — the member-by-member reference lives in the
 [API documentation](./README.md), and the core's own detail in
 [base's documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md).
 
+The snippets import from `src/lib` through `#lib`, the entry `sv create`
+scaffolds in the `imports` field of a SvelteKit 3 app's `package.json`, and name
+the file's extension, which TypeScript needs to resolve such an import. A
+SvelteKit 2 app adds the same entry, `"imports": { "#lib/*": "./src/lib/*" }`,
+or imports from `$lib` instead, without the extension — as it must on Vite 5
+when a `.ts` file is imported from a `.js` module or a plain `<script>`.
+
 ## Table of Contents
 
 - [Package Overview](#package-overview)
@@ -221,7 +228,7 @@ component, destructure through `$derived`:
 
 ```svelte
 <script>
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 
   const { loading, locale } = $derived(i18n);
 </script>
@@ -284,7 +291,7 @@ No loader has run. Loaders are lazy: they fire on the first load trigger.
 
 ```javascript
 // +layout.js
-import { i18n } from '$lib/i18n';
+import { i18n } from '#lib/i18n.js';
 
 export const load = async ({ url }) => {
   await i18n.loadTranslations('en', url.pathname);
@@ -327,8 +334,9 @@ for other route params than the current route asks for is kept aside, and the
 trigger that asks for those params applies it without a second fetch.
 
 The instance imported above is a module-level singleton, which on the server is
-shared by every request in the process — see
-[Instance Lifetime](#instance-lifetime) for the per-request wiring.
+shared by every request in the process, and this `load` activates it for a
+preload too — a page a hovered link leads to. See
+[Instance Lifetime](#instance-lifetime) for the wiring that does neither.
 
 `preload(locale, route)` is the request of a navigation that may never commit.
 Like an activating trigger, it evaluates the `cache` window in step 2 and runs
@@ -382,8 +390,6 @@ A loader declares the locales it serves, the `namespace` it fills, and
 optionally the `routes` it is needed on:
 
 ```javascript
-import { PUBLIC_API_ORIGIN } from '$env/static/public';
-
 const config = {
   loaders: [
     // No routes → needed everywhere; one call per locale
@@ -404,7 +410,7 @@ const config = {
       locale: 'en',
       namespace: 'product',
       routes: [/^\/products\/(?<id>[^/]+)/],
-      loader: async ({ params }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/products/${params.id}/i18n/en`)).json(),
+      loader: async ({ params }) => (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/products/${params.id}/i18n/en`)).json(),
     },
   ],
 };
@@ -540,7 +546,7 @@ subscription of any kind. The same wiring by hand is in
 
 A module-level singleton is still fine when the server renders nothing
 visitor-specific — a client-only app (`export const ssr = false`), or one locale
-for every request.
+for every request and no loader whose `routes` capture params.
 
 ### What the hand-off carries
 
@@ -571,7 +577,7 @@ An instance with a shorter life than the app should be released:
 ```svelte
 <script>
   import { I18n } from 'sveltekit-i18n';
-  import { config } from '$lib/i18n';
+  import { config } from '#lib/i18n.js';
 
   const i18n = new I18n(config);
 

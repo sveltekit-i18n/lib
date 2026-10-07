@@ -25,6 +25,9 @@ switcher, route-scoped loading and generated types. Everything here is 3.4.
 - **Node 22, Bun 1.2 or Deno 2, or newer.** The package imports no `node:`
   module, so every runtime that runs your SvelteKit build runs it.
 - **ESM only.** There is no CommonJS entry.
+- **SvelteKit 2.12 or newer** for the docs' SvelteKit snippets (the language
+  switcher reads `page` from `$app/state`), and 2.53 or newer with `@sveltekit-i18n/typegen`,
+  which needs Vite 8.
 
 The core ships its rune modules **uncompiled**, for the consumer's bundler to
 compile. In a SvelteKit app that happens automatically. In a bare Vite or Vitest
@@ -203,9 +206,16 @@ Format parser. Its options live under
 
 ### Step 3: Hook the server
 
+The snippets import from `src/lib` through `#lib`, the entry `sv create`
+scaffolds in the `imports` field of a SvelteKit 3 app's `package.json`, and name
+the file's extension, which TypeScript needs to resolve such an import. A
+SvelteKit 2 app adds the same entry, `"imports": { "#lib/*": "./src/lib/*" }`,
+or imports from `$lib` instead, without the extension — as it must on Vite 5
+when a `.ts` file is imported from a `.js` module or a plain `<script>`.
+
 ```javascript
 // src/hooks.server.js
-export { handle } from '$lib/i18n';
+export { handle } from '#lib/i18n.js';
 ```
 
 ```html
@@ -220,12 +230,12 @@ direction (`ltr` or `rtl`), in the `<html>` tag.
 
 ```javascript
 // src/routes/+layout.server.js
-export { load } from '$lib/i18n';
+export { load } from '#lib/i18n.js';
 ```
 
 ```javascript
 // src/routes/+layout.js
-export { load } from '$lib/i18n';
+export { load } from '#lib/i18n.js';
 ```
 
 One `load` serves both files. On the server it negotiates the locale, loads it
@@ -239,8 +249,8 @@ the loaders the server ran do not run again in the browser, and returns it as
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
-  import { use } from '$lib/i18n';
-  import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
+  import { use } from '#lib/i18n.js';
+  import LanguageSwitcher from '#lib/components/LanguageSwitcher.svelte';
 
   let { data, children } = $props();
 
@@ -276,7 +286,7 @@ signalling, show the hint beside the content rather than instead of it:
 ```svelte
 <!-- src/routes/+page.svelte -->
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 
@@ -374,7 +384,7 @@ or anything with a `test(route)` method. The wiring hands every navigation's
 ```svelte
 <!-- src/routes/about/+page.svelte -->
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 </script>
@@ -392,19 +402,17 @@ as `params`, and the loader runs again when the params change, replacing what
 it delivered for the previous ones:
 
 ```javascript
-import { PUBLIC_API_ORIGIN } from '$env/static/public';
-
 {
   locale: ['en', 'cs'],
   namespace: 'article',
   routes: [/^\/article\/(?<slug>[^/]+)/],
-  loader: async ({ locale, params }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/articles/${params.slug}/i18n/${locale}`)).json(),
+  loader: async ({ locale, params }) => (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/articles/${params.slug}/i18n/${locale}`)).json(),
 }
 ```
 
 A loader runs on the server too, where `fetch` takes only an absolute URL
 (the core hands a loader no `fetch` of its own), so build the URL from an
-origin, as `PUBLIC_API_ORIGIN` does here, or back the loader with a remote
+origin, as `VITE_API_ORIGIN` does here, or back the loader with a remote
 `query`.
 
 A loader receives `{ locale, namespace, route, params }`. `route` is context,
@@ -416,7 +424,7 @@ data that varies by route belongs in a param or in `routes`.
 ```svelte
 <!-- src/lib/components/LanguageSwitcher.svelte -->
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 
@@ -747,9 +755,9 @@ module's `get`:
 ```javascript
 import { render } from '@testing-library/svelte';
 import { vi } from 'vitest';
-import Greeting from '$lib/components/Greeting.svelte';
+import Greeting from '#lib/components/Greeting.svelte';
 
-vi.mock('$lib/i18n', async () => {
+vi.mock('#lib/i18n.js', async () => {
   const { I18n } = await import('sveltekit-i18n');
   const i18n = new I18n({
     initLocale: 'en',
@@ -792,7 +800,7 @@ cases — the same property that makes per-request instances right on the server
   its own.
 - **Namespaces on demand** – `loadNamespace('editor')` loads one namespace for
   a modal or a panel, whatever the route.
-- **An app under a base path** – set `config.basePath` to `kit.paths.base`.
+- **An app under a base path** – set `config.basePath` to SvelteKit's `paths.base`.
 - **`preprocess`** – how loaded payloads are flattened (`'full'`,
   `'preserveArrays'`, `'none'`, or your own function).
 - **Extensions** – `config.extensions` pipes the constructed instance through

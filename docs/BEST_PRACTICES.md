@@ -9,6 +9,13 @@ lives in the
 [core reference](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md);
 this document is about what to do with those members.
 
+The snippets import from `src/lib` through `#lib`, the entry `sv create`
+scaffolds in the `imports` field of a SvelteKit 3 app's `package.json`, and name
+the file's extension, which TypeScript needs to resolve such an import. A
+SvelteKit 2 app adds the same entry, `"imports": { "#lib/*": "./src/lib/*" }`,
+or imports from `$lib` instead, without the extension — as it must on Vite 5
+when a `.ts` file is imported from a `.js` module or a plain `<script>`.
+
 ## Table of Contents
 
 - [Instance Ownership](#instance-ownership)
@@ -75,9 +82,18 @@ The shared-state problem exists only on the server. A module-level instance is
 safe when the server renders nothing visitor-specific:
 
 - the app is client-only (`export const ssr = false`), or
-- every request renders the same locale, and no loader throws a `redirect()`
-  or an `error()` that depends on the visitor — concurrent requests share a
-  load, so every one of them would reject with it.
+- every request renders the same locale, no loader's `routes` capture params
+  (concurrent requests would compete for whose params are shown), and no loader
+  throws a `redirect()` or an `error()` that depends on the visitor —
+  concurrent requests share a load, so every one of them would reject with it.
+
+In the browser, a singleton's root `load` runs for a preload too — the page a
+hovered link leads to. Load it as steps 3 and 4 of the
+[manual recipe](./README.md#3-build-the-instance-the-application-renders-with)
+do, so a hovered link does not switch it: the first pass calls
+`loadTranslations()`, every later one `preload()`, and the root layout commits
+the navigation. A module-level flag the first pass sets in the browser only
+(`let started = false`) tells that pass apart, as `client` does in step 3.
 
 Everything else — including "we will add a second language later" — wants the
 per-request wiring from the start. Retrofitting it means touching every module
@@ -97,7 +113,7 @@ reactive.
 
 ```svelte
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 
@@ -214,16 +230,16 @@ export const { handle, load, use, get } = defineI18n(config, {
 
 ```javascript
 // src/hooks.server.js
-export { handle } from '$lib/i18n';
+export { handle } from '#lib/i18n.js';
 
 // src/routes/+layout.server.js and src/routes/+layout.js
-export { load } from '$lib/i18n';
+export { load } from '#lib/i18n.js';
 ```
 
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
-  import { use } from '$lib/i18n';
+  import { use } from '#lib/i18n.js';
 
   let { data, children } = $props();
 
@@ -1027,7 +1043,7 @@ export const config = {
 ```svelte
 <!-- src/lib/components/DataTable.svelte -->
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 </script>
@@ -1055,7 +1071,7 @@ different source entirely. Then it owns its whole lifecycle:
 ```svelte
 <script>
   import { I18n } from 'sveltekit-i18n';
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
   import { widgetConfig } from './translations';
 
   const app = get();
@@ -1239,7 +1255,7 @@ export const getTableI18n = () => getContext(KEY);
 <!-- src/routes/+layout.svelte — the app, once -->
 <script>
   import { setTableI18n } from 'acme-table';
-  import { use } from '$lib/i18n';
+  import { use } from '#lib/i18n.js';
 
   let { data, children } = $props();
 
@@ -1320,8 +1336,8 @@ export const localePath = (path, locale) => `/${locale}${path}`;
 
 ```svelte
 <script>
-  import { get } from '$lib/i18n';
-  import { localePath } from '$lib/utils/i18n';
+  import { get } from '#lib/i18n.js';
+  import { localePath } from '#lib/utils/i18n.js';
 
   const i18n = get();
 </script>
@@ -1337,7 +1353,7 @@ renders in its own name:
 ```svelte
 <script>
   import { page } from '$app/state';
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 
@@ -1407,14 +1423,15 @@ headers, a CDN in front of the CMS, or a module-level memo in the loader. The
 `cache` window is what keeps the **browser** instance from refetching on every
 navigation.
 
-**A source that caches on its own** — a SvelteKit remote `query`, an SWR
-layer — gets `cache: false`, so the core leaves freshness to it and runs the
-loader on every trigger that selects it:
+**A source that caches on its own** — a SvelteKit remote `query` (SvelteKit
+2.27 or newer, with `experimental.remoteFunctions` on), an SWR layer — gets
+`cache: false`, so the core leaves freshness to it and runs the loader on
+every trigger that selects it:
 
 ```javascript
 // src/lib/i18n.remote.js
 import { query } from '$app/server';
-import { db } from '$lib/server/database';
+import { db } from '#lib/server/database.js';
 
 export const messages = query('unchecked', ({ locale, namespace }) => db.messages(locale, namespace));
 ```
@@ -1454,36 +1471,32 @@ behind an endpoint and let the loader fetch it:
 ```javascript
 // src/routes/api/translations/[locale]/+server.js
 import { json } from '@sveltejs/kit';
-import { db } from '$lib/server/database';
+import { db } from '#lib/server/database.js';
 
 export const GET = async ({ params }) => json(await db.translations.find({ locale: params.locale }));
 ```
 
 ```javascript
-import { PUBLIC_API_ORIGIN } from '$env/static/public';
-
 {
   locale: ['en', 'cs'],
   namespace: 'dynamic',
-  loader: async ({ locale }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/translations/${locale}`)).json(),
+  loader: async ({ locale }) => (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/translations/${locale}`)).json(),
 }
 ```
 
 The loader runs on the server too, where `fetch` takes only an absolute URL
 (the core hands a loader no `fetch` of its own), so it builds the URL from an
-origin, `PUBLIC_API_ORIGIN` here — or back it with a remote `query` instead.
+origin, `VITE_API_ORIGIN` here — or back it with a remote `query` instead.
 
 ### Mixing static and dynamic
 
 ```javascript
-import { PUBLIC_API_ORIGIN } from '$env/static/public';
-
 const loaders = [
   // Static: fast, versioned with the code
   { locale: 'en', namespace: 'common', loader: async () => (await import('./en/common.json')).default },
 
   // Dynamic: updates without a deployment
-  { locale: 'en', namespace: 'content', loader: async () => (await fetch(`${PUBLIC_API_ORIGIN}/api/translations/en/content`)).json() },
+  { locale: 'en', namespace: 'content', loader: async () => (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/translations/en/content`)).json() },
 ];
 ```
 
@@ -1504,9 +1517,9 @@ the component a real instance through your module's `get`:
 ```javascript
 import { render } from '@testing-library/svelte';
 import { expect, test, vi } from 'vitest';
-import Greeting from '$lib/components/Greeting.svelte';
+import Greeting from '#lib/components/Greeting.svelte';
 
-vi.mock('$lib/i18n', async () => {
+vi.mock('#lib/i18n.js', async () => {
   const { I18n } = await import('sveltekit-i18n');
   const i18n = new I18n({
     initLocale: 'en',
@@ -1581,12 +1594,10 @@ export default defineConfig({
 ### Environment-specific config
 
 ```javascript
-import { dev } from '$app/environment';
-
 /** @type {import('sveltekit-i18n').Config} */
 export const config = {
-  cache: dev ? 0 : Number.POSITIVE_INFINITY,
-  log: { level: dev ? 'debug' : 'warn' },
+  cache: import.meta.env.DEV ? 0 : Number.POSITIVE_INFINITY,
+  log: { level: import.meta.env.DEV ? 'debug' : 'warn' },
   loaders: [/* … */],
 };
 ```
@@ -1680,14 +1691,12 @@ stale catalogue, and keep a bundled fallback for the fetch above.
 Measure inside the loader — that is the boundary the network crosses:
 
 ```javascript
-import { PUBLIC_API_ORIGIN } from '$env/static/public';
-
 {
   locale: 'en',
   namespace: 'common',
   loader: async ({ locale, route }) => {
     const start = performance.now();
-    const translations = await (await fetch(`${PUBLIC_API_ORIGIN}/api/translations/${locale}`)).json();
+    const translations = await (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/translations/${locale}`)).json();
 
     analytics.track('translations_loaded', { locale, route, duration: performance.now() - start });
 

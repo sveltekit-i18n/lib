@@ -19,7 +19,9 @@ A lightweight, powerful internationalization (i18n) library designed specificall
 
 Svelte 5 or newer, and one of Node 22+, Bun 1.2+ or Deno 2+. The package is
 ESM-only and imports no `node:` module, so every runtime that runs your
-SvelteKit build runs it.
+SvelteKit build runs it. The docs' SvelteKit snippets need SvelteKit 2.12 or
+newer, which ships `$app/state`; `@sveltekit-i18n/typegen` needs Vite 8, which
+SvelteKit supports from 2.53.
 
 ## Installation
 
@@ -85,20 +87,26 @@ package fills that slot.
 
 ### 3. Hook it into SvelteKit
 
+`#lib` is the `imports` entry `sv create` scaffolds in a SvelteKit 3 app's
+`package.json`. A SvelteKit 2 app adds the same entry,
+`"imports": { "#lib/*": "./src/lib/*" }`, or imports from `$lib/i18n` — as
+it must on Vite 5 when `i18n` is a `.ts` file imported from a `.js` module or
+a plain `<script>`.
+
 ```javascript
 // src/hooks.server.js
-export { handle } from '$lib/i18n';
+export { handle } from '#lib/i18n.js';
 ```
 
 ```javascript
 // src/routes/+layout.server.js and src/routes/+layout.js — the same line in both
-export { load } from '$lib/i18n';
+export { load } from '#lib/i18n.js';
 ```
 
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
-  import { use } from '$lib/i18n';
+  import { use } from '#lib/i18n.js';
 
   let { data, children } = $props();
 
@@ -124,7 +132,7 @@ server loaded. `handle` fills `%lang%` and `%dir%`.
 ```svelte
 <!-- src/routes/+page.svelte -->
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 </script>
@@ -161,7 +169,7 @@ export const i18n = new I18n(config);
 
 ```javascript
 // src/routes/+layout.js
-import { i18n } from '$lib/i18n';
+import { i18n } from '#lib/i18n.js';
 
 export const ssr = false;
 
@@ -169,6 +177,13 @@ export const load = async ({ url }) => {
   await i18n.loadTranslations('en', url.pathname);
 };
 ```
+
+That `load` runs for a preload too — the page a hovered link leads to — and
+switches the instance to it. To keep a hovered link from switching it, load
+every later pass with `preload()` and commit it in the root layout, as
+[steps 3 and 4 of the manual recipe](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#3-build-the-instance-the-application-renders-with)
+do; a module-level flag the first pass sets (`let started = false`) tells
+that pass apart, as `client` does there.
 
 > [!IMPORTANT]
 > That instance is a module-level singleton. On the server it is shared by
@@ -231,19 +246,17 @@ rest. A named capture group in a route `RegExp` is a route param — it reaches
 the loader as `params`, and the loader runs again when it changes:
 
 ```javascript
-import { PUBLIC_API_ORIGIN } from '$env/static/public';
-
 {
   locale: 'en',
   namespace: 'article',
   routes: [/^\/article\/(?<id>[^/]+)/],
-  loader: async ({ locale, params }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/articles/${params.id}/i18n/${locale}`)).json(),
+  loader: async ({ locale, params }) => (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/articles/${params.id}/i18n/${locale}`)).json(),
 }
 ```
 
 A loader runs on the server too, where `fetch` takes only an absolute URL
 (the core hands a loader no `fetch` of its own), so build the URL from an
-origin, as `PUBLIC_API_ORIGIN` does here, or back the loader with a remote
+origin, as `VITE_API_ORIGIN` does here, or back the loader with a remote
 `query`.
 
 A loader runs once per freshness window and route params. One whose source
@@ -263,7 +276,7 @@ Use dynamic values in your translations:
 
 ```svelte
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 </script>
@@ -304,7 +317,7 @@ not run again:
 ```javascript
 // src/routes/+layout.server.js
 import { I18n } from 'sveltekit-i18n';
-import { config } from '$lib/i18n';
+import { config } from '#lib/i18n.js';
 
 export const load = async ({ url, locals }) => {
   const i18n = new I18n(config);
@@ -326,7 +339,7 @@ tables: it keeps no loader from running. The full manual recipe is in
 
 ### Base path
 
-An app served under SvelteKit's `kit.paths.base` sets the same value as
+An app served under SvelteKit's `paths.base` sets the same value as
 `config.basePath`, so loader `routes` keep naming the app's own paths
 (`/about`, not `/repo/about`).
 
@@ -350,6 +363,17 @@ A 3.3 config loads in 3.4 as it is. What to check:
   loader whose fetch the preload only shared is refreshed behind what it
   shows. A preload is a request, a hover's included, so it ends the pass a
   `hydrate()` hand-off held a `cache: false` loader back for.
+- **A hand-wired app should stop activating a preload.** The 3.3 docs' SSR
+  recipe called `loadTranslations()` on every pass of the universal `load`,
+  which SvelteKit runs for a hover's preload too, so hovering a link switched
+  the instance before the click. Follow the updated recipe: only the pass that
+  builds the instance activates, every later pass calls `preload()`, and the
+  root layout commits the navigation
+  ([steps 3 and 4](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#3-build-the-instance-the-application-renders-with)).
+  A [singleton](#without-a-server) whose `load` calls `loadTranslations()`
+  makes the same change. An instance piped through
+  [`extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores) carries `preload()`
+  from extension-stores 3.2. `sveltekit-i18n/kit` needs none.
 - **A page render builds one instance.** The universal `load` of a page render
   takes over the instance the server `load` loaded instead of hydrating a
   second one from its snapshot, unless a loader has `cache: false`. A wrapper

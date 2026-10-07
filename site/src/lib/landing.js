@@ -22,14 +22,14 @@ export const { handle, load, use, get } = defineI18n(config, {
 });
 
 // src/hooks.server.js — fills <html lang="%lang%" dir="%dir%"> in src/app.html
-export { handle } from '$lib/i18n';
+export { handle } from '#lib/i18n.js';
 
 // src/routes/+layout.server.js and src/routes/+layout.js
-export { load } from '$lib/i18n';`;
+export { load } from '#lib/i18n.js';`;
 
 export const USE = `<!-- src/routes/+layout.svelte -->
 <script>
-  import { use } from '$lib/i18n';
+  import { use } from '#lib/i18n.js';
 
   let { data, children } = $props();
 
@@ -40,7 +40,7 @@ export const USE = `<!-- src/routes/+layout.svelte -->
 
 <!-- any component below it -->
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 </script>
