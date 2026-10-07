@@ -67,9 +67,9 @@ jobs:
           test "$(ls examples/*/src/i18n-schema.d.ts | wc -l)" -eq "$(ls examples/*/package.json | wc -l)"
           pnpm --filter './examples/*' run check
 
-      # An exit code proves nothing here: once `handleError` returns a
-      # well-formed error, a prerender writes an error page for every route and
-      # still succeeds. Assert on what was written, in more than one locale.
+      # An exit code proves nothing here: a page that renders without its
+      # translations still builds. Assert on what was written, in more than one
+      # locale.
       - name: Check Prerendered Output
         run: |
           grep -q 'The language is part of the address' examples/locale-router/build/prerendered/en.html

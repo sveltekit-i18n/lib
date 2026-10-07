@@ -7,7 +7,7 @@
  * it: it calls the interpolator, which resolves no nested key.
  */
 
-import { drawSpans } from '$lib/highlight.js';
+import { drawSpans } from '#lib/highlight.js';
 
 export { default as parser } from '@sveltekit-i18n/parser-i18next';
 

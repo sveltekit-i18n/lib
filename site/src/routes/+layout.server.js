@@ -1,3 +1,3 @@
-export { load } from '$lib/translations';
+export { load } from '#lib/translations/index.js';
 
 export const prerender = true;

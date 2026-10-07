@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { get } from '$lib/translations';
+  import { get } from '#lib/translations/index.js';
 
   const i18n = get();
 

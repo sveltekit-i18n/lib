@@ -1,8 +1,8 @@
 import { error } from '@sveltejs/kit';
 
-import { PAGES } from '$lib/docs.js';
-import { localeOf, prefixOf } from '$lib/locale.js';
-import { render } from '$lib/markdown.js';
+import { PAGES } from '#lib/docs.js';
+import { localeOf, prefixOf } from '#lib/locale.js';
+import { render } from '#lib/markdown.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ params, url }) => {

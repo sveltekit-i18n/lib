@@ -13,13 +13,13 @@ the browser tab, with nothing installed locally.
 
 | File | Why |
 |---|---|
-| [`svelte.config.js`](./svelte.config.js) | `.svx` has to be a page extension, and `smartypants` has to be off |
+| [`vite.config.ts`](./vite.config.ts) | `.svx` has to be a page extension, and `smartypants` has to be off |
 | [`src/routes/[lang=locale]/guide/+page.svx`](./src/routes/%5Blang%3Dlocale%5D/guide/+page.svx) | `get()` and `t()` in Markdown |
 | [`src/lib/translations/index.ts`](./src/lib/translations/index.ts) | `guide` is route-scoped like any other namespace; `preferredLocale` reads the locale off the path |
 
 ## Three things that are not obvious
 
-**`.svx` must be in `kit.extensions`.** `preprocess` alone is not enough — the
+**`.svx` must be in `extensions`.** `preprocess` alone is not enough — the
 router only looks at files whose extension it knows.
 
 **Turn `smartypants` off.** It rewrites quotes in the Markdown body, and a

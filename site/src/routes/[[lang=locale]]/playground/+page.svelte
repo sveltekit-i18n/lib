@@ -1,9 +1,9 @@
 <script>
-  import Fallback from '$lib/playground/Fallback.svelte';
-  import Loaders from '$lib/playground/Loaders.svelte';
-  import Parser from '$lib/playground/Parser.svelte';
-  import Preprocess from '$lib/playground/Preprocess.svelte';
-  import { get } from '$lib/translations';
+  import Fallback from '#lib/playground/Fallback.svelte';
+  import Loaders from '#lib/playground/Loaders.svelte';
+  import Parser from '#lib/playground/Parser.svelte';
+  import Preprocess from '#lib/playground/Preprocess.svelte';
+  import { get } from '#lib/translations/index.js';
 
   const i18n = get();
 

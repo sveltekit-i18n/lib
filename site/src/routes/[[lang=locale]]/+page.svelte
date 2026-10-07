@@ -1,10 +1,10 @@
 <script>
   import { page } from '$app/state';
 
-  import { FEATURES } from '$lib/landing.js';
-  import { REPO } from '$lib/docs.js';
-  import { localeOf, prefixOf } from '$lib/locale.js';
-  import { get } from '$lib/translations';
+  import { FEATURES } from '#lib/landing.js';
+  import { REPO } from '#lib/docs.js';
+  import { localeOf, prefixOf } from '#lib/locale.js';
+  import { get } from '#lib/translations/index.js';
 
   const i18n = get();
 

@@ -1,9 +1,9 @@
 <script>
   import { I18n } from 'sveltekit-i18n';
 
-  import { highlightJson, highlightJsonText } from '$lib/highlight.js';
-  import { PREPROCESS_MODES, TRANSLATIONS, parsePayload } from '$lib/playground.js';
-  import { get } from '$lib/translations';
+  import { highlightJson, highlightJsonText } from '#lib/highlight.js';
+  import { PREPROCESS_MODES, TRANSLATIONS, parsePayload } from '#lib/playground.js';
+  import { get } from '#lib/translations/index.js';
   import Editor from './Editor.svelte';
   import Panel from './Panel.svelte';
 

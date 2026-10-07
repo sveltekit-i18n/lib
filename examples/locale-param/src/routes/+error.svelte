@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
 
-  import { DEFAULT_LOCALE, get } from '$lib/translations';
+  import { DEFAULT_LOCALE, get } from '#lib/translations/index.js';
 
   // The error page renders without any `load` having run, so everything it
   // needs sits in `config.translations` rather than behind a loader.

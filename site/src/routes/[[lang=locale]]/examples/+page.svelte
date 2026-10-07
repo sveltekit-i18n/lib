@@ -1,6 +1,6 @@
 <script>
-  import { EXAMPLES, GROUPS, runHref, sourceHref } from '$lib/examples.js';
-  import { get } from '$lib/translations';
+  import { EXAMPLES, GROUPS, runHref, sourceHref } from '#lib/examples.js';
+  import { get } from '#lib/translations/index.js';
 
   const i18n = get();
 </script>

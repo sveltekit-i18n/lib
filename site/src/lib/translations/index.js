@@ -3,8 +3,8 @@ import { defineI18n } from 'sveltekit-i18n/kit';
 import cs from './cs.json';
 import de from './de.json';
 import en from './en.json';
-import { DEFAULT_LOCALE, LOCALES } from '$lib/docs.js';
-import { PREFIXED, localeOf, prefixOf } from '$lib/locale.js';
+import { DEFAULT_LOCALE, LOCALES } from '#lib/docs.js';
+import { PREFIXED, localeOf, prefixOf } from '#lib/locale.js';
 
 /**
  * The shell strings are inline rather than loaded — the error page renders

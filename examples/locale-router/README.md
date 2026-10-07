@@ -15,7 +15,7 @@ the browser tab, with nothing installed locally.
 |---|---|
 | [`src/lib/locale.ts`](./src/lib/locale.ts) | `entries()` — the list the crawler cannot discover on its own |
 | [`src/routes/[lang=locale]/+page.ts`](./src/routes/%5Blang%3Dlocale%5D/+page.ts) | re-exports it, which is what makes `/cs` and `/de` exist |
-| [`src/params/locale.ts`](./src/params/locale.ts) | the matcher, without which `[lang]` swallows `/about` |
+| [`src/params.ts`](./src/params.ts) | the matcher, without which `[lang]` swallows `/about` |
 | [`src/lib/translations/index.ts`](./src/lib/translations/index.ts) | `defineI18n` with `preferredLocale` reading the path, and loader `routes` that include the locale segment (`/cs/about`), since loaders match the whole pathname |
 | [`src/routes/+layout.ts`](./src/routes/+layout.ts) | `prerender = true` and `export { load }` — the only `load`, so the locale comes off the path at build time and in the browser alike |
 | [`src/routes/+layout.svelte`](./src/routes/+layout.svelte) | `use(() => data)`, which switches the tab's instance, and `<html lang>`, as a link to another locale commits |

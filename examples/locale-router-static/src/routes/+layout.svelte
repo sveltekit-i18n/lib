@@ -2,8 +2,8 @@
   import '../app.css';
   import { page } from '$app/state';
 
-  import { LOCALES, localeOf, pathOf, routeOf } from '$lib/locale';
-  import { use } from '$lib/translations';
+  import { LOCALES, localeOf, pathOf, routeOf } from '#lib/locale.js';
+  import { use } from '#lib/translations/index.js';
 
   import type { LayoutProps } from './$types';
 

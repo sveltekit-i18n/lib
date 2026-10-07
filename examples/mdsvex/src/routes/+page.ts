@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 
-import { DEFAULT_LOCALE } from '$lib/locale';
+import { DEFAULT_LOCALE } from '#lib/locale.js';
 
 import type { PageLoad } from './$types';
 

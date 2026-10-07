@@ -1,1 +1,1 @@
-export { handle } from '$lib/translations';
+export { handle } from '#lib/translations/index.js';

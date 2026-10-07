@@ -1,6 +1,6 @@
-import { INDEX_FILE } from '$lib/docs.js';
-import { localeOf, prefixOf } from '$lib/locale.js';
-import { render } from '$lib/markdown.js';
+import { INDEX_FILE } from '#lib/docs.js';
+import { localeOf, prefixOf } from '#lib/locale.js';
+import { render } from '#lib/markdown.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export const load = async ({ url }) => {

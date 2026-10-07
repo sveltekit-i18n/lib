@@ -1,8 +1,8 @@
 <script lang="ts">
   import { BLOCK_ELEMENTS } from '@sveltekit-i18n/extension-html';
 
-  import Link from '$lib/Link.svelte';
-  import { get } from '$lib/translations';
+  import Link from '#lib/Link.svelte';
+  import { get } from '#lib/translations/index.js';
 
   const i18n = get();
 

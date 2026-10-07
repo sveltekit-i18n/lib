@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
 
-  import { NAMESPACES, get } from '$lib/translations';
+  import { NAMESPACES, get } from '#lib/translations/index.js';
 
   const i18n = get();
 

@@ -1,5 +1,5 @@
-import { PANELS, SOURCE } from '$lib/playground.js';
-import { highlight } from '$lib/markdown.js';
+import { PANELS, SOURCE } from '#lib/playground.js';
+import { highlight } from '#lib/markdown.js';
 
 /** A panel with a switch carries one snippet per position, keyed by it. */
 const highlightAll = async (source) => (typeof source === 'string'

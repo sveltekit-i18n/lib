@@ -1,8 +1,8 @@
 <script>
   import { I18n } from 'sveltekit-i18n';
 
-  import { FALLBACK, FALLBACK_KEYS } from '$lib/playground.js';
-  import { get } from '$lib/translations';
+  import { FALLBACK, FALLBACK_KEYS } from '#lib/playground.js';
+  import { get } from '#lib/translations/index.js';
   import Panel from './Panel.svelte';
 
   const i18n = get();

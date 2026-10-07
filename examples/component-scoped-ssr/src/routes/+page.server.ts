@@ -1,4 +1,4 @@
-import { snapshot } from '$lib/rates/translations';
+import { snapshot } from '#lib/rates/translations.js';
 
 import type { PageServerLoad } from './$types';
 

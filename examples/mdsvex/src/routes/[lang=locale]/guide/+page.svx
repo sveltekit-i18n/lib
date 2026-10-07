@@ -1,5 +1,5 @@
 <script>
-  import { NAMESPACES, get } from '$lib/translations';
+  import { NAMESPACES, get } from '#lib/translations/index.js';
 
   // Exactly what a .svelte page would do — by the time this runs, mdsvex has
   // already turned the file into an ordinary Svelte component.
