@@ -40,7 +40,9 @@ Everything below assumes the 3.4 surface: **one reactive instance, no stores**, 
 - [Getting Help](#getting-help)
 - [See Also](#see-also)
 
-For brevity, the snippets below import a module-level `i18n` from `$lib/i18n`. That is safe in the browser and in a client-only application; on the server it is shared by every request being rendered — see [A Visitor Sees Another Visitor's Language](#a-visitor-sees-another-visitors-language). With `sveltekit-i18n/kit`, a component reads the instance with `get()` instead.
+For brevity, the snippets below import a module-level `i18n` from `#lib/i18n.js`. That is safe in the browser and in a client-only application; on the server it is shared by every request being rendered — see [A Visitor Sees Another Visitor's Language](#a-visitor-sees-another-visitors-language). With `sveltekit-i18n/kit`, a component reads the instance with `get()` instead.
+
+The snippets import from `src/lib` through `#lib`, the entry `sv create` scaffolds in the `imports` field of a SvelteKit 3 app's `package.json`, and name the file's extension, which TypeScript needs to resolve such an import. A SvelteKit 2 app adds the same entry, `"imports": { "#lib/*": "./src/lib/*" }`, or imports from `$lib` instead, without the extension — as it must on Vite 5 when a `.ts` file is imported from a `.js` module or a plain `<script>` (see [Cannot find module `#lib/i18n.js`](#cannot-find-module-libi18njs)).
 
 ## Upgrading from v2
 
@@ -60,7 +62,7 @@ v3 has no stores. `t`, `l`, `locale`, `loading`, `initialized`, `translations` a
 ```svelte
 <!-- ❌ v2 -->
 <script>
-  import { t, locale } from '$lib/i18n';
+  import { t, locale } from '#lib/i18n.js';
 </script>
 
 <h1>{$t('home.title')}</h1>
@@ -72,7 +74,7 @@ v3 has no stores. `t`, `l`, `locale`, `loading`, `initialized`, `translations` a
 ```svelte
 <!-- ✅ v3 -->
 <script>
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 </script>
 
 <h1>{i18n.t('home.title')}</h1>
@@ -114,7 +116,7 @@ Destructuring reads the property **once**. The value that comes out is a plain s
 
 ```svelte
 <script>
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 
   // ❌ one-time snapshots
   const { locale, loading } = i18n;
@@ -129,7 +131,7 @@ Keep the instance, or destructure through `$derived(i18n)` so each binding stays
 
 ```svelte
 <script>
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 
   // ✅ every binding tracks the instance
   const { locale, loading } = $derived(i18n);
@@ -221,7 +223,7 @@ export const { handle, load, use, get } = defineI18n(config);
 
 ```javascript
 // src/routes/+layout.server.js and src/routes/+layout.js
-export { load } from '$lib/i18n';
+export { load } from '#lib/i18n.js';
 ```
 
 Or wire it by hand:
@@ -313,13 +315,13 @@ return { i18n: i18n.snapshot({ records: true }) };
 ```
 
 ```javascript
-// src/routes/+layout.js, where the client instance is built
+// src/routes/+layout.js, on the pass that builds the client instance
 i18n.hydrate(data?.i18n);
 
 await i18n.loadTranslations(data?.i18n?.locale ?? config.fallbackLocale, url.pathname);
 ```
 
-The whole recipe is in [Server-Side Rendering](./README.md#server-side-rendering).
+Every later pass reuses that instance and, since it may be a preload, calls `preload()` instead of activating. The whole recipe is in [Server-Side Rendering](./README.md#server-side-rendering).
 
 ---
 
@@ -530,7 +532,7 @@ export const load = async ({ url }) => {
 
 ```javascript
 // ✅ +layout.js
-import { i18n } from '$lib/i18n';
+import { i18n } from '#lib/i18n.js';
 
 export const load = async ({ url }) => {
   await i18n.loadTranslations('en', url.pathname);
@@ -538,6 +540,8 @@ export const load = async ({ url }) => {
   return {};
 };
 ```
+
+That `load` also runs for a preload — the page a hovered link leads to — and switches the instance to it. The [manual recipe](./README.md#3-build-the-instance-the-application-renders-with) loads every later pass with `preload()` and commits it in the root layout, so a hovered link does not switch anything.
 
 #### 2. Loader function not returning data
 
@@ -576,7 +580,7 @@ loader: async () => (await import('./translations/en.json')).default
 ```
 
 - Check the path relative to the file the config lives in
-- Use an alias if that is clearer: `import('$lib/translations/en/common.json')`
+- Use `#lib` if that is clearer: `import('#lib/translations/en/common.json')`
 
 #### 4. JSON syntax error
 
@@ -735,7 +739,7 @@ The load runs in the browser after the first render instead of before it.
 <!-- +layout.svelte -->
 <script>
   import { onMount } from 'svelte';
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 
   onMount(() => i18n.loadTranslations('en', '/'));  // Runs after the first render
 </script>
@@ -745,7 +749,7 @@ The load runs in the browser after the first render instead of before it.
 
 ```javascript
 // +layout.js
-import { i18n } from '$lib/i18n';
+import { i18n } from '#lib/i18n.js';
 
 export const load = async ({ url }) => {
   await i18n.loadTranslations('en', url.pathname);
@@ -756,11 +760,13 @@ export const load = async ({ url }) => {
 
 A `load` function that awaits the load blocks the render until translations are in place. [`sveltekit-i18n/kit`](./README.md#sveltekit) does that in the root layout, and hands the server's state to the client so the client does not fetch it again. Wired by hand, the pair is [`snapshot({ records: true })`](./README.md#snapshotoptions) and [`hydrate()`](./README.md#hydrateenvelope) — `addTranslations()` only seeds, so the loaders run again in the browser.
 
+The `load` above also runs for a preload, and switches to the page a hovered link leads to. The [manual recipe](./README.md#3-build-the-instance-the-application-renders-with) activates only on the pass that builds the instance, loads every later one with `preload()` and commits it in the root layout.
+
 #### 2. Gate the render where a client-side load is unavoidable
 
 ```svelte
 <script>
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 
   const { initialized } = $derived(i18n);
 </script>
@@ -846,7 +852,7 @@ With [`sveltekit-i18n/kit`](./README.md#sveltekit), the wiring hands the instanc
 #### 4. The app is served under a base path
 
 ```javascript
-// svelte.config.js: kit.paths.base is '/repo'
+// SvelteKit's paths.base is '/repo'
 // URL: /repo/about
 routes: ['/about']  // ❌ Doesn't match '/repo/about'
 ```
@@ -854,10 +860,8 @@ routes: ['/about']  // ❌ Doesn't match '/repo/about'
 Set [`basePath`](./README.md#basepath) to the same value: every route handed in loses it on the way in, so `routes` keep naming the app's own paths.
 
 ```javascript
-import { PUBLIC_BASE_PATH } from '$env/static/public';
-
 export const config = {
-  basePath: PUBLIC_BASE_PATH,
+  basePath: import.meta.env.VITE_BASE_PATH,
   loaders: [/* ... */],
 };
 ```
@@ -869,13 +873,11 @@ The `/kit` wiring warns once, on the server, when a prefix it cannot account for
 A loader runs **once per freshness window and route params**. Its record is kept per loader, so each loader of a namespace runs on its own routes — but a loader that has delivered does not run again for another route that yields the same params. So `route` is context for the loader, not a cache key:
 
 ```javascript
-import { PUBLIC_API_ORIGIN } from '$env/static/public';
-
 // ❌ One loader that tries to serve every route: it runs on the first one only
 {
   locale: 'en',
   namespace: 'page',
-  loader: async ({ route }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/page?route=${route}`)).json(),
+  loader: async ({ route }) => (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/page?route=${route}`)).json(),
 }
 
 // ✅ Capture what the data depends on as a route param: it runs again when it changes
@@ -883,7 +885,7 @@ import { PUBLIC_API_ORIGIN } from '$env/static/public';
   locale: 'en',
   namespace: 'page',
   routes: [/^\/(?<slug>[^/]*)$/],
-  loader: async ({ params }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/page?slug=${params.slug}`)).json(),
+  loader: async ({ params }) => (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/page?slug=${params.slug}`)).json(),
 }
 
 // ✅ Or one loader per route group
@@ -1048,7 +1050,7 @@ export const { handle, load, use, get } = defineI18n(config, {
 
 `hooks.server.js` exports `handle`, both root layout files export `load`, the root `+layout.svelte` calls `use(() => data)`, and components read the instance with `get()` instead of importing it. The same wiring by hand is in [Server-Side Rendering](./README.md#server-side-rendering).
 
-**A singleton is fine** when the server renders nothing visitor-specific — a client-only application (`export const ssr = false`), or one that renders a single locale and has no loader throwing a `redirect()` or an `error()` that depends on the visitor. An instance with a shorter life than the application should be released with [`destroy()`](./README.md#destroy).
+**A singleton is fine** when the server renders nothing visitor-specific — a client-only application (`export const ssr = false`), or one that renders a single locale, has no loader whose `routes` capture params (concurrent requests would compete for whose params are shown) and has no loader throwing a `redirect()` or an `error()` that depends on the visitor. An instance with a shorter life than the application should be released with [`destroy()`](./README.md#destroy).
 
 **A shared cache can do the same.** A negotiated page varies by `Accept-Language` and by whatever `preferredLocale` reads, and `/kit` sets no `Vary` header. A CDN caching it with `cache-control: public` serves one visitor's language to the next: add `Vary: Accept-Language, Cookie`, or cache only pages whose locale is in the URL.
 
@@ -1070,22 +1072,25 @@ When SvelteKit renders the error page **without a server `load`** — on a stati
 
 [`sveltekit-i18n/kit`](./README.md#sveltekit) handles a `null` `data`: its universal `load` negotiates on its own — from `preferredLocale`, then `navigator.languages` in the browser, then `initLocale`, `fallbackLocale` and the first locale the config serves — and `+error.svelte` reads the instance with `get()` like any page.
 
-Wired by hand, read the server payload optionally and fall back for the locale:
+Wired by hand, read the server payload optionally and fall back for the locale, in the `+layout.js` of the [manual recipe](./README.md#3-build-the-instance-the-application-renders-with):
 
 ```javascript
 // src/routes/+layout.js
 export const load = async ({ data, url }) => {
   // `data` is null when no route matched: the error page renders through this
   // load too, and on a static host that is every unknown URL.
-  let i18n = client;
+  if (client) {
+    const locale = data?.i18n?.locale ?? client.locale;
+    const preloaded = await client.preload(locale, url.pathname);
 
-  if (!i18n) {
-    i18n = new I18n(config);
-
-    i18n.hydrate(data?.i18n);
-
-    if (browser) client = i18n;
+    return { i18n: client, commit: { locale, route: url.pathname, preloaded } };
   }
+
+  const i18n = new I18n(config);
+
+  i18n.hydrate(data?.i18n);
+
+  if (!import.meta.env.SSR) client = i18n;
 
   await i18n.loadTranslations(data?.i18n?.locale ?? config.fallbackLocale, url.pathname);
 
@@ -1285,22 +1290,19 @@ export const i18n = new I18n({ ...config, extensions: [withGreeting] });
 // schema and locale completion intact, plus `greet`
 ```
 
-#### Cannot find module `$lib/i18n`
+#### Cannot find module `#lib/i18n.js`
 
-Check the alias in `svelte.config.js`:
+`#lib` resolves through the `imports` field of the app's `package.json`. `sv create` scaffolds it in a SvelteKit 3 app; a SvelteKit 2 app adds it:
 
-```javascript
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
-
-export default {
-  preprocess: vitePreprocess(),
-  kit: {
-    alias: {
-      $lib: 'src/lib',  // ✅ Ensure this is set
-    },
-  },
-};
+```json
+{
+  "imports": {
+    "#lib/*": "./src/lib/*"
+  }
+}
 ```
+
+Name the file, extension included: `svelte-check` and TypeScript resolve neither `#lib/i18n` nor a directory such as `#lib/translations`, even where the build does, so they are `#lib/i18n.js` and `#lib/translations/index.js`. A SvelteKit 2 app on Vite 5 that imports a `.ts` file from a `.js` module or a plain `<script>` imports from `$lib` instead, without the extension. On SvelteKit 3 a build that imports `$lib` fails with `module_removed_lib`, unless `sveltekit({ alias: { $lib: 'src/lib' } })` in `vite.config.js` maps it back — an option SvelteKit 3 deprecates, so prefer `#lib`.
 
 ---
 
@@ -1319,7 +1321,7 @@ v2's advice was to replace the module with store stubs. There are no stores to s
 
 ```javascript
 // ❌ v2 — neither typechecks nor runs in v3
-vi.mock('$lib/i18n', () => ({ t: readable((key) => key) }));
+vi.mock('#lib/i18n.js', () => ({ t: readable((key) => key) }));
 ```
 
 **Solution:**
@@ -1337,10 +1339,10 @@ const i18n = new I18n({
 i18n.t('common.greeting', { name: 'Alice' }); // → "Hello, Alice!"
 ```
 
-`config.translations` is applied during construction and no loader matches, so the locale is active before the constructor returns — nothing to await. A component that takes the instance as a prop gets it directly. One that reads it with `get()` from your `$lib/i18n` finds it where `use()` put it, which a test renders without — mock your module's `get` to return the real instance:
+`config.translations` is applied during construction and no loader matches, so the locale is active before the constructor returns — nothing to await. A component that takes the instance as a prop gets it directly. One that reads it with `get()` from your `#lib/i18n.js` finds it where `use()` put it, which a test renders without — mock your module's `get` to return the real instance:
 
 ```javascript
-vi.mock('$lib/i18n', async () => {
+vi.mock('#lib/i18n.js', async () => {
   const { I18n } = await import('sveltekit-i18n');
   const i18n = new I18n({
     initLocale: 'en',
@@ -1436,7 +1438,7 @@ A per-request instance is garbage once the request is done. What keeps one alive
 
 ```svelte
 <script>
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 </script>
 
 <details>
@@ -1453,7 +1455,7 @@ A per-request instance is garbage once the request is done. What keeps one alive
 
 ```svelte
 <script>
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 
   const { loading, initialized, locales } = $derived(i18n);
 </script>
@@ -1489,7 +1491,7 @@ const config = {
 ### 5. Test a loader directly
 
 ```javascript
-const loader = async () => (await import('$lib/translations/en/common.json')).default;
+const loader = async () => (await import('#lib/translations/en/common.json')).default;
 
 console.log(await loader());
 ```
@@ -1501,9 +1503,7 @@ console.log(await loader());
 export const load = async ({ url }) => {
   console.log('Current pathname:', url.pathname);
 
-  await i18n.loadTranslations('en', url.pathname);
-
-  return {};
+  // … the rest of your load
 };
 ```
 
@@ -1513,7 +1513,7 @@ Inside a component, where effects run:
 
 ```svelte
 <script>
-  import { i18n } from '$lib/i18n';
+  import { i18n } from '#lib/i18n.js';
 
   $effect(() => {
     console.log('locale ->', i18n.locale, 'loading ->', i18n.loading);
@@ -1639,16 +1639,14 @@ i18n.t('error', { field: i18n.t('form.field.email') });
 Yes — a loader is any async function, and it receives the load context:
 
 ```javascript
-import { PUBLIC_API_ORIGIN } from '$env/static/public';
-
 {
   locale: ['en', 'cs'],
   namespace: 'dynamic',
-  loader: async ({ locale, namespace }) => (await fetch(`${PUBLIC_API_ORIGIN}/api/translations/${locale}/${namespace}`)).json(),
+  loader: async ({ locale, namespace }) => (await fetch(`${import.meta.env.VITE_API_ORIGIN}/api/translations/${locale}/${namespace}`)).json(),
 }
 ```
 
-A loader receives `{ locale, namespace, route, params }`, and it runs on the server too, where `fetch` takes only an absolute URL (the core hands a loader no `fetch` of its own) — so build the URL from an origin, as `PUBLIC_API_ORIGIN` does here, or back the loader with a remote `query`. Remember that it runs **once per freshness window and route params**: pair it with [`cache`](./README.md#cache) or [`invalidate()`](./README.md#invalidatelocale-namespace), or give it `cache: false` when its source caches on its own — see [Translations Never Refresh](#translations-never-refresh).
+A loader receives `{ locale, namespace, route, params }`, and it runs on the server too, where `fetch` takes only an absolute URL (the core hands a loader no `fetch` of its own) — so build the URL from an origin, as `VITE_API_ORIGIN` does here, or back the loader with a remote `query`. Remember that it runs **once per freshness window and route params**: pair it with [`cache`](./README.md#cache) or [`invalidate()`](./README.md#invalidatelocale-namespace), or give it `cache: false` when its source caches on its own — see [Translations Never Refresh](#translations-never-refresh).
 
 ### How do I handle missing translations during development?
 
@@ -1690,7 +1688,7 @@ In the component, where the read stays reactive and the server already has the t
 
 ```svelte
 <script>
-  import { get } from '$lib/i18n';
+  import { get } from '#lib/i18n.js';
 
   const i18n = get();
 </script>
