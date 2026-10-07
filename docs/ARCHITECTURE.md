@@ -401,6 +401,7 @@ A loader declares the locales it serves, the `namespace` it fills, and
 optionally the `routes` it is needed on:
 
 ```javascript
+/** @satisfies {import('sveltekit-i18n').Config} */
 const config = {
   loaders: [
     // No routes → needed everywhere; one call per locale

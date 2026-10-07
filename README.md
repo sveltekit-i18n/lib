@@ -65,6 +65,7 @@ core and two reactive graphs.
 // src/lib/i18n.js
 import { defineI18n } from 'sveltekit-i18n/kit';
 
+/** @satisfies {import('sveltekit-i18n').Config} */
 export const config = {
   initLocale: 'en',
   loaders: [
