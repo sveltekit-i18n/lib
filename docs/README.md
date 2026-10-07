@@ -88,6 +88,11 @@ test a value; the caveat is documented rather than fixed.
 
 ## Installation and packaging
 
+In a SvelteKit 3 project, `npx sv add @sveltekit-i18n` runs the
+[Svelte CLI add-on](https://github.com/sveltekit-i18n/sv), which installs the
+packages and writes the wiring the [Getting Started guide](./GETTING_STARTED.md)
+walks through. By hand:
+
 ```bash
 npm install sveltekit-i18n
 ```

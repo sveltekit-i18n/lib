@@ -1,4 +1,7 @@
-export const INSTALL = `npm install sveltekit-i18n
+export const INSTALL = `npx sv add @sveltekit-i18n
+
+# or by hand:
+npm install sveltekit-i18n
 
 # bun add sveltekit-i18n
 # deno add npm:sveltekit-i18n`;

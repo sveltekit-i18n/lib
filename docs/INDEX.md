@@ -266,6 +266,10 @@ renders.
 - **[@sveltekit-i18n/typegen](https://github.com/sveltekit-i18n/typegen)** – the
   Vite plugin that generates the `schema` type from your translations
   ([releases](https://github.com/sveltekit-i18n/typegen/releases))
+- **[@sveltekit-i18n/sv](https://github.com/sveltekit-i18n/sv)** – the Svelte
+  CLI add-on that sets sveltekit-i18n up in a SvelteKit project
+  (`npx sv add @sveltekit-i18n`)
+  ([releases](https://github.com/sveltekit-i18n/sv/releases))
 - **[Extensions](https://github.com/sveltekit-i18n/extensions)** – official
   adapters for the `config.extensions` pipe:
   **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)**
@@ -279,8 +283,9 @@ renders.
   format specification
 
 `base`, `parsers`, `extensions` and `typegen` release first; `sveltekit-i18n`
-last, since it pins the core and the parser exactly. Read a package's current
-version off npm.
+after them, since it pins the core and the parser exactly; and
+`@sveltekit-i18n/sv` last, since it installs the others. Read a package's
+current version off npm.
 
 ---
 
