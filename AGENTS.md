@@ -55,13 +55,14 @@ issue tracker, docs, and examples for the whole family
   builds every one on any change under `examples/**` or `src/**` and asserts on
   the rendered output. They are a reference for how v3 is used, alongside
   `README.md` and `docs/`.
-- **This package is released last** (base's §4, *Releases*). Its pins are
-  exact, so every release of `base` or `parser-curly` means one of this
-  package: plan them as one release, and never publish this package while
-  either holds an unreleased change or a planned fix. `README.md` is the npm
-  page and the site deploys from `master`, so both describe the version being
-  published, leave out nothing it or the family brings, and each of their
-  links resolves.
+- **This package is released after the rest of the family** (base's §4,
+  *Releases*), but for `@sveltekit-i18n/sv`, which installs it and goes last.
+  Its pins are exact, so every release of `base` or `parser-curly` means one
+  of this package: plan them as one release, and never publish this package
+  while either holds an unreleased change or a planned fix. `README.md` is
+  the npm page and the site deploys from `master`, so both describe the
+  version being published, leave out nothing it or the family brings, and
+  each of their links resolves.
 
 ## Architecture you must respect
 
