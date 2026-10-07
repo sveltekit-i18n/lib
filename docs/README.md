@@ -29,6 +29,7 @@ when a `.ts` file is imported from a `.js` module or a plain `<script>`.
 - [Migrating from v2](#migrating-from-v2)
 - [Upgrading from 3.3](#upgrading-from-33)
 - [Upgrading from 3.2](#upgrading-from-32)
+- [Upgrading from 3.1](#upgrading-from-31)
 - [Upgrading from 3.0](#upgrading-from-30)
 - [See Also](#see-also)
 
@@ -1474,6 +1475,12 @@ It is reproducible from your translations, so leave it out of Git. The
 plugin's options, diagnostics and limits are in
 [its README](https://github.com/sveltekit-i18n/typegen#readme).
 
+From typegen 3.1 the file also registers the keys nested by segment
+([`tree`](https://github.com/sveltekit-i18n/typegen#what-it-writes)), which the
+core never reads:
+[`extension-typed-access`](#keys-as-members-of-t) types its member keys from
+them instead of grouping the keys itself on every compile.
+
 ### One payload type for every message
 
 Where every message shares one payload shape and the app registers no schema,
@@ -1625,7 +1632,77 @@ contributes nothing to the piped type, so the only thing it changes is that
 in the pipe.
 
 Official extensions live in the
-[extensions](https://github.com/sveltekit-i18n/extensions) repository.
+[extensions](https://github.com/sveltekit-i18n/extensions) repository, each
+installed on its own:
+[`extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)
+(the `$t` form above), [`extension-typed-access`](#keys-as-members-of-t) and
+[`extension-html`](#markup-in-a-message).
+
+### Keys as members of `t`
+
+[`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
+reads a key as a path of members on `t`, typed from the
+[schema](#typing-keys-and-payloads-with-schema):
+
+```javascript
+import { defineI18n } from 'sveltekit-i18n/kit';
+import typedAccess from '@sveltekit-i18n/extension-typed-access';
+
+export const { handle, load, use, get } = defineI18n({ ...config, extensions: [typedAccess] });
+```
+
+```svelte
+<h1>{i18n.t.home.title()}</h1>
+<p>{i18n.t.cart.summary.itemCount({ count: 3 })}</p>
+```
+
+Each segment completes and each leaf takes the payload its key takes, while
+every call goes through the instance's own `t`, so a key resolves, falls back
+and fails soft as the string form does. Keys known only at runtime keep the
+string form, and so does a first-level namespace named like a member every
+function has (`name`, `length`, `call`, …) — see the extension's
+[reserved names](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access#the-tree).
+The levels [typegen](#generating-the-schema-with-typegen) 3.1 or newer
+registers spare the checker grouping the keys itself.
+
+### Markup in a message
+
+[`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
+adds a `T` component that renders the markup a message carries as elements and
+Svelte components — from an allowlist, with URLs gated by scheme and the
+payload escaped, without `{@html}`:
+
+```javascript
+import { defineI18n } from 'sveltekit-i18n/kit';
+import html from '@sveltekit-i18n/extension-html';
+
+export const { handle, load, use, get } = defineI18n({
+  ...config,
+  extensions: [html({ onReport: null })],
+});
+```
+
+```json
+{ "intro": "Hi <b>{{name}}</b>, read <a href=\"/docs\">the docs</a>." }
+```
+
+```svelte
+<i18n.T key="intro" params={{ name }} />
+```
+
+`t()` still returns the message with its markup as text, which is what an
+attribute or a `<title>` needs. `onReport` is required; `null` discards the
+reports. The component map, the allowed attributes and the parsers that pass
+markup through — `parser-curly` among them — are in
+[its README](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html#readme).
+
+### Pipe order
+
+`extension-stores` returns no instance, so it goes last: `[typedAccess, stores]`
+hands out `$t.home.title()`, and `[html({ onReport: null }), stores]` puts `T`
+at `instance.T`. Put the other way round, either throws at construction.
+`extension-html` goes after `extension-typed-access`, and adds `T` beside the
+member keys.
 
 ## SvelteKit
 
@@ -2216,6 +2293,25 @@ A 3.3 config loads in 3.4 as it is. What changes, which 3.4 brings in with
   [`{ preloaded }`](#loadtranslationslocale-route-options) on
   `loadTranslations()` and [`setRoute()`](#setrouteroute-options), and the
   token's type, `Loader.Preloaded`.
+- **Companion releases.**
+  [`extension-typed-access`](#keys-as-members-of-t) 3.0.0 is new: keys as
+  members of `t`, `t.home.title()`. [`extension-html`](#markup-in-a-message)
+  3.0 is new: a `T` component that renders the markup a message carries,
+  without `{@html}`. [`extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)
+  3.2.0 passes `preload()` through and, in a component mounted after the
+  stores start following the instance, re-renders a `$t(...)` once per change
+  instead of twice. [`@sveltekit-i18n/typegen`](https://github.com/sveltekit-i18n/typegen)
+  3.1.0 also registers the keys nested by segment
+  ([`tree`](https://github.com/sveltekit-i18n/typegen#what-it-writes)), which
+  typed access reads instead of grouping them on every compile, and accepts
+  SvelteKit 3.
+  [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu) and
+  [`parser-mf2`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2) 3.1.0 take a
+  `cacheLimit` option; `parser-icu` moves to `intl-messageformat` 12, and its
+  `extractParamsFactory` reads a message with the parser that compiles it. It and
+  [`parser-i18next`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next) 3.0.4 keep
+  their `Intl` formatters, so a date that names no `timeZone` keeps the zone
+  the host had when its formatter was built.
 
 The core's notes:
 [base — Upgrading from 3.2](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-32),
@@ -2240,6 +2336,32 @@ A 3.2 config loads in 3.3 as it is. One behaviour of
 
 The core's notes:
 [base — Upgrading from 3.1](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-31).
+
+## Upgrading from 3.1
+
+A 3.1 config loads in 3.2 as it is. What changes, which 3.2 brings in with
+`@sveltekit-i18n/parser-curly` 3.2 and `@sveltekit-i18n/base` 3.1.2:
+
+- **`plural` and `ordinal` join the built-in modifiers.** They select an option
+  by the category the locale's plural rules put a number in:
+  `{{count:plural; one:item; other:items;}}` (see
+  [Message format](#message-format)). A custom modifier registered under
+  either name in [`customModifiers`](#parseroptionscustommodifiers) still
+  replaces the built-in one.
+- **[`extractParamsFactory`](#extractparamsfactory) reports a parameter a
+  plural selection reads as `'number'`**, and lists a selection's numeric keys
+  in `values`, never its categories, so a schema generated from a catalogue
+  that uses them types the count as a number.
+- **A seed stays over what a loader delivered before it.** Data added with
+  [`addTranslations()`](#addtranslationstranslations),
+  [`config.translations`](#translations) or a plain
+  [`hydrate()`](#hydrateenvelope) masks what it covers in the deliveries the
+  instance already holds, until that loader delivers again. In 3.1, a sibling
+  loader delivering again rebuilt the namespace and put the seed back under
+  the earlier delivery.
+
+The parser's notes are in
+[parser-curly's changelog](https://github.com/sveltekit-i18n/parsers/blob/master/parser-curly/CHANGELOG.md#320).
 
 ## Upgrading from 3.0
 
@@ -2302,6 +2424,8 @@ and the format's move in
 - **[@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)** – Unicode MessageFormat 2, likewise
 - **[@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)** – The i18next syntax, likewise
 - **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)** – The Svelte store surface, as an extension
+- **[@sveltekit-i18n/extension-typed-access](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)** – Keys as members of `t`, typed from the schema
+- **[@sveltekit-i18n/extension-html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)** – Markup in a message, rendered as elements and Svelte components
 - **[@sveltekit-i18n/typegen](https://github.com/sveltekit-i18n/typegen)** – Generates the `schema` type from your translations
 
 ### Examples

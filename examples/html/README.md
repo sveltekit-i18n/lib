@@ -1,7 +1,7 @@
 # HTML
 
 The markup a translation carries, rendered as elements. One extension,
-[`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/extension-html@3.0.0/extension-html),
+[`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html),
 sits in the config handed to `defineI18n()` and adds the `T` component to the
 instance `use()` and `get()` hand out: `<i18n.T key="home.lead" />` renders
 `<b>` and `<code>` where `{i18n.t('home.lead')}` would print them as text.

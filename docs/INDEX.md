@@ -9,7 +9,8 @@ Upgrading from v2? Go straight to
 [Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2) and the
 [migration table](./README.md#migrating-from-v2). From an earlier 3.x? Read
 [Upgrading from 3.3](./README.md#upgrading-from-33),
-[Upgrading from 3.2](./README.md#upgrading-from-32) and, from 3.0,
+[Upgrading from 3.2](./README.md#upgrading-from-32),
+[Upgrading from 3.1](./README.md#upgrading-from-31) and, from 3.0,
 [Upgrading from 3.0](./README.md#upgrading-from-30).
 
 ---
@@ -87,14 +88,16 @@ Perfect for: understanding internals, making architecture decisions
   [utilities](./README.md#utilities)
 - [TypeScript](./README.md#typescript) (and
   [typegen](./README.md#generating-the-schema-with-typegen)),
-  [extensions](./README.md#extensions)
+  [extensions](./README.md#extensions) – keys as members of `t`, markup in a
+  message, the pipe order
 - [SvelteKit](./README.md#sveltekit) – `sveltekit-i18n/kit`: setup, which
   locale, `data.i18n`, pitfalls
 - [SSR by hand](./README.md#server-side-rendering),
   [testing](./README.md#testing-components-that-translate)
 - [Migrating from v2](./README.md#migrating-from-v2),
   [upgrading from 3.3](./README.md#upgrading-from-33),
-  [upgrading from 3.2](./README.md#upgrading-from-32) and
+  [upgrading from 3.2](./README.md#upgrading-from-32),
+  [upgrading from 3.1](./README.md#upgrading-from-31) and
   [upgrading from 3.0](./README.md#upgrading-from-30)
 
 Perfect for: day-to-day development, looking up specific APIs
@@ -139,8 +142,9 @@ Perfect for: member-level detail, or using the core with a custom parser
   `cache: false` and `invalidate()`
 - **[TypeScript](./BEST_PRACTICES.md#typescript-patterns)** – `schema` and
   typegen, one payload type, locale completion, custom modifier props
-- **[Extensions](./BEST_PRACTICES.md#extensions)** – the pipe, and getting the
-  `$t` surface back
+- **[Extensions](./BEST_PRACTICES.md#extensions)** – the pipe, getting the
+  `$t` surface back, keys as members of `t`, markup in a message, and the
+  order they go in
 - **[Component-scoped](./BEST_PRACTICES.md#component-scoped-translations)** –
   isolated translation contexts
 - **[Library authors](./BEST_PRACTICES.md#library-authors-shipping-translations)** –
@@ -263,14 +267,20 @@ renders.
   Vite plugin that generates the `schema` type from your translations
   ([releases](https://github.com/sveltekit-i18n/typegen/releases))
 - **[Extensions](https://github.com/sveltekit-i18n/extensions)** – official
-  adapters for the `config.extensions` pipe, including
+  adapters for the `config.extensions` pipe:
   **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)**
-  (the `$t` / `$locale` / `$loading` surface)
+  (the `$t` / `$locale` / `$loading` surface),
+  **[@sveltekit-i18n/extension-typed-access](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)**
+  (keys as members of `t`) and
+  **[@sveltekit-i18n/extension-html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)**
+  (markup in a message, rendered as elements and Svelte components)
+  ([releases](https://github.com/sveltekit-i18n/extensions/releases))
 - **[Curly Message Format](https://curlymessage.dev)** – the message
   format specification
 
-`base`, `parsers` and `extensions` release first; `sveltekit-i18n` last, since
-it pins them exactly. Read a package's current version off npm.
+`base`, `parsers`, `extensions` and `typegen` release first; `sveltekit-i18n`
+last, since it pins the core and the parser exactly. Read a package's current
+version off npm.
 
 ---
 
@@ -287,6 +297,14 @@ it pins them exactly. Read a package's current version off npm.
 
 #### Get `$t` back
 → [Best Practices: Extensions](./BEST_PRACTICES.md#extensions)
+
+#### Use keys as members of `t`
+→ [API Docs: Keys as members of `t`](./README.md#keys-as-members-of-t) or
+[Best Practices: Keys as members of `t`](./BEST_PRACTICES.md#keys-as-members-of-t)
+
+#### Render markup in a message
+→ [API Docs: Markup in a message](./README.md#markup-in-a-message) or
+[Best Practices: Markup in a message](./BEST_PRACTICES.md#markup-in-a-message)
 
 #### Understand how it works
 → [Architecture Overview](./ARCHITECTURE.md)
@@ -309,6 +327,9 @@ it pins them exactly. Read a package's current version off npm.
 
 #### Upgrade an app from 3.2
 → [API Docs: Upgrading from 3.2](./README.md#upgrading-from-32)
+
+#### Upgrade an app from 3.1
+→ [API Docs: Upgrading from 3.1](./README.md#upgrading-from-31)
 
 #### Upgrade an app from 3.0
 → [API Docs: Upgrading from 3.0](./README.md#upgrading-from-30) and
@@ -373,8 +394,9 @@ it pins them exactly. Read a package's current version off npm.
 2. [Migrating from v2](./README.md#migrating-from-v2) – the old member, the new one
 3. [Upgrading from 3.3](./README.md#upgrading-from-33) – what 3.4 changes
 4. [Upgrading from 3.2](./README.md#upgrading-from-32) – what 3.3 changes
-5. [Upgrading from 3.0](./README.md#upgrading-from-30) – what 3.1 changes
-6. [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership) –
+5. [Upgrading from 3.1](./README.md#upgrading-from-31) – what 3.2 changes
+6. [Upgrading from 3.0](./README.md#upgrading-from-30) – what 3.1 changes
+7. [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership) –
    what per-request instances change
 
 ### For Advanced Users

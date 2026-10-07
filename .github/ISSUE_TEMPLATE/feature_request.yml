@@ -70,6 +70,9 @@ body:
         - "@sveltekit-i18n/parser-mf2"
         - "@sveltekit-i18n/parser-i18next"
         - "@sveltekit-i18n/extension-stores"
+        - "@sveltekit-i18n/extension-typed-access"
+        - "@sveltekit-i18n/extension-html"
+        - "@sveltekit-i18n/typegen"
         - "A new parser or extension"
         - "Not sure"
     validations:

@@ -31,7 +31,7 @@
     },
     "extensions": {
       "title": "Extensible",
-      "text": "The extensions pipe folds further surfaces onto the instance — Svelte stores, for one."
+      "text": "The extensions pipe folds further surfaces onto the instance — Svelte stores, keys as members of the t() function, or HTML markup rendered as elements and components."
     }
   }
 }

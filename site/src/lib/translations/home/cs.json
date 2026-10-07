@@ -31,7 +31,7 @@
     },
     "extensions": {
       "title": "Rozšiřitelné",
-      "text": "Pipe extensions přidává instanci další povrchy — třeba Svelte stores."
+      "text": "Pipe extensions přidává instanci další povrchy — Svelte stores, klíče jako vlastnosti funkce t() nebo HTML značky vykreslené jako elementy a komponenty."
     }
   }
 }

@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        This tracker covers the whole family — `sveltekit-i18n`, `@sveltekit-i18n/base`, the parsers and the extensions.
+        This tracker covers the whole family — `sveltekit-i18n`, `@sveltekit-i18n/base`, the parsers, the extensions and `@sveltekit-i18n/typegen`.
 
         Syntax questions about the **Curly Message Format** itself belong at [curlymessage.dev](https://curlymessage.dev), not here.
 
@@ -23,6 +23,9 @@ body:
         - "@sveltekit-i18n/parser-mf2"
         - "@sveltekit-i18n/parser-i18next"
         - "@sveltekit-i18n/extension-stores"
+        - "@sveltekit-i18n/extension-typed-access"
+        - "@sveltekit-i18n/extension-html"
+        - "@sveltekit-i18n/typegen"
         - "Not sure"
     validations:
       required: true
