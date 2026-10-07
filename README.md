@@ -25,6 +25,19 @@ SvelteKit supports from 2.53, and so Node 22.12 or newer.
 
 ## Installation
 
+In a SvelteKit 3 project that does not use sveltekit-i18n yet, the [Svelte CLI
+add-on](https://github.com/sveltekit-i18n/sv) sets it up for you. It asks for
+your locales, the message format, the routing, the extensions, typed keys and a
+demo page, then installs the packages and writes what the Quick Start below
+walks through: the translations, `src/lib/i18n`, the hooks, the layouts and
+`app.html`.
+
+```bash
+npx sv add @sveltekit-i18n
+```
+
+To install it by hand instead:
+
 ```bash
 npm install sveltekit-i18n
 # bun add sveltekit-i18n
@@ -733,6 +746,7 @@ See [Releases](https://github.com/sveltekit-i18n/lib/releases) for version histo
 - [@sveltekit-i18n/extension-typed-access](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access) – keys as members of `t`, typed from the schema
 - [@sveltekit-i18n/extension-html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html) – renders the markup a translation carries as elements and Svelte components
 - [@sveltekit-i18n/typegen](https://github.com/sveltekit-i18n/typegen) – generates the `schema` type from your translations
+- [@sveltekit-i18n/sv](https://github.com/sveltekit-i18n/sv) – the Svelte CLI add-on that sets sveltekit-i18n up in a SvelteKit project
 
 ## Sponsor
 

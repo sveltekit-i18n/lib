@@ -36,6 +36,19 @@ externalized (in Vitest: `test.server.deps.inline`).
 
 ## Installation
 
+In a SvelteKit 3 project that does not use sveltekit-i18n yet, the [Svelte CLI
+add-on](https://github.com/sveltekit-i18n/sv) sets it up for you. It asks for
+your locales, the message format, the routing, the extensions, typed keys and a
+demo page, then installs the packages and writes what [Your First Multilingual
+App](#your-first-multilingual-app) walks through: the translations,
+`src/lib/i18n`, the hooks, the layouts and `app.html`.
+
+```bash
+npx sv add @sveltekit-i18n
+```
+
+To install it by hand instead:
+
 ```bash
 npm install sveltekit-i18n
 # bun add sveltekit-i18n
