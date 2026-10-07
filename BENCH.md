@@ -1,9 +1,9 @@
 # Benchmark
 
-What `pnpm run bench` measured on `sveltekit-i18n` 3.4.0, written by the release that published it. A pull request compares its branch with its base in a comment; this file keeps the figures of each release beside its code.
+What `pnpm run bench` measured on `sveltekit-i18n` 3.4.1, written by the release that published it. A pull request compares its branch with its base in a comment; this file keeps the figures of each release beside its code.
 
 Node v24.21.0, linux x64; times and heap readings are medians of 11 processes, a time each the median of its rounds; a spread leaves out the lowest and the highest quarter of them, rounded down. Sizes include the core and the parser, and leave out `svelte`, which is the app's.
-Dependencies: @sveltekit-i18n/base 3.3.1, @sveltekit-i18n/parser-curly 3.2.1.
+Dependencies: @sveltekit-i18n/base 3.3.2, @sveltekit-i18n/parser-curly 3.2.2.
 
 ## Counts
 
@@ -48,11 +48,11 @@ Microseconds, of one machine at one time: compare them only with figures measure
 
 | Row | Median | Spread |
 | --- | ---: | --- |
-| t, a hit (10,000 keys) | 1 µs | 0.973 µs to 1.14 µs |
-| t, a hit with a placeholder (10,000 keys) | 2.34 µs | 2.32 µs to 2.37 µs |
-| new I18n, a config of 10 loaders | 29.4 µs | 28.6 µs to 30.4 µs |
-| loadConfig, a config of 10 loaders | 13.9 µs | 13.6 µs to 14.2 µs |
-| defineI18n, a config of 10 loaders | 0.587 µs | 0.573 µs to 0.63 µs |
+| t, a hit (10,000 keys) | 1.12 µs | 1.01 µs to 1.25 µs |
+| t, a hit with a placeholder (10,000 keys) | 1.86 µs | 1.85 µs to 2.12 µs |
+| new I18n, a config of 10 loaders | 23.8 µs | 23.4 µs to 24.3 µs |
+| loadConfig, a config of 10 loaders | 13.1 µs | 12.9 µs to 13.3 µs |
+| defineI18n, a config of 10 loaders | 0.731 µs | 0.625 µs to 0.751 µs |
 
 ## Heap
 
