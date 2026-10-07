@@ -400,8 +400,19 @@ A 3.3 config loads in 3.4 as it is. What to check:
 - **A `date` placeholder whose layers name no `timeZone`** keeps the zone the
   host had when its formatter was built, since the formatting modifiers now
   keep their `Intl` objects.
+- **`sveltekit-i18n/kit` takes the params a SvelteKit 3 matcher parsed**
+  (3.4.1). Up to 3.4.0, `handle` and `load` typed every param as a string, so
+  under SvelteKit 3 one matcher that parses a param made
+  `handle: Handle = handle`, `sequence(handle)` and a typed wrapper calling
+  `load` fail to compile. A member an app implements against `Kit.T` now
+  reads its event's params as `any` unless it annotates the event with
+  `Kit.ParamValue`, a param as SvelteKit 3 types it
+  ([Which locale](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#which-locale)).
+  A copy of the core inside the app root and outside its `node_modules` no
+  longer fails a SvelteKit 3 build as a server-only import.
 - **New:** `preload(locale, route?)`, `{ preloaded }` on `loadTranslations()`
-  and `setRoute()`, and `Loader.Preloaded`.
+  and `setRoute()`, and `Loader.Preloaded`; in 3.4.1, `Kit.ParamValue` and a
+  params type parameter on `Kit.Event` and the event types built on it.
 - **Companion releases.**
   [`extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
   3.0.0 is new: keys as members of `t`, `t.home.title()`.
@@ -420,7 +431,10 @@ A 3.3 config loads in 3.4 as it is. What to check:
   `extractParamsFactory` reads a message with the parser that compiles it. It and
   [`parser-i18next`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next) 3.0.4 keep
   their `Intl` formatters, so a date that names no `timeZone` keeps the zone
-  the host had when its formatter was built.
+  the host had when its formatter was built. `extension-html` 3.0.2 renders
+  every attribute but `title` without the bidi controls MF2 isolates a
+  placeholder with and `Intl` marks a number with, so a link built from one
+  keeps its URL.
 
 The core's notes:
 [base — Upgrading from 3.2](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-32),

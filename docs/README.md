@@ -1108,7 +1108,7 @@ import type { DotNotation } from 'sveltekit-i18n/utils';
 | `Schema` | core | `Schema.Registered`, `Schema.FromConfig`, `Schema.FromInstance`, `Schema.Key`, `Schema.Params`, `Schema.Payload` |
 | `Snapshot` | core | `Snapshot.Envelope` (what `snapshot({ records: true })` returns and `hydrate()` takes), `Snapshot.LoadRecord` |
 | `Translations` | core | `Translations.T`, `Translations.SerializedTranslations`, … |
-| `Kit` | core, from `sveltekit-i18n/kit` | `Kit.Options` (what `defineI18n` takes), `Kit.T` (what it returns), `Kit.Payload`, `Kit.Event`, … |
+| `Kit` | core, from `sveltekit-i18n/kit` | `Kit.Options` (what `defineI18n` takes), `Kit.T` (what it returns), `Kit.Payload`, `Kit.Event`, `Kit.ParamValue` (a route param as SvelteKit 3 types it), … |
 | `DotNotation` | core, from `sveltekit-i18n/utils` | the types [`toDotNotation`](#todotnotationinput-preservearrays) is described with |
 
 **Why `BaseConfig` and `BaseParser`.** This package publishes a `Config` of its
@@ -1863,6 +1863,13 @@ export const { handle, load, use, get } = defineI18n(config, {
 Loader `routes` then see the locale segment (`/cs/about`), since they match
 `url.pathname`.
 
+Under SvelteKit 3, a param matcher may parse a param, which then reaches
+`preferredLocale` parsed — a number, say — while the event's default type
+reads every param as a string. Annotate the event as
+`Kit.Event<Partial<Record<string, Kit.ParamValue>>>`
+(`import type { Kit } from 'sveltekit-i18n/kit'`) to see that, and return a
+string: a number is no locale, so it is skipped.
+
 ### What `data.i18n` is
 
 In `+layout.svelte`, `+page.svelte`, `page.data` and a universal `parent()`,
@@ -1887,6 +1894,11 @@ import { load as i18nLoad } from '#lib/i18n.js';
 
 export const load = async (event) => ({ ...(await i18nLoad(event)), user: event.locals.user });
 ```
+
+In TypeScript, type a wrapper with SvelteKit's `$types` (`LayoutServerLoad`,
+`LayoutLoad`). The `Kit` event types carry only what the wiring reads: no
+`locals` a server wrapper can count on, no `parent` or `fetch`, and a `data`
+that leaves the server's fields untyped.
 
 Keep the spread: the universal branch returns the server's data along with the
 instance, and a wrapper that picks fields drops the rest. A server wrapper must
@@ -2289,10 +2301,23 @@ A 3.3 config loads in 3.4 as it is. What changes, which 3.4 brings in with
   several times faster. A `date` placeholder whose layers name no `timeZone`
   goes on showing the zone the host had when its formatter was built; see
   [`modifierDefaults`](#parseroptionsmodifierdefaults).
+- **[`sveltekit-i18n/kit`](#sveltekit) takes the params a SvelteKit 3
+  matcher parsed** (3.4.1). Up to 3.4.0, `handle` and `load` typed every param
+  as a string, so under SvelteKit 3 one matcher that parses a param made
+  `handle: Handle = handle`, `sequence(handle)` and a typed wrapper calling
+  `load` fail to compile. They now take events of any params, so a member an
+  app implements against `Kit.T` reads its event's params as `any` unless it
+  annotates the event with the params SvelteKit 3 parses (for `handle`,
+  `Kit.RequestEvent<Partial<Record<string, Kit.ParamValue>>>`, since
+  `Kit.RequestEvent` alone still reads every param as a string); for
+  `preferredLocale`, see [Which locale](#which-locale). A copy of the core
+  inside the app root and outside its `node_modules` (a vendored one) no
+  longer fails a SvelteKit 3 build as a server-only import.
 - **New:** [`preload(locale, route?)`](#preloadlocale-route),
   [`{ preloaded }`](#loadtranslationslocale-route-options) on
   `loadTranslations()` and [`setRoute()`](#setrouteroute-options), and the
-  token's type, `Loader.Preloaded`.
+  token's type, `Loader.Preloaded`; in 3.4.1, `Kit.ParamValue` and a params
+  type parameter on `Kit.Event` and the event types built on it.
 - **Companion releases.**
   [`extension-typed-access`](#keys-as-members-of-t) 3.0.0 is new: keys as
   members of `t`, `t.home.title()`. [`extension-html`](#markup-in-a-message)
@@ -2311,7 +2336,10 @@ A 3.3 config loads in 3.4 as it is. What changes, which 3.4 brings in with
   `extractParamsFactory` reads a message with the parser that compiles it. It and
   [`parser-i18next`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next) 3.0.4 keep
   their `Intl` formatters, so a date that names no `timeZone` keeps the zone
-  the host had when its formatter was built.
+  the host had when its formatter was built. `extension-html` 3.0.2 renders
+  every attribute but `title` without the bidi controls MF2 isolates a
+  placeholder with and `Intl` marks a number with, so a link built from one
+  keeps its URL.
 
 The core's notes:
 [base — Upgrading from 3.2](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-32),
