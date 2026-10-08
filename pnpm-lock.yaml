@@ -534,8 +534,8 @@ packages:
   '@cacheable/utils@2.5.0':
     resolution: {integrity: sha512-buipgOVDkkPXNR5+xBpDw7Zk2n1EvU7qBJCNUcL7rhQ//kfpOXPAvQ511Os0vpLYJ1pZnvudNytkQt2hst3wqA==}
 
-  '@curly-message/parser@3.1.1':
-    resolution: {integrity: sha512-Gq3S8v9mZREWjpgXKvRpfXukbseIlM5uotcVCCCocZiw1sLfc/m6mqCpa9xlQIMIpXsDV214Q8X7Fu++iK5+zw==}
+  '@curly-message/parser@3.1.2':
+    resolution: {integrity: sha512-c10/p5apPCN36S2ydM0C00AkXPh1swssnNFPJKmMYmTn8kq2clKvSXkXiMDepBcMei10/SRHMNWso2Um2+YVJA==}
     engines: {node: '>=22'}
 
   '@emnapi/core@1.10.0':
@@ -2937,7 +2937,7 @@ snapshots:
       hashery: 1.5.1
       keyv: 5.6.0
 
-  '@curly-message/parser@3.1.1': {}
+  '@curly-message/parser@3.1.2': {}
 
   '@emnapi/core@1.10.0':
     dependencies:
@@ -3394,7 +3394,7 @@ snapshots:
 
   '@sveltekit-i18n/parser-curly@3.2.2(@sveltekit-i18n/base@3.3.2(svelte@5.57.2(@typescript-eslint/types@8.70.0)))':
     dependencies:
-      '@curly-message/parser': 3.1.1
+      '@curly-message/parser': 3.1.2
       '@sveltekit-i18n/base': 3.3.2(svelte@5.57.2(@typescript-eslint/types@8.70.0))
 
   '@sveltekit-i18n/parser-i18next@3.0.5(@sveltekit-i18n/base@3.3.2(svelte@5.57.2(@typescript-eslint/types@8.70.0)))(typescript@6.0.3)':
