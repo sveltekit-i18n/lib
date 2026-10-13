@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import i18n from '../../src';
-import { defineI18n } from '../../src/kit';
+import { defineI18n, localeDomains, translatePathnames } from '../../src/kit';
 
 import type { Config, Extension, Schema } from '../../src';
+import type { Kit } from '../../src/kit';
+
+type Equal<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? true : false;
 
 const TRANSLATIONS = { en: { greeting: 'Hi {{name}}!' }, cs: { greeting: 'Ahoj {{name}}!' } };
 
@@ -23,6 +26,37 @@ describe('config typing', () => {
 
   it('takes a report channel where the app wants one', () => {
     compiles(() => new i18n({ parserOptions: { onReport: (report) => [report.code, report.message] } }));
+  });
+
+  it('types the locales of the URL helpers and the domains by the config, through any extension', () => {
+    // A fixed return type erases the instance's locales; the wiring's stay.
+    const erase: Extension.T<unknown, { erased: true }> = () => ({ erased: true });
+
+    compiles(() => {
+      const { localizePath, localizeHref, delocalize, get } = defineI18n({ translations: TRANSLATIONS, extensions: [erase] }, {
+        pathnames: translatePathnames({ '/about': { en: '/about', cs: '/cs/o-nas' } }),
+        domains: localeDomains({ 'https://example.cz': 'cs', 'https://example.com': 'en' }),
+      });
+
+      type Locale = 'en' | 'cs' | (string & {});
+
+      const erased: true = get().erased;
+      const locale: Locale | undefined = delocalize(new URL('https://example.com/cs/o-nas')).locale;
+      const typed: [Equal<Parameters<typeof localizePath>[1], Locale | null | undefined>, Equal<Parameters<typeof localizeHref>[1], Locale | null | undefined>] = [true, true];
+
+      return [erased, locale, typed, localizePath, localizeHref];
+    });
+  });
+
+  it('takes options annotated with or without the config\'s locales', () => {
+    compiles(() => {
+      const open: Kit.Options = { domains: localeDomains({ 'https://example.cz': 'cs' }) };
+      const closed: Kit.Options<'en' | 'cs'> = { domains: localeDomains({ 'https://example.cz': 'cs' }) };
+
+      defineI18n({ translations: TRANSLATIONS }, open);
+
+      return defineI18n({ translations: TRANSLATIONS }, closed);
+    });
   });
 
   it('rejects the core parser slot, which this package fills', () => {
