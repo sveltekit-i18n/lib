@@ -24,6 +24,10 @@
       "title": "Advanced locale router",
       "text": "The default locale keeps the bare URL and the error page is yours, translated on the first hit. This site routes the same way."
     },
+    "translated-paths": {
+      "title": "Translated paths",
+      "text": "/about, /cs/o-nas, /de/ueber-uns from one route tree. reroute serves each pathname, localizePath writes the links, and a mistyped pathname redirects to its locale's own."
+    },
     "component-scoped-csr": {
       "title": "Component-scoped (CSR)",
       "text": "A component carrying its own instance and its own lexicon, loaded in the browser."

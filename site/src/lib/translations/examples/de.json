@@ -24,6 +24,10 @@
       "title": "Standardsprache ohne Präfix",
       "text": "Die Standardsprache behält die nackte URL, und die Fehlerseite ist deine eigene, schon beim ersten Aufruf übersetzt. Genauso routet diese Website."
     },
+    "translated-paths": {
+      "title": "Übersetzte Pfade",
+      "text": "/about, /cs/o-nas, /de/ueber-uns aus einem Routenbaum. reroute bedient jeden Pfad, localizePath schreibt die Links, und ein falscher Pfad leitet auf den der Sprache um."
+    },
     "component-scoped-csr": {
       "title": "Übersetzungen an der Komponente (CSR)",
       "text": "Eine Komponente mit eigener Instanz und eigenem Wortschatz, im Browser geladen."

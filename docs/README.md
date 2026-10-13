@@ -1958,7 +1958,8 @@ entry it cannot read is logged and skipped. An app that imports no
 `translatePathnames` ships none of the matcher. The redirect of a pathname
 `reroute` leaves as it is, `hreflang` alternates, prerendering every
 translated pathname and the rest of the rules are in
-[base — Translated pathnames](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#translated-pathnames).
+[base — Translated pathnames](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#translated-pathnames);
+the [translated-paths example](../examples/translated-paths) runs all of it.
 
 ### Domains
 

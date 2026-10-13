@@ -381,8 +381,9 @@ export const { handle, load, use, get, reroute, delocalize, localizePath } = def
 canonical `/about` once, `localizePath('/about', 'cs')` writes a link, and
 `delocalize(url)` reads one back. `localeDomains()`, in the `domains` option,
 adds the domains, and `localizeHref` the links between them. See
-[Translated pathnames](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#translated-pathnames)
-and [Domains](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#domains).
+[Translated pathnames](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#translated-pathnames),
+[Domains](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#domains)
+and the [translated-paths example](https://github.com/sveltekit-i18n/lib/tree/master/examples/translated-paths).
 
 ### Utilities
 
@@ -576,6 +577,7 @@ application-shaped — an adapter, a `vite.config.ts`, a route tree:
 - [Multi-page app](https://github.com/sveltekit-i18n/lib/tree/master/examples/multi-page) – the common setup: cookie and `Accept-Language`, route-scoped loading
 - [Locale-based routing](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router) – SEO-friendly URLs (e.g. `/en/about`), prerendered
 - [Default locale without a prefix](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced) – `/about` and `/cs/about`, static, translated 404
+- [Translated paths](https://github.com/sveltekit-i18n/lib/tree/master/examples/translated-paths) – `/about`, `/cs/o-nas` and `/de/ueber-uns` from one route tree
 - [Component-scoped translations](https://github.com/sveltekit-i18n/lib/tree/master/examples/component-scoped-ssr) – a component with its own lexicon
 - [Markdown routes](https://github.com/sveltekit-i18n/lib/tree/master/examples/mdsvex) – `t()` inside `.svx`
 - [Stores](https://github.com/sveltekit-i18n/lib/tree/master/examples/stores) – the `$t` store surface, through `extension-stores`
