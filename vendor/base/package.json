@@ -1,0 +1,67 @@
+{
+  "name": "@sveltekit-i18n/base",
+  "version": "3.3.2",
+  "description": "Base functionality of sveltekit-i18n library with a support for external message parsers.",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./utils": {
+      "types": "./dist/exports/utils.d.ts",
+      "svelte": "./dist/exports/utils.js",
+      "default": "./dist/exports/utils.js"
+    },
+    "./kit": {
+      "types": "./dist/exports/kit.d.ts",
+      "svelte": "./dist/exports/kit.js",
+      "default": "./dist/exports/kit.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "imports": {
+    "#kit-env": {
+      "browser": "./dist/kit/env.browser.js",
+      "default": "./dist/kit/env.js"
+    },
+    "#kit-server": {
+      "browser": "./dist/kit/backend.browser.js",
+      "default": "./dist/kit/backend.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sveltekit-i18n/base.git"
+  },
+  "keywords": [
+    "svelte",
+    "sveltekit",
+    "i18n",
+    "l10n",
+    "internationalization",
+    "localization",
+    "translation"
+  ],
+  "author": "Jarda Svoboda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sveltekit-i18n/lib/issues"
+  },
+  "homepage": "https://sveltekit-i18n.github.io",
+  "funding": "https://github.com/sponsors/sveltekit-i18n",
+  "engines": {
+    "node": ">=22",
+    "bun": ">=1.2",
+    "deno": ">=2"
+  },
+  "peerDependencies": {
+    "svelte": ">=5"
+  },
+  "svelte": "./dist/index.js"
+}
