@@ -1,0 +1,11 @@
+{
+  "badge": "Druhá routa",
+  "title": "Jedna stránka, tři cesty",
+  "lead": "SvelteKit vykreslil src/routes/about pro cestu, kterou jste otevřeli. Tabulka níže je to, co o ní stránka ví.",
+  "facts": {
+    "requested": "Požadovaná cesta",
+    "route": "Routa",
+    "canonical": "Kanonická cesta",
+    "locale": "Jazyk cesty"
+  }
+}

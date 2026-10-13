@@ -10,6 +10,7 @@ export const EXAMPLES = [
   { name: 'locale-router', group: 'routing', adapter: 'node' },
   { name: 'locale-router-static', group: 'routing', adapter: 'static' },
   { name: 'locale-router-advanced', group: 'routing', adapter: 'static' },
+  { name: 'translated-paths', group: 'routing', adapter: 'node' },
   { name: 'component-scoped-csr', group: 'component', adapter: 'node' },
   { name: 'component-scoped-ssr', group: 'component', adapter: 'node' },
   { name: 'mdsvex', group: 'content', adapter: 'static' },

@@ -1,0 +1,20 @@
+{
+  "badge": "Ein Routenbaum",
+  "title": "Jede Seite unter einem Pfad ihrer Sprache",
+  "lead": "Englisch wohnt unter /about, Tschechisch unter /cs/o-nas, Deutsch unter /de/ueber-uns — alle drei rendert src/routes/about. Der Pfad gibt die Sprache vor, ein Link genügt zum Wechseln.",
+  "products": "Produkte",
+  "cards": {
+    "reroute": {
+      "title": "reroute",
+      "text": "Der universelle Hook bedient jeden übersetzten Pfad mit der Route seines kanonischen."
+    },
+    "links": {
+      "title": "localizePath",
+      "text": "Jeder Link wird einmal kanonisch geschrieben und in die Sprache übersetzt, in die er führt."
+    },
+    "loaders": {
+      "title": "Kanonische Routen",
+      "text": "Loader nennen /about und /products/[id] einmal, nie einen Pfad pro Sprache."
+    }
+  }
+}

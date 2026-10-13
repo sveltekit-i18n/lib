@@ -1,0 +1,9 @@
+{
+  "back": "Alle Produkte",
+  "params": "Der Parameter [id] ist in jeder Sprache gleich: übersetzt wird nur der Rest des Pfads.",
+  "items": {
+    "lamp": { "name": "Schreibtischlampe", "text": "Warmes Licht für lange Abende." },
+    "chair": { "name": "Stuhl", "text": "Sitzt gut, lässt sich flach falten." },
+    "desk": { "name": "Schreibtisch", "text": "Eiche, mit Platz für zwei Bildschirme." }
+  }
+}
