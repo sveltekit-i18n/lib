@@ -24,19 +24,13 @@ const parser = (shaken: boolean) => (real: string) => [
 ].join('\n');
 
 /**
- * A bundle with each name replaced by the order it first appears in: what a
- * symbol is called depends on every symbol the bundler saw, the ones it then
- * left out included.
+ * A bundle with every word left out, names included, as the minifier picks
+ * its names by how often each character occurs in what it read, the code it
+ * then left out included. A rename can also turn a property into a shorthand (`{a:b}` into
+ * `{a}`) or a specifier into a bare name (`a as b` into `b`), so the longer
+ * form reads as the shorter one.
  */
-const canonical = (text: string) => {
-  const names = new Map<string, string>();
-
-  return text.replace(/[A-Za-z_$][\w$]*/g, (name) => {
-    if (!names.has(name)) names.set(name, `$${names.size}`);
-
-    return names.get(name) ?? name;
-  });
-};
+const structure = (text: string) => text.replace(/[A-Za-z_$][\w$]*/g, '$').replace(/\$:\$|\$ \$ \$/g, '$');
 
 for (const [name, contents] of ENTRIES) {
   sizes(`browser bundle of ${name}`, await bundle({ tree: TREE, contents, generate: 'client', shipped: true }));
@@ -45,7 +39,7 @@ for (const [name, contents] of ENTRIES) {
   // which no render reaches, so a bundle of what an app renders with must ship
   // nothing of them: it comes out as it does with both left out, but for the
   // names the bundler picks.
-  const [kept, shaken] = await Promise.all([false, true].map(async (leftOut) => canonical(await bundle({ tree: TREE, contents, generate: 'client', shipped: true, parser: parser(leftOut) }))));
+  const [kept, shaken] = await Promise.all([false, true].map(async (leftOut) => structure(await bundle({ tree: TREE, contents, generate: 'client', shipped: true, parser: parser(leftOut) }))));
 
   if (kept !== shaken) throw new Error(`A bundle of ${name} ships part of cst or extractParamsFactory.`);
 }
