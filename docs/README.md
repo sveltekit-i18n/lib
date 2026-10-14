@@ -2507,6 +2507,7 @@ and the format's move in
 - **[@sveltekit-i18n/extension-html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)** – Markup in a message, rendered as elements and Svelte components
 - **[@sveltekit-i18n/extension-markdown](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)** – Markdown in a message, rendered as elements and Svelte components
 - **[@sveltekit-i18n/typegen](https://github.com/sveltekit-i18n/typegen)** – Generates the `schema` type from your translations
+- **[@sveltekit-i18n/sv](https://github.com/sveltekit-i18n/sv)** – The Svelte CLI add-on that sets sveltekit-i18n up in a SvelteKit project
 
 ### Examples
 
