@@ -1154,25 +1154,28 @@ On a static host configured with `fallback` (`adapter-static`), the file the ser
 **Symptoms:**
 - A placeholder renders its fallback, or an empty string, and nothing is logged
 - A modifier name you misspelled behaves as if the modifier simply did nothing
-- `config.log` is at `debug` and still says nothing about the message
 
 **Cause:**
 
-Parser diagnostics are a separate channel from the core's logger, and they are **silent by default**: `parserOptions.onReport` defaults to `null`. A report never raises — the placeholder takes its fallback and the rest of the message resolves — so a silent channel means a silent failure.
+Parser diagnostics go to the logger `config.log` configures, at `warn`. A `level` of `'error'` drops them, `parserOptions.onReport: null` discards them, and a custom `logger` without a `warn` method skips them. A report never raises — the placeholder takes its fallback and the rest of the message resolves — so a silent channel means a silent failure.
 
 **Solution:**
 
+Let `warn` through, or send reports to a channel of their own:
+
 ```javascript
 const config = {
+  log: { level: 'warn' },
+  // or
   parserOptions: {
-    onReport: (report) => console.warn(report.message, report),
+    onReport: (report) => tracker.warn(report.message, report),
   },
 };
 ```
 
 A `Report` carries a `code` (`unknown-modifier`, `failed-modifier`, `missing-options`, `unserializable-value`, `missing-locale`, `output-limit`, `read-limit`, `nesting-limit`), an `origin` saying who fixes it (`message`, `payload` or `limit`), a self-contained English `message`, the `id` of the message — the translation key the core passed — and a `text` excerpt of the placeholder. See [`parserOptions.onReport`](./README.md#parseroptionsonreport).
 
-Common findings once the channel is open:
+Common findings:
 
 - `unknown-modifier` — a modifier name nobody registered. It is never run as `eq`.
 - `failed-modifier` — the value cannot be read the way the modifier needs it (text under `number`, a `Date` object under `number` or `ago`, a `currency` placeholder with no currency code).
@@ -1517,9 +1520,9 @@ const config = {
 };
 ```
 
-This is the **core's** channel: loads, skipped loaders, collisions, locale problems. Parser diagnostics are separate — see [Parser Complaints Go Nowhere](#parser-complaints-go-nowhere).
+This shows the **core's** loads, skipped loaders, collisions and locale problems. The parser's reports come at `warn`, so any level but `'error'` shows them — see [Parser Complaints Go Nowhere](#parser-complaints-go-nowhere).
 
-### 4. Open the parser's report channel
+### 4. Send parser reports to a channel of their own
 
 ```javascript
 const config = {

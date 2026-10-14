@@ -953,7 +953,7 @@ package's parser surface), plus everything the core publishes — `Extension`,
 
 From `sveltekit-i18n/kit`: `defineI18n` and the `Kit` types.
 
-From `sveltekit-i18n/utils`: `matchLocale`, `resolveLoaders`,
+From `sveltekit-i18n/utils`: `loggerFactory`, `matchLocale`, `resolveLoaders`,
 `sanitizeLocales`, `textDirection`, `toDotNotation` and the `DotNotation` type.
 
 The instance is typed by the config it was constructed from, or, when that
@@ -1719,11 +1719,11 @@ not want as no-ops when you type the object.
 
 ### Parser reports
 
-Reports (`unknown-modifier`, `failed-modifier`, `missing-options`, …) are
-**silent by default**: nothing is written anywhere unless you pass a channel.
-They never raise — the placeholder takes its fallback and the rest of the
-message renders — which makes them exactly the kind of defect that survives to
-production unnoticed.
+Reports (`unknown-modifier`, `failed-modifier`, `missing-options`, …) go to
+the logger `config.log` configures, at `warn`, one line each. They never raise —
+the placeholder takes its fallback and the rest of the message renders — which
+makes them exactly the kind of defect that survives to production unnoticed in
+a log nobody reads. Send them where you look:
 
 ```javascript
 export const config = {

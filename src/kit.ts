@@ -27,5 +27,5 @@ export const defineI18n = <const C extends Config<P, M>, P = Parser.PayloadDefau
   options?: Kit.Options<LocaleOf<C>>,
 ): Kit.T<Piped<C, P, M>, LocaleOf<C>> => defineCore({
   ...withParser(config),
-  extensions: [withCurlyParser, ...(config.extensions ?? [])],
+  extensions: [withCurlyParser(config.log), ...(config.extensions ?? [])],
 }, options) as unknown as Kit.T<Piped<C, P, M>, LocaleOf<C>>;
