@@ -1642,8 +1642,9 @@ Official extensions live in the
 [extensions](https://github.com/sveltekit-i18n/extensions) repository, each
 installed on its own:
 [`extension-stores`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)
-(the `$t` form above), [`extension-typed-access`](#keys-as-members-of-t) and
-[`extension-html`](#markup-in-a-message).
+(the `$t` form above), [`extension-typed-access`](#keys-as-members-of-t),
+[`extension-html`](#markup-in-a-message) and
+[`extension-markdown`](#markdown-in-a-message).
 
 ### Keys as members of `t`
 
@@ -1703,13 +1704,50 @@ reports. The component map, the allowed attributes and the parsers that pass
 markup through — `parser-curly` among them — are in
 [its README](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html#readme).
 
+### Markdown in a message
+
+[`@sveltekit-i18n/extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+adds the same `T` component for the Markdown a message carries — CommonMark's
+inline syntax: emphasis, code spans, links, images and hard line breaks —
+rendered as elements and Svelte components from a closed set of nodes, with
+the payload inert, without `{@html}`:
+
+```javascript
+import { defineI18n } from 'sveltekit-i18n/kit';
+import markdown from '@sveltekit-i18n/extension-markdown';
+
+export const { handle, load, use, get } = defineI18n({
+  ...config,
+  extensions: [markdown({ onReport: console.warn })],
+});
+```
+
+```json
+{ "intro": "Hi **{{name}}**, read [the docs](/docs)." }
+```
+
+```svelte
+<i18n.T key="intro" params={{ name }} />
+```
+
+`t()` still returns the message with its Markdown as text. Block syntax and
+raw HTML are text too, and `image` and `paragraph` render only where the
+`components` option or a usage maps them
+(`components={{ paragraph: 'p' }}`). An instance takes `extension-html` or
+`extension-markdown`, not both: each renders a whole message, and the second
+throws at construction (`extension-html` checks from 3.0.3). With
+`parser-curly`, whose escape takes a backslash before whitespace, a backslash
+break is written `line\\` (`line\\\\` in a JSON catalogue). The component
+map and what each parser asks of a message are in
+[its README](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown#readme).
+
 ### Pipe order
 
 `extension-stores` returns no instance, so it goes last: `[typedAccess, stores]`
 hands out `$t.home.title()`, and `[html({ onReport: null }), stores]` puts `T`
 at `instance.T`. Put the other way round, either throws at construction.
 `extension-html` goes after `extension-typed-access`, and adds `T` beside the
-member keys.
+member keys; so does `extension-markdown`, in its place.
 
 ## SvelteKit
 
@@ -2467,6 +2505,7 @@ and the format's move in
 - **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)** – The Svelte store surface, as an extension
 - **[@sveltekit-i18n/extension-typed-access](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)** – Keys as members of `t`, typed from the schema
 - **[@sveltekit-i18n/extension-html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)** – Markup in a message, rendered as elements and Svelte components
+- **[@sveltekit-i18n/extension-markdown](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)** – Markdown in a message, rendered as elements and Svelte components
 - **[@sveltekit-i18n/typegen](https://github.com/sveltekit-i18n/typegen)** – Generates the `schema` type from your translations
 
 ### Examples

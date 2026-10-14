@@ -25,6 +25,7 @@ body:
         - "@sveltekit-i18n/extension-stores"
         - "@sveltekit-i18n/extension-typed-access"
         - "@sveltekit-i18n/extension-html"
+        - "@sveltekit-i18n/extension-markdown"
         - "@sveltekit-i18n/typegen"
         - "Not sure"
     validations:

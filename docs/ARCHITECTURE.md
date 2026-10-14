@@ -199,6 +199,8 @@ sveltekit-i18n
 @sveltekit-i18n/extension-typed-access  (no runtime dependencies; peers: base, svelte)
 @sveltekit-i18n/extension-html          (peers: base, svelte)
 └── parse5
+@sveltekit-i18n/extension-markdown      (peers: base, svelte)
+└── character-entities
 
 @sveltekit-i18n/typegen           (build time; peer: vite; optional: base or sveltekit-i18n, @sveltejs/kit)
 ```
@@ -250,7 +252,9 @@ knowing about them. The other official extensions work the same way:
 [`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
 reads keys as members of `t`, and
 [`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
-adds a `T` component that renders the markup a message carries.
+and [`@sveltekit-i18n/extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+each add a `T` component that renders the markup or the Markdown a message
+carries.
 
 ### The rune modules ship uncompiled
 
@@ -770,9 +774,14 @@ app has:
 - [`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
   – when a message carries markup to render as elements; with `parser-icu`,
   pass its `ignoreTag: true`
+- [`@sveltekit-i18n/extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+  – when a message carries Markdown to render as elements, in place of
+  `extension-html`; with `parser-icu`, pass its `ignoreTag: true` for an
+  autolink
 
-`extension-stores` returns no instance, so it goes after the other two in
-`config.extensions` (see [the pipe order](./README.md#pipe-order)).
+`extension-stores` returns no instance, so it goes after the others in
+`config.extensions`, and an instance takes `extension-html` or
+`extension-markdown`, not both (see [the pipe order](./README.md#pipe-order)).
 
 ## Performance Considerations
 
@@ -799,9 +808,11 @@ dependency is the format's reference implementation. Everything is ESM, and
 this package and the parsers declare `sideEffects: false`, so what an app does
 not import from them is dropped, and the parser's build-time surface never
 reaches the browser (see [The parser contract](#the-parser-contract)).
-`extension-html` adds the one runtime dependency of the extensions, `parse5`,
-to the client bundle; its README gives the
-[size](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html#size).
+Two extensions add a runtime dependency to the client bundle:
+`extension-html` adds `parse5`, and `extension-markdown` adds
+`character-entities`; their READMEs give the sizes
+([html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html#size),
+[markdown](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown#size)).
 
 ## See Also
 
@@ -812,4 +823,4 @@ to the client bundle; its README gives the
 - [base documentation](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md) – the core, member by member
 - [typegen](https://github.com/sveltekit-i18n/typegen) – generates the `schema` type
 - [parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly) – the message format
-- [extensions](https://github.com/sveltekit-i18n/extensions) – official extensions: the store adapter, typed member access and markup rendering
+- [extensions](https://github.com/sveltekit-i18n/extensions) – official extensions: the store adapter, typed member access, and markup and Markdown rendering
