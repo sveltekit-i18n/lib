@@ -28,6 +28,10 @@
       "title": "Translated paths",
       "text": "/about, /cs/o-nas, /de/ueber-uns from one route tree. reroute serves each pathname, localizePath writes the links, and a mistyped pathname redirects to its locale's own."
     },
+    "locale-domains": {
+      "title": "Locale domains",
+      "text": "example.com in English and German, example.cz in Czech, from one app. localizeHref names the other domain only where a link leaves this one, and a pathname of another host's locale redirects there."
+    },
     "component-scoped-csr": {
       "title": "Component-scoped (CSR)",
       "text": "A component carrying its own instance and its own lexicon, loaded in the browser."

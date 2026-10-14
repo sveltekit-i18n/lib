@@ -1996,7 +1996,9 @@ link to another host is a full page load, so switch the locale there by a
 link, never by `goto()` or `setLocale()`. The redirect of a locale to its
 host, `hreflang` alternates, prerendering, caching and trying the domains in
 development are in
-[base — Domains](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#domains).
+[base — Domains](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#domains);
+the [locale-domains example](../examples/locale-domains) runs the redirect,
+the alternates and the development hosts.
 
 ### What `data.i18n` is
 

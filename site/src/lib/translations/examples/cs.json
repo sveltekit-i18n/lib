@@ -28,6 +28,10 @@
       "title": "Přeložené cesty",
       "text": "/about, /cs/o-nas, /de/ueber-uns z jednoho stromu rout. reroute obslouží každou cestu, localizePath píše odkazy a překlep v cestě přesměruje na tu správnou pro daný jazyk."
     },
+    "locale-domains": {
+      "title": "Jazykové domény",
+      "text": "example.com anglicky a německy, example.cz česky, z jedné aplikace. localizeHref jmenuje druhou doménu jen tam, kde z této odkaz odchází, a cesta jazyka jiného hostu na něj přesměruje."
+    },
     "component-scoped-csr": {
       "title": "Překlady u komponenty (CSR)",
       "text": "Komponenta s vlastní instancí a vlastní slovní zásobou, načtenou v prohlížeči."

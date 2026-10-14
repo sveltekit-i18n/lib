@@ -11,6 +11,9 @@ export const EXAMPLES = [
   { name: 'locale-router-static', group: 'routing', adapter: 'static' },
   { name: 'locale-router-advanced', group: 'routing', adapter: 'static' },
   { name: 'translated-paths', group: 'routing', adapter: 'node' },
+  // A dev server inside a browser tab answers at a single host, which the
+  // example's map does not list.
+  { name: 'locale-domains', group: 'routing', adapter: 'node', run: false },
   { name: 'component-scoped-csr', group: 'component', adapter: 'node' },
   { name: 'component-scoped-ssr', group: 'component', adapter: 'node' },
   { name: 'mdsvex', group: 'content', adapter: 'static' },
