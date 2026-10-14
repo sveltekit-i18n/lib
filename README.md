@@ -406,6 +406,20 @@ did until its options state `pathnames` or `domains`. New:
 - **The URL helpers complete the config's locales**, whatever its extensions
   make of the instance: `Kit.T` and `Kit.Options` take the locale as a type
   parameter.
+- **Companion releases.**
+  [`extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+  3.0 is new: a `T` component that renders the Markdown a message carries —
+  `**strong**`, `[links](/docs)`, `` `code` `` — as elements and Svelte
+  components, without `{@html}`. An instance takes it or `extension-html`,
+  not both.
+  [`extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
+  3.0.3 throws at construction where another extension added the instance's
+  `T`, renders a tag a layer unmaps with `null` without reporting it, reads an
+  `undefined` entry of the component map as none, so a lower layer's entry
+  applies, and checks a URL's scheme in linear time.
+  [`parser-fluent`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-fluent)
+  3.0 is new: [Fluent](https://projectfluent.org), Mozilla's localization
+  system, for an app built on `@sveltekit-i18n/base`.
 
 ## Upgrading from 3.3
 
