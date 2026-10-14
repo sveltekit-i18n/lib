@@ -1,0 +1,29 @@
+{
+  "badge": "@sveltekit-i18n/extension-markdown",
+  "title": "Markdown in einer Nachricht",
+  "lead": "Eine Übersetzung darf **Markdown** enthalten, und `<i18n.T>` rendert es als Elemente, die Svelte aus einer geschlossenen Menge von Knoten erzeugt, ganz ohne `@html`.",
+  "payload": {
+    "title": "Ein Payload ist Text",
+    "label": "Dein Name",
+    "text": "Hallo **{{name}}**, willkommen zurück.",
+    "note": "Was du eingibst, bringt kein Markdown mit: ein `*` oder eine `[` darin wird als einfaches Zeichen gerendert, innerhalb der fetten Hervorhebung, die die Nachricht selbst trägt."
+  },
+  "component": {
+    "title": "Ein Link als Komponente",
+    "text": "Der Rest steht in der [Dokumentation](https://sveltekit-i18n.github.io/docs \"sveltekit-i18n\").",
+    "note": "Diese Verwendung bildet den `link` der Nachricht auf eine Komponente der App ab, die `href` und `title` des Links als Props und seinen Text als Children erhält."
+  },
+  "blocks": {
+    "title": "Absätze, wo sie passen",
+    "text": "Eine Leerzeile teilt eine Nachricht in Absätze, und ein Backslash vor einem Zeilenende bricht die Zeile um:\\\\\nso wie hier.\n\nAbsätze sind standardmäßig aus, da eine Nachricht oft in einem `p` oder einem `button` steht, die keinen Absatz aufnehmen können. Hier bildet diese Verwendung sie ab, da sie in einem `div` steht."
+  },
+  "blocked": {
+    "title": "Was Text bleibt",
+    "text": "Dieser [Link](javascript:alert(1)) hat keine Adresse, ![ein Bild](/favicon.png) zeigt nur seine Beschreibung, und <b>rohes HTML</b> bleibt so stehen, wie es geschrieben ist.",
+    "note": "Die blockierte Adresse und das nicht abgebildete Bild werden über onReport gemeldet: im Log des Servers und in der Konsole des Browsers."
+  },
+  "string": {
+    "title": "t() bleibt Text",
+    "text": "t() gibt dieselbe Nachricht mit ihrem Markdown als Text zurück, was ein Titel oder ein Attribut braucht:"
+  }
+}

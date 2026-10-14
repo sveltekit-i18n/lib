@@ -47,6 +47,10 @@
     "html": {
       "title": "HTML",
       "text": "Markup in a message rendered as elements: extension-html's T component, a payload rendered as text, a tag mapped to a component, and what never renders."
+    },
+    "markdown": {
+      "title": "Markdown",
+      "text": "Markdown in a message rendered as elements: extension-markdown's T component, a payload rendered as text, a link mapped to a component, paragraphs per usage, and what stays text."
     }
   },
   "group": {
