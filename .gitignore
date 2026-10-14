@@ -36,6 +36,8 @@ node_modules/
 # Maven
 target/
 dist/
+# Branch-only: the vendored extension-markdown ships its build. Removed before merge.
+!vendor/extension-markdown/dist/
 
 # JetBrains IDE
 .idea/

@@ -1,6 +1,8 @@
 packages:
   - 'examples/*'
   - 'site'
+  # Branch-only: extension-markdown master, packed, until it is released. Removed before merge.
+  - 'vendor/extension-markdown'
 
 # The examples pin the published version so a copied-out directory installs on
 # its own; inside the repository that range resolves to the workspace package.
