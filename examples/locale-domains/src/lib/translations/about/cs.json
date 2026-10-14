@@ -1,0 +1,12 @@
+{
+  "badge": "Druhá routa",
+  "title": "Jedna stránka, dvě domény",
+  "lead": "SvelteKit vykreslil src/routes/about pro host a cestu, které jste otevřeli. Tabulka níže je to, co stránka vyčte ze své URL.",
+  "facts": {
+    "host": "Host",
+    "requested": "Požadovaná cesta",
+    "canonical": "Kanonická cesta",
+    "locale": "Jazyk cesty",
+    "domain": "První jazyk hostu"
+  }
+}

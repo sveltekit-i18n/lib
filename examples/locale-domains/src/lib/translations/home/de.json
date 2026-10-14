@@ -1,0 +1,19 @@
+{
+  "badge": "Eine App, zwei Domains",
+  "title": "Jede Sprache unter einer eigenen Domain",
+  "lead": "example.com bedient Englisch und Deutsch, example.cz Tschechisch — aus einer App und einem Routenbaum. Host und Pfad geben die Sprache vor, ein Link auf die andere Domain genügt zum Wechseln.",
+  "cards": {
+    "domains": {
+      "title": "localeDomains",
+      "text": "Ein Host, den die Tabelle nennt, rendert nur seine eigenen Sprachen, was auch immer der Header des Besuchers verlangt."
+    },
+    "links": {
+      "title": "localizeHref",
+      "text": "Ein Link nennt die andere Domain nur, wo er diese verlässt, und bleibt auf demselben Host eine Navigation im Client."
+    },
+    "redirect": {
+      "title": "Ein Host pro Seite",
+      "text": "Ein Pfad der Sprache eines anderen Hosts wird mit 308 dorthin geschickt: example.com/o-nas landet auf example.cz/o-nas."
+    }
+  }
+}

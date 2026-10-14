@@ -1,0 +1,12 @@
+{
+  "example.name": "Jazykové domény",
+  "nav.home": "Domů",
+  "nav.about": "O nás",
+  "nav.language": "Jazyk",
+  "footer.source": "Zdrojový kód příkladu",
+  "footer.docs": "Dokumentace",
+  "error.title": "Něco se pokazilo",
+  "error.404": "Tato stránka neexistuje.",
+  "error.default": "Došlo k neočekávané chybě.",
+  "error.home": "Zpět na úvodní stránku"
+}

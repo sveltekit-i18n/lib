@@ -335,7 +335,8 @@ current version off npm.
 [translated-paths example](../examples/translated-paths)
 
 #### Serve a locale at a domain of its own
-→ [API Docs: Domains](./README.md#domains)
+→ [API Docs: Domains](./README.md#domains) and the
+[locale-domains example](../examples/locale-domains)
 
 #### Upgrade an app from 3.4
 → [API Docs: Upgrading from 3.4](./README.md#upgrading-from-34)

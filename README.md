@@ -578,6 +578,7 @@ application-shaped — an adapter, a `vite.config.ts`, a route tree:
 - [Locale-based routing](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router) – SEO-friendly URLs (e.g. `/en/about`), prerendered
 - [Default locale without a prefix](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced) – `/about` and `/cs/about`, static, translated 404
 - [Translated paths](https://github.com/sveltekit-i18n/lib/tree/master/examples/translated-paths) – `/about`, `/cs/o-nas` and `/de/ueber-uns` from one route tree
+- [Locale domains](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-domains) – `example.com` in English and German, `example.cz` in Czech, from one app
 - [Component-scoped translations](https://github.com/sveltekit-i18n/lib/tree/master/examples/component-scoped-ssr) – a component with its own lexicon
 - [Markdown routes](https://github.com/sveltekit-i18n/lib/tree/master/examples/mdsvex) – `t()` inside `.svx`
 - [Stores](https://github.com/sveltekit-i18n/lib/tree/master/examples/stores) – the `$t` store surface, through `extension-stores`
