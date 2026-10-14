@@ -88,8 +88,8 @@ Perfect for: understanding internals, making architecture decisions
   [utilities](./README.md#utilities)
 - [TypeScript](./README.md#typescript) (and
   [typegen](./README.md#generating-the-schema-with-typegen)),
-  [extensions](./README.md#extensions) – keys as members of `t`, markup in a
-  message, the pipe order
+  [extensions](./README.md#extensions) – keys as members of `t`, markup and
+  Markdown in a message, the pipe order
 - [SvelteKit](./README.md#sveltekit) – `sveltekit-i18n/kit`: setup, which
   locale, `data.i18n`, pitfalls
 - [SSR by hand](./README.md#server-side-rendering),
@@ -143,8 +143,8 @@ Perfect for: member-level detail, or using the core with a custom parser
 - **[TypeScript](./BEST_PRACTICES.md#typescript-patterns)** – `schema` and
   typegen, one payload type, locale completion, custom modifier props
 - **[Extensions](./BEST_PRACTICES.md#extensions)** – the pipe, getting the
-  `$t` surface back, keys as members of `t`, markup in a message, and the
-  order they go in
+  `$t` surface back, keys as members of `t`, markup and Markdown in a message,
+  and the order they go in
 - **[Component-scoped](./BEST_PRACTICES.md#component-scoped-translations)** –
   isolated translation contexts
 - **[Library authors](./BEST_PRACTICES.md#library-authors-shipping-translations)** –
@@ -242,8 +242,8 @@ prefix, static adapter, default locale unprefixed), per-request negotiation
 from a cookie and `Accept-Language`, component-scoped translations rendered on
 the client, and on the server handed over through `snapshot()` and `hydrate()`,
 `t()` inside Markdown routes, the `$t` store surface of `extension-stores`,
-the member keys of `extension-typed-access`, and the markup `extension-html`
-renders.
+the member keys of `extension-typed-access`, the markup `extension-html`
+renders, and the Markdown `extension-markdown` renders.
 
 ---
 
@@ -275,9 +275,11 @@ renders.
   **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)**
   (the `$t` / `$locale` / `$loading` surface),
   **[@sveltekit-i18n/extension-typed-access](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)**
-  (keys as members of `t`) and
+  (keys as members of `t`),
   **[@sveltekit-i18n/extension-html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)**
-  (markup in a message, rendered as elements and Svelte components)
+  (markup in a message, rendered as elements and Svelte components) and
+  **[@sveltekit-i18n/extension-markdown](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)**
+  (Markdown in a message, rendered the same way)
   ([releases](https://github.com/sveltekit-i18n/extensions/releases))
 - **[Curly Message Format](https://curlymessage.dev)** – the message
   format specification
@@ -310,6 +312,10 @@ current version off npm.
 #### Render markup in a message
 → [API Docs: Markup in a message](./README.md#markup-in-a-message) or
 [Best Practices: Markup in a message](./BEST_PRACTICES.md#markup-in-a-message)
+
+#### Render Markdown in a message
+→ [API Docs: Markdown in a message](./README.md#markdown-in-a-message) or
+[Best Practices: Markdown in a message](./BEST_PRACTICES.md#markdown-in-a-message)
 
 #### Understand how it works
 → [Architecture Overview](./ARCHITECTURE.md)

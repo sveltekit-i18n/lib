@@ -31,7 +31,7 @@
     },
     "extensions": {
       "title": "Erweiterbar",
-      "text": "Die extensions-Pipe legt weitere Oberflächen auf die Instanz — Svelte-Stores, Schlüssel als Eigenschaften der Funktion t() oder HTML-Markup, das als Elemente und Komponenten gerendert wird."
+      "text": "Die extensions-Pipe legt weitere Oberflächen auf die Instanz — Svelte-Stores, Schlüssel als Eigenschaften der Funktion t() oder HTML-Markup und Markdown, die als Elemente und Komponenten gerendert werden."
     }
   }
 }

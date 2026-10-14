@@ -1,0 +1,53 @@
+{
+  "name": "@sveltekit-i18n/extension-markdown",
+  "version": "3.0.0-next.0",
+  "description": "Renders Markdown in translated messages as Svelte components, for @sveltekit-i18n/base.",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "svelte": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sveltekit-i18n/extensions.git",
+    "directory": "extension-markdown"
+  },
+  "keywords": [
+    "svelte",
+    "sveltekit",
+    "i18n",
+    "l10n",
+    "internationalization",
+    "localization",
+    "translation",
+    "markdown",
+    "rich-text"
+  ],
+  "author": "Jarda Svoboda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sveltekit-i18n/lib/issues"
+  },
+  "homepage": "https://sveltekit-i18n.github.io",
+  "funding": "https://github.com/sponsors/sveltekit-i18n",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "character-entities": "^2.0.2"
+  },
+  "peerDependencies": {
+    "@sveltekit-i18n/base": "^3.0.0 || ^3.1.0-next.0",
+    "svelte": ">=5"
+  },
+  "svelte": "./dist/index.js"
+}

@@ -47,6 +47,10 @@
     "html": {
       "title": "HTML",
       "text": "Markup ve zprávě vykreslený jako elementy: komponenta T z extension-html, payload vykreslený jako text, tag namapovaný na komponentu a co se nikdy nevykreslí."
+    },
+    "markdown": {
+      "title": "Markdown",
+      "text": "Markdown ve zprávě vykreslený jako elementy: komponenta T z extension-markdown, payload vykreslený jako text, odkaz namapovaný na komponentu, odstavce pro jedno použití a co zůstane textem."
     }
   },
   "group": {

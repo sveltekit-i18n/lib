@@ -47,6 +47,10 @@
     "html": {
       "title": "HTML",
       "text": "Markup in einer Nachricht als Elemente: die T-Komponente von extension-html, ein Payload als Text, ein Tag als Komponente und was nie gerendert wird."
+    },
+    "markdown": {
+      "title": "Markdown",
+      "text": "Markdown in einer Nachricht als Elemente: die T-Komponente von extension-markdown, ein Payload als Text, ein Link als Komponente, Absätze pro Verwendung und was Text bleibt."
     }
   },
   "group": {

@@ -829,8 +829,9 @@ cases — the same property that makes per-request instances right on the server
   [`@sveltekit-i18n/extension-typed-access`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)
   reads keys as members of `t`, and
   [`@sveltekit-i18n/extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
-  renders the markup a message carries as elements, without `{@html}` (see
-  [Extensions](./README.md#extensions)).
+  and [`@sveltekit-i18n/extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+  render the markup or the Markdown a message carries as elements, without
+  `{@html}` (see [Extensions](./README.md#extensions)).
 - **A different message format** – this package fills the parser slot itself, so
   another format means building on
   [`@sveltekit-i18n/base`](https://github.com/sveltekit-i18n/base) directly.

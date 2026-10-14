@@ -55,7 +55,8 @@ lists them, along with what the tree costs the checker on a large schema.
 
 `[typedAccess, stores]` hands out `$t.home.title()`; the other way round it
 throws at construction, since the output of `stores` is no instance.
-`[typedAccess, html(…)]` adds `T` beside the tree.
+`[typedAccess, html(…)]` or `[typedAccess, markdown(…)]` adds `T` beside the
+tree.
 
 ## Run it
 
