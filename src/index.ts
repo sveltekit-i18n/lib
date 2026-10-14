@@ -30,7 +30,7 @@ class I18nCurlyParser {
   constructor(config?: Config<any, any>) {
     return new Base({
       ...withParser(config),
-      extensions: [withCurlyParser, ...(config?.extensions ?? [])],
+      extensions: [withCurlyParser(config?.log), ...(config?.extensions ?? [])],
     });
   }
 }

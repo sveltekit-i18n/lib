@@ -145,7 +145,7 @@ renders nothing until [`loadConfig()`](#loadconfigconfig) gives it one.
 
 | Slot | Type | Default | What it does |
 | --- | --- | --- | --- |
-| [`parserOptions`](#parser-options) | `Parser.Options`, with `onReport` optional | `{ onReport: null }` | options for the bundled curly parser |
+| [`parserOptions`](#parser-options) | `Parser.Options`, with `onReport` optional | reports to the [`log`](#log) logger | options for the bundled curly parser |
 | `loaders` | `readonly Loader.LoaderModule[]` | – | how and when translations are fetched |
 | `translations` | `Translations.T` | – | locale-indexed seed data, present before any loader runs |
 | `basePath` | `string` | – | SvelteKit's `paths.base`, stripped from every route handed in |
@@ -360,8 +360,10 @@ Every level method takes the prefixed message; where a thrown value caused the
 report, it follows as a second argument, raw. A custom logger may omit levels
 it does not care about — a missing method is skipped, never called.
 
-This channel carries the **core's** diagnostics. Parser diagnostics are
-separate and silent by default — see [`parserOptions.onReport`](#parseroptionsonreport).
+The core keeps one logger for all its instances, built from the last `log` one
+of them was configured with. The parser's reports go, by default, to a logger
+built from the instance's own `log`, at `warn` — see
+[`parserOptions.onReport`](#parseroptionsonreport).
 
 ### `schema`
 
@@ -391,7 +393,6 @@ const config = {
   parserOptions: {
     modifierDefaults: { number: { maximumFractionDigits: 2 } },
     customModifiers: { upper: ({ value }) => value.toUpperCase() },
-    onReport: (report) => console.warn(report.message, report),
     recognizeWrappers: true,
     onSuspectValue: null,
   },
@@ -536,18 +537,29 @@ i18n.t('score', { value: -10 })
 
 **Type:** `((report: Report) => void) | null`
 
-**Default:** `null`
+**Default:** the logger [`log`](#log) configures, at `warn`
 
 Where parser diagnostics go. The format prescribes no diagnostics channel and
 neither does the parser package, which requires the key to be stated — `null`
 included — so that silence is a decision rather than an omission. **This package
-states it**, so `onReport` is optional here and reports are silent until an
-application passes a channel:
+states it**, so `onReport` is optional here: each report goes, as one line, to
+a logger [`loggerFactory()`](#loggerfactoryoptions) builds from the instance's
+[`log`](#log), at `warn` —
+
+```text
+[i18n]: A placeholder named a modifier this parser does not know. (unknown-modifier in "home.title": {{name:upper;}})
+```
+
+— so a `level` of `'error'` drops them, and a `log` a
+[`loadConfig()`](#loadconfigconfig) leaves out keeps the one before it. A call
+reports each time it meets the problem, so a broken placeholder on a page logs
+on every render of it. A
+channel of your own routes them elsewhere, and `null` discards them:
 
 ```javascript
 const config = {
   parserOptions: {
-    onReport: (report) => logger.warn(report.message, report),
+    onReport: (report) => tracker.warn(report.message, report),
   },
 };
 ```
@@ -1112,7 +1124,7 @@ import type { DotNotation } from 'sveltekit-i18n/utils';
 | `BaseParser` | core, renamed | the core's `Parser` namespace — the parser **contract**: `Parser.T`, `Parser.Parse`, `Parser.ExtractParams`, `Parser.ParamSpec`, … |
 | `Extension` | core | `Extension.T`, `Extension.Operator`, `Extension.Generic`, `Extension.Piped` |
 | `Loader` | core | `Loader.LoaderModule`, `Loader.Route`, `Loader.Props`, `Loader.Params`, `Loader.Resolved`, `Loader.Preloaded` (what [`preload()`](#preloadlocale-route) resolves to), … |
-| `Logger` | core | `Logger.T`, `Logger.Level` |
+| `Logger` | core | `Logger.T`, `Logger.Level`, `Logger.FactoryProps` (what [`loggerFactory()`](#loggerfactoryoptions) takes), … |
 | `Schema` | core | `Schema.Registered`, `Schema.FromConfig`, `Schema.FromInstance`, `Schema.Key`, `Schema.Params`, `Schema.Payload` |
 | `Snapshot` | core | `Snapshot.Envelope` (what `snapshot({ records: true })` returns and `hydrate()` takes), `Snapshot.LoadRecord` |
 | `Translations` | core | `Translations.T`, `Translations.SerializedTranslations`, … |
@@ -1188,16 +1200,16 @@ Like the extractor, it is a separate export because resolution never calls it.
 
 ## Utilities
 
-Five pure helpers are published on a subpath: three the instance uses
-internally, for the cases where application code has to match the library's
-own behavior, and two it never calls, for deciding which locale to ask it for
-and which direction that locale is written in:
+Six helpers are published on a subpath: three the instance uses internally,
+for the cases where application code has to match the library's own behavior,
+two it never calls, for deciding which locale to ask it for and which direction
+that locale is written in, and the factory of the logger it writes through:
 
 ```javascript
-import { matchLocale, resolveLoaders, sanitizeLocales, textDirection, toDotNotation } from 'sveltekit-i18n/utils';
+import { loggerFactory, matchLocale, resolveLoaders, sanitizeLocales, textDirection, toDotNotation } from 'sveltekit-i18n/utils';
 ```
 
-The subpath exports these five plus the `DotNotation` type; the rest of the
+The subpath exports these six plus the `DotNotation` type; the rest of the
 internals stays private.
 
 ### `toDotNotation(input, preserveArrays?)`
@@ -1308,6 +1320,34 @@ script (`ku-Arab`), since engines ship different likely-script data. An
 invalid tag, and `undefined`, are `'ltr'`. With [`/kit`](#sveltekit),
 `<html dir>` needs none of this: `handle` fills `%dir%` and `use()` keeps the
 attribute in sync.
+
+### `loggerFactory(options?)`
+
+**Type:** `(options?: Logger.FactoryProps) => Logger.T`
+
+A logger built from [`log`](#log)'s options as the core builds its own: each
+level prefixes its message, a level below `level` is skipped, and so is a
+method the `logger` lacks or one that throws. The logger stands alone —
+building one installs nothing, and the core keeps logging through what `log`
+configured. The default
+[report channel](#parseroptionsonreport) writes through one at `warn`; a
+channel of your own builds one to write reports at another level:
+
+```javascript
+import { loggerFactory } from 'sveltekit-i18n/utils';
+
+const log = { level: 'error' };
+const logger = loggerFactory(log);
+
+const config = {
+  log,
+  // A report is a defect of the catalogue here: keep it at `error`.
+  parserOptions: { onReport: ({ code, id, message }) => logger.error(`${message} (${code} in ${id})`) },
+};
+```
+
+The second argument of each level is reserved for a thrown value, so a report
+goes into the message.
 
 **📖 Full detail:**
 [base — Utilities](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#utilities).
@@ -2363,13 +2403,21 @@ Also worth knowing:
   Deno 2+.** There is no CJS
   entry, and the core's rune
   modules are compiled by your bundler.
-- **Parser reports are silent** unless `parserOptions.onReport` names a channel.
+- **Parser reports go to the logger `log` configures**, at `warn`, unless
+  `parserOptions.onReport` names another channel or `null`.
 
 ## Upgrading from 3.4
 
 A 3.4 config loads in 3.5 as it is, and [`sveltekit-i18n/kit`](#sveltekit)
-behaves as it did until its options state `pathnames` or `domains`. 3.5
-brings in `@sveltekit-i18n/base` 3.4:
+behaves as it did until its options state `pathnames` or `domains`. One
+default changes:
+
+- **Parser reports reach the logger.** 3.4 discarded them unless
+  [`parserOptions.onReport`](#parseroptionsonreport) named a channel; 3.5
+  writes each to the logger [`log`](#log) configures, at `warn`, as one line.
+  `onReport: null` keeps them silent.
+
+3.5 brings in `@sveltekit-i18n/base` 3.4:
 
 - [`pathnames`](#translated-pathnames) in the options of `defineI18n()`, which
   takes what the new `translatePathnames()` of `sveltekit-i18n/kit` returns,
@@ -2385,6 +2433,8 @@ brings in `@sveltekit-i18n/base` 3.4:
   locale off an instance.
 - `Kit.Pathnames` and `Kit.Domains`, the types of what `translatePathnames()`
   and `localeDomains()` return.
+- [`loggerFactory()`](#loggerfactoryoptions) from `sveltekit-i18n/utils`: the
+  logger `log` describes, for a report channel of your own.
 - **Companion releases.**
   [`extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
   3.0 is new: a `T` component that renders the Markdown a message carries —

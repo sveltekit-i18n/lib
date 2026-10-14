@@ -576,16 +576,16 @@ export const config = {
     customModifiers: {
       upper: ({ value }) => value.toUpperCase(),
     },
-    // Where parser diagnostics go. Silent by default.
-    onReport: (report) => console.warn(report.message, report),
   },
   loaders: [/* … */],
 };
 ```
 
 Reports never raise: a placeholder that cannot resolve takes its fallback and
-the rest of the message renders. `onReport` is optional here and defaults to
-`null` — nothing is written anywhere unless you pass a channel.
+the rest of the message renders, and the report goes to the logger
+[`log`](./README.md#log) configures, at `warn`.
+[`onReport`](./README.md#parseroptionsonreport) sends reports elsewhere, and
+`null` discards them.
 
 Two more options govern how a payload's values are read —
 [`recognizeWrappers`](./README.md#parseroptionsrecognizewrappers) and

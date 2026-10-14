@@ -238,7 +238,7 @@ The suite proves **the wiring this package adds** – nothing more:
 
 - **The parser is present without the consumer supplying one.** `new I18n(config)` interpolates out of the box, and the core's `parser` slot is a type error here.
 - **`parserOptions` flow through** the constructor and through `loadConfig`, and a reconfiguration that names no parser options keeps the parser.
-- **The report channel** is silent by default and routes to `parserOptions.onReport` when the application passes one.
+- **The report channel** writes to the logger `config.log` configures by default, keeps that `log` through a reconfiguration that names none, and routes to `parserOptions.onReport` when the application passes one.
 - **The extension pipe** runs the consumer's extensions over a configured instance whose `loadConfig` already carries the parser.
 - **The `/kit` wiring** (`tests/specs/kit.spec.ts`) – every instance the core's `defineI18n` builds through this package carries the parser, and the server half runs in the server compile only.
 - **The re-export surface** (`tests/specs/exports.spec.ts`) – every name the core publishes must be reachable from here, with the core's `Config` and `Parser` namespaces carried as `BaseConfig` and `BaseParser`. A new export in the core fails this test until this package carries it; extend the rename map in that spec rather than letting the surface drift.
@@ -408,16 +408,22 @@ This package composes `@sveltekit-i18n/base` with `@sveltekit-i18n/parser-curly`
 import { I18n as Base } from '@sveltekit-i18n/base';
 import parser from '@sveltekit-i18n/parser-curly';
 
-const withParser = ({ parserOptions, ...config }: Config<any, any> = {}) => ({
+// `reportTo(log)` writes each report to a logger `loggerFactory(log)` builds.
+const withParser = ({ parserOptions, ...config }: Config<any, any> = {}, log = config.log) => ({
   ...config,
-  parser: parser({ onReport: null, ...parserOptions }),
+  parser: parser({ onReport: reportTo(log), ...parserOptions }),
 });
 
 // Prepended to the consumer's pipe, so a reconfiguration keeps the parser.
-const withCurlyParser: Extension.T<Base, Base> = (i18n) => {
+const withCurlyParser = (initial?: Logger.FactoryProps): Extension.T<Base, Base> => (i18n) => {
   const { loadConfig } = i18n;
+  let log = initial;
 
-  i18n.loadConfig = (config: Config<any, any>) => loadConfig(withParser(config));
+  i18n.loadConfig = (config: Config<any, any>) => {
+    log = config.log ?? log;
+
+    return loadConfig(withParser(config, log));
+  };
 
   return i18n;
 };
@@ -426,7 +432,7 @@ class I18nCurlyParser {
   constructor(config?: Config<any, any>) {
     return new Base({
       ...withParser(config),
-      extensions: [withCurlyParser, ...(config?.extensions ?? [])],
+      extensions: [withCurlyParser(config?.log), ...(config?.extensions ?? [])],
     });
   }
 }
@@ -437,7 +443,7 @@ What that means when you change something here:
 - **Composition, not inheritance.** The core exports a typed facade rather than the raw class, so there is nothing to subclass. The constructor returns the core's own instance – every member a consumer touches is the core's. Never wrap the instance or re-implement one of its methods.
 - **The parser is injected by an extension prepended to the consumer's pipe.** It patches `loadConfig` so a reconfiguration keeps the parser, and it runs first so every later extension copies the patched method. It returns its input, so it contributes nothing to the piped type.
 - **`loadConfig` is retyped by intersection, never by an `Omit` rewrite.** The emitted instance type carries `#private` fields; an `Omit`-based rewrite stops being assignable to the core instance and every `Extension.Operator` extension then resolves its input to `never`.
-- **Reports are silent by default.** `parser-curly` requires `onReport` to be stated, `null` included; this package states `null` and relaxes the key to optional in its own `Config`, so an application only passes `parserOptions.onReport` when it wants diagnostics.
+- **Reports go to the instance's logger by default.** `parser-curly` requires `onReport` to be stated, `null` included; this package states a channel that writes each report as one line, at `warn`, to a logger the core's `loggerFactory` builds from `config.log`, and relaxes the key to optional in its own `Config`. Its `log` is the instance's, kept through a `loadConfig` that names none, while the core keeps one logger for all its instances, the last `log` set. An application passes `parserOptions.onReport` to route reports elsewhere, `null` to discard them.
 - **`i18n instanceof I18n` does not hold.** The constructor returns the core's instance, and `config.extensions` may replace it again. Documented, not fixed.
 
 ### Key Concepts

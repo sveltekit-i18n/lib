@@ -288,8 +288,9 @@ export const i18n = new I18n(config);
 
 **What happens, synchronously:**
 
-1. `parserOptions` (empty here) becomes a `parser-curly` instance, with
-   `onReport: null` unless the app states a channel.
+1. `parserOptions` (empty here) becomes a `parser-curly` instance, whose
+   reports go to the logger `config.log` configures, at `warn`, unless the app
+   states a channel.
 2. The parser extension is prepended to `config.extensions`.
 3. The core is constructed and applies the synchronous prefix of the config —
    the config itself, `config.translations`, the `initLocale` bookkeeping.

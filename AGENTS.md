@@ -87,10 +87,16 @@ issue tracker, docs, and examples for the whole family
   emitted instance type carries `#private`, so an `Omit`-based rewrite stops
   being assignable to the core instance and every `Extension.Operator`
   extension resolves its input to `never`.
-- **Reports are silent by default.** `parser-curly` requires `onReport` to be
-  stated, `null` included; this package states `null` and relaxes the key to
-  optional in its own `Config`. A consumer wanting reports passes
-  `parserOptions.onReport`.
+- **Reports go to the instance's logger by default.** `parser-curly` requires
+  `onReport` to be stated, `null` included; this package states a channel that
+  writes each report as one line, at `warn`, to a logger base's
+  `loggerFactory` builds from `config.log` — the options the core builds its
+  own logger from — and relaxes the key to optional in its own `Config`. The
+  logger is built on the first report. Its `log` is the instance's, kept
+  through a `loadConfig` that names none, while the core keeps one logger for
+  all its instances, the last `log` set: `defineI18n` builds many instances
+  from one pipe. A consumer passes `parserOptions.onReport` to route reports
+  elsewhere, `null` to discard them; `undefined` is no channel stated.
 - **The re-export surface is the point of this package** (#228). Every name
   base publishes is reachable from here — `Config` and `Parser` already name
   this package's own types, so base's namespaces of those names are re-exported

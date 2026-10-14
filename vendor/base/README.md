@@ -439,10 +439,10 @@ Load-triggering methods return the promise of the matching load — concurrent d
 
 ### Utilities
 
-Pure helpers ship from a separate subpath, for the code around the instance that has to match the library's own behavior or decide which locale to ask for:
+Helpers ship from a separate subpath, for the code around the instance that has to match the library's own behavior or decide which locale to ask for:
 
 ```javascript
-import { matchLocale, resolveLoaders, sanitizeLocales, textDirection, toDotNotation } from '@sveltekit-i18n/base/utils';
+import { loggerFactory, matchLocale, resolveLoaders, sanitizeLocales, textDirection, toDotNotation } from '@sveltekit-i18n/base/utils';
 ```
 
 - `toDotNotation(input, preserveArrays?)` – the flattening behind [`preprocess`](#preprocess), for a custom `preprocess` that still wants dot notation
@@ -450,6 +450,7 @@ import { matchLocale, resolveLoaders, sanitizeLocales, textDirection, toDotNotat
 - `sanitizeLocales(...locales)` – normalizes a locale from a URL, cookie or `Accept-Language` header the way the instance does, so it can be compared against `locale`
 - `matchLocale(requested, available)` – picks the configured locale a visitor asked for, from an `Accept-Language` header or `navigator.languages`, falling back from `en-GB` to `en` and answering `undefined` when nothing matches
 - `textDirection(locale)` – `'ltr'` or `'rtl'` for a `dir` attribute, from the script the tag spells or the one `Intl.Locale#maximize()` adds, with no list of languages to keep
+- `loggerFactory(options?)` – builds a logger from what [`log`](#log) takes, as the instance builds its own, so a parser's reports can go where the library's messages go: ``onReport: ({ id, message }) => logger.warn(`${message} (${id})`)``
 
 ### SvelteKit
 

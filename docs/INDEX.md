@@ -182,7 +182,7 @@ Perfect for: building production applications, scaling your i18n implementation
   another's page, silent parser reports, TypeScript errors and typegen, tests,
   performance
 - **[Debugging tips](./TROUBLESHOOTING.md#debugging-tips)** – inspect
-  translations, enable debug logging, open the report channel, test a loader
+  translations, enable debug logging, route parser reports, test a loader
 - **[FAQ](./TROUBLESHOOTING.md#frequently-asked-questions)** – common
   questions
 - **[Known limitations](./TROUBLESHOOTING.md#known-limitations)** – what to be
@@ -367,7 +367,7 @@ current version off npm.
 #### See working code
 → [Examples](../examples)
 
-#### Write a custom modifier or open the report channel
+#### Write a custom modifier or route parser reports
 → [API Docs: Parser options](./README.md#parser-options) or
 [parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)
 

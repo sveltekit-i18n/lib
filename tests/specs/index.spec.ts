@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import i18n from '../../src';
 import { CONFIG } from '../data';
 
-import type { Extension, Parser, Report } from '../../src';
+import type { Extension, Logger, Parser, Report } from '../../src';
 
 const { initLocale = 'en' } = CONFIG;
 
@@ -112,15 +112,101 @@ describe('parser wiring', () => {
     expect(instance.t('common.placeholder', { value: 'TEST' })).toBe('VALUE: TEST');
   });
 
-  it('writes no report anywhere by default', async () => {
-    const instance = new i18n(CONFIG);
-    const spies = (['error', 'warn', 'info', 'debug', 'log'] as const).map((level) => vi.spyOn(console, level).mockImplementation(() => {}));
-
+  // Every report the parser makes, unknown modifier and all, for a logger to see.
+  const report = async (instance: { loadTranslations: (locale: string) => Promise<void>; t: (key: string, payload: object) => string }) => {
     await instance.loadTranslations(initLocale);
     instance.t('common.modifier_unknown', { value: 'TEST' });
+  };
 
-    spies.forEach((spy) => expect(spy).not.toHaveBeenCalled());
-    spies.forEach((spy) => spy.mockRestore());
+  const recorder = () => {
+    const calls: [Logger.Level, string][] = [];
+    const logger: Logger.T = {
+      error: (message) => calls.push(['error', message]),
+      warn: (message) => calls.push(['warn', message]),
+      debug: (message) => calls.push(['debug', message]),
+    };
+
+    return { calls, logger };
+  };
+
+  it('sends reports to the configured logger at `warn` by default', async () => {
+    const { calls, logger } = recorder();
+
+    await report(new i18n({ ...CONFIG, log: { logger } }));
+
+    expect(calls).toEqual([['warn', expect.stringMatching(/^\[i18n\]: .+ \(unknown-modifier in "common\.modifier_unknown": .+\)$/)]]);
+  });
+
+  it('sends reports to `console.warn` without a logger configured', async () => {
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    await report(new i18n({ ...CONFIG, log: undefined }));
+
+    expect(spy).toHaveBeenCalledExactlyOnceWith(expect.stringContaining('unknown-modifier'));
+    spy.mockRestore();
+  });
+
+  it('keeps reports below the configured level silent', async () => {
+    const { calls, logger } = recorder();
+
+    await report(new i18n({ ...CONFIG, log: { logger, level: 'error' } }));
+
+    expect(calls).toEqual([]);
+  });
+
+  it('discards reports when `parserOptions.onReport` is `null`', async () => {
+    const { calls, logger } = recorder();
+
+    await report(new i18n({ ...CONFIG, log: { logger }, parserOptions: { onReport: null } }));
+
+    expect(calls).toEqual([]);
+  });
+
+  it('sends reports to the logger when `parserOptions.onReport` is `undefined`', async () => {
+    const { calls, logger } = recorder();
+
+    await report(new i18n({ ...CONFIG, log: { logger }, parserOptions: { onReport: undefined } }));
+
+    expect(calls).toEqual([['warn', expect.stringContaining('unknown-modifier')]]);
+  });
+
+  it('writes a key with a line or paragraph separator on one line', async () => {
+    const { calls, logger } = recorder();
+    const instance = new i18n({ ...CONFIG, log: { logger } });
+
+    await instance.loadTranslations(initLocale);
+    instance.addTranslations({ [initLocale]: { 'a\u2028b\u2029c': '{{value:nosuch;}}' } });
+    instance.t('a\u2028b\u2029c', { value: 'TEST' });
+
+    expect(calls).toEqual([['warn', expect.stringContaining(' in "a\\u2028b\\u2029c": ')]]);
+  });
+
+  it('keeps the logger through a reconfiguration that names none', async () => {
+    const { calls, logger } = recorder();
+    const instance = new i18n({ log: { logger } });
+
+    await instance.loadConfig({ ...CONFIG, log: undefined });
+    await report(instance);
+
+    expect(calls).toEqual([['warn', expect.stringContaining('unknown-modifier')]]);
+  });
+
+  it('takes the logger a reconfiguration names', async () => {
+    const before = recorder();
+    const after = recorder();
+    const instance = new i18n({ log: { logger: before.logger } });
+
+    await instance.loadConfig({ ...CONFIG, log: { logger: after.logger } });
+    await report(instance);
+
+    expect(before.calls).toEqual([]);
+    expect(after.calls).toEqual([['warn', expect.stringContaining('unknown-modifier')]]);
+  });
+
+  it('fails soft on a reconfiguration without a config', async () => {
+    const instance = new i18n(CONFIG);
+
+    await expect(instance.loadConfig(undefined as never)).resolves.toBeUndefined();
   });
 
   it('routes reports to `parserOptions.onReport`', async () => {
