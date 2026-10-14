@@ -161,6 +161,7 @@ So the parser is also injected by an extension that patches `loadConfig`:
 config.extensions = [withCurlyParser, ...yours]
                      └─ patches loadConfig to run every config through
                         the same `withParser` the constructor used
+                        (a missing one goes to the core as it is)
 ```
 
 It is **prepended** to your pipe, because an extension that augments the
