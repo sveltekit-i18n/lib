@@ -1,0 +1,15 @@
+{
+  "example.name": "Übersetzte Pfade",
+  "nav.home": "Start",
+  "nav.about": "Über uns",
+  "nav.language": "Sprache",
+  "lang.en": "English",
+  "lang.cs": "Čeština",
+  "lang.de": "Deutsch",
+  "footer.source": "Quelltext dieses Beispiels",
+  "footer.docs": "Dokumentation",
+  "error.title": "Etwas ist schiefgelaufen",
+  "error.404": "Diese Seite existiert nicht.",
+  "error.default": "Ein unerwarteter Fehler ist aufgetreten.",
+  "error.home": "Zurück zur Startseite"
+}

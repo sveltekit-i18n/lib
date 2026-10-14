@@ -63,6 +63,27 @@ on its own. Drop the entry once rolldown declares it again.
   itself uses
 - `@sveltejs/adapter-static`
 
+[`translated-paths`](./translated-paths) — a pathname of its own per locale · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/translated-paths?startScript=dev&file=src/lib/translations/index.ts)
+- `/about`, `/cs/o-nas`, `/de/ueber-uns` from one route tree, with no `[lang]`
+  segment: `pathnames` and the `reroute` hook
+- links written once, canonical, through `localizePath`; a switcher and
+  `hreflang` alternates through `delocalize`
+- `/cs/about` redirects to `/cs/o-nas`; an unknown pathname is a 404 in the
+  locale of its prefix
+- `@sveltejs/adapter-node`: home and about prerendered at every pathname, the
+  products rendered per request
+
+[`locale-domains`](./locale-domains) — a locale at a domain of its own
+- `example.com` in English and German, `example.cz` in Czech, from one app:
+  `domains` beside `pathnames`, with `localhost` and `cz.localhost` in
+  development
+- a switcher and `hreflang` alternates through `localizeHref`, which names the
+  other domain only where a link leaves this one
+- `example.com/o-nas` redirects to `example.cz/o-nas`; an unknown pathname is
+  a 404 in the locale of its host
+- `@sveltejs/adapter-node`, every page rendered per request; no StackBlitz
+  link, as a dev server inside a browser tab answers at a single host
+
 ## Component-scoped translations
 
 [`component-scoped-csr`](./component-scoped-csr) · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/component-scoped-csr?startScript=dev&file=src/lib/translations/index.ts)

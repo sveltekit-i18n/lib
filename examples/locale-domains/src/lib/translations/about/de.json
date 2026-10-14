@@ -1,0 +1,12 @@
+{
+  "badge": "Zweite Route",
+  "title": "Eine Seite, zwei Domains",
+  "lead": "SvelteKit hat src/routes/about für den angefragten Host und Pfad gerendert. Die Tabelle unten zeigt, was die Seite aus ihrer URL liest.",
+  "facts": {
+    "host": "Host",
+    "requested": "Angefragter Pfad",
+    "canonical": "Kanonischer Pfad",
+    "locale": "Sprache des Pfads",
+    "domain": "Erste Sprache des Hosts"
+  }
+}

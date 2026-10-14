@@ -1,0 +1,19 @@
+{
+  "badge": "Jedna aplikace, dvě domény",
+  "title": "Každý jazyk na vlastní doméně",
+  "lead": "example.com obsluhuje angličtinu a němčinu, example.cz češtinu — z jedné aplikace a jednoho stromu rout. Jazyk dává host a cesta, takže k přepnutí stačí odkaz na druhou doménu.",
+  "cards": {
+    "domains": {
+      "title": "localeDomains",
+      "text": "Host, kterého mapa uvádí, vykresluje jen své jazyky, ať hlavička návštěvníka žádá cokoli."
+    },
+    "links": {
+      "title": "localizeHref",
+      "text": "Odkaz jmenuje druhou doménu jen tam, kde z této odchází, takže odkaz na stejném hostu zůstává navigací v klientovi."
+    },
+    "redirect": {
+      "title": "Jeden host na stránku",
+      "text": "Cesta jazyka jiného hostu se tam pošle s 308: example.com/o-nas skončí na example.cz/o-nas."
+    }
+  }
+}

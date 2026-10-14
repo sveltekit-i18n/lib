@@ -1,0 +1,11 @@
+{
+  "badge": "Second route",
+  "title": "One page, three pathnames",
+  "lead": "SvelteKit rendered src/routes/about for the pathname you requested. The table below is what the page knows of it.",
+  "facts": {
+    "requested": "Requested pathname",
+    "route": "Route",
+    "canonical": "Canonical path",
+    "locale": "Locale of the pathname"
+  }
+}

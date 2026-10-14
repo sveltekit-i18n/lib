@@ -91,10 +91,11 @@ Perfect for: understanding internals, making architecture decisions
   [extensions](./README.md#extensions) – keys as members of `t`, markup in a
   message, the pipe order
 - [SvelteKit](./README.md#sveltekit) – `sveltekit-i18n/kit`: setup, which
-  locale, `data.i18n`, pitfalls
+  locale, translated pathnames, domains, `data.i18n`, pitfalls
 - [SSR by hand](./README.md#server-side-rendering),
   [testing](./README.md#testing-components-that-translate)
 - [Migrating from v2](./README.md#migrating-from-v2),
+  [upgrading from 3.4](./README.md#upgrading-from-34),
   [upgrading from 3.3](./README.md#upgrading-from-33),
   [upgrading from 3.2](./README.md#upgrading-from-32),
   [upgrading from 3.1](./README.md#upgrading-from-31) and
@@ -238,12 +239,12 @@ i18next's own engine — on the core directly in the same way.
 **Working code you can learn from**
 
 Standalone applications on v3: locale routing (URL parameter, path
-prefix, static adapter, default locale unprefixed), per-request negotiation
-from a cookie and `Accept-Language`, component-scoped translations rendered on
-the client, and on the server handed over through `snapshot()` and `hydrate()`,
-`t()` inside Markdown routes, the `$t` store surface of `extension-stores`,
-the member keys of `extension-typed-access`, and the markup `extension-html`
-renders.
+prefix, static adapter, default locale unprefixed, translated pathnames),
+per-request negotiation from a cookie and `Accept-Language`, component-scoped
+translations rendered on the client, and on the server handed over through
+`snapshot()` and `hydrate()`, `t()` inside Markdown routes, the `$t` store
+surface of `extension-stores`, the member keys of `extension-typed-access`, and
+the markup `extension-html` renders.
 
 ---
 
@@ -326,6 +327,17 @@ current version off npm.
 → [API Docs: SvelteKit](./README.md#sveltekit),
 [API Docs: SSR by hand](./README.md#server-side-rendering) or
 [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership)
+
+#### Serve each page at a pathname of its own per locale
+→ [API Docs: Translated pathnames](./README.md#translated-pathnames) and the
+[translated-paths example](../examples/translated-paths)
+
+#### Serve a locale at a domain of its own
+→ [API Docs: Domains](./README.md#domains) and the
+[locale-domains example](../examples/locale-domains)
+
+#### Upgrade an app from 3.4
+→ [API Docs: Upgrading from 3.4](./README.md#upgrading-from-34)
 
 #### Upgrade an app from 3.3
 → [API Docs: Upgrading from 3.3](./README.md#upgrading-from-33)

@@ -135,11 +135,12 @@ export { load } from '#lib/i18n.js';
 <html lang="%lang%" dir="%dir%">
 ```
 
-The server negotiates the locale on every request — `preferredLocale`, then
-`Accept-Language`, then `initLocale`, `fallbackLocale` and the first locale the
-config serves — loads it into an instance of its own and hands its state to
-the browser, which keeps one instance per tab and does not fetch again what the
-server loaded. `handle` fills `%lang%` and `%dir%`.
+The server negotiates the locale on every request — the locale of a
+[translated pathname](#translated-pathnames-and-domains), then
+`preferredLocale`, then `Accept-Language`, then `initLocale`, `fallbackLocale`
+and the first locale the config serves — loads it into an instance of its own
+and hands its state to the browser, which keeps one instance per tab and does
+not fetch again what the server loaded. `handle` fills `%lang%` and `%dir%`.
 
 ### 4. Use translations in your components
 
@@ -357,6 +358,33 @@ An app served under SvelteKit's `paths.base` sets the same value as
 `config.basePath`, so loader `routes` keep naming the app's own paths
 (`/about`, not `/repo/about`).
 
+### Translated pathnames and domains
+
+`sveltekit-i18n/kit` serves each page at a pathname of its own per locale —
+`/cs/o-nas` for `/about` — from one route tree, and a locale at a domain of
+its own:
+
+```javascript
+// src/lib/i18n.js
+import { defineI18n, translatePathnames } from 'sveltekit-i18n/kit';
+
+export const { handle, load, use, get, reroute, delocalize, localizePath } = defineI18n(config, {
+  pathnames: translatePathnames({
+    '/about': { en: '/about', cs: '/cs/o-nas' },
+    '/[...rest]': { en: '/[...rest]', cs: '/cs/[...rest]' },
+  }),
+});
+```
+
+`reroute`, exported from `src/hooks.js`, renders `/cs/o-nas` from
+`src/routes/about`, and the pathname gives the locale. Loader `routes` name the
+canonical `/about` once, `localizePath('/about', 'cs')` writes a link, and
+`delocalize(url)` reads one back. `localeDomains()`, in the `domains` option,
+adds the domains, and `localizeHref` the links between them. See
+[Translated pathnames](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#translated-pathnames),
+[Domains](https://github.com/sveltekit-i18n/lib/blob/master/docs/README.md#domains)
+and the [translated-paths example](https://github.com/sveltekit-i18n/lib/tree/master/examples/translated-paths).
+
 ### Utilities
 
 `sveltekit-i18n/utils` publishes the helpers the core uses where application
@@ -364,6 +392,31 @@ code has to match it — `sanitizeLocales`, `toDotNotation`, `resolveLoaders` �
 and two for choosing and writing a locale: `matchLocale` (`Accept-Language`,
 `navigator.languages` or a cookie against the configured set) and
 `textDirection` (`'ltr'` or `'rtl'`).
+
+## Upgrading from 3.4
+
+A 3.4 config loads in 3.5 as it is, and `sveltekit-i18n/kit` behaves as it
+did until its options state `pathnames` or `domains`. New:
+
+- **[Translated pathnames](#translated-pathnames-and-domains)**:
+  `translatePathnames()` and the `pathnames` option, with `reroute`,
+  `delocalize` and `localizePath` among what `defineI18n()` returns.
+- **[Domains](#translated-pathnames-and-domains)**: `localeDomains()` and the
+  `domains` option, with `localizeHref` among what `defineI18n()` returns.
+- **The URL helpers complete the config's locales**, whatever its extensions
+  make of the instance: `Kit.T` and `Kit.Options` take the locale as a type
+  parameter.
+- **Companion releases.**
+  [`extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+  3.0 is new: a `T` component that renders the Markdown a message carries —
+  `**strong**`, `[links](/docs)`, `` `code` `` — as elements and Svelte
+  components, without `{@html}`. An instance takes it or `extension-html`,
+  not both.
+  [`extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
+  3.0.3 throws at construction where another extension added the instance's
+  `T`, renders a tag a layer unmaps with `null` without reporting it, reads an
+  `undefined` entry of the component map as none, so a lower layer's entry
+  applies, and checks a URL's scheme in linear time.
 
 ## Upgrading from 3.3
 
@@ -535,6 +588,8 @@ application-shaped — an adapter, a `vite.config.ts`, a route tree:
 - [Multi-page app](https://github.com/sveltekit-i18n/lib/tree/master/examples/multi-page) – the common setup: cookie and `Accept-Language`, route-scoped loading
 - [Locale-based routing](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router) – SEO-friendly URLs (e.g. `/en/about`), prerendered
 - [Default locale without a prefix](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-router-advanced) – `/about` and `/cs/about`, static, translated 404
+- [Translated paths](https://github.com/sveltekit-i18n/lib/tree/master/examples/translated-paths) – `/about`, `/cs/o-nas` and `/de/ueber-uns` from one route tree
+- [Locale domains](https://github.com/sveltekit-i18n/lib/tree/master/examples/locale-domains) – `example.com` in English and German, `example.cz` in Czech, from one app
 - [Component-scoped translations](https://github.com/sveltekit-i18n/lib/tree/master/examples/component-scoped-ssr) – a component with its own lexicon
 - [Markdown routes](https://github.com/sveltekit-i18n/lib/tree/master/examples/mdsvex) – `t()` inside `.svx`
 - [Stores](https://github.com/sveltekit-i18n/lib/tree/master/examples/stores) – the `$t` store surface, through `extension-stores`

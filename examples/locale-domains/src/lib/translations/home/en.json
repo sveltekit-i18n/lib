@@ -1,0 +1,19 @@
+{
+  "badge": "One app, two domains",
+  "title": "Each language at a domain of its own",
+  "lead": "example.com serves English and German, example.cz Czech — from one app and one route tree. The host and the pathname give the locale, so a link to the other domain is all a language switch takes.",
+  "cards": {
+    "domains": {
+      "title": "localeDomains",
+      "text": "A host the map lists renders its own locales alone, whatever the visitor's header asks for."
+    },
+    "links": {
+      "title": "localizeHref",
+      "text": "A link names the other domain only where it leaves this one, so a link on the same host stays a client navigation."
+    },
+    "redirect": {
+      "title": "One host per page",
+      "text": "A pathname of another host's locale is sent there with a 308: example.com/o-nas lands on example.cz/o-nas."
+    }
+  }
+}

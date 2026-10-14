@@ -1,0 +1,9 @@
+{
+  "back": "All products",
+  "params": "The [id] param is the same in every locale: only the rest of the pathname is translated.",
+  "items": {
+    "lamp": { "name": "Desk lamp", "text": "Warm light for late evenings." },
+    "chair": { "name": "Chair", "text": "Sits well, folds flat." },
+    "desk": { "name": "Desk", "text": "Oak, with room for two screens." }
+  }
+}

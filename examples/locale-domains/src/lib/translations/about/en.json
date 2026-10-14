@@ -1,0 +1,12 @@
+{
+  "badge": "Second route",
+  "title": "One page, two domains",
+  "lead": "SvelteKit rendered src/routes/about for the host and the pathname you requested. The table below is what the page reads off its URL.",
+  "facts": {
+    "host": "Host",
+    "requested": "Requested pathname",
+    "canonical": "Canonical path",
+    "locale": "Locale of the pathname",
+    "domain": "First locale of the host"
+  }
+}

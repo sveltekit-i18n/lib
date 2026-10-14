@@ -1,0 +1,11 @@
+{
+  "badge": "Zweite Route",
+  "title": "Eine Seite, drei Pfade",
+  "lead": "SvelteKit hat src/routes/about für den angefragten Pfad gerendert. Die Tabelle unten zeigt, was die Seite darüber weiß.",
+  "facts": {
+    "requested": "Angefragter Pfad",
+    "route": "Route",
+    "canonical": "Kanonischer Pfad",
+    "locale": "Sprache des Pfads"
+  }
+}
