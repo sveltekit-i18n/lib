@@ -1028,7 +1028,7 @@ import html from '@sveltekit-i18n/extension-html';
 
 export const { handle, load, use, get } = defineI18n({
   ...config,
-  extensions: [html({ onReport: null })],
+  extensions: [html({ onReport: console.warn })],
 });
 ```
 
@@ -1039,7 +1039,7 @@ export const { handle, load, use, get } = defineI18n({
 - **`<T>` where the markup renders, `t()` everywhere else.** An attribute, a
   `<title>` or an `aria-label` takes the message with its markup as text.
 - **Map a tag to a component of your own** — a router-aware link, say:
-  `html({ onReport: null, components: { a: Link } })` renders `<a>` as
+  `html({ onReport: console.warn, components: { a: Link } })` renders `<a>` as
   `<Link>`, with the tag's attributes as props.
 - **Block elements are off by default.** A `<T>` inside a `<p>` or a `<button>`
   cannot hold a `<p>` or a `<div>`; enable `BLOCK_ELEMENTS` where the context

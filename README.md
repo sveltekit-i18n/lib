@@ -561,7 +561,7 @@ import { I18n } from '@sveltekit-i18n/base';
 import parser from '@sveltekit-i18n/parser-icu';
 
 const config = {
-  parser: parser({ onReport: null }),
+  parser: parser({ onReport: console.warn }),
   // ... rest of config
 };
 ```
@@ -596,7 +596,7 @@ The official extensions, each installed on its own:
 
 The order matters. `extension-stores` returns no instance, so it goes after
 the others: `[typedAccess, stores]` hands out `$t.home.title()`, and
-`[html({ onReport: null }), stores]` puts `T` at `instance.T`.
+`[html({ onReport: console.warn }), stores]` puts `T` at `instance.T`.
 `extension-html` goes after `extension-typed-access`, and adds `T` beside the
 member keys. `extension-markdown` takes the place of `extension-html`: each
 renders a whole message, so an instance takes one of them, and the second
