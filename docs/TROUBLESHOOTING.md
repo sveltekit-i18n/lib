@@ -526,7 +526,7 @@ extensions: [stores, typedAccess, html]
 extensions: [html({ onReport: console.warn }), markdown({ onReport: console.warn })]
 
 // ✅
-extensions: [typedAccess, html({ onReport: null }), stores]
+extensions: [typedAccess, html({ onReport: console.warn }), stores]
 
 // ✅ Markdown instead of markup
 extensions: [typedAccess, markdown({ onReport: console.warn }), stores]
