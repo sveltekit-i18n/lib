@@ -1,0 +1,29 @@
+{
+  "badge": "@sveltekit-i18n/extension-markdown",
+  "title": "Markdown ve zprávě",
+  "lead": "Překlad smí nést **Markdown** a `<i18n.T>` ho vykreslí jako elementy, které vytvoří Svelte z uzavřené sady uzlů, bez jediného `@html`.",
+  "payload": {
+    "title": "Payload je text",
+    "label": "Tvoje jméno",
+    "text": "Ahoj **{{name}}**, vítej zpět.",
+    "note": "Co napíšeš, nepřinese žádný Markdown: `*` nebo `[` se vykreslí jako obyčejný znak, uvnitř tučného zvýraznění, které nese zpráva sama."
+  },
+  "component": {
+    "title": "Odkaz jako komponenta",
+    "text": "Zbytek najdeš v [dokumentaci](https://sveltekit-i18n.github.io/docs \"sveltekit-i18n\").",
+    "note": "Tohle použití mapuje `link` ze zprávy na komponentu aplikace, která dostane `href` a `title` odkazu jako props a jeho text jako children."
+  },
+  "blocks": {
+    "title": "Odstavce tam, kam patří",
+    "text": "Prázdný řádek rozdělí zprávu na odstavce a zpětné lomítko před koncem řádku zalomí řádek:\\\\\ntakhle.\n\nOdstavce jsou ve výchozím stavu vypnuté, protože zpráva často stojí uvnitř `p` nebo `button`, které odstavec neudrží. Tady je toto použití zapíná, protože stojí uvnitř `div`."
+  },
+  "blocked": {
+    "title": "Co zůstane textem",
+    "text": "Tenhle [odkaz](javascript:alert(1)) nemá adresu, ![obrázek](/favicon.png) ukáže jen svůj popis a <b>surové HTML</b> zůstane tak, jak je napsané.",
+    "note": "Zablokovaná adresa i nenamapovaný obrázek se hlásí přes onReport: v logu serveru a v konzoli prohlížeče."
+  },
+  "string": {
+    "title": "t() zůstává textem",
+    "text": "t() vrátí stejnou zprávu s Markdownem jako textem, což potřebuje title nebo atribut:"
+  }
+}

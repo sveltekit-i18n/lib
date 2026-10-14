@@ -1,0 +1,29 @@
+{
+  "badge": "@sveltekit-i18n/extension-markdown",
+  "title": "Markdown in a message",
+  "lead": "A translation may carry **Markdown**, and `<i18n.T>` renders it as elements Svelte creates, from a closed set of nodes, with no `@html` anywhere.",
+  "payload": {
+    "title": "A payload is text",
+    "label": "Your name",
+    "text": "Hello **{{name}}**, welcome back.",
+    "note": "What you type brings no Markdown: a `*` or a `[` in it renders as itself, inside the strong emphasis the message itself carries."
+  },
+  "component": {
+    "title": "A link as a component",
+    "text": "The rest is in [the documentation](https://sveltekit-i18n.github.io/docs \"sveltekit-i18n\").",
+    "note": "This usage maps the message's `link` onto a component of the app's, which takes the link's `href` and `title` as props and its text as children."
+  },
+  "blocks": {
+    "title": "Paragraphs where they fit",
+    "text": "A blank line splits a message into paragraphs, and a backslash before a line ending breaks a line:\\\\\nlike this one.\n\nParagraphs are off by default, since a message often sits inside a `p` or a `button`, which cannot hold one. Here this usage maps them, as it sits inside a `div`."
+  },
+  "blocked": {
+    "title": "What stays text",
+    "text": "This [link](javascript:alert(1)) has no address, ![a picture](/favicon.png) shows only its description, and <b>raw HTML</b> stays as it is written.",
+    "note": "The blocked address and the unmapped image are reported through onReport: in the server's log, and in the browser's console."
+  },
+  "string": {
+    "title": "t() stays text",
+    "text": "t() returns the same message with its Markdown as text, which is what a title or an attribute needs:"
+  }
+}
