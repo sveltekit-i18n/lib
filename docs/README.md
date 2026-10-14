@@ -1686,7 +1686,7 @@ import html from '@sveltekit-i18n/extension-html';
 
 export const { handle, load, use, get } = defineI18n({
   ...config,
-  extensions: [html({ onReport: null })],
+  extensions: [html({ onReport: console.warn })],
 });
 ```
 
@@ -1744,7 +1744,7 @@ map and what each parser asks of a message are in
 ### Pipe order
 
 `extension-stores` returns no instance, so it goes last: `[typedAccess, stores]`
-hands out `$t.home.title()`, and `[html({ onReport: null }), stores]` puts `T`
+hands out `$t.home.title()`, and `[html({ onReport: console.warn }), stores]` puts `T`
 at `instance.T`. Put the other way round, either throws at construction.
 `extension-html` goes after `extension-typed-access`, and adds `T` beside the
 member keys; so does `extension-markdown`, in its place.

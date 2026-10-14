@@ -744,7 +744,7 @@ import { I18n } from '@sveltekit-i18n/base';
 import parser from '@sveltekit-i18n/parser-icu';
 
 export const i18n = new I18n({
-  parser: parser({ onReport: null }), // a parser package requires the channel to be stated
+  parser: parser({ onReport: console.warn }), // a parser package requires the channel to be stated
   loaders: [/* ... */],
 });
 ```
