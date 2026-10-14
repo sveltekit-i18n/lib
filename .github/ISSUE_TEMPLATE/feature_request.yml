@@ -74,6 +74,7 @@ body:
         - "@sveltekit-i18n/extension-html"
         - "@sveltekit-i18n/extension-markdown"
         - "@sveltekit-i18n/typegen"
+        - "@sveltekit-i18n/sv"
         - "A new parser or extension"
         - "Not sure"
     validations:
