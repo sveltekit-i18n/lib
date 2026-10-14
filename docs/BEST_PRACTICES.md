@@ -1051,11 +1051,48 @@ export const { handle, load, use, get } = defineI18n({
 The [`html`](../examples/html) example renders an escaped payload, a tag as a
 component and block elements per usage.
 
+### Markdown in a message
+
+[`@sveltekit-i18n/extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+adds the same `T` component for Markdown instead: CommonMark's inline syntax —
+emphasis, code, links, images and line breaks — rendered as elements and
+Svelte components, without `{@html}`. A translator writes `**`, not `<b>`.
+
+```javascript
+import { defineI18n } from 'sveltekit-i18n/kit';
+import markdown from '@sveltekit-i18n/extension-markdown';
+
+export const { handle, load, use, get } = defineI18n({
+  ...config,
+  extensions: [markdown({ onReport: console.warn })],
+});
+```
+
+```json
+{ "intro": "Hi **{{name}}**, read [the docs](/docs)." }
+```
+
+- **One of the two.** `extension-html` and `extension-markdown` each add `T`,
+  so an instance takes one of them; the second in a pipe throws at
+  construction (`extension-html` checks from 3.0.3).
+- **The payload brings no Markdown.** A `*` or a `[` in a value renders as
+  itself, so a name never turns into emphasis or a link.
+- **`image` and `paragraph` are off by default.** An image would let a
+  translation choose what the page loads, and the `<p>` a `<T>` often sits in
+  cannot hold a paragraph; map them per usage where the context allows,
+  `<i18n.T key="terms" components={{ paragraph: 'p' }} />`.
+- **Write a backslash break as `line\\`** (`line\\\\` in a JSON catalogue)
+  with `parser-curly`, whose escape takes a backslash before whitespace; a
+  hard break of two trailing spaces needs no escape.
+
+The [`markdown`](../examples/markdown) example renders a message's links
+through a component of its own, a payload as text and a paragraph per usage.
+
 ### Pipe order
 
 `extension-stores` goes last, since it returns no instance; `extension-html`
-goes after `extension-typed-access`. What each order hands out is in
-[the API reference](./README.md#pipe-order).
+or `extension-markdown` goes after `extension-typed-access`. What each order
+hands out is in [the API reference](./README.md#pipe-order).
 
 ### Writing your own
 
@@ -1825,5 +1862,5 @@ Measure inside the loader — that is the boundary the network crosses:
 - [Architecture Overview](./ARCHITECTURE.md) – how it all works
 - [Troubleshooting](./TROUBLESHOOTING.md) – common issues and solutions
 - [typegen](https://github.com/sveltekit-i18n/typegen) – generates the `schema` type
-- [Extensions](https://github.com/sveltekit-i18n/extensions) – the official extensions: stores, typed access and markup
+- [Extensions](https://github.com/sveltekit-i18n/extensions) – the official extensions: stores, typed access, markup and Markdown
 - [Examples](../examples) – working code examples

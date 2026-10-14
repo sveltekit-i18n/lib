@@ -509,10 +509,12 @@ Node `>=22` and Svelte `>=5` are required; the Svelte peer dependency is not opt
 - ``TypeError: [i18n]: `typedAccess` takes an instance: put it before any extension whose output is no instance, such as `stores`.``
 - ``TypeError: html() needs the instance itself: put it before any extension whose output is no instance, such as `stores`.``
 - ``TypeError: html is a factory of the options: put `html({ onReport })` in `extensions`.``
+- the same two from `markdown()`, with `markdown` in `html`'s place
+- ``TypeError: markdown() adds `T` to an instance that has one from another extension: extension-html and extension-markdown each render a whole message, so use one.`` (or `html()` adding to `markdown`'s, from `extension-html` 3.0.3)
 
 **Cause:**
 
-The pipe runs left to right, and each extension receives what the one before it returned. `extension-stores` returns stores, not an instance, so an extension after it has nothing to wrap. `extension-html` is a factory of its options: `extensions: [html]` hands it the instance where it expects them.
+The pipe runs left to right, and each extension receives what the one before it returned. `extension-stores` returns stores, not an instance, so an extension after it has nothing to wrap. `extension-html` and `extension-markdown` are factories of their options: `extensions: [html]` hands one the instance where it expects them. Each of the two adds `T`, so an instance takes one of them: the second refuses the first's `T` rather than replace it.
 
 **Solution:**
 
@@ -520,8 +522,14 @@ The pipe runs left to right, and each extension receives what the one before it 
 // ❌
 extensions: [stores, typedAccess, html]
 
+// ❌
+extensions: [html({ onReport: console.warn }), markdown({ onReport: console.warn })]
+
 // ✅
 extensions: [typedAccess, html({ onReport: null }), stores]
+
+// ✅ Markdown instead of markup
+extensions: [typedAccess, markdown({ onReport: console.warn }), stores]
 ```
 
 What each order hands out is in [the pipe order](./README.md#pipe-order).
@@ -1607,6 +1615,20 @@ The parser has to pass the tags through. With `parser-icu`, a message with tags 
 ```
 
 **⚠️ Security warning:** only with trusted content. Never with anything a user supplied — a payload included, since `{@html}` renders whatever the parser returns.
+
+### Can I use Markdown in translations?
+
+Yes, with [`@sveltekit-i18n/extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown) in `config.extensions` in place of `extension-html`: its `T` component renders CommonMark's inline syntax — emphasis, code, links, images and line breaks — as elements and Svelte components, with URLs gated by scheme and the payload rendered as text, without `{@html}`:
+
+```json
+{ "intro": "Hi **{{name}}**, read [the docs](/docs)." }
+```
+
+```svelte
+<i18n.T key="intro" params={{ name }} />
+```
+
+Block syntax (headings, lists) and raw HTML stay text. See [Markdown in a message](./README.md#markdown-in-a-message) and the [`markdown`](../examples/markdown) example. Each parser asks something of it — `parser-curly` a backslash break written as `\\` (`\\\\` in a JSON catalogue), `parser-icu` `ignoreTag: true` for an autolink — listed in [its README](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown#parsers).
 
 ### How do I handle plurals?
 
