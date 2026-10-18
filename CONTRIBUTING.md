@@ -20,15 +20,16 @@ Thank you for your interest in contributing to `sveltekit-i18n`! We welcome cont
 
 ## Ecosystem Overview
 
-The `sveltekit-i18n` ecosystem consists of five separate repositories:
+The `sveltekit-i18n` ecosystem consists of six separate repositories:
 
 - **[sveltekit-i18n/lib](https://github.com/sveltekit-i18n/lib)** (this repository) – the end-user package `sveltekit-i18n`: the core wired with `@sveltekit-i18n/parser-curly`, re-exporting both surfaces so an application installs one package
 - **[@sveltekit-i18n/base](https://github.com/sveltekit-i18n/base)** – the parser-agnostic core: translation state, loading, caching, route matching and preprocessing
 - **[@sveltekit-i18n/parsers](https://github.com/sveltekit-i18n/parsers)** – the message parsers, `parser-curly` (the one this package wires), `parser-icu`, `parser-mf2` and `parser-i18next`
 - **[@sveltekit-i18n/extensions](https://github.com/sveltekit-i18n/extensions)** – official extensions for the core's `config.extensions` pipe: `extension-stores`, which brings back the Svelte-store surface of v2 (`$t`, `$locale`, `$loading`), `extension-typed-access`, which reads keys as members of `t`, `extension-html`, which renders the markup a message carries as elements and Svelte components, and `extension-markdown`, which renders the Markdown a message carries the same way
 - **[@sveltekit-i18n/typegen](https://github.com/sveltekit-i18n/typegen)** – the Vite plugin that generates the `schema` type from an app's own translations
+- **[@sveltekit-i18n/sv](https://github.com/sveltekit-i18n/sv)** – the [Svelte CLI](https://svelte.dev/docs/cli) add-on that sets sveltekit-i18n up in a SvelteKit project: `npx sv add @sveltekit-i18n`
 
-This repository is what most users install, and it hosts the **shared issue tracker, documentation and examples for the whole family** – issues for `base`, `parsers`, `extensions` and `typegen` are filed here too. Behavioural changes, however, usually belong in the repository that owns the behaviour: this package is thin wiring (see [Architecture Overview](#architecture-overview)).
+This repository is what most users install, and it hosts the **shared issue tracker, documentation and examples for the whole family** – issues for `base`, `parsers`, `extensions`, `typegen` and `sv` are filed here too. Behavioural changes, however, usually belong in the repository that owns the behaviour: this package is thin wiring (see [Architecture Overview](#architecture-overview)).
 
 The **Curly Message Format** – the `{{ … }}` syntax `parser-curly` resolves – is specified outside this organization, at [curlymessage.dev](https://curlymessage.dev). Grammar questions and syntax proposals belong there, not in this tracker.
 
@@ -36,7 +37,7 @@ The **Curly Message Format** – the `{{ … }}` syntax `parser-curly` resolves 
 
 - **`master` is the v3 development line.** Svelte 5 runes, ESM-only, Node 22 / Bun 1.2 / Deno 2 or newer.
 - **`2.x` is a frozen snapshot** of the published v2 line and receives critical fixes only.
-- The family releases aligned: `base`, `parsers`, `extensions` and `typegen` first, `lib` last. Nothing publishes until all of them are ready.
+- A release is planned across the family, leaves first: `base`, then the parsers, the extensions and `typegen`, then `lib`, and `sv` last, which installs the rest. Each package keeps its own version, and none publishes while a package it depends on holds a change it needs that is not yet released.
 
 ## Repository Structure
 
@@ -474,6 +475,10 @@ See the [Architecture Documentation](./docs/ARCHITECTURE.md), the [API reference
 - Repository: https://github.com/sveltekit-i18n/typegen
 - Contribute here for: the Vite plugin that writes the `schema` type – key derivation, payload extraction, the generated file
 
+**Project setup (@sveltekit-i18n/sv):**
+- Repository: https://github.com/sveltekit-i18n/sv
+- Contribute here for: the `npx sv add @sveltekit-i18n` add-on – its options, the files it creates and how it merges into a project's own hooks, loads and params
+
 Each repository has its own code and CI; issues and discussions for all of them live in [this repository's tracker](https://github.com/sveltekit-i18n/lib/issues).
 
 ## Release Process (Maintainers Only)
@@ -492,7 +497,7 @@ Because the notes are generated, commit messages are the changelog – see [Comm
 
 ### Version Alignment
 
-`base`, `parsers`, `extensions` and `typegen` release aligned on the same major; `lib` publishes **last**, once the versions it depends on are on the registry. Follow [Semantic Versioning](https://semver.org/).
+The family released aligned at 3.0.0; since then each package moves on its own version. A release is planned across the family, leaves first: `base`, then `parsers`, `extensions` and `typegen`, then `lib`, which pins `base` and `parser-curly` exactly, and `sv` **last**, which installs the rest. Each publishes once the versions it depends on are on the registry. Follow [Semantic Versioning](https://semver.org/).
 
 ## Getting Help
 
@@ -505,7 +510,7 @@ Because the notes are generated, commit messages are the changelog – see [Comm
 
 Open an [issue](https://github.com/sveltekit-i18n/lib/issues/new/choose) and fill in the form. The forms ask for everything a report needs, so this file does not repeat the list – whatever they mark required is required.
 
-The tracker covers the whole family: `lib`, `base`, the parsers, the extensions and typegen. The **Curly Message Format** itself is specified outside this organization, so grammar questions and syntax proposals go to [curlymessage.dev](https://curlymessage.dev).
+The tracker covers the whole family: `lib`, `base`, the parsers, the extensions, typegen and sv. The **Curly Message Format** itself is specified outside this organization, so grammar questions and syntax proposals go to [curlymessage.dev](https://curlymessage.dev).
 
 ### Discussions
 
