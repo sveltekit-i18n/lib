@@ -2266,16 +2266,17 @@ Also worth knowing:
   package — keep base and swap `parser-default` for
   [`parser-curly`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly),
   [`parser-icu`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu),
-  [`parser-mf2`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)
-  or [`parser-i18next`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next),
+  [`parser-mf2`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2),
+  [`parser-i18next`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)
+  or [`parser-fluent`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-fluent),
   passed as `config.parser`.
 - **Per-request instances on the server.** A module-level singleton leaks one
   visitor's locale into another's page — [`sveltekit-i18n/kit`](#sveltekit)
   builds them for you.
 - **A loader names its `namespace`.** v2's `key` still works in v3, deprecated
   since 3.1.
-- **ESM only, Svelte 5+, on Node 22+ (22.12+ for `parser-mf2`), Bun 1.2+ or
-  Deno 2+.** There is no CJS
+- **ESM only, Svelte 5+, on Node 22+ (22.12+ for `parser-mf2` and
+  `parser-fluent`), Bun 1.2+ or Deno 2+.** There is no CJS
   entry, and the core's rune
   modules are compiled by your bundler.
 - **Parser reports are silent** unless `parserOptions.onReport` names a channel.
@@ -2502,6 +2503,7 @@ and the format's move in
 - **[@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)** – ICU message format, for an application built on the core directly
 - **[@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)** – Unicode MessageFormat 2, likewise
 - **[@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)** – The i18next syntax, likewise
+- **[@sveltekit-i18n/parser-fluent](https://github.com/sveltekit-i18n/parsers/tree/master/parser-fluent)** – [Fluent](https://projectfluent.org), Mozilla's localization system, likewise
 - **[@sveltekit-i18n/extension-stores](https://github.com/sveltekit-i18n/extensions/tree/master/extension-stores)** – The Svelte store surface, as an extension
 - **[@sveltekit-i18n/extension-typed-access](https://github.com/sveltekit-i18n/extensions/tree/master/extension-typed-access)** – Keys as members of `t`, typed from the schema
 - **[@sveltekit-i18n/extension-html](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)** – Markup in a message, rendered as elements and Svelte components

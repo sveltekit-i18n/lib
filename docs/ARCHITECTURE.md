@@ -65,8 +65,10 @@ implementation and its only dependency.
 
 The alternatives are `@sveltekit-i18n/parser-icu`, wrapping
 `intl-messageformat`; `@sveltekit-i18n/parser-mf2`, wrapping `messageformat`
-(Unicode MessageFormat 2); and `@sveltekit-i18n/parser-i18next`, wrapping
-`i18next` for catalogues written in its syntax.
+(Unicode MessageFormat 2); `@sveltekit-i18n/parser-i18next`, wrapping
+`i18next` for catalogues written in its syntax; and
+`@sveltekit-i18n/parser-fluent`, wrapping `@fluent/bundle` (Fluent, Mozilla's
+localization system).
 
 ### 3. sveltekit-i18n (this package)
 
@@ -195,6 +197,9 @@ sveltekit-i18n
 @sveltekit-i18n/parser-i18next    (an alternative to parser-curly)
 └── i18next
 
+@sveltekit-i18n/parser-fluent     (an alternative to parser-curly)
+└── @fluent/bundle
+
 @sveltekit-i18n/extension-stores        (no runtime dependencies; peers: base, svelte)
 @sveltekit-i18n/extension-typed-access  (no runtime dependencies; peers: base, svelte)
 @sveltekit-i18n/extension-html          (peers: base, svelte)
@@ -206,8 +211,8 @@ sveltekit-i18n
 ```
 
 Everything is ESM-only; there is no CJS entry. The core, this package and the
-parsers run on Node 22+ (22.12+ for `parser-mf2`), Bun 1.2+ or Deno 2+; the
-extensions state Node 22+; typegen needs 22.12+, the floor of its `vite` 8 peer.
+parsers run on Node 22+ (22.12+ for `parser-mf2` and `parser-fluent`), Bun 1.2+
+or Deno 2+; the extensions state Node 22+; typegen needs 22.12+, the floor of its `vite` 8 peer.
 
 ## The Reactive Engine
 
@@ -750,8 +755,8 @@ export const i18n = new I18n({
 ```
 
 **When:**
-- you need ICU, Unicode MessageFormat 2 or the i18next syntax, or a parser of
-  your own
+- you need ICU, Unicode MessageFormat 2, the i18next syntax or Fluent, or a
+  parser of your own
 - you are porting messages from another library and must keep their syntax
 
 **Best for:** projects whose message format is already decided.

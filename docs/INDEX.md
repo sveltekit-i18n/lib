@@ -227,6 +227,12 @@ the same way.
 For translation files that already exist in i18next's syntax, interpolated by
 i18next's own engine — on the core directly in the same way.
 
+### [@sveltekit-i18n/parser-fluent](https://github.com/sveltekit-i18n/parsers/tree/master/parser-fluent)
+**Fluent**
+
+[Mozilla's localization system](https://projectfluent.org), formatted by
+`@fluent/bundle` — on the core directly in the same way.
+
 ### [Parsers Overview](https://github.com/sveltekit-i18n/parsers)
 **The parser monorepo, and writing your own**
 
@@ -260,8 +266,9 @@ renders, and the Markdown `extension-markdown` renders.
   ([releases](https://github.com/sveltekit-i18n/base/releases))
 - **[@sveltekit-i18n/parser-curly](https://github.com/sveltekit-i18n/parsers/tree/master/parser-curly)**,
   **[@sveltekit-i18n/parser-icu](https://github.com/sveltekit-i18n/parsers/tree/master/parser-icu)**,
-  **[@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)**
-  and **[@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)**
+  **[@sveltekit-i18n/parser-mf2](https://github.com/sveltekit-i18n/parsers/tree/master/parser-mf2)**,
+  **[@sveltekit-i18n/parser-i18next](https://github.com/sveltekit-i18n/parsers/tree/master/parser-i18next)**
+  and **[@sveltekit-i18n/parser-fluent](https://github.com/sveltekit-i18n/parsers/tree/master/parser-fluent)**
   ([releases](https://github.com/sveltekit-i18n/parsers/releases))
 - **[@sveltekit-i18n/typegen](https://github.com/sveltekit-i18n/typegen)** – the
   Vite plugin that generates the `schema` type from your translations
