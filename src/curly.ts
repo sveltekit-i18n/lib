@@ -36,13 +36,17 @@ const reportTo = (log: Logger.FactoryProps | undefined): Parser.OnReport => {
 
 // `log` is the logger options the reports go to: the config's own, or, for a
 // reconfiguration that names none, those the instance had before it.
-export const withParser = ({ parserOptions, ...config }: Config<any, any> = {}, log = config.log): BaseConfig.T<any, any> => ({
-  ...config,
-  parser: parser({
-    ...parserOptions,
-    onReport: parserOptions?.onReport === undefined ? reportTo(log) : parserOptions.onReport,
-  }),
-});
+export const withParser = (config?: Config<any, any> | null, log = config?.log): BaseConfig.T<any, any> => {
+  const { parserOptions, ...rest } = config ?? {};
+
+  return {
+    ...rest,
+    parser: parser({
+      ...parserOptions,
+      onReport: parserOptions?.onReport === undefined ? reportTo(log) : parserOptions.onReport,
+    }),
+  };
+};
 
 // Prepended to the user's pipe, so every later extension copies the patched
 // method. It returns its input, so it contributes nothing to the piped type.

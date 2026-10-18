@@ -410,13 +410,17 @@ import parser from '@sveltekit-i18n/parser-curly';
 
 // `reportTo(log)` writes each report to a logger `loggerFactory(log)` builds.
 // An `onReport` left `undefined` is no channel stated.
-const withParser = ({ parserOptions, ...config }: Config<any, any> = {}, log = config.log) => ({
-  ...config,
-  parser: parser({
-    ...parserOptions,
-    onReport: parserOptions?.onReport === undefined ? reportTo(log) : parserOptions.onReport,
-  }),
-});
+const withParser = (config?: Config<any, any> | null, log = config?.log) => {
+  const { parserOptions, ...rest } = config ?? {};
+
+  return {
+    ...rest,
+    parser: parser({
+      ...parserOptions,
+      onReport: parserOptions?.onReport === undefined ? reportTo(log) : parserOptions.onReport,
+    }),
+  };
+};
 
 // Prepended to the consumer's pipe, so a reconfiguration keeps the parser.
 const withCurlyParser = (initial?: Logger.FactoryProps): Extension.T<Base, Base> => (i18n) => {
