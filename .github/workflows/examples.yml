@@ -127,3 +127,7 @@ jobs:
           # The warnings in the log are the reports the page exists to show.
           check html en / '<ul><li>' 'This <a>link</a> has no address, and the image' 'target="_blank" rel="noopener noreferrer"'
           check html cs / 'Ahoj <b>&lt;b>Ann&lt;/b></b>, vítej zpět.'
+          # Likewise for Markdown: the payload's `*` stays text inside the
+          # message's own `**`, and the blocked link and the image render as text.
+          check markdown en / 'Hello <strong>\*Ann\*</strong>, welcome back.' 'a line:<br>like this one.</p>' 'target="_blank" rel="noopener noreferrer"' 'This <a>link</a> has no address, a picture shows only' '&lt;b>raw HTML&lt;/b>'
+          check markdown cs / 'Ahoj <strong>\*Ann\*</strong>, vítej zpět.'

@@ -103,6 +103,14 @@ on its own. Drop the entry once rolldown declares it again.
   and what is dropped and reported
 - one page, `@sveltejs/adapter-node`
 
+[`markdown`](./markdown) — Markdown in a message, rendered as elements · [run it](https://stackblitz.com/github/sveltekit-i18n/lib/tree/master/examples/markdown?startScript=dev&file=src/lib/translations/index.ts)
+- [`@sveltekit-i18n/extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+  in the config handed to `defineI18n()`: `<i18n.T key="…" />` renders the
+  Markdown, `t()` still returns it as text
+- a payload rendered as text, a link rendered as a component, paragraphs and
+  a backslash break per usage, and what stays text and is reported
+- one page, `@sveltejs/adapter-node`
+
 ## How to use an example
 
 Copy the directory out of this repository and install:
