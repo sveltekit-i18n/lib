@@ -55,6 +55,14 @@ describe('instance', () => {
     expect(instance.translations.en['common.no_placeholder']).toBe('NO_PLACEHOLDER');
   });
 
+  it('builds an instance with the parser from a `null` config', () => {
+    const instance = new i18n(null as unknown as undefined);
+
+    instance.addTranslations({ [initLocale]: { a: 'VALUE: {{value}}' } });
+
+    expect(instance.l(initLocale, 'a', { value: 'TEST' })).toBe('VALUE: TEST');
+  });
+
   // v2 overrode `loadConfig` by calling the core's private config loader, which
   // skipped this guard; the v3 wiring patches the public method instead.
   it('keeps the core guard that ignores a call on a destroyed instance', async () => {
