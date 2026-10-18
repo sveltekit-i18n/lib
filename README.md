@@ -301,20 +301,21 @@ Use dynamic values in your translations:
 ```
 
 The syntax is the [Curly Message Format](https://curlymessage.dev).
-Its parser options — custom modifiers, modifier defaults, a report channel and
+Its parser options — custom modifiers, modifier defaults, where reports go and
 how payload values are read — go under `config.parserOptions`:
 
 ```javascript
 const config = {
   parserOptions: {
     modifierDefaults: { number: { maximumFractionDigits: 2 } },
-    onReport: (report) => console.warn(report.message, report),
   },
   loaders: [/* … */],
 };
 ```
 
-Reports are silent by default; `onReport` is where you route them.
+A placeholder the parser cannot resolve takes its fallback and is reported to
+the logger `config.log` configures, at `warn`; `parserOptions.onReport` sends
+reports elsewhere, and `null` discards them.
 
 ### Server-side rendering
 
@@ -389,14 +390,22 @@ and the [translated-paths example](https://github.com/sveltekit-i18n/lib/tree/ma
 
 `sveltekit-i18n/utils` publishes the helpers the core uses where application
 code has to match it — `sanitizeLocales`, `toDotNotation`, `resolveLoaders` —
-and two for choosing and writing a locale: `matchLocale` (`Accept-Language`,
+two for choosing and writing a locale: `matchLocale` (`Accept-Language`,
 `navigator.languages` or a cookie against the configured set) and
-`textDirection` (`'ltr'` or `'rtl'`).
+`textDirection` (`'ltr'` or `'rtl'`) — and `loggerFactory`, which builds the
+logger `config.log` describes, for a report channel of your own.
 
 ## Upgrading from 3.4
 
 A 3.4 config loads in 3.5 as it is, and `sveltekit-i18n/kit` behaves as it
-did until its options state `pathnames` or `domains`. New:
+did until its options state `pathnames` or `domains`. One default changes:
+
+- **Parser reports reach the logger.** 3.4 discarded them unless
+  `parserOptions.onReport` named a channel; 3.5 writes each to the logger
+  `config.log` configures, at `warn`, as one line. `onReport: null` keeps
+  them silent.
+
+New:
 
 - **[Translated pathnames](#translated-pathnames-and-domains)**:
   `translatePathnames()` and the `pathnames` option, with `reroute`,
@@ -406,6 +415,8 @@ did until its options state `pathnames` or `domains`. New:
 - **The URL helpers complete the config's locales**, whatever its extensions
   make of the instance: `Kit.T` and `Kit.Options` take the locale as a type
   parameter.
+- **[`loggerFactory()`](#utilities)** from `sveltekit-i18n/utils`: the
+  logger `config.log` describes, for a report channel of your own.
 - **Companion releases.**
   [`extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
   3.0 is new: a `T` component that renders the Markdown a message carries —

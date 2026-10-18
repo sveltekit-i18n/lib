@@ -56,6 +56,39 @@ describe('/kit', () => {
     expect(i18n.t('common.greeting', { name: 'Jarda' })).toBe('Hi Jarda!');
   });
 
+  it('sends the reports of each instance to the logger it was last configured with', async ({ task }) => {
+    const recorder = () => {
+      const calls: string[] = [];
+
+      return { calls, logger: { error: () => {}, warn: (message: string) => calls.push(message), debug: () => {} } };
+    };
+    const first = recorder();
+    const second = recorder();
+    const reporting = {
+      log: { logger: first.logger },
+      loaders: [{ namespace: 'common', locale: 'en', loader: () => Promise.resolve({ greeting: 'Hi {{name:nosuch;}}!' }) }],
+    };
+    const { load } = defineI18n(reporting);
+    const event = universalEvent('/', { i18n: { locale: 'en', route: '/' } });
+    const { i18n: one } = await load(event);
+
+    one.t('common.greeting', { name: 'Jarda' });
+
+    expect(first.calls).toEqual([expect.stringContaining('unknown-modifier')]);
+
+    // The browser keeps one instance per tab; the server builds one per render.
+    if (task.file.projectName === 'client') return;
+
+    const { i18n: other } = await load(event);
+
+    await one.loadConfig({ ...reporting, log: { logger: second.logger }, initLocale: 'en' });
+    await other.loadConfig({ ...reporting, log: undefined, initLocale: 'en' });
+    other.t('common.greeting', { name: 'Jarda' });
+
+    expect(first.calls).toHaveLength(2);
+    expect(second.calls).toEqual([]);
+  });
+
   it('runs the server half in the server compile only', async ({ task }) => {
     const { handle, load } = defineI18n(config);
     const event = serverEvent('/', 'cs');

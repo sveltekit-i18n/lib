@@ -132,7 +132,7 @@ class I18nCurlyParser {
   constructor(config) {
     return new Base({
       ...withParser(config),
-      extensions: [withCurlyParser, ...(config?.extensions ?? [])],
+      extensions: [withCurlyParser(config?.log), ...(config?.extensions ?? [])],
     });
   }
 }
@@ -158,9 +158,10 @@ face value and lose the parser.
 So the parser is also injected by an extension that patches `loadConfig`:
 
 ```
-config.extensions = [withCurlyParser, ...yours]
+config.extensions = [withCurlyParser(config.log), ...yours]
                      └─ patches loadConfig to run every config through
-                        the same `withParser` the constructor used
+                        the same `withParser` the constructor used,
+                        keeping the `log` the reports go to
 ```
 
 It is **prepended** to your pipe, because an extension that augments the
@@ -288,8 +289,9 @@ export const i18n = new I18n(config);
 
 **What happens, synchronously:**
 
-1. `parserOptions` (empty here) becomes a `parser-curly` instance, with
-   `onReport: null` unless the app states a channel.
+1. `parserOptions` (empty here) becomes a `parser-curly` instance, whose
+   reports go to the logger `config.log` configures, at `warn`, unless the app
+   states a channel.
 2. The parser extension is prepended to `config.extensions`.
 3. The core is constructed and applies the synchronous prefix of the config —
    the config itself, `config.translations`, the `initLocale` bookkeeping.

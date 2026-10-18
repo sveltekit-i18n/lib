@@ -1,5 +1,5 @@
 const loggerLevels = ['error', 'warn', 'debug'];
-export const loggerFactory = ({ logger = console, level = loggerLevels[1], prefix = '[i18n]: ' }) => {
+export const loggerFactory = ({ logger = console, level = loggerLevels[1], prefix = '[i18n]: ' } = {}) => {
     // An unknown level would otherwise yield indexOf === -1 and silence everything.
     const levelIndex = loggerLevels.includes(level) ? loggerLevels.indexOf(level) : loggerLevels.indexOf('warn');
     return loggerLevels.reduce((acc, key, i) => ({
