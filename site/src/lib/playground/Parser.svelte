@@ -28,6 +28,7 @@
     icu: () => import('./flavours/icu.js'),
     mf2: () => import('./flavours/mf2.js'),
     i18next: () => import('./flavours/i18next.js'),
+    fluent: () => import('./flavours/fluent.js'),
   };
 
   let flavours = $state({});

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { createHighlighter } from 'shiki';
 
 import { highlightCurly, highlightJson, highlightJsonText, highlightPlain } from '#lib/highlight.js';
+import { highlight as fluent } from '#lib/playground/flavours/fluent.js';
 import { highlight as i18next } from '#lib/playground/flavours/i18next.js';
 import { highlight as icu } from '#lib/playground/flavours/icu.js';
 import { highlight as mf2 } from '#lib/playground/flavours/mf2.js';
@@ -55,6 +56,7 @@ const DRAWINGS = {
   icu,
   mf2,
   i18next,
+  fluent,
   json: highlightJsonText,
   plain: highlightPlain,
 };
@@ -62,14 +64,15 @@ const DRAWINGS = {
 const prefixes = (text) => Array.from({ length: text.length + 1 }, (unused, cut) => text.slice(0, cut));
 
 /**
- * Shapes nothing renders but a textarea accepts. The two long ones are the only
- * inputs that reach ICU's depth guard — nesting is what recurses there, length
- * is not — and every painter is held to them because a paste is a keystroke too.
+ * Shapes nothing renders but a textarea accepts. The long nested ones are the
+ * inputs that reach ICU's and Fluent's depth guards — nesting is what recurses
+ * there, length is not — and every painter is held to them because a paste is a
+ * keystroke too.
  */
 const HOSTILE = [
   '', '{', '}', '{{', '}}', "'", "''", '\\', '|', '#', '<', '</', '&<>', '\r', '\t',
   '\u2028', '\u2029', '\u{1F600}', '{{{{{{x}}', '{'.repeat(300), '{{'.repeat(500),
-  '<a>'.repeat(20000), '{n,plural,one {'.repeat(20000),
+  '<a>'.repeat(20000), '{n,plural,one {'.repeat(20000), `{ ${'F('.repeat(20000)}`, `{ ${'-t('.repeat(20000)}`,
 ];
 
 /**
@@ -88,7 +91,7 @@ const attempt = (name, text) => {
   }
 };
 
-// One pass, read by every invariant below: drawing the corpus six ways is the
+// One pass, read by every invariant below: drawing the corpus seven ways is the
 // only slow thing here.
 const DRAWN = Object.keys(DRAWINGS).flatMap((name) => CORPUS.map((text) => attempt(name, text)));
 
@@ -271,6 +274,29 @@ const CASES = {
     ['{{{{{{x}}', 'punctuation({{) key({{{{x) punctuation(}})'],
     ['{{a}}{{b}}', 'punctuation({{) key(a) punctuation(}}{{) key(b) punctuation(}})'],
   ],
+  fluent: [
+    ['You have { NUMBER($count) } { $count ->\n    [one] message\n   *[other] messages\n}.',
+      'plain(You have ) punctuation({) plain( ) modifier(NUMBER) punctuation(() key($count) punctuation()) plain( ) punctuation(}) plain( ) punctuation({) plain( ) key($count) plain( ) punctuation(->) <NL> plain(    ) punctuation([) option(one) punctuation(]) plain( message) <NL> plain(   ) punctuation(*[) option(other) punctuation(]) plain( messages) <NL> punctuation(}) plain(.)'],
+    // A reference before a colon names an argument, whose value is a literal.
+    ['{ NUMBER($n, minimumFractionDigits: 2, style: "percent") }',
+      'punctuation({) plain( ) modifier(NUMBER) punctuation(() key($n) punctuation(,) plain( ) option(minimumFractionDigits) punctuation(:) plain( ) option(2) punctuation(,) plain( ) option(style) punctuation(:) plain( ) string("percent") punctuation()) plain( ) punctuation(})'],
+    // A term takes arguments too; a reference may name an attribute.
+    ['{ -brand(case: "genitive") } { -brand.gender } { msg.attr }',
+      'punctuation({) plain( ) key(-brand) punctuation(() option(case) punctuation(:) plain( ) string("genitive") punctuation()) plain( ) punctuation(}) plain( ) punctuation({) plain( ) key(-brand.gender) plain( ) punctuation(}) plain( ) punctuation({) plain( ) key(msg.attr) plain( ) punctuation(})'],
+    // Only a string literal escapes, and an escape it does not know ends the reading.
+    ['{ "a\\"b\\u0041c" } { "x\\q" } { -3.5 }',
+      'punctuation({) plain( ) string("a) escape(\\") string(b) escape(\\u0041) string(c") plain( ) punctuation(}) plain( ) punctuation({) plain( ) string("x) plain(\\q" } ) punctuation({) plain( ) key(-3.5) plain( ) punctuation(})'],
+    // A function's name is upper-case: any other call is not read.
+    ['{ { $x } } { foo($x) }',
+      'punctuation({) plain( ) punctuation({) plain( ) key($x) plain( ) punctuation(}) plain( ) punctuation(}) plain( ) punctuation({) plain( foo($x) })'],
+    // Variants may start on the arrow's line, and a value may hold a placeable.
+    ['{ $n -> [one] { $n } x\n*[other] y\n}',
+      'punctuation({) plain( ) key($n) plain( ) punctuation(->) plain( ) punctuation([) option(one) punctuation(]) plain( ) punctuation({) plain( ) key($n) plain( ) punctuation(}) plain( x) <NL> punctuation(*[) option(other) punctuation(]) plain( y) <NL> punctuation(})'],
+    // Mid-keystroke, and a brace outside a placeable, which fails the message.
+    ['{ $na', 'punctuation({) plain( ) key($na)'],
+    ['a } b { ??? } c', 'plain(a } b ) punctuation({) plain( ??? } c)'],
+    ['{{{{{{x}}', 'punctuation({{{{{{) key(x) punctuation(}})'],
+  ],
   json: [
     ['{\n  "count": 1234\n}', 'plain({) <NL> plain(  ) key("count") plain(: ) key(1234) <NL> plain(})'],
     ['{ "a": "b", "c": [1, true, null, -2.5e-3] }',
@@ -300,6 +326,18 @@ Object.entries(CASES).forEach(([flavour, cases]) => {
   });
 });
 
+// A Fluent variant ends at a line that starts with a key, so a line break looks
+// ahead past the blank lines after it. The bound is far above a linear drawing
+// on any machine, and far below one that looks ahead again at every line.
+describe('fluent, on a run of blank lines in a variant', () => {
+  it('reads the run once', () => {
+    const start = performance.now();
+
+    DRAWINGS.fluent(`{ $x -> [a] ${'\n'.repeat(50000)}x`);
+    expect(performance.now() - start).toBeLessThan(1000);
+  });
+});
+
 describe('the palette', () => {
   const over = (drawn) => new Set(drawn.flatMap((markup) => linesOf(markup).flat()).map(({ light }) => KIND[light]));
 
@@ -309,13 +347,14 @@ describe('the palette', () => {
 
   // `string` means a run the format quotes. i18next quotes nothing, and a Curly
   // option's value is message text — painting either in the string blue would
-  // tell a visitor the format does something it does not. ICU and MF2 do quote,
-  // and their tables above pin where.
+  // tell a visitor the format does something it does not. ICU, MF2 and Fluent
+  // do quote, and their tables above pin where.
   it('keeps `string` for the formats that quote', () => {
     expect([...swept('i18next')]).not.toContain('string');
     expect([...swept('curly')]).not.toContain('string');
     expect([...cased('icu')]).toContain('string');
     expect([...cased('mf2')]).toContain('string');
+    expect([...cased('fluent')]).toContain('string');
   });
 
   it('draws JSON as literals and text alone', () => {

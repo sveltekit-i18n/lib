@@ -16,6 +16,7 @@
     "@sveltekit-i18n/parser-icu": "3.1.1",
     "@sveltekit-i18n/parser-mf2": "3.1.1",
     "@sveltekit-i18n/parser-i18next": "3.0.5",
+    "@sveltekit-i18n/parser-fluent": "3.0.0-next.0",
     "messageformat": "^4.0.0"
   },
   "devDependencies": {
