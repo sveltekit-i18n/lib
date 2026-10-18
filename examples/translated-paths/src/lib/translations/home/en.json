@@ -1,0 +1,20 @@
+{
+  "badge": "One route tree",
+  "title": "Every page at a pathname of its own language",
+  "lead": "English lives at /about, Czech at /cs/o-nas, German at /de/ueber-uns — all three rendered by src/routes/about. The pathname gives the locale, so a link is all a language switch takes.",
+  "products": "Products",
+  "cards": {
+    "reroute": {
+      "title": "reroute",
+      "text": "The universal hook serves each translated pathname from the route of its canonical one."
+    },
+    "links": {
+      "title": "localizePath",
+      "text": "Every link is written once, canonical, and translated to the locale it leads to."
+    },
+    "loaders": {
+      "title": "Canonical routes",
+      "text": "Loaders name /about and /products/[id] once, never a pathname per locale."
+    }
+  }
+}

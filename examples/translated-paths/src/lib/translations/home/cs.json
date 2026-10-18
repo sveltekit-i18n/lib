@@ -1,0 +1,20 @@
+{
+  "badge": "Jeden strom rout",
+  "title": "Každá stránka na cestě svého jazyka",
+  "lead": "Angličtina bydlí na /about, čeština na /cs/o-nas, němčina na /de/ueber-uns — všechny tři vykresluje src/routes/about. Jazyk dává cesta, takže k přepnutí stačí odkaz.",
+  "products": "Produkty",
+  "cards": {
+    "reroute": {
+      "title": "reroute",
+      "text": "Univerzální hook obslouží každou přeloženou cestu routou její kanonické cesty."
+    },
+    "links": {
+      "title": "localizePath",
+      "text": "Každý odkaz se píše jednou, kanonicky, a přeloží se do jazyka, do kterého vede."
+    },
+    "loaders": {
+      "title": "Kanonické routy",
+      "text": "Loadery jmenují /about a /products/[id] jednou, nikdy cestu pro každý jazyk."
+    }
+  }
+}

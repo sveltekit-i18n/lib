@@ -1,6 +1,6 @@
 # Documentation Index
 
-Complete documentation for the `sveltekit-i18n` ecosystem, covering **3.4**:
+Complete documentation for the `sveltekit-i18n` ecosystem, covering **3.5**:
 one reactive instance built on Svelte 5 runes, no stores, the parser wired in,
 and `sveltekit-i18n/kit` wiring it into SvelteKit — `npm install sveltekit-i18n`
 is the whole install.
@@ -8,6 +8,7 @@ is the whole install.
 Upgrading from v2? Go straight to
 [Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2) and the
 [migration table](./README.md#migrating-from-v2). From an earlier 3.x? Read
+[Upgrading from 3.4](./README.md#upgrading-from-34),
 [Upgrading from 3.3](./README.md#upgrading-from-33),
 [Upgrading from 3.2](./README.md#upgrading-from-32),
 [Upgrading from 3.1](./README.md#upgrading-from-31) and, from 3.0,
@@ -91,10 +92,11 @@ Perfect for: understanding internals, making architecture decisions
   [extensions](./README.md#extensions) – keys as members of `t`, markup in a
   message, the pipe order
 - [SvelteKit](./README.md#sveltekit) – `sveltekit-i18n/kit`: setup, which
-  locale, `data.i18n`, pitfalls
+  locale, translated pathnames, domains, `data.i18n`, pitfalls
 - [SSR by hand](./README.md#server-side-rendering),
   [testing](./README.md#testing-components-that-translate)
 - [Migrating from v2](./README.md#migrating-from-v2),
+  [upgrading from 3.4](./README.md#upgrading-from-34),
   [upgrading from 3.3](./README.md#upgrading-from-33),
   [upgrading from 3.2](./README.md#upgrading-from-32),
   [upgrading from 3.1](./README.md#upgrading-from-31) and
@@ -110,7 +112,8 @@ Perfect for: day-to-day development, looking up specific APIs
 - [Instance properties and methods](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#instance-properties-and-methods)
 - [SvelteKit](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#sveltekit)
   and [server-side rendering](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#server-side-rendering)
-- [Upgrading from 3.2](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-32),
+- [Upgrading from 3.3](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-33),
+  [from 3.2](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-32),
   [from 3.1](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-31)
   and [from 3.0](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-30)
   – every behaviour and type change
@@ -238,12 +241,12 @@ i18next's own engine — on the core directly in the same way.
 **Working code you can learn from**
 
 Standalone applications on v3: locale routing (URL parameter, path
-prefix, static adapter, default locale unprefixed), per-request negotiation
-from a cookie and `Accept-Language`, component-scoped translations rendered on
-the client, and on the server handed over through `snapshot()` and `hydrate()`,
-`t()` inside Markdown routes, the `$t` store surface of `extension-stores`,
-the member keys of `extension-typed-access`, and the markup `extension-html`
-renders.
+prefix, static adapter, default locale unprefixed, translated pathnames),
+per-request negotiation from a cookie and `Accept-Language`, component-scoped
+translations rendered on the client, and on the server handed over through
+`snapshot()` and `hydrate()`, `t()` inside Markdown routes, the `$t` store
+surface of `extension-stores`, the member keys of `extension-typed-access`, and
+the markup `extension-html` renders.
 
 ---
 
@@ -327,6 +330,17 @@ current version off npm.
 [API Docs: SSR by hand](./README.md#server-side-rendering) or
 [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership)
 
+#### Serve each page at a pathname of its own per locale
+→ [API Docs: Translated pathnames](./README.md#translated-pathnames) and the
+[translated-paths example](../examples/translated-paths)
+
+#### Serve a locale at a domain of its own
+→ [API Docs: Domains](./README.md#domains) and the
+[locale-domains example](../examples/locale-domains)
+
+#### Upgrade an app from 3.4
+→ [API Docs: Upgrading from 3.4](./README.md#upgrading-from-34)
+
 #### Upgrade an app from 3.3
 → [API Docs: Upgrading from 3.3](./README.md#upgrading-from-33)
 
@@ -397,11 +411,12 @@ current version off npm.
 ### For Upgraders
 1. [Upgrading from v2](./TROUBLESHOOTING.md#upgrading-from-v2) – the first-day errors
 2. [Migrating from v2](./README.md#migrating-from-v2) – the old member, the new one
-3. [Upgrading from 3.3](./README.md#upgrading-from-33) – what 3.4 changes
-4. [Upgrading from 3.2](./README.md#upgrading-from-32) – what 3.3 changes
-5. [Upgrading from 3.1](./README.md#upgrading-from-31) – what 3.2 changes
-6. [Upgrading from 3.0](./README.md#upgrading-from-30) – what 3.1 changes
-7. [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership) –
+3. [Upgrading from 3.4](./README.md#upgrading-from-34) – what 3.5 changes
+4. [Upgrading from 3.3](./README.md#upgrading-from-33) – what 3.4 changes
+5. [Upgrading from 3.2](./README.md#upgrading-from-32) – what 3.3 changes
+6. [Upgrading from 3.1](./README.md#upgrading-from-31) – what 3.2 changes
+7. [Upgrading from 3.0](./README.md#upgrading-from-30) – what 3.1 changes
+8. [Best Practices: Instance Ownership](./BEST_PRACTICES.md#instance-ownership) –
    what per-request instances change
 
 ### For Advanced Users

@@ -1,0 +1,9 @@
+{
+  "back": "Všechny produkty",
+  "params": "Parametr [id] je ve všech jazycích stejný: přeložený je jen zbytek cesty.",
+  "items": {
+    "lamp": { "name": "Stolní lampa", "text": "Teplé světlo na dlouhé večery." },
+    "chair": { "name": "Židle", "text": "Dobře se sedí, složí se naplocho." },
+    "desk": { "name": "Stůl", "text": "Dub, s místem pro dvě obrazovky." }
+  }
+}

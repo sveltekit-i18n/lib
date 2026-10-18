@@ -18,13 +18,15 @@
     <h2>{i18n.t(`examples.group.${group}`)}</h2>
 
     <ul>
-      {#each EXAMPLES.filter((example) => example.group === group) as { name, adapter } (name)}
+      {#each EXAMPLES.filter((example) => example.group === group) as { name, adapter, run = true } (name)}
         <li>
           <strong>{i18n.t(`examples.app.${name}.title`)}</strong>
           <span>{i18n.t(`examples.app.${name}.text`)}</span>
 
           <p class="links">
-            <a class="button" href={runHref(name)} rel="noreferrer">{i18n.t('examples.run')}</a>
+            {#if run}
+              <a class="button" href={runHref(name)} rel="noreferrer">{i18n.t('examples.run')}</a>
+            {/if}
             <a href={sourceHref(name)} rel="noreferrer">{i18n.t('examples.source')}</a>
             <code>@sveltejs/adapter-{adapter}</code>
           </p>

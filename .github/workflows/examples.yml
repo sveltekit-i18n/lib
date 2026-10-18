@@ -82,6 +82,15 @@ jobs:
           grep -q 'dva tvary adresy' examples/locale-router-advanced/build/cs/about.html
           grep -q 'Install the package' examples/mdsvex/build/en/guide.html
           grep -q 'Nainstaluj balíček' examples/mdsvex/build/cs/guide.html
+          # A translated pathname the crawler missed would be answered with the
+          # canonical file, in English, so every one is checked.
+          grep -q '<h1>Every page at a pathname of its own language' examples/translated-paths/build/prerendered/index.html
+          grep -q '<h1>Každá stránka na cestě svého jazyka' examples/translated-paths/build/prerendered/cs.html
+          grep -q '<h1>Jede Seite unter einem Pfad ihrer Sprache' examples/translated-paths/build/prerendered/de.html
+          grep -q '<h1>One page, three pathnames' examples/translated-paths/build/prerendered/about.html
+          grep -q '<h1>Jedna stránka, tři cesty' examples/translated-paths/build/prerendered/cs/o-nas.html
+          grep -q '<h1>Eine Seite, drei Pfade' examples/translated-paths/build/prerendered/de/ueber-uns.html
+          grep -q 'hreflang="cs" href="https://example.com/cs/o-nas"' examples/translated-paths/build/prerendered/about.html
 
       # The server-rendered examples write no HTML at build time, so they are
       # started and asked.
@@ -127,3 +136,69 @@ jobs:
           # The warnings in the log are the reports the page exists to show.
           check html en / '<ul><li>' 'This <a>link</a> has no address, and the image' 'target="_blank" rel="noopener noreferrer"'
           check html cs / 'Ahoj <b>&lt;b>Ann&lt;/b></b>, vítej zpět.'
+          # The pathname gives the locale, whatever the header asks for.
+          check translated-paths de /cs/produkty/lamp '<html lang="cs"' '<h1>Stolní lampa'
+          check translated-paths cs /de/produkte/chair '<html lang="de"' '<h1>Stuhl'
+
+      # A redirect has no body to assert on, and `curl -f` passes a 3xx, so
+      # the status and the target are compared instead.
+      - name: Check Redirects
+        run: |
+          PORT=4173 node examples/translated-paths/build/index.js &
+          pid=$!
+          for _ in $(seq 1 40); do
+            curl -sf -o /dev/null http://127.0.0.1:4173/ && break
+            sleep 0.25
+          done
+          redirects() {
+            local got
+            got=$(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' "http://127.0.0.1:4173$1")
+            test "$got" = "308 http://127.0.0.1:4173$2" || { echo "$1: expected a 308 to $2, got '$got'"; kill "$pid"; exit 1; }
+          }
+          redirects /cs/about /cs/o-nas
+          redirects /cs/products/lamp /cs/produkty/lamp
+          redirects '/de/about?x=1' '/de/ueber-uns?x=1'
+          redirects '/cs/about/?next=/x/' '/cs/o-nas?next=/x/'
+          # No route serves either, an empty first segment included: the
+          # switcher links what `delocalize` hands back, `//[a]` as it is.
+          for path in /cs/nic '//[a]'; do
+            status=$(curl -sg --path-as-is -o /dev/null -w '%{http_code}' "http://127.0.0.1:4173$path")
+            test "$status" = 404 || { echo "$path: expected a 404, got $status"; kill "$pid"; exit 1; }
+          done
+          kill "$pid"
+
+      # The domains are asked for by the `Host` header, which adapter-node
+      # reads the origin from. An origin in the target means another host.
+      - name: Check Domains
+        run: |
+          PORT=4173 node examples/locale-domains/build/index.js &
+          pid=$!
+          for _ in $(seq 1 40); do
+            curl -sf -o /dev/null http://127.0.0.1:4173/ && break
+            sleep 0.25
+          done
+          fail() { echo "$1"; kill "$pid"; exit 1; }
+          renders() {
+            local body
+            body=$(curl -s -H "Host: $1" -H "Accept-Language: $2" -w '\n%{http_code}' "http://127.0.0.1:4173$3" | sed 's/<!--[^>]*-->//g')
+            echo "$body" | tail -n 1 | grep -qx "$4" || fail "$1$3: expected a $4, got $(echo "$body" | tail -n 1)"
+            echo "$body" | grep -q "$5" || fail "missing '$5' in $1$3 ($2)"
+          }
+          redirects() {
+            local got
+            got=$(curl -s -o /dev/null -H "Host: $1" -w '%{http_code} %{redirect_url}' "http://127.0.0.1:4173$2")
+            test "$got" = "308 $3" || fail "$1$2: expected a 308 to $3, got '$got'"
+          }
+          # The host gives the locale, whatever the header asks for.
+          renders example.cz en / 200 '<h1>Každý jazyk na vlastní doméně'
+          renders example.com cs / 200 '<h1>Each language at a domain of its own'
+          renders example.com cs /de/ueber-uns 200 '<h1>Eine Seite, zwei Domains'
+          renders example.cz en /o-nas 200 'hreflang="en" href="https://example.com/about"'
+          renders example.cz en /nic 404 '<html lang="cs"'
+          # A host the map does not list serves every locale.
+          renders www.example.com cs / 200 '<html lang="cs"'
+          redirects example.com /o-nas https://example.cz/o-nas
+          redirects example.cz '/about?x=1' 'https://example.com/about?x=1'
+          redirects example.cz /de/ueber-uns https://example.com/de/ueber-uns
+          redirects example.com /de/about http://127.0.0.1:4173/de/ueber-uns
+          kill "$pid"

@@ -27,6 +27,7 @@ when a `.ts` file is imported from a `.js` module or a plain `<script>`.
 - [Server-Side Rendering](#server-side-rendering)
 - [Testing components that translate](#testing-components-that-translate)
 - [Migrating from v2](#migrating-from-v2)
+- [Upgrading from 3.4](#upgrading-from-34)
 - [Upgrading from 3.3](#upgrading-from-33)
 - [Upgrading from 3.2](#upgrading-from-32)
 - [Upgrading from 3.1](#upgrading-from-31)
@@ -1718,7 +1719,9 @@ builds an instance per request and hands its state to the browser, and the
 browser keeps one instance per tab, following every navigation. What the
 server loaded is not fetched again in the browser, and no visitor sees another
 visitor's locale. It is the core's `defineI18n`, with the parser filled in for
-every instance it builds.
+every instance it builds. Three more serve each page at a pathname of its
+locale: see [Translated pathnames](#translated-pathnames). One more links a
+locale served at a domain of its own: see [Domains](#domains).
 
 ### Setup
 
@@ -1824,16 +1827,22 @@ Each pass negotiates against the locales the config serves — the loaders'
 locales and the keys of `translations` — and takes the first candidate that
 matches, [`en-GB` falling back to `en`](#matchlocalerequested-available):
 
-1. `preferredLocale(event)`, the visitor's choice: a cookie, a route param, a
+1. the locale of a [translated pathname](#translated-pathnames), when the
+   URL's pathname belongs to one;
+2. `preferredLocale(event)`, the visitor's choice: a cookie, a route param, a
    profile in `locals`;
-2. the `Accept-Language` header; in an app without a server `load`, the
+3. the `Accept-Language` header; in an app without a server `load`, the
    browser's `navigator.languages`;
-3. `initLocale`;
-4. `fallbackLocale`;
-5. the first locale the config serves: the loaders' locales in the order the
+4. `initLocale`;
+5. `fallbackLocale`;
+6. the first locale the config serves: the loaders' locales in the order the
    config lists them, then the keys of `translations`.
 
-The defaults (3–5) do not read the header, so a range the visitor refused
+On a host [`domains`](#domains) lists, the pass negotiates against the
+locales of that host instead, takes the same first three candidates, and
+falls back to the host's first locale in place of 4–6.
+
+The defaults (4–6) do not read the header, so a range the visitor refused
 (`q=0`) does not keep one of them out. A config that serves at least one locale
 therefore always settles on one; only a config that serves none renders the
 page with no active locale. Set `initLocale` to choose the locale a visitor
@@ -1847,7 +1856,8 @@ without a server `load` in the universal one, whose event has no `cookies`
 root error page SvelteKit renders without the server's data, such as an
 unknown URL a static host answers with its fallback page, and there too the
 event has no `cookies`. A navigation to a prerendered page takes the locale
-`preferredLocale` gave at build time, and otherwise keeps the tab's. It must only read the event. A value no configured locale
+its translated pathname or `preferredLocale` gave that page at build time, and
+otherwise keeps the tab's. It must only read the event. A value no configured locale
 matches is skipped, and one that throws is logged once and skipped.
 
 The server's answer rules. `i18n.setLocale('cs')` in the browser switches the
@@ -1877,6 +1887,118 @@ reads every param as a string. Annotate the event as
 `Kit.Event<Partial<Record<string, Kit.ParamValue>>>`
 (`import type { Kit } from 'sveltekit-i18n/kit'`) to see that, and return a
 string: a number is no locale, so it is skipped.
+
+### Translated pathnames
+
+`pathnames` serves each page at a pathname of its own per locale —
+`/cs/o-nas` for `/about` — from one route tree, with no `[lang]` segment in
+it. It takes what `translatePathnames(table)` returns, where, per canonical
+pathname, the table lists the pathname each locale serves it at:
+
+```javascript
+// src/lib/i18n.js
+import { defineI18n, translatePathnames } from 'sveltekit-i18n/kit';
+
+export const { handle, load, use, get, reroute, delocalize, localizePath } = defineI18n(config, {
+  preferredLocale: (event) => event.cookies?.get('lang'),
+  pathnames: translatePathnames({
+    '/about': { en: '/about', cs: '/cs/o-nas' },
+    '/products/[id]': { en: '/products/[id]', cs: '/cs/produkty/[id]' },
+    '/[...rest]': { en: '/[...rest]', cs: '/cs/[...rest]' },
+  }),
+});
+```
+
+```javascript
+// src/hooks.js — the universal hooks, which run on the server and in the browser
+export { reroute } from '#lib/i18n.js';
+```
+
+- **`reroute`** serves a translated pathname from the route of its canonical
+  one: `/cs/produkty/42` renders `src/routes/products/[id]`. It serves a page
+  only at the pathname `localizePath` gives it, so `/cs/about` reaches
+  `handle` as it is, and SvelteKit answers it with a 404 unless a route of
+  the app's own matches it or a `handle` redirects it to `/cs/o-nas`.
+- **A pathname whose pattern belongs to one locale gives that locale**,
+  before `preferredLocale` (see [Which locale](#which-locale)). With the
+  catch-all above, every unprefixed pathname is English and every `/cs/…`
+  pathname Czech.
+- **Loaders match the canonical pathname**: their
+  [`routes`](#loaders) are written once, for `/products/[id]`. `page.url` and
+  `event.url` keep the pathname the visitor requested.
+- **`localizePath(path, locale)`** translates a canonical path to `locale`
+  (`localizePath('/products/42', 'cs')` is `/cs/produkty/42`), and
+  **`delocalize(url)`** gives the canonical path of a URL and the locale its
+  pathname belongs to. Both leave out `basePath`, so a link goes through
+  `resolve()`; in SvelteKit 2, whose `resolve()` reads every path as a route
+  ID, write `` `${base}${path}` `` with `base` from `$app/paths` instead. A
+  locale switcher navigates to each locale's pathname of the
+  page shown, and the navigation switches the locale:
+
+```svelte
+<script lang="ts">
+  import { resolve } from '$app/paths';
+  import { page } from '$app/state';
+  import type { Path } from '$app/types';
+  import { delocalize, get, localizePath } from '#lib/i18n.js';
+
+  const i18n = get();
+
+  const href = (path: string) => resolve(path.replace(/^\/+/, '') as Path);
+</script>
+
+{#each i18n.locales as locale (locale)}
+  <a href={href(localizePath(delocalize(page.url).path, locale))} hreflang={locale}>{locale}</a>
+{/each}
+```
+
+The patterns take SvelteKit's route syntax, limited to static segments,
+`[param]` and a trailing `[...rest]`; the table is checked at first use, and an
+entry it cannot read is logged and skipped. An app that imports no
+`translatePathnames` ships none of the matcher. The redirect of a pathname
+`reroute` leaves as it is, `hreflang` alternates, prerendering every
+translated pathname and the rest of the rules are in
+[base — Translated pathnames](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#translated-pathnames);
+the [translated-paths example](../examples/translated-paths) runs all of it.
+
+### Domains
+
+`domains` serves a locale at a domain of its own — `example.cz` in Czech,
+`example.com` in English and German. It takes what `localeDomains(map)`
+returns, where, per origin, the map lists the locale or the locales its host
+serves, its own first:
+
+```javascript
+// src/lib/i18n.js
+import { defineI18n, localeDomains } from 'sveltekit-i18n/kit';
+
+export const { handle, load, use, get, delocalize, localizeHref } = defineI18n(config, {
+  domains: localeDomains({
+    'https://example.com': ['en', 'de'],
+    'https://example.cz': 'cs',
+  }),
+});
+```
+
+- **A host the map lists negotiates among its own locales**, and falls back to
+  its first, so `example.cz` renders Czech whatever the visitor's header or
+  cookie names. A host it does not list — a dev server, a preview, the origin
+  SvelteKit prerenders at — negotiates among every locale served.
+- **`localizeHref(path, locale, from?)`** is the href of `path` in `locale`,
+  `basePath` included, with the origin the map spells for `locale` when
+  another host serves it. Given the URL of the page it links from, it adds
+  the origin only where the link leaves that page's host, and none from a
+  host the map does not list, so a dev server never links to production.
+  `delocalize(url)` gives the first locale of the URL's host as `domain`.
+
+It combines with `pathnames`, which tells apart the locales a host shares. A
+link to another host is a full page load, so switch the locale there by a
+link, never by `goto()` or `setLocale()`. The redirect of a locale to its
+host, `hreflang` alternates, prerendering, caching and trying the domains in
+development are in
+[base — Domains](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#domains);
+the [locale-domains example](../examples/locale-domains) runs the redirect,
+the alternates and the development hosts.
 
 ### What `data.i18n` is
 
@@ -1924,10 +2046,11 @@ page render a second instance.
 - **An app without a server `load` renders its SSR pass with no request
   headers**, so the server and the browser can negotiate differently. Put the
   locale in the URL, or add the server `load`.
-- **A prerendered page has no visitor.** It renders the locale
-  `preferredLocale` finds in the URL, or else the default (`initLocale`,
-  `fallbackLocale`, the first locale served). A client navigation to one takes
-  the locale `preferredLocale` gave at build time, and otherwise keeps the
+- **A prerendered page has no visitor.** It renders the locale of its
+  [translated pathname](#translated-pathnames), or the one `preferredLocale`
+  finds in the URL, or else the default (`initLocale`, `fallbackLocale`, the
+  first locale served). A client navigation to one takes the locale its
+  pathname or `preferredLocale` gave at build time, and otherwise keeps the
   tab's, so a cookie-first `preferredLocale` that falls back to the URL follows
   the URL there. A query string (`?lang=`) does not reach a prerendered page
   and the build's hostname is not the visitor's, so a locale read from either
@@ -2241,6 +2364,46 @@ Also worth knowing:
   entry, and the core's rune
   modules are compiled by your bundler.
 - **Parser reports are silent** unless `parserOptions.onReport` names a channel.
+
+## Upgrading from 3.4
+
+A 3.4 config loads in 3.5 as it is, and [`sveltekit-i18n/kit`](#sveltekit)
+behaves as it did until its options state `pathnames` or `domains`. 3.5
+brings in `@sveltekit-i18n/base` 3.4:
+
+- [`pathnames`](#translated-pathnames) in the options of `defineI18n()`, which
+  takes what the new `translatePathnames()` of `sveltekit-i18n/kit` returns,
+  and `reroute`, `delocalize` and `localizePath` among what it returns — each
+  page served at a pathname of its locale, from one route tree.
+- [`domains`](#domains) in the options of `defineI18n()`, which takes what the
+  new `localeDomains()` of `sveltekit-i18n/kit` returns, and `localizeHref`
+  among what it returns — a locale served at a domain of its own.
+- The locale `delocalize`, `localizePath` and `localizeHref` take and give,
+  and the one `domains` takes, are typed by the locales the config names,
+  whatever its [`extensions`](#extensions) make of the instance: `Kit.T` and
+  `Kit.Options` take it as a type parameter, and `Kit.LocaleOf` reads the
+  locale off an instance.
+- `Kit.Pathnames` and `Kit.Domains`, the types of what `translatePathnames()`
+  and `localeDomains()` return.
+- **Companion releases.**
+  [`extension-markdown`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-markdown)
+  3.0 is new: a `T` component that renders the Markdown a message carries —
+  `**strong**`, `[links](/docs)`, `` `code` `` — as elements and Svelte
+  components, without `{@html}`. An instance takes it or `extension-html`,
+  not both.
+  [`extension-html`](https://github.com/sveltekit-i18n/extensions/tree/master/extension-html)
+  3.0.3 throws at construction where another extension added the instance's
+  `T`, renders a tag a layer unmaps with `null` without reporting it, reads an
+  `undefined` entry of the component map as none, so a lower layer's entry
+  applies, and checks a URL's scheme in linear time.
+  [`parser-fluent`](https://github.com/sveltekit-i18n/parsers/tree/master/parser-fluent)
+  3.0 is new: [Fluent](https://projectfluent.org), Mozilla's localization
+  system, for an app built on `@sveltekit-i18n/base`.
+
+The core's notes:
+[base — Upgrading from 3.3](https://github.com/sveltekit-i18n/base/blob/master/docs/README.md#upgrading-from-33).
+
+---
 
 ## Upgrading from 3.3
 
