@@ -162,6 +162,7 @@ config.extensions = [withCurlyParser(config.log), ...yours]
                      └─ patches loadConfig to run every config through
                         the same `withParser` the constructor used,
                         keeping the `log` the reports go to
+                        (a missing one goes to the core as it is)
 ```
 
 It is **prepended** to your pipe, because an extension that augments the

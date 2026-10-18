@@ -424,7 +424,10 @@ const withCurlyParser = (initial?: Logger.FactoryProps): Extension.T<Base, Base>
   let log = initial;
 
   i18n.loadConfig = (config: Config<any, any>) => {
-    log = config?.log ?? log;
+    // The core refuses a missing config and keeps the one it has.
+    if (!config) return loadConfig(config);
+
+    log = config.log ?? log;
 
     return loadConfig(withParser(config, log));
   };

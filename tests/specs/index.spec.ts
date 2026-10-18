@@ -209,6 +209,15 @@ describe('parser wiring', () => {
     await expect(instance.loadConfig(undefined as never)).resolves.toBeUndefined();
   });
 
+  it.each([undefined, null])('keeps the config through a reconfiguration with %s', async (missing) => {
+    const instance = new i18n(CONFIG);
+    const { locales } = instance;
+
+    await instance.loadConfig(missing as never);
+
+    expect(instance.locales).toEqual(locales);
+  });
+
   it('routes reports to `parserOptions.onReport`', async () => {
     const reports: Report[] = [];
     const instance = new i18n({ ...CONFIG, parserOptions: { onReport: (report) => reports.push(report) } });
