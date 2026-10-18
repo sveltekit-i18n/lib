@@ -57,11 +57,14 @@ jobs:
         run: pnpm --filter './examples/*' run build
 
       # After the build, which is what writes the schemas the check reads.
-      # Without a registration the check would pass on plain string keys, so
-      # each one's presence is checked first.
+      # Without a generated schema the check would pass on plain string keys,
+      # so each one is checked first: the placeholder typegen writes before its
+      # first generation, and keeps when that one fails, registers an empty
+      # interface.
       - name: Type-Check Examples
         run: |
           for schema in examples/*/src/i18n-schema.d.ts; do
+            grep -qx 'interface TranslationSchema {' "$schema" || { echo "no generated keys in $schema"; exit 1; }
             grep -q 'interface Register' "$schema" || { echo "no registration in $schema"; exit 1; }
           done
           test "$(ls examples/*/src/i18n-schema.d.ts | wc -l)" -eq "$(ls examples/*/package.json | wc -l)"
