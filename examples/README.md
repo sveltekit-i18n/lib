@@ -15,8 +15,9 @@ key that is not in the catalogue is a type error — see
 Everything that is really three lines of configuration lives on the
 [playground](https://sveltekit-i18n.github.io/playground) instead, where a real
 instance answers as you change it: message formats (`parser-curly`,
-`parser-icu`, `parser-mf2`, `parser-i18next`), `config.preprocess`,
-`config.loaders` matching and freshness, and `config.fallbackLocale`.
+`parser-icu`, `parser-mf2`, `parser-i18next`, `parser-fluent`),
+`config.preprocess`, `config.loaders` matching and freshness, and
+`config.fallbackLocale`.
 
 Each **run it** below opens that directory in
 [StackBlitz](https://stackblitz.com), which boots Node and the dev server inside

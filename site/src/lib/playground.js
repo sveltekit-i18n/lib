@@ -9,7 +9,7 @@
 export const PANELS = ['parser', 'preprocess', 'loaders', 'fallback'];
 
 /** Which message format the parser panel is resolving. */
-export const FLAVOURS = ['curly', 'icu', 'mf2', 'i18next'];
+export const FLAVOURS = ['curly', 'icu', 'mf2', 'i18next', 'fluent'];
 
 export const MESSAGES = {
   curly: 'You have {{count:number;}} {{count:plural; one:message; default:messages;}}.',
@@ -17,6 +17,7 @@ export const MESSAGES = {
   mf2: '.input {$count :number}\n.match $count\none {{You have {$count} message.}}\n* {{You have {$count} messages.}}',
   // i18next selects a plural form by key suffix, which a single message cannot carry.
   i18next: 'You have {{count, number}} messages.',
+  fluent: 'You have { NUMBER($count) } { $count ->\n    [one] message\n   *[other] messages\n}.',
 };
 
 export const PAYLOAD = '{\n  "count": 1234\n}';
